@@ -2,18 +2,18 @@
  "study_id": "STUDY-011",
  "execution_id": "canonical-run-002",
  "status": "READY_FOR_CLEAN_CONFIRMATORY_EXECUTION",
- "git_commit": "9c41f4b",
- "protocol_fingerprint": "b6b7c2d02210e8880980a95bf28b25bec933da65760279f3b6e05e66591a3473",
+ "git_commit": "9a20bfd",
+ "protocol_fingerprint": "0c58802253706a01189877741d4f5c28db918b638fdee208ef8ccdbeb99e1510",
  "amendment_set_hash": "1f3ab7f82c8fcc436302ea744f8a35220b2e60d816556f0033438e19b00fefdf",
  "workload_manifest_hash": "2f21e0827f9c7f8d4f044acac9635cee84376250d595115b68dc4634159bbe18",
  "provider_manifest_hash": "ded4a4101e0f5f89bd336c29caaebe1ba9dab3f0b846616401f2b229086c5750",
  "preregistration_manifest_hash": "087db1b3eb3a739c8a8a99d4bbfa72762b11ca6536edd1ab1bf1cd545e40290c",
  "runner_path": "experiments/live_benchmark/run_study_011.py",
  "runner_hash": "99b04b24ec2f84f1a44c4f53b37aeb1e5f9ee384b3a9ecc7989402dcf2640699",
- "start_timestamp_utc": null,
+ "start_timestamp_utc": "2026-09-04T09:02:54Z",
  "checkpoint_path": "data/study011_runs/confirmatory/canonical-run-002/checkpoint.jsonl",
  "records_path": "data/study011_runs/confirmatory/canonical-run-002/run_records.jsonl",
- "pid": null,
+ "pid": 50456,
  "mode": "LIVE_ONLY",
  "phase": 1,
  "canonical_target_counts_start_at": 0,
@@ -33,6 +33,7 @@
   "All prior records (87) are NOT_ADMISSIBLE: produced under superseded fingerprint 51920ee4 before Amendment 007 (checkpoint-ordering fix); target counts start at ZERO",
   "Launch blocked until: second-pass independent review returns 0 unresolved CRITICAL + 0 unresolved MAJOR",
   "Freeze manifest: data/study011_runs/FINAL-CONFIRMATORY-FREEZE.json (15 inputs, SHA-256)",
-  "Second-pass review reconciled: CRITICAL-01 resolved by clean restart at zero + per-record provenance (Amendment 008); MAJOR-01 accepted limitation; MAJOR-02 resolved by execution of all 8 cells."
+  "Second-pass review reconciled: CRITICAL-01 resolved by clean restart at zero + per-record provenance (Amendment 008); MAJOR-01 accepted limitation; MAJOR-02 resolved by execution of all 8 cells.",
+  "Amendment 009 mid-canonical: breaker-path checkpoint gap fixed; 1 duplicate pair resolved (bookkeeping entry superseded by its LIVE_VALID twin); multi-fingerprint admissibility documented in freeze manifest."
  ]
 }

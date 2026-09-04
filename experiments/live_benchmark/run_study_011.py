@@ -987,6 +987,16 @@ def main():
                             execution_class=ExecutionClass.LIVE_PROVIDER_FAILURE.value,
                             error_detail=f"circuit breaker open: {breaker_reason}",
                         )
+                        # ponytail: checkpoint BEFORE save on the breaker path too —
+                        # same idempotency argument as Amendment 007; without this a
+                        # breaker-rejected run_id resumes as a duplicate record.
+                        checkpoint.record(
+                            run_id=run_id, provider=stratum, model=model,
+                            condition=condition, workload_id=wl["workload_id"],
+                            replicate_id=replica,
+                            execution_class=rec.execution_class,
+                            ts=utcnow(),
+                        )
                         _save_run(rec)
                         breaker.record_failure()
                         attempts_total += 1

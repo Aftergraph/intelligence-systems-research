@@ -1,8 +1,8 @@
 {
  "study_id": "STUDY-011",
- "created_utc": "2026-09-04T09:02:08Z",
+ "created_utc": "2026-09-04T10:32:37Z",
  "fingerprint_ref": "data/study011_impl_fingerprint.json",
- "code_snapshot_hash": "b6b7c2d02210e8880980a95bf28b25bec933da65760279f3b6e05e66591a3473",
+ "code_snapshot_hash": "0c58802253706a01189877741d4f5c28db918b638fdee208ef8ccdbeb99e1510",
  "amendment_set": [
   "001",
   "002",
@@ -11,7 +11,8 @@
   "005",
   "006",
   "007",
-  "008"
+  "008",
+  "009"
  ],
  "frozen_inputs": {
   "data/study011_dependency_lock.txt": {
@@ -94,6 +95,11 @@
  "missing_inputs": [],
  "notes": [
   "cli/__init__.py + tests/__init__.py are engineering corrections (baseline repair, item F); proven: no STUDY-011 runtime semantics — they are empty package markers",
-  "Freeze covers runner + rate limiting + analysis + verifier + all manifests + amendments + preregistration"
- ]
+  "Freeze covers runner + rate limiting + analysis + verifier + all manifests + amendments + preregistration",
+  "Amendment 009 (mid-canonical): breaker-path checkpoint gap fixed; frozen runner code changed → new fingerprint. Both fingerprints admissible per amendment; per-record implementation_fingerprint proves provenance."
+ ],
+ "admissible_fingerprints": {
+  "b6b7c2d02210e888": "Amendments 001-008 era; records before Amendment 009",
+  "0c58802253706a01189877741d4f5c28db918b638fdee208ef8ccdbeb99e1510": "Amendment 009+; breaker-path fix; only change: duplicate prevention"
+ }
 }

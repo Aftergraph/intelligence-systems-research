@@ -263,3 +263,18 @@ NOT rewritten; this amendment is appended per §11 of the prereg.
 **Evidence:** docs/studies/STUDY-011-INDEPENDENT-REVIEW-RECONCILIATION.md; study011-second-pass-review.md (hash 8b162564…).
 
 **Prior observations:** Still zero admissible (unchanged); canonical-run-002 starts at zero with per-record provenance stamped from the first record.
+
+## Amendment 009 — Breaker-path checkpoint gap (execution-time, mid-canonical)
+
+**Date:** 2026-09-04
+**Trigger:** Live monitor (deleg_4c11df2c task 6) detected duplicate run_id `study011-dialagram-C-S11-DATA-04-r001` in canonical-run-002 records.
+
+**Root cause:** The circuit-breaker-open path called `_save_run()` WITHOUT `checkpoint.record()`. A breaker-rejected attempt was persisted to records but invisible to resume — on restart the run_id was re-executed, producing a duplicate record (1 PROVIDER_FAILURE bookkeeping entry + 1 real LIVE_VALID observation).
+
+**Change:** Breaker path now calls `checkpoint.record()` before `_save_run()`, mirroring Amendment 007's ordering rule.
+
+**Classification:** Protocol-preserving duplicate-prevention fix. No change to hypotheses/conditions/sampling/stopping rule/classification/analysis.
+
+**Observation handling:** The duplicate pair consists of (a) a breaker-rejected NON-OBSERVATION (no API request was sent — the breaker refused before the request) and (b) the real LIVE_VALID observation from resume. Dedup rule: the bookkeeping entry is marked SUPERSEDED_BY its LIVE_VALID twin; the LIVE_VALID observation counts once. Cell C remains 59 valid of 58 required (1 spare). Admissibility of the LIVE_VALID twin: produced under fingerprint b6b7c2d0 (then-final), real API provenance — ADMISSIBLE.
+
+**Fingerprint:** regenerated (see impl_fingerprint.json). Records produced before this amendment remain admissible — this fix only prevents FUTURE duplicates; the existing duplicate pair is resolved by the dedup rule above, documented here.

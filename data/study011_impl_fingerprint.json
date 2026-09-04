@@ -1,6 +1,6 @@
 {
- "code_snapshot_hash": "b6b7c2d02210e8880980a95bf28b25bec933da65760279f3b6e05e66591a3473",
- "created_utc": "2026-09-04T09:01:19Z",
+ "code_snapshot_hash": "0c58802253706a01189877741d4f5c28db918b638fdee208ef8ccdbeb99e1510",
+ "created_utc": "2026-09-04T10:32:26Z",
  "dependency_lock_hash": "7c8c0922bbd516840bdc8493db08eb63b329c41c0d2422102aeaabeba59396ca",
  "files": {
   "data/study011_dependency_lock.txt": "7c8c0922bbd516840bdc8493db08eb63b329c41c0d2422102aeaabeba59396ca",
@@ -9,7 +9,7 @@
   "data/study011_run_math.json": "d2065f0a4278f1d102d1c092b0b11db7bcd36826f17a8aaa86703cebad987cf3",
   "data/study011_workload_manifest.json": "2f21e0827f9c7f8d4f044acac9635cee84376250d595115b68dc4634159bbe18",
   "data/study011_workloads_frozen.json": "74405d75f9be2a1d7335b829b8c84e21efeb65178962811d2c59f99424f89237",
-  "experiments/live_benchmark/run_study_011.py": "99b04b24ec2f84f1a44c4f53b37aeb1e5f9ee384b3a9ecc7989402dcf2640699",
+  "experiments/live_benchmark/run_study_011.py": "2cde9d6ca9df4a5b2e71a884cc7e0842f53bd7f1b6bf0e79110d33cb119550cb",
   "experiments/live_benchmark/study011_analyze.py": "400138f6a4ed1a39a35fba05bb9c5a1fc9478935d015b64bf3205267a4023d1f",
   "experiments/live_benchmark/study011_rate_limit.py": "06c20d210c7de683ec455e580fee6b42f3a7b0171b7eb3ff732ad91372aab353",
   "experiments/live_benchmark/verifier_v2.py": "dbf1fbb3d00ab83ad169cf2899b70f755b9ad2835375673469c35808c7e881c9"
