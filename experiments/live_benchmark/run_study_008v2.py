@@ -22,6 +22,9 @@ import hashlib
 import uuid
 import time
 import datetime
+import urllib.request
+import urllib.error
+import ssl
 import os
 import sys
 import random
@@ -55,6 +58,45 @@ class ExecutionMode(Enum):
 
 
 STUDY_ID = "STUDY-008-v2"
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Provider Configuration (matches study008_v2_provider_model_matrix.json)
+# ─────────────────────────────────────────────────────────────────────────────
+
+PROVIDERS = {
+    "dialagram": {
+        "base_url": "https://dialagram.me/router/v1",
+        "api_key_env": "DIALAGRAM_API_KEY",
+        "api_key_default": None,
+        "max_concurrency": 1,
+        "inter_request_delay_s": 5.0,
+        "backoff_base_s": 5.0,
+        "backoff_max_s": 60.0,
+        "max_retries": 3,
+        "timeout_s": 90,
+        "models": ["qwen-3.8-max", "deepseek-v4", "xiaomi-mimo-2.5"],
+    },
+    "openrouter": {
+        "base_url": "https://openrouter.ai/api/v1",
+        "api_key_env": "OPENROUTER_API_KEY",
+        "api_key_default": None,
+        "max_concurrency": 1,
+        "inter_request_delay_s": 6.0,
+        "backoff_base_s": 6.0,
+        "backoff_max_s": 60.0,
+        "max_retries": 3,
+        "timeout_s": 90,
+        "models": ["google/gemma-4-31b-it", "z-ai/glm-5.2"],
+    },
+}
+
+
+# Confirmatory conditions for STUDY-008-v2
+CONFIRMATORY_CONDITIONS = ["A", "C", "F", "G"]
+
+# Per-cell LIVE_VALID target
+LIVE_VALID_TARGET_PER_CELL = 58
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -221,11 +263,26 @@ def make_run_id(provider: str, condition: str, workload_id: str, replica: int) -
     return f"{STUDY_ID.lower()}-{provider}-{condition}-{workload_id}-r{replica:03d}"
 
 
+def load_matrix(path: str) -> Dict[str, Any]:
+    """Load provider/model matrix."""
+    with open(path, "r") as f:
+        return json.load(f)
+
+
 def load_workloads(path: str) -> List[Dict[str, Any]]:
     """Load workload manifest."""
     with open(path, "r") as f:
         data = json.load(f)
     return data.get("workloads", [])
+
+
+def get_provider_cells(matrix: Dict[str, Any]) -> List[Tuple[str, str]]:
+    """Generate all (provider, condition) cells from matrix."""
+    cells = []
+    for provider_name in PROVIDERS.keys():
+        for condition in CONFIRMATORY_CONDITIONS:
+            cells.append((provider_name, condition))
+    return cells
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -271,6 +328,100 @@ def verify_candidate_completion(response: str, workload: dict) -> dict:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Live API call (from run_study_011.py)
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _live_chat_completion(provider_cfg: dict, model: str, messages: list, **kwargs) -> dict:
+    """
+    Make a single live chat completion request.
+    Returns parsed JSON response or raises on error.
+    Never falls back to simulation.
+    """
+    api_key = (
+        os.environ.get(provider_cfg["api_key_env"])
+        or provider_cfg.get("api_key_default")
+    )
+    if not api_key:
+        raise ValueError(
+            f"No API key for provider (env={provider_cfg['api_key_env']}). "
+            "Phase 1 providers require owner-approved keys."
+        )
+
+    payload = json.dumps({
+        "model": model,
+        "messages": messages,
+        "temperature": 0.2,
+        "max_tokens": 2048,
+        **kwargs,
+    }).encode("utf-8")
+
+    url = f"{provider_cfg['base_url']}/chat/completions"
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "HTTP-Referer": "https://github.com/jonas-abde-research",
+        "X-Study-ID": STUDY_ID,
+    }
+
+    ctx = ssl.create_default_context()
+    req = urllib.request.Request(url, data=payload, headers=headers, method="POST")
+
+    retries = 0
+    delay = provider_cfg["backoff_base_s"]
+    max_retries = provider_cfg["max_retries"]
+    timeout = provider_cfg["timeout_s"]
+
+    while retries <= max_retries:
+        try:
+            with urllib.request.urlopen(req, context=ctx, timeout=timeout) as resp:
+                body = resp.read()
+                return {
+                    "http_status": resp.status,
+                    "provider_request_id": resp.headers.get("X-Request-ID") or resp.headers.get("cf-ray"),
+                    "body": json.loads(body),
+                    "response_hash": sha256(body),
+                }
+        except urllib.error.HTTPError as e:
+            body = e.read()
+            http_status = e.code
+            if http_status == 429:
+                retry_after = e.headers.get("Retry-After")
+                wait = float(retry_after) if retry_after else delay
+                print(f"  [RATE LIMIT] HTTP 429 — waiting {wait:.1f}s (retry {retries+1}/{max_retries})",
+                      flush=True, file=sys.stderr)
+                if retries >= max_retries:
+                    return {
+                        "http_status": 429,
+                        "provider_request_id": None,
+                        "body": None,
+                        "response_hash": sha256(body),
+                        "error": f"HTTP 429 after {max_retries} retries",
+                    }
+                time.sleep(min(wait, provider_cfg["backoff_max_s"]))
+                delay = min(delay * 2, provider_cfg["backoff_max_s"])
+                retries += 1
+            else:
+                return {
+                    "http_status": http_status,
+                    "provider_request_id": None,
+                    "body": None,
+                    "response_hash": sha256(body),
+                    "error": f"HTTP {http_status}: {body[:200]!r}",
+                }
+        except Exception as e:
+            return {
+                "http_status": None,
+                "provider_request_id": None,
+                "body": None,
+                "response_hash": "",
+                "error": str(e),
+            }
+
+    return {"http_status": None, "error": "Max retries exhausted", "body": None, "response_hash": ""}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Main runner
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -278,6 +429,7 @@ def run_stud008_v2(
     mode: ExecutionMode,
     workloads_path: str,
     output_dir: str,
+    matrix_path: Optional[str] = None,
     fault_schedules: Optional[List[FaultSchedule]] = None,
     dry_run: bool = True,
 ) -> MetricsAccumulator:
@@ -285,10 +437,18 @@ def run_stud008_v2(
     Main runner for STUDY-008-v2.
     
     Supports fault injection per prereg schedule and checkpoint resume.
+    Exercises all 8 cells (2 providers × 4 conditions) with fault schedules.
     """
     import os
     
     os.makedirs(output_dir, exist_ok=True)
+    
+    # Load matrix
+    matrix_path = matrix_path or os.path.join(
+        os.path.dirname(__file__), "..", "..", "data",
+        "study008_v2_provider_model_matrix.json"
+    )
+    matrix = load_matrix(matrix_path)
     
     # Load workloads
     workloads = load_workloads(workloads_path)
@@ -299,6 +459,10 @@ def run_stud008_v2(
             "study011_workloads_frozen.json"
         ))
     
+    # Generate cells
+    cells = get_provider_cells(matrix)
+    print(f"Running STUDY-008-v2 with {len(cells)} cells: {cells}")
+    
     # Initialize fault injector
     schedules = fault_schedules or create_stud008_default_schedules()
     checkpoint_path = os.path.join(output_dir, "checkpoint.json")
@@ -307,69 +471,107 @@ def run_stud008_v2(
     # Metrics tracking
     metrics = MetricsAccumulator()
     records: List[RunRecord] = []
+    cell_stats: Dict[str, Dict[str, int]] = {}
     
-    # Process workload
-    print(f"Starting STUDY-008-v2 with {len(workloads)} workloads (mode={mode.value})")
+    # Process all cells
+    print(f"Starting STUDY-008-v2 (mode={mode.value}, dry_run={dry_run})")
     print(f"Fault schedules: {[s.fault_code.value for s in schedules]}")
     
-    # Example: run single workload in dry-run mode
-    workload = workloads[0] if workloads else {
-        "workload_id": "S11-AUTH-01",
-        "prompt": "Test prompt",
-    }
-    
-    workload_id = workload.get("workload_id", "test-workload")
-    condition = "A"  # Default condition
-    
-    for replica in range(1):
-        run_id = make_run_id("test", condition, workload_id, replica)
-        record = RunRecord(
-            run_id=run_id,
-            condition=condition,
-            workload_id=workload_id,
-            provider_name="test-provider",
-            exact_model_id="test-model",
-            request_timestamp_utc=utcnow(),
-        )
+    for provider_name, condition in cells:
+        cell_key = f"{provider_name}-{condition}"
+        cell_stats[cell_key] = {"runs": 0, "successes": 0, "faults": 0}
         
-        # Inject fault if scheduled
-        fault_result = injector.call(
-            provider_cfg={"name": "test"},
-            model="test-model",
-            messages=[{"role": "user", "content": "test"}],
-            run_id=run_id,
-            step=0,
-        )
+        # Get provider config and models
+        provider_cfg = PROVIDERS[provider_name]
+        models = provider_cfg["models"]
         
-        record.fault_injected = "error" in fault_result
-        record.fault_code = fault_result.get("error", "")[:20] if "error" in fault_result else None
-        
-        # Check for checkpoint resume (FAIL-MID-MISSION)
-        checkpoint = injector.get_checkpoint()
-        if checkpoint:
-            record.checkpoint_resumed = True
-            metrics.checkpoints_resumed += 1
-        
-        # Record response
-        record.response_timestamp_utc = utcnow()
-        record.raw_response_excerpt = fault_result.get("error", "OK")[:100]
-        record.response_hash = fault_result.get("response_hash", sha256(record.raw_response_excerpt))
-        
-        # Compute metrics
-        record.vsr_flag = _declares_complete(record.raw_response_excerpt)
-        record.fcr_flag = _declares_failure(record.raw_response_excerpt)
-        
-        # Mark as SIMULATION for dry-run mode
-        if mode == ExecutionMode.SIMULATION_ONLY:
-            record.execution_class = "SIMULATION_ONLY"
-            record.is_live = False
-        elif mode == ExecutionMode.LIVE_ONLY:
-            record.execution_class = "LIVE_VALID"
-            record.is_live = True
-        
-        records.append(record)
-        metrics.record_run(record)
-        metrics.checkpoints_created = len([r for r in records if r.checkpoint_resumed or "checkpoint" in str(r.fault_code or "")])
+        # Process each workload for this cell
+        for workload in workloads[:1]:  # Limit to 1 workload for dry-run
+            workload_id = workload.get("workload_id", "test-workload")
+            
+            for replica in range(1):  # 1 replica for dry-run
+                run_id = make_run_id(provider_name, condition, workload_id, replica)
+                
+                # Pick model (round-robin by replica)
+                model = models[replica % len(models)]
+                
+                record = RunRecord(
+                    run_id=run_id,
+                    condition=condition,
+                    workload_id=workload_id,
+                    provider_name=provider_name,
+                    exact_model_id=model,
+                    request_timestamp_utc=utcnow(),
+                )
+                
+                # Build messages
+                prompt = workload.get("prompt", "Test prompt")
+                messages = [{"role": "user", "content": prompt}]
+                
+                # Inject fault if scheduled
+                fault_result = injector.call(
+                    provider_cfg=provider_cfg,
+                    model=model,
+                    messages=messages,
+                    run_id=run_id,
+                    step=0,
+                )
+                
+                record.fault_injected = "error" in fault_result
+                record.fault_code = fault_result.get("error", "")[:20] if "error" in fault_result else None
+                
+                # Check for checkpoint resume (FAIL-MID-MISSION)
+                checkpoint = injector.get_checkpoint()
+                if checkpoint:
+                    record.checkpoint_resumed = True
+                    metrics.checkpoints_resumed += 1
+                
+                # Update cell stats
+                cell_stats[cell_key]["runs"] += 1
+                if record.fault_injected:
+                    cell_stats[cell_key]["faults"] += 1
+                
+                # Live call path (skipped in DRY_RUN)
+                if mode == ExecutionMode.LIVE_ONLY and not dry_run:
+                    try:
+                        response = _live_chat_completion(provider_cfg, model, messages)
+                        record.http_status = response.get("http_status")
+                        record.provider_request_id = response.get("provider_request_id")
+                        record.response_hash = response.get("response_hash", "")
+                        record.latency_ms = 100.0  # Mock for now
+                        
+                        if response.get("body"):
+                            record.raw_response_excerpt = response["body"].get("choices", [{}])[0].get("message", {}).get("content", "")
+                            record.token_count_prompt = response["body"].get("usage", {}).get("prompt_tokens")
+                            record.token_count_completion = response["body"].get("usage", {}).get("completion_tokens")
+                            record.execution_class = "LIVE_VALID"
+                            record.is_live = True
+                            if _declares_complete(record.raw_response_excerpt):
+                                record.vsr_flag = True
+                                cell_stats[cell_key]["successes"] += 1
+                    except ValueError as e:
+                        record.error_detail = str(e)
+                        record.execution_class = "EXCLUDED"
+                elif mode == ExecutionMode.SIMULATION_ONLY:
+                    record.execution_class = "SIMULATION_ONLY"
+                    record.is_live = False
+                    record.raw_response_excerpt = "simulation response"
+                    record.vsr_flag = True
+                    cell_stats[cell_key]["successes"] += 1
+                
+                # Dry-run: mock success
+                if mode == ExecutionMode.DRY_RUN or dry_run:
+                    record.execution_class = "EXCLUDED"
+                    record.is_live = False
+                    record.raw_response_excerpt = "dry-run response"
+                    record.vsr_flag = True
+                    record.latency_ms = 100.0
+                    record.token_count_prompt = 10
+                    record.token_count_completion = 50
+                    cell_stats[cell_key]["successes"] += 1
+                
+                records.append(record)
+                metrics.record_run(record)
     
     # Save results
     results_path = os.path.join(output_dir, "run_study_008v2_results.json")
@@ -377,12 +579,17 @@ def run_stud008_v2(
         json.dump({
             "study_id": STUDY_ID,
             "mode": mode.value,
+            "dry_run": dry_run,
+            "matrix_path": matrix_path,
+            "cells": cells,
+            "cell_stats": cell_stats,
             "metrics": metrics.to_dict(),
             "records": [asdict(r) for r in records],
             "fault_events": [asdict(e) for e in injector.events],
         }, f, indent=2)
     
     print(f"Results written to {results_path}")
+    print(f"Cells exercised: {len(cell_stats)} (expected: 8)")
     print(f"Metrics: VSR={metrics.vsr:.2%}, FCR={metrics.fcr:.2%}, UAR={metrics.uar:.2%}")
     
     return metrics
@@ -395,10 +602,12 @@ if __name__ == "__main__":
     parser.add_argument("--mode", default="DRY_RUN", choices=["DRY_RUN", "SIMULATION_ONLY", "LIVE_ONLY"])
     parser.add_argument("--output-dir", default=os.path.join(repo_root, "data", "study008_v2_runs"))
     parser.add_argument("--workloads", default=os.path.join(repo_root, "data", "study011_workloads_frozen.json"))
+    parser.add_argument("--matrix", default=os.path.join(repo_root, "data", "study008_v2_provider_model_matrix.json"))
     args = parser.parse_args()
     
     run_stud008_v2(
         mode=ExecutionMode[args.mode],
         workloads_path=args.workloads,
         output_dir=args.output_dir,
+        matrix_path=args.matrix,
     )

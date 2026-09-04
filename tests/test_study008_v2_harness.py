@@ -29,6 +29,9 @@ from experiments.live_benchmark.run_study_008v2 import (
     RunRecord,
     MetricsAccumulator,
     ExecutionMode,
+    PROVIDERS,
+    CONFIRMATORY_CONDITIONS,
+    get_provider_cells,
     verify_candidate_completion,
     _declares_complete,
     _declares_failure,
@@ -147,6 +150,17 @@ class TestFaultInjection:
         assert FaultCode.FAIL_LATENCY in fault_codes
         assert FaultCode.FAIL_MALFORMED in fault_codes
         assert FaultCode.FAIL_MID_MISSION in fault_codes
+    
+    def test_provider_cells_matrix(self):
+        """Verify 8-cell matrix (2 providers × 4 conditions)."""
+        cells = get_provider_cells({})
+        
+        # 2 providers × 4 conditions = 8 cells
+        assert len(cells) == 8
+        providers = {c[0] for c in cells}
+        conditions = {c[1] for c in cells}
+        assert providers == {"dialagram", "openrouter"}
+        assert conditions == {"A", "C", "F", "G"}
 
 
 # ─────────────────────────────────────────────────────────────────────────────

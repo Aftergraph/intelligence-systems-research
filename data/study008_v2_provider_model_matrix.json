@@ -1,0 +1,66 @@
+{
+  "_freeze_notice": "FROZEN STUDY-008-LIVE-v2 provider/model matrix v2.0.0. Any change requires PROTOCOL_AMENDMENT.",
+  "study_id": "STUDY-008-v2",
+  "freeze_version": "2.0.0",
+  "created_utc": "2026-09-04T00:00:00Z",
+  "phase": 1,
+  "provider_strata": [
+    {
+      "provider_stratum": "dialagram",
+      "endpoint": "https://dialagram.me/router/v1",
+      "auth_env_var": "DIALAGRAM_API_KEY",
+      "models": [
+        {
+          "exact_model_id": "qwen-3.8-max",
+          "context_window": 256000,
+          "rationale": "Highest-context Dialagram model"
+        },
+        {
+          "exact_model_id": "deepseek-v4",
+          "context_window": 128000,
+          "rationale": "STUDY-008 LIVE_VALID evidence"
+        },
+        {
+          "exact_model_id": "xiaomi-mimo-2.5",
+          "context_window": 64000,
+          "rationale": "STUDY-008 LIVE_VALID evidence"
+        }
+      ]
+    },
+    {
+      "provider_stratum": "openrouter",
+      "endpoint": "https://openrouter.ai/api/v1",
+      "auth_env_var": "OPENROUTER_API_KEY",
+      "models": [
+        {
+          "exact_model_id": "google/gemma-4-31b-it",
+          "context_window": 262144,
+          "rationale": "Free Google mid-tier LLM"
+        },
+        {
+          "exact_model_id": "z-ai/glm-5.2",
+          "context_window": 256000,
+          "rationale": "Free Z-AI LLM"
+        }
+      ]
+    }
+  ],
+  "conditions": [
+    "A",
+    "C",
+    "F",
+    "G"
+  ],
+  "fault_codes": [
+    "FAIL-NET",
+    "FAIL-LATENCY",
+    "FAIL-MALFORMED",
+    "FAIL-MID-MISSION",
+    "FAIL-STALE",
+    "FAIL-HALLUC",
+    "FAIL-TOOL",
+    "FAIL-REVOKE"
+  ],
+  "attempt_ceiling": 619,
+  "live_valid_per_cell_target": 58
+}
