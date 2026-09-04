@@ -1,6 +1,15 @@
-# Jonas Abde Intelligence Systems Research Program — Q3 2026
+# ABDE Research
+## Jonas Abde Intelligence Systems Research Program — Q3 2026
+
 **Principal Researcher:** Jonas Abde
-**Program State:** RESEARCH & ENGINEERING LIFECYCLE PHASES 1–10 COMPLETED; PHASE G (LIVE) AT PRE-EXECUTION GATE
+
+> ABDE Research is the provisional research-facing identity associated with
+> the ABDE Intelligence working brand. Scientific claims remain governed
+> solely by this repository's own evidence, study protocols, preregistrations,
+> replication status, and publication lineage. No platform claim automatically
+> inherits research evidence.
+
+**Program State:** RESEARCH & ENGINEERING LIFECYCLE PHASES 1–10 COMPLETED; PHASE G (STUDY-011 LIVE CROSS-PROVIDER REPLICATION) EXECUTING — Amendment 010 ACTIVE
 **Defensible Outcome:** **Level C+ (Validated Research Result) / Provisional-D (Candidate Specification pending Blind External Reproduction)**
 **Evidence Audit:** AUDIT-EVID-001 (see `EVIDENCE-AUDIT-AND-CLAIM-REGISTRY.md`); submission hold active
 **Snapshot Date:** 4 September 2026
@@ -14,8 +23,11 @@
 > "FCR ELIMINATED", "HEVO −68%", "D2 INTEGRATE 65%" claims that the
 > evidence audit has walked back. The numbers in the "Audited Empirical
 > Findings" section below are the **only** numbers defensible from raw
-> evidence. STUDY-011 is at the pre-execution gate; live confirmatory
-> evidence will be added to this table only after `READY_FOR_OWNER_APPROVAL`.
+> evidence. STUDY-011 is **executing**: canonical-run-002 reached
+> ~97% of dialagram valids; Amendment 010 (owner-approved) replaced the
+> non-viable openrouter :free stratum with paid models, global ceiling
+> 619→931, per-cell 78→156 (openrouter); live confirmatory results enter
+> the table only through the confirmatory integrity gate.
 
 ---
 
@@ -28,7 +40,7 @@ The **Jonas Abde Intelligence Systems Research Program** was commissioned in Q3 
 The program operated under strict falsification discipline (Occam's razor / parsimony) and reached the following audited state:
 
 - **Phases 1–10** (discovery, gap decision, formal model, contract spec, reference runtime, multi-runtime interop, MISSION-Bench ablation, model compatibility, security, IP/patent, clean-room validation, publications, SDK, standardization dossier): completed.
-- **Phase G (Live cross-provider replication, STUDY-011)**: pre-registration frozen, harness written, condition-conformance + harness self-tests passing, **awaiting owner approval to execute the LIVE_ONLY matrix**.
+- **Phase G (Live cross-provider replication, STUDY-011)**: pre-registration frozen (Amendment 010 ACTIVE — owner-approved), harness hardened (Amendments 007–009: checkpoint ordering, per-record fingerprint provenance, breaker-path duplicate prevention), canonical-run-002 executing with per-record provenance stamped.
 - **Submission hold**: active. The legal and owner-approval gates for the public-claims package remain open; no IEEE / NIST / USPTO submission until STUDY-011 LIVE_VALID evidence is in hand.
 
 ---
@@ -104,7 +116,7 @@ python experiments/live_benchmark/run_study_011.py --mode DRY_RUN --phase 1 --pr
 ### 3. Empirical Studies (Audited Status)
 - [`STUDY-001-ENGINEERING-STANDARDS-GAP.md`](STUDY-001-ENGINEERING-STANDARDS-GAP.md) — Foundational gap study.
 - [`STUDY-002-JAR-EXP-0001-EMPIRICAL-EVALUATION.md`](STUDY-002-JAR-EXP-0001-EMPIRICAL-EVALUATION.md) — 200 SWE benchmark workloads, 4 verification levels (deterministic testbed).
-- [`STUDY-003-MISSION-BENCH-ABLATION-REPORT.md`](STUDY-003-MISSION-BENCH-ABLATION-REPORT.md) — 800 MISSION-Bench runs, 8 ablation stages, 10 failure modes (deterministic testbed).
+- [`STUDY-003-MISSION-BENCH-ABLATION-AND-ECONOMICS.md`](STUDY-003-MISSION-BENCH-ABLATION-AND-ECONOMICS.md) — 800 MISSION-Bench runs, 8 ablation stages, 10 failure modes (deterministic testbed).
 - [`STUDY-004-MODEL-COMPATIBILITY-REPORT.md`](STUDY-004-MODEL-COMPATIBILITY-REPORT.md) — 900 model-comprehension test vectors.
 - [`STUDY-008-LIVE-MISSION-BENCH-RESULTS.md`](STUDY-008-LIVE-MISSION-BENCH-RESULTS.md) — 275 attempted live runs; 2 LIVE_VALID; 9 LIVE_PROVIDER_FAILURE; 264 SIMULATED. Reclassified as **METHODOLOGICAL_PILOT** in `data/experiment_registry.csv` (was COMPLETED).
 - [`STUDY-011-LIVE-CROSS-PROVIDER-PREREGISTRATION.md`](STUDY-011-LIVE-CROSS-PROVIDER-PREREGISTRATION.md) — Pre-registration v1.0.0 + 2 amendments (see `STUDY-011-AMENDMENTS.md`).
