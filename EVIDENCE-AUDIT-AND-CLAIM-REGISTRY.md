@@ -75,3 +75,31 @@ Both the reference engine (`runtime.engine.MissionEngine`) and the second in-tre
    - Complete human participant trial ($N=64$) under `STUDY-006-HCI-PREREGISTRATION.md`.
    - Receive at least one verified external third-party implementation passing `external_validation_pack/conformance/standalone_runner.py`.
    - Obtain formal legal filing receipt from USPTO and official IEEE-SA working group acceptance.
+
+---
+
+## 5. STUDY-011 Live Cross-Provider Confirmatory Update (2026-09-04, commit 530dc8b)
+
+STUDY-011 (live cross-provider confirmatory, preregistered) completed: 470 LIVE_VALID,
+8/8 cells ≥58, frozen analysis committed. This updates the registry:
+
+| Claim | Update | Status |
+|---|---|---|
+| C-001 (evidence gating eliminates false completion) | Live cross-provider data: H1 REVERSED — models abstain 73-100% without assurance, so FCR(A)≈0 floors the comparison; assurance (F) converts abstention to action (success 76-95%); G adds measured marginal effect. FCR=0 in baseline reflects ABSTENTION, not elimination of false completion. | **REFINED: REVERSED-DIRECTION CLARIFIED** |
+| **C-008 (NEW)** | Full governance stack (assurance + authority + budget) yields materially higher actual success than assurance alone: H2 SUPPORTED, McNemar p<0.001 both strata, h≈2.5. | **EMPIRICALLY_SUPPORTED (LIVE, p<0.001)** |
+| C-007 (gating enables retry) | H3 REVERSED live: retry alone (C) does not add effect without assurance — models abstain 73-100% under C. Deterministic-testbed support stands; live replication reversed the direction. | **LIVE: REVERSED (C alone insufficient)** |
+| C-004 (HCI) | Unchanged — STUDY-006 recruitment still pending (Track B). | **UNTESTED** (unchanged) |
+
+**Integrity record:** 243 duplicate run_id lines resolved (one observation per run_id,
+Amendment-010 lineage preference); undocumented sub-window 17bc1037 declared as Block 3
+continuation per Amendment 012; 6 in-flight-at-stop extras reconciled. Independent lineage
+audit FAIL→resolved; independent statistical review SOUND_WITH_HEDGES_REQUIRED — hedge
+applied: assurance invocation (F) converts abstention; G's added value is the measured
+marginal H2 contrast, not an "unlock" claim.
+
+**Dataset freeze:** canonical dataset immutable per Amendment 011; corrections only via
+amendment documents.
+
+**Maturity impact:** none upgraded — C-001/C-007 live results carry the same
+sample-bounded/in-tree caveats; the chain to Level D/E still requires Track B (HCI)
+and STUDY-013 independent implementation.
