@@ -46,7 +46,7 @@ The platform is not a single product. It is a coordinated set of modules, each w
 
 ## 4. Brand-architecture details
 
-**Brand:** After Graph (provisional — subject to change)
+49|**Brand:** After Graph
 
 **Modules:**
 - **Trust Gateway** – Runtime: fail-closed policy + audit chain (Node, zero-dep)

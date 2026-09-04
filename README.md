@@ -47,7 +47,7 @@ The program operated under strict falsification discipline (Occam's razor / pars
  Control Plane Tax (CPT)          0.0%               1.6%                      In-tree benchmark
  Human Effort Per Outcome (HEVO)  6.6 turns          2.0 turns                  GOMS persona simulation (N=0 humans)
  Conformance Pass Rate            N/A                100.0% (14/14)            SPEC-001 normative suite
- Pytest Suite                     --                 129/129 passing           `pytest -q` 2026-09-04
+ | Pytest Suite                     --                 508/508 passing           `pytest -q` 2026-09-04
  Live Multi-Model (STUDY-008)     2 LIVE_VALID / 275 attempts          Audit-classified METHODOLOGICAL_PILOT
 ========================================================================================
 ```
@@ -67,7 +67,7 @@ The program operated under strict falsification discipline (Occam's razor / pars
 ## Quickstart & Verification
 
 ```powershell
-# Run full automated test suite (currently 129 tests; was 28, then 64, then 76, now 129 after STUDY-011 zero-cost readiness)
+| run full automated test suite (508 tests after STUDY-011 hardening)
 pytest -v
 
 # Run 14-point normative conformance suite
@@ -108,7 +108,7 @@ python experiments/live_benchmark/run_study_011.py --mode DRY_RUN --phase 1 --pr
 - [`STUDY-004-MODEL-COMPATIBILITY-REPORT.md`](STUDY-004-MODEL-COMPATIBILITY-REPORT.md) — 900 model-comprehension test vectors.
 - [`STUDY-008-LIVE-MISSION-BENCH-RESULTS.md`](STUDY-008-LIVE-MISSION-BENCH-RESULTS.md) — 275 attempted live runs; 2 LIVE_VALID; 9 LIVE_PROVIDER_FAILURE; 264 SIMULATED. Reclassified as **METHODOLOGICAL_PILOT** in `data/experiment_registry.csv` (was COMPLETED).
 - [`STUDY-011-LIVE-CROSS-PROVIDER-PREREGISTRATION.md`](STUDY-011-LIVE-CROSS-PROVIDER-PREREGISTRATION.md) — Pre-registration v1.0.0 + 2 amendments (see `STUDY-011-AMENDMENTS.md`).
-- [`STUDY-011-READINESS-REPORT.md`](STUDY-011-READINESS-REPORT.md) — Current STUDY-011 readiness state (pre-execution gate).
+- [`STUDY-011-READINESS-REPORT.md`](STUDY-011-READINESS-REPORT.md) — Current STUDY-011 status (RUNNING; Amendment 010 active).
 
 ### 4. STUDY-011 Pre-Execution Artifacts (Frozen)
 - `data/study011_workload_manifest.json` (freeze v1.0.0, root hash `e823102a4ff09bfca560c95e341aa3eaf7a4003215abd3900749afc64d3e4e06`)
