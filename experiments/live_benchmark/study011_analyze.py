@@ -164,6 +164,38 @@ EXECUTION_CLASSES = (
 SIMULATION_MARKERS = ("[Dialagram Sim:", "[Sim:", "[Simulation:")
 
 
+
+# ── 3-Block Segregation ─────────────────────────────────────────────────────
+# Block definitions for 3-block integrity boundary (post-Amendment-009)
+# Block 1 (ORIGINAL CONFIRMATORY): fp starts with b6b7c2d0 (dialagram, Amendments 1-8 era)
+# Block 2 (NON-VIABLE): fp starts with 0c588022 (openrouter 429-burn, 0 valid)
+# Block 3 (POST-AMENDMENT-010): fp starts with dfe3513c (openrouter paid models)
+
+
+def block_of(record: Dict[str, Any]) -> int:
+    """Assign a record to block 1, 2, or 3 based on implementation_fingerprint + provider.
+
+    Block 1: fp starts with b6b7c2d0 (ORIGINAL CONFIRMATORY, dialagram, Amendments 1-8)
+    Block 2: fp starts with 0c588022 (NON-VIABLE, openrouter 429-burn, 0 valid)
+    Block 3: fp starts with dfe3513c (POST-AMENDMENT-010, openrouter paid models)
+
+    Amendment 009 fingerprint (0c588022) from DIALAGRAM provider is Block 1 (breaker-path fix).
+    """
+    fp = record.get("implementation_fingerprint", "")
+    provider = record.get("provider_name", "").lower()
+    # Block 1: original confirmatory (dialagram era)
+    if fp.startswith("b6b7c2d0") or (fp.startswith("0c588022") and provider == "dialagram"):
+        return 1
+    # Block 2: non-viable (openrouter 429-burn)
+    if fp.startswith("0c588022"):
+        return 2
+    # Block 3: post-amendment-010 (paid models)
+    if fp.startswith("dfe3513c"):
+        return 3
+    # Unknown fingerprints default to 0 (excluded from analysis)
+    return 0
+
+
 # ── Errors ───────────────────────────────────────────────────────────────────
 class IntegrityError(Exception):
     """Hard integrity violation: caller must exit non-zero."""
@@ -1046,6 +1078,70 @@ def analyze(
                           "seed_mismatches": len(paired_cf["seed_mismatches"])},
         }
 
+        # ── Block-segregated analysis (3-block integrity boundary) ─────────────
+        # Block 1: ORIGINAL CONFIRMATORY (b6b7c2d0 fp, dialagram)
+        # Block 2: NON-VIABLE (0c588022 fp, openrouter 429-burn)
+        # Block 3: POST-AMENDMENT-010 (dfe3513c fp, openrouter paid)
+        block1_rows = [r for r in s_rows if block_of(r) == 1]
+        block2_rows = [r for r in s_rows if block_of(r) == 2]
+        block3_rows = [r for r in s_rows if block_of(r) == 3]
+        block_results = {}
+        for blk, rows in [(1, block1_rows), (2, block2_rows), (3, block3_rows)]:
+            blk_stratum = f"{stratum}_block{blk}"
+            # H1 for this block
+            if rows:
+                blk_paired_ag = build_paired_dataset(rows, "A", "G")
+                blk_h1 = mcnemar_from_pairs(blk_paired_ag["pairs"], "fcr_flag",
+                                           favor_y_when="G=0,A=1 (reduction favors G)")
+                blk_ca = cells[f"{stratum}|A"] if f"{stratum}|A" in cells else {"declared_complete": 1, "fc_count": 0}
+                blk_cg = cells[f"{stratum}|G"] if f"{stratum}|G" in cells else {"declared_complete": 1, "fc_count": 0}
+                blk_dir_h1 = blk_cg["fcr_reported"] < blk_ca["fcr_reported"]
+                blk_denom_a = max(1, blk_ca.get("declared_complete", 1))
+                blk_denom_g = max(1, blk_cg.get("declared_complete", 1))
+                blk_h_h1 = cohens_h(blk_ca["fc_count"] / blk_denom_a, blk_cg["fc_count"] / blk_denom_g)
+                block_results[f"h1_{blk_stratum}"] = {
+                    "stratum": blk_stratum, "n_pairs": blk_paired_ag["n_pairs"],
+                    "b_A_only": blk_h1["b_x_only"], "c_G_only": blk_h1["c_y_only"],
+                    "discordant": blk_h1["discordant"], "low_discordant": blk_h1["low_discordant"],
+                    "chi2": blk_h1["chi2"], "p_value": blk_h1["p_value"],
+                    "direction_correct": bool(blk_dir_h1), "h": blk_h_h1,
+                    "fcr_a": blk_ca["fcr_reported"], "fcr_g": blk_cg["fcr_reported"]}
+            else:
+                block_results[f"h1_{blk_stratum}"] = {
+                    "stratum": blk_stratum, "n_pairs": 0, "b_A_only": 0, "c_G_only": 0,
+                    "discordant": 0, "low_discordant": False, "chi2": 0.0, "p_value": 1.0,
+                    "direction_correct": False, "h": 0.0, "fcr_a": 0.0, "fcr_g": 0.0,
+                    "status": "NO_OBSERVATIONS" if blk == 2 else "EMPTY"}
+            # H2 for this block
+            if rows:
+                blk_paired_cf = build_paired_dataset(rows, "C", "F")
+                blk_h2 = mcnemar_from_pairs(blk_paired_cf["pairs"], "vsr_flag",
+                                           favor_y_when="F=1,C=0 (recovery favors F)")
+                blk_cc = cells[f"{stratum}|C"] if f"{stratum}|C" in cells else {"vsr": 0}
+                blk_cf = cells[f"{stratum}|F"] if f"{stratum}|F" in cells else {"vsr": 0}
+                blk_dir_h2 = blk_cf["vsr"] > blk_cc["vsr"]
+                blk_h_h2 = cohens_h(blk_cc["vsr"] / 100.0, blk_cf["vsr"] / 100.0)
+                block_results[f"h2_{blk_stratum}"] = {
+                    "stratum": blk_stratum, "n_pairs": blk_paired_cf["n_pairs"],
+                    "b_C_only": blk_h2["b_x_only"], "c_F_only": blk_h2["c_y_only"],
+                    "discordant": blk_h2["discordant"], "low_discordant": blk_h2["low_discordant"],
+                    "chi2": blk_h2["chi2"], "p_value": blk_h2["p_value"],
+                    "direction_correct": bool(blk_dir_h2), "h": blk_h_h2,
+                    "vsr_c": blk_cc["vsr"], "vsr_f": blk_cf["vsr"],
+                    "fcr_c": blk_cc.get("fcr_reported", 0.0), "fcr_f": blk_cf.get("fcr_reported", 0.0)}
+            else:
+                block_results[f"h2_{blk_stratum}"] = {
+                    "stratum": blk_stratum, "n_pairs": 0, "b_C_only": 0, "c_F_only": 0,
+                    "discordant": 0, "low_discordant": False, "chi2": 0.0, "p_value": 1.0,
+                    "direction_correct": False, "h": 0.0, "vsr_c": 0.0, "vsr_f": 0.0,
+                    "fcr_c": 0.0, "fcr_f": 0.0, "status": "NO_OBSERVATIONS" if blk == 2 else "EMPTY"}
+            block_results[f"h3_{blk_stratum}"] = {
+                "stratum": blk_stratum, "n_pairs": block_results.get(f"h1_{blk_stratum}", {}).get("n_pairs", 0),
+                "fcr_a": block_results.get(f"h1_{blk_stratum}", {}).get("fcr_a", 0.0),
+                "fcr_g": block_results.get(f"h1_{blk_stratum}", {}).get("fcr_g", 0.0),
+                "cpvo_a": None, "cpvo_g": None,
+                "direction_correct": block_results.get(f"h1_{blk_stratum}", {}).get("direction_correct", False)}
+
     fcr_tradeoff = {s["stratum"]: (s["fcr_f"] - s["fcr_c"]) for s in h2_strata}
     rep_h1 = classify_replication_h1(h1_strata, alpha_adj, seoi_h)
     rep_h2 = classify_replication_h2(h2_strata, fcr_tradeoff, alpha_adj, seoi_h)
@@ -1094,6 +1190,7 @@ def analyze(
         "H2_strata": h2_strata,
         "H3_gates": h3_gates,
         "replication": {"H1": rep_h1, "H2": rep_h2, "H3": rep_h3},
+        "block_results": block_results,
         "normalized_n": len(normalized),
     }
     return results
@@ -1183,6 +1280,21 @@ def write_summary_md(results: Dict[str, Any], path: str) -> None:
     for hyp, rep in results.get("replication", {}).items():
         lines.append(f"- {hyp}: {rep.get('code')} ({json.dumps(rep, sort_keys=True)})")
     lines.append("")
+    lines.append("")
+    lines.append("## Block-segregated McNemar (3-block integrity boundary)")
+    lines.append("")
+    lines.append("Block 1 = ORIGINAL CONFIRMATORY (b6b7c2d0 fp, dialagram)")
+    lines.append("Block 2 = NON-VIABLE (0c588022 fp, openrouter 429-burn, 0 valid)")
+    lines.append("Block 3 = POST-AMENDMENT-010 (dfe3513c fp, openrouter paid)")
+    lines.append("")
+    for key in sorted(results.get("block_results", {}).keys()):
+        br = results["block_results"][key]
+        status = br.get("status", "")
+        if status:
+            lines.append(f"- {key}: {status}")
+        else:
+            lines.append(f"- {key}: n_pairs={br['n_pairs']} b={br.get('b_A_only', br.get('b_C_only', 0))} c={br.get('c_G_only', br.get('c_F_only', 0))} "
+                       f"chi2={br['chi2']} p={br['p_value']} h={br['h']} direction_correct={br['direction_correct']}")
     lines.append("## Notes")
     lines.append("")
     lines.append("- Provider-stratified inference only; pooled estimates are exploratory "
