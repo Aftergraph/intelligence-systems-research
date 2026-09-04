@@ -145,4 +145,4 @@ If any deviation from script occurs, log:
 
 ---
 
-*Document: PREREGISTERED-DRAFT — Pending final ethics decision*
+*Document: APPROVED-DRAFT by owner (2026-09-04); ethics note: internal pilot, owner = sole researcher — Pending final ethics decision*

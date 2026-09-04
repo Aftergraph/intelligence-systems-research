@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STUDY-011 — Live Confirmatory Matrix</title>
+<style>
+:root{--bg:#0a0e14;--surface:#111820;--surface2:#161d27;--border:#1e2833;--text:#d0d8e0;--dim:#5c6a78;
+--green:#34d399;--blue:#60a5fa;--amber:#fbbf24;--red:#f87171;--cyan:#22d3ee;--purple:#a78bfa;
+--green-dim:#10b98122;--blue-dim:#3b82f622;--red-dim:#ef444422;--amber-dim:#f59e0b22;--purple-dim:#8b5cf622;
+--mono:'SF Mono','Fira Code',Consolas,monospace;--sans:-apple-system,'Segoe UI',Roboto,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh}
+.header{padding:20px 32px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--surface);position:sticky;top:0;z-index:10;backdrop-filter:blur(8px)}
+.header h1{font-size:20px;font-weight:600}.header h1 span{color:var(--cyan)}
+.header .meta{font-family:var(--mono);font-size:11px;color:var(--dim);text-align:right}
+.live-dot{color:var(--green);font-weight:600;font-size:12px}
+.live-dot::before{content:'●';margin-right:5px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:20px 32px 12px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px;transition:border-color .3s,transform .2s}
+.stat:hover{border-color:var(--cyan);transform:translateY(-2px)}
+.stat .label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--dim);margin-bottom:8px}
+.stat .value{font-family:var(--mono);font-size:28px;font-weight:700;line-height:1}
+.stat .sub{font-size:11px;color:var(--dim);margin-top:6px}
+.stat .green{color:var(--green)}.stat .blue{color:var(--blue)}.stat .amber{color:var(--amber)}.stat .cyan{color:var(--cyan)}
+.progress-bar{height:4px;background:var(--border);border-radius:2px;margin-top:10px;overflow:hidden}
+.progress-bar .fill{height:100%;border-radius:2px;transition:width .8s ease}
+.section{padding:16px 32px 8px}
+.section h2{font-size:13px;text-transform:uppercase;letter-spacing:.8px;color:var(--dim);font-weight:600}
+.cell-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:12px 32px 24px}
+.cell-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px;transition:border-color .3s}
+.cell-card:hover{border-color:var(--cyan)}
+.cell-name{font-family:var(--mono);font-size:14px;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.badge{font-size:10px;padding:3px 8px;border-radius:10px;font-weight:600}
+.badge.done{background:var(--green-dim);color:var(--green)}
+.badge.active{background:var(--blue-dim);color:var(--blue)}
+.badge.burn{background:var(--red-dim);color:var(--red)}
+.badge.pending{background:#1a2230;color:var(--dim)}
+.nums{display:flex;gap:20px;margin-top:12px}
+.num{font-family:var(--mono)}
+.num .n{font-size:22px;font-weight:700}
+.num .l{font-size:10px;color:var(--dim);text-transform:uppercase}
+.num.valid .n{color:var(--green)}.num.fail .n{color:var(--red)}.num.att .n{color:var(--blue)}
+.bar-label{display:flex;justify-content:space-between;font-size:10px;color:var(--dim);margin-bottom:4px}
+.blocks{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:12px 32px 24px}
+.block-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.block-card .bt{font-size:13px;font-weight:600;margin-bottom:4px}
+.block-card .bp{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:6px}
+.block-card .bs{font-size:11px}
+.feed{padding:12px 32px 24px}
+.feed-item{font-family:var(--mono);font-size:11px;padding:5px 12px;border-left:3px solid var(--green);background:var(--surface);margin-bottom:3px;border-radius:0 6px 6px 0;display:flex;justify-content:space-between}
+.feed-item.fail{border-left-color:var(--red)}
+.feed-item .ts{color:var(--dim);margin-right:12px}
+.feed-item .model{color:var(--cyan)}
+.footer{padding:12px 32px 24px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--dim)}
+.conn{display:inline-block;padding:2px 10px;border-radius:8px;font-size:10px;margin-left:8px}
+.conn.ok{background:var(--green-dim);color:var(--green)}
+.conn.err{background:var(--red-dim);color:var(--red)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 32px 24px}
+.detail-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.detail-card h3{font-size:12px;color:var(--dim);text-transform:uppercase;margin-bottom:10px}
+.detail-card table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px}
+.detail-card td{padding:4px 8px;border-bottom:1px solid var(--border)}
+.detail-card td:first-child{color:var(--dim)}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>STUDY-011 <span>│</span> Confirmatory Matrix</h1>
+  <div class="meta">
+    <div class="live-dot">LIVE</div>
+    <div id="clock">--</div>
+    <div>Amendment 010 │ fp dfe3513c</div>
+    <div><span id="conn" class="conn ok">API OK</span></div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="stat"><div class="label">LIVE_VALID</div><div class="value green" id="v">--</div><div class="sub">of 464 target</div><div class="progress-bar"><div class="fill" id="vb" style="width:0%;background:var(--green)"></div></div></div>
+  <div class="stat"><div class="label">TOTAL ATTEMPTS</div><div class="value blue" id="a">--</div><div class="sub">of 931 ceiling</div><div class="progress-bar"><div class="fill" id="ab" style="width:0%;background:var(--blue)"></div></div></div>
+  <div class="stat"><div class="label">CELLS COMPLETE</div><div class="value amber" id="c">--</div><div class="sub">of 8 total</div><div class="progress-bar"><div class="fill" id="cb" style="width:0%;background:var(--amber)"></div></div></div>
+  <div class="stat"><div class="label">PAID YIELD</div><div class="value cyan" id="y">--</div><div class="sub" id="ys">Amendment 010</div></div>
+</div>
+
+<div class="section"><h2>⚡ OpenRouter × Condition — Amendment 010 (Paid Models)</h2></div>
+<div class="cell-grid" id="or_cells"></div>
+
+<div class="section"><h2>🔒 Dialagram × Condition — Original Confirmatory</h2></div>
+<div class="cell-grid" id="dia_cells"></div>
+
+<div class="section"><h2>🛡 Integrity Blocks</h2></div>
+<div class="blocks" id="blk"></div>
+
+<div class="section"><h2>📈 Detailed Per-Cell Stats</h2></div>
+<div class="two-col" id="detail"></div>
+
+<div class="section"><h2>📡 Live Feed (last 15)</h2></div>
+<div class="feed" id="feed"></div>
+
+<div class="footer">STUDY-011 │ dynamic │ http://localhost:8811 │ <span id="conn2" class="conn ok">API OK</span></div>
+
+<script>
+const $ = id => document.getElementById(id);
+let connected = true;
+
+async function fetchMetrics() {
+  try {
+    const r = await fetch('/api/metrics');
+    const d = await r.json();
+    render(d);
+    setConn(true);
+  } catch(e) { setConn(false); }
+}
+
+async function fetchFeed() {
+  try {
+    const r = await fetch('/api/records');
+    const recs = await r.json();
+    const feed = $('feed');
+    feed.innerHTML = recs.reverse().slice(0,15).map(x => {
+      const isV = x.execution_class === 'LIVE_VALID';
+      const ts = (x.request_timestamp_utc||'').slice(11,19);
+      const model = (x.exact_model_id||'').slice(0,35);
+      return `<div class="feed-item ${isV?'':'fail'}">` +
+        `<div><span class="ts">${ts}</span> ${x.provider_name}/${x.condition} ` +
+        `${x.execution_class} <span class="model">${model}</span></div>` +
+        `<div><span class="ts">${x.latency_ms ? x.latency_ms.toFixed(0)+'ms' : '--'}</span></div></div>`;
+    }).join('');
+  } catch(e) {}
+}
+
+function setConn(ok) {
+  connected = ok;
+  const cls = ok ? 'conn ok' : 'conn err';
+  const text = ok ? 'API OK' : 'API OFFLINE';
+  if ($('conn')) { $('conn').textContent = text; $('conn').className = cls; }
+  if ($('conn2')) { $('conn2').textContent = text; $('conn2').className = cls; }
+}
+
+function render(d) {
+  $('clock').textContent = d.timestamp;
+  $('v').textContent = d.total_valid;
+  $('vb').style.width = Math.min(100, d.total_valid/464*100) + '%';
+  $('a').textContent = d.total_records;
+  $('ab').style.width = Math.min(100, d.total_records/931*100) + '%';
+  $('y').textContent = d.a010_att > 0 ? Math.round(d.a010_valid/d.a010_att*100) + '%' : '--';
+  $('ys').textContent = d.a010_records + ' records │ ' + (d.runner_alive ? 'runner ALIVE' : 'runner DEAD');
+  $('ys').style.color = d.runner_alive ? 'var(--green)' : 'var(--red)';
+
+  let done = 0;
+  for (const [stratum, divId, isPaid] of [['openrouter','or_cells',true],['dialagram','dia_cells',false]]) {
+    const div = $(divId);
+    div.innerHTML = '';
+    for (const cond of ['A','C','F','G']) {
+      const key = stratum + '|' + cond;
+      const cell = d.cells[key] || {att:0,lv:0,fail:0};
+      const isDone = cell.lv >= 58;
+      if (isDone) done++;
+      const badge = isDone ? '<span class="badge done">✓ COMPLETE</span>' :
+                    cell.lv > 0 ? '<span class="badge active">▸ RUNNING</span>' :
+                    cell.fail > 0 ? '<span class="badge burn">✗ 429 BURN</span>' :
+                    '<span class="badge pending">○ PENDING</span>';
+      const pct = Math.min(100, Math.round(cell.lv/58*100));
+      const a010d = d.a010_cells[key] || {att:0,lv:0};
+      const yld = a010d.att > 0 ? Math.round(a010d.lv/a010d.att*100) + '%' : '--';
+      const barColor = isDone ? 'var(--green)' : 'var(--blue)';
+      const paidRow = isPaid && a010d.att > 0 ?
+        `<div class="bar-label" style="margin-top:6px"><span style="color:var(--cyan)">paid yield</span><span style="color:var(--cyan)">${yld}</span></div>` : '';
+      div.innerHTML += `<div class="cell-card"><div class="cell-name">${key} ${badge}</div>` +
+        `<div class="nums"><div class="num valid"><div class="n">${cell.lv}</div><div class="l">valid</div></div>` +
+        `<div class="num fail"><div class="n">${cell.fail}</div><div class="l">fail</div></div>` +
+        `<div class="num att"><div class="n">${cell.att}</div><div class="l">attempts</div></div></div>` +
+        `<div class="bar-wrap"><div class="bar-label"><span>valid/58</span><span>${pct}%</span></div>` +
+        `<div class="progress-bar"><div class="fill" style="width:${pct}%;background:${barColor}"></div></div></div>` +
+        paidRow + `</div>`;
+    }
+  }
+  $('c').textContent = done;
+  $('cb').style.width = (done/8*100) + '%';
+
+  // blocks
+  const blkDiv = $('blk');
+  blkDiv.innerHTML = '';
+  const blockDefs = [
+    {k:'original_confirmatory', n:'🟢 Block 1: Original Confirmatory', c:'var(--green)', s:'COMPLETE (4/4 cells)'},
+    {k:'original_openrouter_free', n:'🔴 Block 2: OpenRouter :free', c:'var(--red)', s:'NON-VIABLE (429 quota exhaustion)'},
+    {k:'post_amendment_010', n:'🔵 Block 3: Amendment 010 (paid)', c:'var(--cyan)', s:d.runner_alive ? '▶ RUNNING (paid models)' : '⏸ PAUSED'},
+  ];
+  for (const bd of blockDefs) {
+    const b = d.blocks[bd.k] || {records:0,valid:0,fp:'--'};
+    blkDiv.innerHTML += `<div class="block-card"><div class="bt" style="color:${bd.c}">${bd.name}</div>` +
+      `<div class="bp">fp: ${b.fp}</div><div class="bs">${b.records} records │ ${b.valid} valid</div>` +
+      `<div class="bs" style="color:${bd.c}">${bd.status}</div></div>`;
+  }
+
+  // detail stats
+  const det = $('detail');
+  det.innerHTML = '';
+  for (const [key, cell] of Object.entries(d.cells).sort()) {
+    const yld = cell.att > 0 ? Math.round(cell.lv/cell.att*100) : 0;
+    const barColor = cell.lv >= 58 ? 'var(--green)' : 'var(--blue)';
+    det.innerHTML += `<div class="detail-card"><h3>${key}</h3><table>` +
+      `<tr><td>Valid</td><td style="color:${barColor}">${cell.lv}</td></tr>` +
+      `<tr><td>Failures</td><td>${cell.fail}</td></tr>` +
+      `<tr><td>Attempts</td><td>${cell.att}</td></tr>` +
+      `<tr><td>Yield</td><td style="color:${yld>=90?'var(--green)':yld>=50?'var(--amber)':'var(--red)'}">${yld}%</td></tr>` +
+      `<tr><td>Status</td><td>${cell.lv >= 58 ? '✅ COMPLETE' : cell.lv > 0 ? '🔄 RUNNING' : '⏸ PENDING'}</td></tr>` +
+      `</table></div>`;
+  }
+}
+
+// Feed section needs a container
+if (!$('feed')) document.body.insertAdjacentHTML('beforeend',
+  '<div class="section"><h2>LIVE FEED</h2></div><div class="feed" id="feed"></div>');
+
+fetchMetrics();
+fetchFeed();
+setInterval(fetchMetrics, 3000);
+setInterval(fetchFeed, 5000);
+</script>
+</body>
+</html>

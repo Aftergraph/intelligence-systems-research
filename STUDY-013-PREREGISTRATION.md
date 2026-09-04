@@ -3,7 +3,7 @@
 ## Title
 **STUDY-013: Independent End-to-End Implementation & Cross-Runtime Interoperability of Governed Autonomous Intelligence Systems**
 
-**Status:** PREREGISTERED-DRAFT (pending owner approval)
+**Status:** APPROVED by owner (Jonas Abde, Telegram, 2026-09-04) — ACTIVE. G-13a recruitment may open.
 
 ---
 

@@ -4,7 +4,7 @@
 |-------|-------|
 | **Study ID** | STUDY-006-PREREG-001 |
 | **Program** | Jonas Abde Intelligence Systems Research Program — Q3 2026 |
-| **Protocol Version** | PREREGISTERED-DRAFT (pending ethics review) |
+| **Protocol Version** | APPROVED-DRAFT by owner (2026-09-04); ethics note: internal pilot, owner = sole researcher (pending ethics review) |
 | **Target Sample** | N = 64 participants (16 per arm) |
 | **Over-recruit Buffer** | +25% (target 80 screened → 64 enrolled) |
 | **Recruitment Window** | 2–4 weeks from approval |
@@ -86,4 +86,4 @@ Use `pilots/enrollment-log.csv` to track:
 
 ---
 
-*Document: PREREGISTERED-DRAFT — Pending IRB/ethics decision (Jonas Abde, sole owner)*
+*Document: APPROVED-DRAFT by owner (2026-09-04); ethics note: internal pilot, owner = sole researcher — Pending IRB/ethics decision (Jonas Abde, sole owner)*

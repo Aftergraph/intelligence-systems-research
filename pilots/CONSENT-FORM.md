@@ -113,4 +113,4 @@ By checking the box below, you confirm that:
 
 ---
 
-*Document: PREREGISTERED-DRAFT — Pending final ethics decision*
+*Document: APPROVED-DRAFT by owner (2026-09-04); ethics note: internal pilot, owner = sole researcher — Pending final ethics decision*

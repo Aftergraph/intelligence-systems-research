@@ -21,18 +21,18 @@
    "fail": 1
   },
   "openrouter|A": {
-   "att": 122,
-   "lv": 59,
+   "att": 121,
+   "lv": 58,
    "fail": 63
   },
   "openrouter|C": {
-   "att": 120,
-   "lv": 59,
-   "fail": 61
+   "att": 108,
+   "lv": 48,
+   "fail": 60
   },
   "openrouter|F": {
-   "att": 71,
-   "lv": 11,
+   "att": 60,
+   "lv": 0,
    "fail": 60
   },
   "openrouter|G": {
@@ -55,23 +55,26 @@
    "lv": 22
   }
  },
- "total_records": 636,
- "total_valid": 385,
+ "total_records": 612,
+ "total_valid": 362,
  "a010_records": 129,
  "a010_valid": 128,
  "blocks": {
   "original_confirmatory": {
    "fp": "b6b7c2d0\u2026",
-   "records": 244
+   "records": 244,
+   "valid": 233
   },
   "original_openrouter_free": {
    "fp": "0c588022\u2026",
-   "records": 238
+   "records": 238,
+   "valid": 0
   },
   "post_amendment_010": {
    "fp": "dfe3513c\u2026",
-   "records": 129
+   "records": 129,
+   "valid": 128
   }
  },
- "last_updated": "2026-09-04T16:38:03Z"
+ "last_updated": "2026-09-04T16:06:45Z"
 }

@@ -41,7 +41,7 @@ Move from controlled/simulated bench to live models/providers under real faults.
 
 - B.1 Chat-only vs Mission/Needs-You/progressive-disclosure arms — **PREREGISTERED** (STUDY-006-PREREG-001, recruitment pending)
 - B.2 Measures: human control perception, intervention accuracy, cognitive load (NASA-TLX), trust calibration, takeover success — **PREREGISTERED**
-- B.3 Recruitment/IRB (Q-006) — **UNBLOCK INSTRUMENTS READY** (pilots/: recruitment plan, GDPR consent form, session scripts; commit 285ff1b) — pending owner ethics sign-off
+- B.3 Recruitment/IRB (Q-006) — **APPROVED by owner 2026-09-04** (pilots/: recruitment plan, GDPR consent, session scripts) — recruitment may launch
 - B.4 System-in-the-loop: arms run against the REAL platform chain (TG admission → AIE → WORKS), not mockups — **PROPOSED** (requires Track A infra stable)
 
 **Gate G-B1:** IRB/consent + ≥N participants → run. **Gate G-B2:** results → HCI claims registry (C-004/H-003).
@@ -55,7 +55,7 @@ A and B run in PARALLEL after G-S0. B's system-in-the-loop arm (B.4) depends on 
 
 *(Numbering: STUDY-012 name is taken by the custom-agent pilot; the new study is STUDY-013.)*
 
-**Classification:** PREREGISTERED-DRAFT (STUDY-013-PREREGISTRATION.md, root) — the program's flagship P2 study. Pending owner approval.
+**Classification:** APPROVED by owner 2026-09-04 — ACTIVE (G-13a recruitment may open).
 
 **Core research question:**
 > Kan en uafhængig implementør — uden adgang til vores reference-runtime eller intern coaching — implementere den offentlige systemspecifikation og interoperere korrekt med en anden runtime?
