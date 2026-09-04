@@ -321,3 +321,4 @@ Implementation fingerprint verified: 10 frozen files unchanged
   CELL dialagram|C: valid=0 attempts=0 viable=False
   CELL dialagram|F: valid=0 attempts=0 viable=False
   CELL dialagram|G: valid=0 attempts=0 viable=False
+  CELL openrouter|A: valid=58 attempts=59 viable=True
