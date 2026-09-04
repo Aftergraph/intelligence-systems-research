@@ -14,10 +14,10 @@
 | # | Item | Status |
 |---|---|---|
 | 0.1 | Canonical dataset freeze (470 LIVE_VALID, 8/8 cells, commit 9e4b36b) | **VALIDATED** — dataset committed; freeze amendment declaring no-further-mutation: **PENDING** |
-| 0.2 | Independent lineage/dedupe audit (243 dup lines resolved by Amendment-010 lineage preference; verify independently) | **PROPOSED** — needs fresh adversarial reviewer on the dedupe decision |
+| 0.2 | Independent lineage/dedupe audit — **DONE**: verdict FAIL→resolved by Amendment 012 (17bc1037 sub-window declared Block 3 continuation, zero run_id overlap, 6 in-flight extras reconciled; commit d484ab9) | **VALIDATED** |
 | 0.3 | Analyzer summary-writer fix (KeyError 'chi2' on empty block strata) | **IMPLEMENTED-pending-commit** — results.json authoritative; writer must tolerate EMPTY/NO_OBSERVATIONS strata |
-| 0.4 | Final statistical review (H1 REVERSED / H2 SUPPORTED p<0.001 h≈2.5 / H3 REVERSED; McNemar pairs; interpretation honesty) | **PROPOSED** — one independent stats review pass |
-| 0.5 | Update claims registry, papers, roadmap (22-RESEARCH-NOTE, EVIDENCE-AUDIT-AND-CLAIM-REGISTRY) with STUDY-011 verdicts | **PROPOSED** |
+| 0.4 | Final statistical review — **DONE**: SOUND_WITH_HEDGES_REQUIRED; hedge applied to FINAL-CONFIRMATORY-SUMMARY.md (F converts abstention; G adds measured marginal H2 effect); no p-hacking found | **VALIDATED** |
+| 0.5 | Update claims registry, papers, roadmap with STUDY-011 verdicts + hedges | **PROPOSED** — next execution-order item |
 | 0.6 | Hard invariant: canonical dataset is immutable from now on (append-only corrections via amendment docs only) | **PREREGISTERED** — this roadmap binds it |
 
 **Gate G-S0:** 0.1-0.6 all closed → parallel tracks open.
