@@ -30,8 +30,14 @@ budget), success is 76-100% with abstention 0-15%.
 
 **The actionable finding is H2 SUPPORTED at p<0.001 in both strata with h≈2.5:**
 the full governance stack (assurance + authority + budget tracking) delivers
-materially higher actual success than assurance alone. Governance converts
-paralysis (abstention) into governed action.
+materially higher actual success than assurance alone.
+
+**Hedge (per independent statistical review, SOUND_WITH_HEDGES_REQUIRED):**
+F alone already converts abstention into action; G's added value over F is the
+marginal, precisely-measured difference (H2's McNemar contrast), not a claim that
+governance "unlocks" models. The paralysis→action conversion is attributable to
+assurance invocation (F), with G adding authority+budget on top. Claims should be
+phrased accordingly.
 
 ## Honest caveats
 
