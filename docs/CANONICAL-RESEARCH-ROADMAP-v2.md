@@ -131,6 +131,8 @@ Chain thesis (no overclaiming): validated system → independent implementation 
 
 ## 6. Execution order (exact)
 
+**EXECUTION-READY 2026-09-04:** Track A harness built (21/21 tests, commit 40c2397); Track B instruments complete (452fefb); STUDY-013 G-13a package verified 10/10 SHA-256 (45a3f18, d2037a5). All three tracks awaiting only external actors: live execution start (A), participants (B), independent implementer (13).
+
 1. **Now (parallel, cheap):** commit analyzer writer fix (0.3); draft STUDY-011 dataset-freeze amendment (0.1).
 2. **Then:** dispatch independent lineage/dedupe audit (0.2) + independent stats review (0.4) as two separate reviewers (different model families).
 3. **Then:** claims/papers/roadmap update (0.5) → declare G-S0.
