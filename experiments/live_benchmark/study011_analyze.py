@@ -1294,7 +1294,7 @@ def write_summary_md(results: Dict[str, Any], path: str) -> None:
             lines.append(f"- {key}: {status}")
         else:
             lines.append(f"- {key}: n_pairs={br['n_pairs']} b={br.get('b_A_only', br.get('b_C_only', 0))} c={br.get('c_G_only', br.get('c_F_only', 0))} "
-                       f"chi2={br['chi2']} p={br['p_value']} h={br['h']} direction_correct={br['direction_correct']}")
+                       f"chi2={br.get('chi2')} p={br.get('p_value')} h={br.get('h')} direction_correct={br.get('direction_correct')} (status={br.get('status','OK')})")
     lines.append("## Notes")
     lines.append("")
     lines.append("- Provider-stratified inference only; pooled estimates are exploratory "
