@@ -1,0 +1,72 @@
+{
+ "study_id": "STUDY-011",
+ "generated_utc": "2026-09-04T08:57:20Z",
+ "purpose": "Integrity monitoring ONLY. No provider/model/retry/threshold changes permitted from these results.",
+ "total_records": 87,
+ "note_on_sample": "Diagnostic pre-run sample only (87 records, all inadmissible for confirmatory analysis). Insufficient n for inferential claims.",
+ "groups": {
+  "provider=dialagram": {
+   "attempts": 87,
+   "LIVE_VALID": 44,
+   "LIVE_PROVIDER_FAILURE": 43,
+   "EXCLUDED": 0,
+   "valid_yield": 0.506,
+   "yield_wilson_95ci": [
+    0.403,
+    0.608
+   ]
+  },
+  "model=xiaomi-mimo-2.5": {
+   "attempts": 29,
+   "LIVE_VALID": 15,
+   "LIVE_PROVIDER_FAILURE": 14,
+   "EXCLUDED": 0,
+   "valid_yield": 0.517,
+   "yield_wilson_95ci": [
+    0.344,
+    0.686
+   ]
+  },
+  "condition=A": {
+   "attempts": 87,
+   "LIVE_VALID": 44,
+   "LIVE_PROVIDER_FAILURE": 43,
+   "EXCLUDED": 0,
+   "valid_yield": 0.506,
+   "yield_wilson_95ci": [
+    0.403,
+    0.608
+   ]
+  },
+  "model=qwen-3.8-max": {
+   "attempts": 28,
+   "LIVE_VALID": 14,
+   "LIVE_PROVIDER_FAILURE": 14,
+   "EXCLUDED": 0,
+   "valid_yield": 0.5,
+   "yield_wilson_95ci": [
+    0.326,
+    0.674
+   ]
+  },
+  "model=deepseek-v4": {
+   "attempts": 30,
+   "LIVE_VALID": 15,
+   "LIVE_PROVIDER_FAILURE": 15,
+   "EXCLUDED": 0,
+   "valid_yield": 0.5,
+   "yield_wilson_95ci": [
+    0.332,
+    0.668
+   ]
+  }
+ },
+ "assessment": {
+  "obvious_asymmetry": "Dialagram provider dominates the sample; openrouter cells not yet exercised. Cannot assess cross-provider symmetry from this sample.",
+  "cell_specific_missingness": "Only cell (dialagram, A) observed. No cross-cell comparison possible.",
+  "failure_concentration": "Failures concentrated in early execution window (rate-limit/circuit-breaker warm-up); pattern consistent with per-cell limiter ramp, not workload-condition bias.",
+  "threat_to_comparability": "UNKNOWN from available sample. Flagged as potential threat; will be re-assessed with n>=50 per cell during canonical run.",
+  "preregistered_assumption": "75% valid yield assumed for ceiling derivation (619 = ceil(464/0.75)). Observed diagnostic yield was materially lower in the first window; ceiling accounting handles this by per-cell 78-attempt cap and global 619 ceiling."
+ },
+ "wording_correction": "The earlier claim 'uniform failure pattern, no bias detected' is WITHDRAWN. Corrected wording: 'No material asymmetry observable in the available pre-run diagnostic sample; sample insufficient to detect or exclude bias. Re-assessment scheduled at n>=50 per cell.'"
+}

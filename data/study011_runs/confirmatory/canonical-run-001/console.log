@@ -1,0 +1,15 @@
+STUDY-011 Harness — mode=LIVE_ONLY phase=1
+LIVE_VALID target per cell: 58
+Confirmatory conditions: ['A', 'C', 'F', 'G']
+
+LIVE_ONLY mode selected. Pre-registration check...
+Pre-registration found: C:\Users\empir\Downloads\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\experiments\live_benchmark\..\..\STUDY-011-LIVE-CROSS-PROVIDER-PREREGISTRATION.md
+Rate-limit layer armed for phase 1; checkpoint journal: C:\Users\empir\Downloads\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\data\study011_runs\confirmatory\canonical-run-001\checkpoint.jsonl (0 completed cells on resume)
+Run math: 8 cells; 58 LIVE_VALID min/cell; 78 attempts max/cell; 619 total ceiling
+Implementation fingerprint verified: 10 frozen files unchanged
+=== STUDY-011 Pre-flight check ===
+  OK   dialagram — 18 models available
+  OK   openrouter — 427 models available
+  SKIP openai (Phase 2 — not active)
+  SKIP anthropic (Phase 2 — not active)
+  SKIP google (Phase 2 — not active)

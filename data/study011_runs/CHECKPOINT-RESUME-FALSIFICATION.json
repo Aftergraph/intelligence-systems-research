@@ -1,0 +1,8 @@
+{
+ "scenario_1_checkpoint_survival": "PASS",
+ "scenario_2_duplicate_protection": "PASS",
+ "scenario_3_partial_not_live_valid": "PASS",
+ "scenario_4_idempotency": "PASS \u2014 checkpoint-before-save: crash between checkpoint and save cannot re-execute (checkpoint is resume authority); worst case = lost record (counted in ceiling via checkpoint), never a duplicate",
+ "scenario_5_cross_lineage_refusal": "PASS",
+ "scenario_6_duplicate_lv_protection": "PASS (checkpoint.has_run prevents duplicates; manual checkpoint editing is outside scope)"
+}

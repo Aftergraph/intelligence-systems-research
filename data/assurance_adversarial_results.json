@@ -61,7 +61,7 @@
     "forged_verified": false,
     "handled_safely": true,
     "rejection_reason": "Revoked evidence receipt rejected by assurance evaluation",
-    "latency_ms": 1.0
+    "latency_ms": 0.0
   },
   {
     "vector_id": "WRONG_MISSION_VERSION",

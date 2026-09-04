@@ -1,0 +1,798 @@
+{
+ "study_id": "STUDY-011",
+ "generated_utc": "2026-09-04T08:57:06Z",
+ "final_fingerprint": "c89971bb0389e9324d2a84b3e0ba53b8060e0221007989ceb6d87866ce398d76",
+ "final_runner_hash": "e762ff83ad9eb0c2",
+ "policy": "A record is admissible ONLY if generated under the exact final frozen fingerprint AND final runner. Time/API cost is irrelevant to admissibility.",
+ "records": [
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-01-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:20:02.081Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-01-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:20:23.278Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-02-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:20:39.428Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-02-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:20:53.703Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-02-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:21:05.167Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-03-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:21:21.992Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-03-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:21:36.017Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-01-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:21:57.148Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-01-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:22:04.657Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-03-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:22:00.153Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-01-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:22:23.261Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-04-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:22:45.309Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-02-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:22:58.926Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-02-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:23:02.299Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-04-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:22:59.920Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-04-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:23:22.585Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-02-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:23:12.894Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-03-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:23:49.434Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-01-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:23:48.427Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-03-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:23:55.151Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-01-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:24:00.010Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-01-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:24:12.346Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-03-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:24:05.476Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-04-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:24:37.534Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-02-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:24:32.697Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-04-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:24:42.682Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-02-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:24:53.849Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-04-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:24:59.256Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-01-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:25:30.300Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-02-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:25:06.706Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-03-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:25:46.273Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-03-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:25:35.225Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-03-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:25:53.584Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-03-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:26:04.531Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-03-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:25:59.914Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-04-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:26:19.702Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-04-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:26:23.659Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-04-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:26:33.903Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-04-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:26:42.313Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-04-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:27:46.329Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-04-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:27:46.005Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-RES-01-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:28:12.673Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-RES-01-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:28:15.476Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-01-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:28:06.986Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-01-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:28:30.607Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-RES-01-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:28:29.012Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-01-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:28:45.174Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-RES-02-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:29:01.120Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-02-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:29:09.305Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-RES-02-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:29:09.748Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-02-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:29:20.454Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-RES-02-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:29:23.052Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-RES-03-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:29:54.245Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-02-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:29:34.309Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-03-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:30:05.857Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-RES-03-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:30:01.101Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-OPS-03-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:30:10.702Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-RES-03-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:30:13.770Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-RES-04-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:30:37.534Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-RES-04-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:30:45.724Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-RES-04-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:30:56.005Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-SWE-01-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:31:38.606Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-SWE-01-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:31:50.937Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-SWE-01-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:32:07.562Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-SWE-02-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:32:32.779Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-SWE-02-r002",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:33:03.327Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-SWE-02-r003",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:33:22.018Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-SWE-03-r001",
+   "execution_id": "canonical-run-000",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:33:39.686Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-01-r001",
+   "execution_id": "canonical-run-001",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:42:47.603Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-01-r002",
+   "execution_id": "canonical-run-001",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:42:55.244Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-01-r003",
+   "execution_id": "canonical-run-001",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:43:12.166Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-02-r001",
+   "execution_id": "canonical-run-001",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:43:38.455Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-02-r002",
+   "execution_id": "canonical-run-001",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:43:48.211Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-02-r003",
+   "execution_id": "canonical-run-001",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:43:59.119Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-03-r001",
+   "execution_id": "canonical-run-001",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:44:31.926Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-03-r002",
+   "execution_id": "canonical-run-001",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:44:42.267Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-03-r003",
+   "execution_id": "canonical-run-001",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:44:51.709Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-04-r001",
+   "execution_id": "canonical-run-001",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:45:09.839Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-04-r002",
+   "execution_id": "canonical-run-001",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:45:16.983Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-AUTH-04-r003",
+   "execution_id": "canonical-run-001",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:45:32.258Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-01-r001",
+   "execution_id": "canonical-run-001",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:45:55.357Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-01-r002",
+   "execution_id": "canonical-run-001",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:46:10.023Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-01-r003",
+   "execution_id": "canonical-run-001",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:46:20.240Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-02-r001",
+   "execution_id": "canonical-run-001",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:46:35.552Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-02-r002",
+   "execution_id": "canonical-run-001",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:46:45.303Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-02-r003",
+   "execution_id": "canonical-run-001",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:46:58.531Z",
+   "classification": "LIVE_VALID",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  },
+  {
+   "run_id": "study011-dialagram-A-S11-DATA-03-r001",
+   "execution_id": "canonical-run-001",
+   "fingerprint": "unknown (not recorded in record)",
+   "timestamp": "2026-09-04T08:47:14.053Z",
+   "classification": "LIVE_PROVIDER_FAILURE",
+   "admissibility": "NOT_ADMISSIBLE",
+   "reason": "generated under superseded fingerprint unknown (final is c89971bb0389e932); Amendment 007 changed runner after generation"
+  }
+ ],
+ "summary": {
+  "ADMISSIBLE": 0,
+  "NOT_ADMISSIBLE": 87,
+  "decision": "ALL prior records classified NOT_ADMISSIBLE. Canonical LIVE_VALID target counts start at ZERO. Prior records preserved in-place as historical evidence (never deleted).",
+  "duplicate_run_ids_noted": "13 duplicate run_ids existed in canonical-run-000 records (per G6/G7 audit); moot because all records are inadmissible"
+ }
+}

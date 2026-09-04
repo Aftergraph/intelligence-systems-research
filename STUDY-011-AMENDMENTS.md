@@ -222,3 +222,44 @@ rules.**
 NOT rewritten; this amendment is appended per §11 of the prereg.
 
 **Timestamp:** 2026-09-04T05:28:30Z
+
+---
+
+## PROTOCOL_AMENDMENT_006 — Execution-time enum fix: LIVE_PROTOCOL_FAILURE → LIVE_PROVIDER_FAILURE (2026-09-04)
+
+**Trigger:** First confirmatory execution attempt crashed with `AttributeError: LIVE_PROTOCOL_FAILURE` — the enum `ExecutionClass` only defines `LIVE_VALID`, `LIVE_PROVIDER_FAILURE`, `EXCLUDED`. The runner loop referenced a class value that was never added to the enum.
+
+**Fix:** Replaced `ExecutionClass.LIVE_PROTOCOL_FAILURE.value` with the string literal `"LIVE_PROVIDER_FAILURE"` in 2 locations. A run that fails `validate_for_live_valid` is recorded as LIVE_PROVIDER_FAILURE (which is already in the preregistered exclusion_classes and the enum).
+
+**Scope:** runner-loop code only. No change to workload set, model matrix, conditions, hypotheses, or analysis rules.
+
+**Fingerprint regenerated:** code_snapshot `ed59977c44201ec8` (was `77f50bdcf3428008`).
+
+## Amendment 007 — Checkpoint ordering fix (execution-time, pre-canonical)
+
+**Date:** 2026-09-04
+**Trigger:** Checkpoint-resume falsification test (Scenario 4) found non-idempotent resume: `_save_run()` executed before `checkpoint.record()`, so a crash between the two would re-execute a run whose record was already persisted (duplicate record risk).
+
+**Change:** In `run_study_011.py` success path, `checkpoint.record()` now executes BEFORE `_save_run()`. The checkpoint is the resume authority; a crash between the two calls can no longer re-execute a checkpointed run. Worst case becomes a lost record (still counted in the ceiling via checkpoint), never a duplicate.
+
+**Classification:** Protocol-preserving implementation correction (duplicate-prevention only). No change to hypotheses, conditions, sample size, stopping rule, classification thresholds, exclusions, or analysis.
+
+**Evidence:**
+- Falsification: `data/study011_runs/CHECKPOINT-RESUME-FALSIFICATION.json` (scenario 4: FAIL before fix, PASS after)
+- New fingerprint: see `data/study011_impl_fingerprint.json` (tag STUDY-011-PRECONFIRMATORY-R3)
+- Suite: 506 passed / 2 fingerprint-gate tests correctly asserting the drift refusal (expected after code change); re-run post-fingerprint-regeneration required.
+
+**Prior observations:** All 19 records from canonical-run-001 were produced under fingerprint 51920ee4 BEFORE this fix. They are classified PENDING_ADMISSIBILITY in ADMISSIBILITY-MANIFEST.json and do not count toward LIVE_VALID targets until the admissibility manifest proves them.
+
+## Amendment 008 — Per-record fingerprint provenance (execution-time, pre-canonical)
+
+**Date:** 2026-09-04
+**Trigger:** Second-pass independent review (deleg_35bfb09a) verdict OVERALL: CRITICAL. CRITICAL-01 evidence gap: prior records carried no per-record fingerprint ("superseded fingerprint unknown"), making per-record admissibility unprovable.
+
+**Change:** (1) `RunRecord` gains `implementation_fingerprint` field; (2) `_save_run()` stamps every persisted record with the verified `code_snapshot_hash` from `data/study011_impl_fingerprint.json` before writing.
+
+**Classification:** Protocol-preserving instrumentation addition (provenance only). No change to hypotheses, conditions, sampling, stopping rule, classification, thresholds, exclusions, or analysis. The field is additive metadata; existing consumers ignore unknown JSON keys.
+
+**Evidence:** docs/studies/STUDY-011-INDEPENDENT-REVIEW-RECONCILIATION.md; study011-second-pass-review.md (hash 8b162564…).
+
+**Prior observations:** Still zero admissible (unchanged); canonical-run-002 starts at zero with per-record provenance stamped from the first record.

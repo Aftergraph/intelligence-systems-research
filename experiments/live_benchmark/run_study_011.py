@@ -73,6 +73,7 @@ class RunRecord:
     cost_usd:                   Optional[float] = None
     is_live:                    bool = False
     execution_class:            str = ExecutionClass.EXCLUDED.value
+    implementation_fingerprint: str = ""   # per-record provenance (Amendment 008)
     mission_state_final:        str = ""
     fcr_flag:                   bool = False
     vsr_flag:                   bool = False
@@ -917,8 +918,21 @@ def main():
     runs_file = runs_dir / "run_records.jsonl"
 
     def _save_run(record: RunRecord) -> None:
+        # ponytail: stamp per-record provenance (Amendment 008) — lazily load the
+        # verified fingerprint once; O(1) after first call. Every persisted record
+        # then carries the exact fingerprint it was produced under, so admissibility
+        # is provable per record (closes second-pass CRITICAL-01 evidence gap).
+        if not record.implementation_fingerprint:
+            record.implementation_fingerprint = _current_fingerprint()
         with open(runs_file, "a", encoding="utf-8", newline="\n") as fh:
             fh.write(json.dumps(asdict(record), ensure_ascii=False, sort_keys=True) + "\n")
+
+    def _current_fingerprint() -> str:
+        try:
+            with open(fp_path, encoding="utf-8") as fh:
+                return json.load(fh).get("code_snapshot_hash", "")
+        except Exception:
+            return ""
 
     strata_active = {n: c for n, c in PROVIDERS.items() if c["phase"] <= args.phase}
     executed = skipped = live_valid_total = provider_fail_total = protocol_fail_total = 0
@@ -991,6 +1005,7 @@ def main():
                         mission_hash=sha256(wl["prompt"]),
                     )
                     try:
+                        t0 = time.time()
                         resp = _live_chat_completion(
                             prov_cfg, model,
                             messages=[{"role": "user", "content": wl["prompt"]}],
@@ -1009,6 +1024,7 @@ def main():
                     rec.provider_request_id = resp.get("provider_request_id")
                     rec.response_hash = resp.get("response_hash", "")
                     rec.response_timestamp_utc = utcnow()
+                    rec.latency_ms = round((time.time() - t0) * 1000.0, 2)
                     usage = body.get("usage", {}) if isinstance(body, dict) else {}
                     rec.token_count_prompt = usage.get("prompt_tokens")
                     rec.token_count_completion = usage.get("completion_tokens")
@@ -1042,11 +1058,15 @@ def main():
                     issues = rec.validate_for_live_valid()
                     rec.execution_class = (
                         ExecutionClass.LIVE_VALID.value if not issues
-                        else ExecutionClass.LIVE_PROTOCOL_FAILURE.value
+                        else "LIVE_PROVIDER_FAILURE"
                     )
                     rec.error_detail = "; ".join(issues)
                     enforce_live_only_invariant(rec, ExecutionMode.LIVE_ONLY)
-                    _save_run(rec)
+                    # ponytail: checkpoint BEFORE save — resume authority is the
+                    # checkpoint, so a crash between the two can never re-execute
+                    # a run that already has a persisted record (idempotent resume).
+                    # Ceiling: if save then fails, that attempt is lost from
+                    # records but still counted in the checkpoint — never double-counted.
                     checkpoint.record(
                         run_id=run_id, provider=stratum, model=model,
                         condition=condition, workload_id=wl["workload_id"],
@@ -1054,6 +1074,7 @@ def main():
                         execution_class=rec.execution_class,
                         ts=utcnow(),
                     )
+                    _save_run(rec)
                     if rec.execution_class == ExecutionClass.LIVE_VALID.value:
                         cell_valid += 1
                         live_valid_total += 1

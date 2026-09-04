@@ -1,0 +1,84 @@
+{
+ "study_id": "STUDY-011",
+ "verification_type": "BASELINE",
+ "timestamp": "2026-09-04T10:45:00Z",
+ "python_version": "3.11.15",
+ "command": "python -m pytest -q --tb=no",
+ "repository": "C:/Users/empir/Downloads/Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026/Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026",
+ "results": {
+  "total": 508,
+  "passed": 508,
+  "failed": 0,
+  "skipped": 0,
+  "errors": 0
+ },
+ "failing_tests": [],
+ "warnings": 56,
+ "fixes_applied": [
+  "cli/__init__.py created (was missing, causing cli to not be a package)",
+  "tests/__init__.py created (was missing, causing tests.test_registries to not resolve as module)"
+ ],
+ "notes": [
+  "JWT insecure key length warnings observed in MDT wiring, threat model, chaos testing, token exchange tests",
+  "All tests including test_submission_packaging passed after adding missing __init__.py files",
+  "Audit tool reports HEALTHY & VERIFIED when run directly",
+  "The previous 505/507 + import error was caused by missing __init__.py in cli/ and tests/ directories",
+  "History preserved: the clean 508/508 baseline did NOT exist before the marker files were added — it was achieved BY the engineering correction (recorded per integrity order item F)."
+ ],
+ "baseline_sequence": [
+  {
+   "step": 1,
+   "event": "pre-run historical claim",
+   "result": "508/508 (historical, prior session)"
+  },
+  {
+   "step": 2,
+   "event": "observed execution-time state",
+   "result": "1 collection error (test_submission_packaging ImportError) + 2 failed (test_registries_verify_passes ModuleNotFoundError; test_cli_audit DEGRADED) + 505 passed"
+  },
+  {
+   "step": 3,
+   "event": "root cause identified",
+   "result": "cli/ and tests/ were implicit-namespace packages; missing __init__.py broke module resolution for cli.build_submission_packages and tests.test_registries"
+  },
+  {
+   "step": 4,
+   "event": "two package marker files added",
+   "files": {
+    "cli/__init__.py": {
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "bytes": 0
+    },
+    "tests/__init__.py": {
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "bytes": 0
+    }
+   },
+   "content": "empty files (standard Python package markers)"
+  },
+  {
+   "step": 5,
+   "event": "fresh suite run",
+   "command": "python -m pytest -q --tb=no"
+  },
+  {
+   "step": 6,
+   "event": "508/508 observed",
+   "result": "508 passed, 0 failed, 56 warnings"
+  }
+ ],
+ "engineering_correction_proof": {
+  "claim": "The two __init__.py files do not influence STUDY-011 runtime semantics",
+  "evidence": "Both files are EMPTY (0-byte package markers). The STUDY-011 runner (experiments/live_benchmark/run_study_011.py) imports only experiments/* modules and stdlib; cli/ and tests/ are never imported by the runner, classifier, verifier, or analysis code. Frozen fingerprint file list contains neither file as a functional dependency (both are recorded in FINAL-CONFIRMATORY-FREEZE.json for provenance only).",
+  "marker_hashes": {
+   "cli/__init__.py": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+   },
+   "tests/__init__.py": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+   }
+  }
+ }
+}

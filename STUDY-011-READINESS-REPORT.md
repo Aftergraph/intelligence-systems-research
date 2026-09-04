@@ -2,7 +2,7 @@
 
 **Version:** 3.0 (supersedes v2.0, which is preserved below)
 **Date:** 2026-09-04
-**Status:** `READY_FOR_CONFIRMATORY_EXECUTION`
+**Status:** `READY_FOR_CONFIRMATORY_EXECUTION` — gate chain verified: all 5 gates PASS (DEC-038)
 **Audit verdict:** HEALTHY & VERIFIED
 
 ---

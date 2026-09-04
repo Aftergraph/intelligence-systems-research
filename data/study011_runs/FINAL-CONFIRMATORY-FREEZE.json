@@ -1,0 +1,99 @@
+{
+ "study_id": "STUDY-011",
+ "created_utc": "2026-09-04T09:02:08Z",
+ "fingerprint_ref": "data/study011_impl_fingerprint.json",
+ "code_snapshot_hash": "b6b7c2d02210e8880980a95bf28b25bec933da65760279f3b6e05e66591a3473",
+ "amendment_set": [
+  "001",
+  "002",
+  "003",
+  "004",
+  "005",
+  "006",
+  "007",
+  "008"
+ ],
+ "frozen_inputs": {
+  "data/study011_dependency_lock.txt": {
+   "sha256": "7c8c0922bbd516840bdc8493db08eb63b329c41c0d2422102aeaabeba59396ca",
+   "bytes": 4126
+  },
+  "data/study011_preregistration_manifest.json": {
+   "sha256": "087db1b3eb3a739c8a8a99d4bbfa72762b11ca6536edd1ab1bf1cd545e40290c",
+   "bytes": 8126
+  },
+  "data/study011_provider_model_matrix.json": {
+   "sha256": "ded4a4101e0f5f89bd336c29caaebe1ba9dab3f0b846616401f2b229086c5750",
+   "bytes": 4706
+  },
+  "data/study011_run_math.json": {
+   "sha256": "d2065f0a4278f1d102d1c092b0b11db7bcd36826f17a8aaa86703cebad987cf3",
+   "bytes": 2507
+  },
+  "data/study011_workload_manifest.json": {
+   "sha256": "2f21e0827f9c7f8d4f044acac9635cee84376250d595115b68dc4634159bbe18",
+   "bytes": 17775
+  },
+  "data/study011_workloads_frozen.json": {
+   "sha256": "74405d75f9be2a1d7335b829b8c84e21efeb65178962811d2c59f99424f89237",
+   "bytes": 71795
+  },
+  "experiments/live_benchmark/run_study_011.py": {
+   "sha256": "99b04b24ec2f84f1a44c4f53b37aeb1e5f9ee384b3a9ecc7989402dcf2640699",
+   "bytes": 51816
+  },
+  "experiments/live_benchmark/study011_analyze.py": {
+   "sha256": "400138f6a4ed1a39a35fba05bb9c5a1fc9478935d015b64bf3205267a4023d1f",
+   "bytes": 62784
+  },
+  "experiments/live_benchmark/study011_rate_limit.py": {
+   "sha256": "06c20d210c7de683ec455e580fee6b42f3a7b0171b7eb3ff732ad91372aab353",
+   "bytes": 13210
+  },
+  "experiments/live_benchmark/verifier_v2.py": {
+   "sha256": "dbf1fbb3d00ab83ad169cf2899b70f755b9ad2835375673469c35808c7e881c9",
+   "bytes": 10246
+  },
+  "STUDY-011-AMENDMENTS.md": {
+   "sha256": "3b8565bc73c14ab858c0d9d8fcb6c0ca5f66230f75c3631332d240278c19bb20",
+   "bytes": 14263
+  },
+  "docs/studies/STUDY-011-AMENDMENT-006.md": {
+   "sha256": "0d77482b8deb94e81ab9b6102248c01f25951f0d634049ce5eef72fb632800fb",
+   "bytes": 5612
+  },
+  "STUDY-011-LIVE-CROSS-PROVIDER-PREREGISTRATION.md": {
+   "sha256": "70837af85a7191194fe5f67ee6087e940fb8734ded898e8551a27ad006e2bd38",
+   "bytes": 12792
+  },
+  "cli/__init__.py": {
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "bytes": 0
+  },
+  "tests/__init__.py": {
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "bytes": 0
+  },
+  "docs/studies/STUDY-011-CHECKPOINT-RESUME-FALSIFICATION.md": {
+   "sha256": "c7ae538c74620fd4d3c439ade2198a52ed220e0bb4bfff88d64d90b45704aae1",
+   "bytes": 2253
+  },
+  "docs/studies/STUDY-011-INDEPENDENT-REVIEW-RECONCILIATION.md": {
+   "sha256": "88c2ae87a977e3c32ff0a6e09ae67bb7aa48f34f29ea4f2f5298b9e2a9bf15b0",
+   "bytes": 5381
+  },
+  "docs/studies/STUDY-011-SECOND-PASS-RECONCILIATION.md": {
+   "sha256": "818c6a8ab2a7069c2c14c77885cdc710b405a5ba88339302de697120558be097",
+   "bytes": 2801
+  },
+  "data/study011_runs/ADMISSIBILITY-MANIFEST.json": {
+   "sha256": "f5b4ae0d23c3d3ed086da07775cd04f1abb91305235218c5c3589c7d32ca2990",
+   "bytes": 36967
+  }
+ },
+ "missing_inputs": [],
+ "notes": [
+  "cli/__init__.py + tests/__init__.py are engineering corrections (baseline repair, item F); proven: no STUDY-011 runtime semantics — they are empty package markers",
+  "Freeze covers runner + rate limiting + analysis + verifier + all manifests + amendments + preregistration"
+ ]
+}

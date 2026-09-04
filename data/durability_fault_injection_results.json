@@ -6,7 +6,7 @@
     "duplicate_actions": 0,
     "lost_actions": 0,
     "state_divergence": false,
-    "recovery_latency_ms": 2.0
+    "recovery_latency_ms": 1.01
   },
   {
     "kill_point": "AFTER_TOOL_REQUEST",
@@ -15,7 +15,7 @@
     "duplicate_actions": 0,
     "lost_actions": 0,
     "state_divergence": false,
-    "recovery_latency_ms": 1.32
+    "recovery_latency_ms": 0.0
   },
   {
     "kill_point": "AFTER_EXTERNAL_EFFECT",
@@ -24,7 +24,7 @@
     "duplicate_actions": 0,
     "lost_actions": 0,
     "state_divergence": false,
-    "recovery_latency_ms": 1.0
+    "recovery_latency_ms": 0.0
   },
   {
     "kill_point": "BEFORE_JOURNAL_COMMIT",
@@ -33,7 +33,7 @@
     "duplicate_actions": 0,
     "lost_actions": 1,
     "state_divergence": false,
-    "recovery_latency_ms": 2.05
+    "recovery_latency_ms": 1.0
   },
   {
     "kill_point": "AFTER_JOURNAL_COMMIT",
@@ -42,7 +42,7 @@
     "duplicate_actions": 0,
     "lost_actions": 0,
     "state_divergence": false,
-    "recovery_latency_ms": 1.0
+    "recovery_latency_ms": 1.36
   },
   {
     "kill_point": "DURING_RECOVERY",
@@ -51,7 +51,7 @@
     "duplicate_actions": 0,
     "lost_actions": 0,
     "state_divergence": false,
-    "recovery_latency_ms": 3.99
+    "recovery_latency_ms": 1.29
   },
   {
     "kill_point": "DURING_PROVIDER_FALLBACK",
@@ -60,6 +60,6 @@
     "duplicate_actions": 0,
     "lost_actions": 0,
     "state_divergence": false,
-    "recovery_latency_ms": 2.01
+    "recovery_latency_ms": 2.0
   }
 ]

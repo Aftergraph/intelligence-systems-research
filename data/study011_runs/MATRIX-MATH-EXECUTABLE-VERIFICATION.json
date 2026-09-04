@@ -1,0 +1,45 @@
+{
+ "generated_utc": "2026-09-04T08:58:10Z",
+ "fingerprint_ref": "c89971bb0389e9324d2a84b3e0ba53b8060e0221007989ceb6d87866ce398d76",
+ "checks": {
+  "cells = 2 strata x 4 conditions = 8": {
+   "n_strata": 2,
+   "pass": true
+  },
+  "20 workloads x 3 reps = 60 nominal/cell": {
+   "n_workloads": 20,
+   "pass": true
+  },
+  "seed table = 120 entries": {
+   "n_seeds": 120,
+   "pass": true
+  },
+  "8x58=464": {
+   "pass": true
+  },
+  "ceil(464/0.75)=619": {
+   "pass": true
+  },
+  "ceil(58/0.75)=78 per-cell": {
+   "pass": true
+  },
+  "run_math 464/619/78": {
+   "pass": true
+  },
+  "seeds carry models + cover both strata": {
+   "pass": true,
+   "strata": [
+    "dialagram",
+    "openrouter"
+   ],
+   "models": [
+    "deepseek-v4",
+    "google/gemma-4-31b-it:free",
+    "qwen-3.8-max",
+    "xiaomi-mimo-2.5",
+    "z-ai/glm-5.2:free"
+   ]
+  }
+ },
+ "all_match": true
+}

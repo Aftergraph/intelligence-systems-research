@@ -1,0 +1,53 @@
+{
+ "session": "2026-09-04",
+ "executions": [
+  {
+   "execution_id": "exec-001-pilot",
+   "pid": null,
+   "start": "2026-09-04T08:20:00Z",
+   "end": "2026-09-04T08:25:00Z",
+   "exit_code": "crashed",
+   "command": "run_study_011.py --mode LIVE_ONLY --phase 1",
+   "fingerprint": "77f50bdc (pre-Amendment-006)",
+   "records": 34,
+   "status": "PILOT_INVALIDATED",
+   "notes": "Crashed on LIVE_PROTOCOL_FAILURE enum (AttributeError)"
+  },
+  {
+   "execution_id": "proc_2c746c705f96",
+   "pid": 42216,
+   "start": "2026-09-04T08:26:00Z",
+   "end": "2026-09-04T08:27:00Z",
+   "exit_code": 1,
+   "command": "run_study_011.py --mode LIVE_ONLY --phase 1 (source .study011_env)",
+   "fingerprint": "77f50bdc (pre-Amendment-006)",
+   "records": 0,
+   "status": "ABORTED",
+   "notes": "Fingerprint drift detected (run_study_011.py changed but fp not regenerated)"
+  },
+  {
+   "execution_id": "canonical-run-000",
+   "pid": 9764,
+   "start": "2026-09-04T08:28:00Z",
+   "end": "2026-09-04T08:35:00Z",
+   "exit_code": "killed_cleanly",
+   "command": "run_study_011.py --mode LIVE_ONLY --phase 1 (keys in env)",
+   "fingerprint": "51920ee4 (post-Amendment-006)",
+   "records": 57,
+   "status": "ABORTED",
+   "notes": "Ran to 57 records (26 LV/31 PF) before integrity gate required clean stop. Some records may be admissible but classified as ABORTED for integrity."
+  },
+  {
+   "execution_id": "canonical-run-001",
+   "pid": 35764,
+   "start": "2026-09-04T09:50:00Z",
+   "end": "2026-09-04T09:52:00Z",
+   "exit_code": "killed",
+   "command": "run_study_011.py --mode LIVE_ONLY --phase 1 (keys in env)",
+   "fingerprint": "51920ee4",
+   "records": 19,
+   "status": "ABORTED",
+   "notes": "Stopped for final integrity reconciliation. 19 records (18 LV, 1 PF). Checkpoint preserved."
+  }
+ ]
+}
