@@ -259,3 +259,65 @@ Implementation fingerprint verified: 10 frozen files unchanged
   SKIP anthropic (Phase 2 — not active)
   SKIP google (Phase 2 — not active)
 ERROR: pre-flight failed — refusing to start confirmatory batch.
+
+=== RESUME: Amendment 010 (paid models, ceiling 931) ===
+STUDY-011 Harness — mode=LIVE_ONLY phase=1
+LIVE_VALID target per cell: 58
+Confirmatory conditions: ['A', 'C', 'F', 'G']
+
+LIVE_ONLY mode selected. Pre-registration check...
+Pre-registration found: C:\Users\empir\Downloads\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\experiments\live_benchmark\..\..\STUDY-011-LIVE-CROSS-PROVIDER-PREREGISTRATION.md
+Rate-limit layer armed for phase 1; checkpoint journal: C:\Users\empir\Downloads\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\data\study011_runs\confirmatory\canonical-run-002\checkpoint.jsonl (240 completed cells on resume)
+Run math: 8 cells; 58 LIVE_VALID min/cell; 156 attempts max/cell; 931 total ceiling
+ERROR: frozen implementation fingerprint drift detected:
+  - data/study011_run_math.json: HASH CHANGED
+A formal protocol amendment is required before continuing. Refusing to run (no-silent-change invariant).
+
+=== RESUME 2: fingerprint regenerated post-Amendment-010 ===
+STUDY-011 Harness — mode=LIVE_ONLY phase=1
+LIVE_VALID target per cell: 58
+Confirmatory conditions: ['A', 'C', 'F', 'G']
+
+LIVE_ONLY mode selected. Pre-registration check...
+Pre-registration found: C:\Users\empir\Downloads\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\experiments\live_benchmark\..\..\STUDY-011-LIVE-CROSS-PROVIDER-PREREGISTRATION.md
+Rate-limit layer armed for phase 1; checkpoint journal: C:\Users\empir\Downloads\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\data\study011_runs\confirmatory\canonical-run-002\checkpoint.jsonl (240 completed cells on resume)
+Run math: 8 cells; 58 LIVE_VALID min/cell; 156 attempts max/cell; 931 total ceiling
+Implementation fingerprint verified: 10 frozen files unchanged
+=== STUDY-011 Pre-flight check ===
+  OK   dialagram — 18 models available
+  OK   openrouter — 427 models available
+  SKIP openai (Phase 2 — not active)
+  SKIP anthropic (Phase 2 — not active)
+  SKIP google (Phase 2 — not active)
+  CELL dialagram|A: valid=0 attempts=0 viable=False
+  CELL dialagram|C: valid=0 attempts=0 viable=False
+  CELL dialagram|F: valid=0 attempts=0 viable=False
+  CELL dialagram|G: valid=0 attempts=0 viable=False
+Traceback (most recent call last):
+  File "C:\Users\empir\Downloads\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\experiments\live_benchmark\run_study_011.py", line 1119, in <module>
+    main()
+  File "C:\Users\empir\Downloads\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\experiments\live_benchmark\run_study_011.py", line 977, in main
+    limiter = limiters[model]
+              ~~~~~~~~^^^^^^^
+KeyError: 'google/gemma-4-31b-it'
+
+=== RESUME 3: runner source :free→paid fixed, fingerprint dfe3513c ===
+STUDY-011 Harness — mode=LIVE_ONLY phase=1
+LIVE_VALID target per cell: 58
+Confirmatory conditions: ['A', 'C', 'F', 'G']
+
+LIVE_ONLY mode selected. Pre-registration check...
+Pre-registration found: C:\Users\empir\Downloads\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\experiments\live_benchmark\..\..\STUDY-011-LIVE-CROSS-PROVIDER-PREREGISTRATION.md
+Rate-limit layer armed for phase 1; checkpoint journal: C:\Users\empir\Downloads\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\data\study011_runs\confirmatory\canonical-run-002\checkpoint.jsonl (240 completed cells on resume)
+Run math: 8 cells; 58 LIVE_VALID min/cell; 156 attempts max/cell; 931 total ceiling
+Implementation fingerprint verified: 10 frozen files unchanged
+=== STUDY-011 Pre-flight check ===
+  OK   dialagram — 18 models available
+  OK   openrouter — 427 models available
+  SKIP openai (Phase 2 — not active)
+  SKIP anthropic (Phase 2 — not active)
+  SKIP google (Phase 2 — not active)
+  CELL dialagram|A: valid=0 attempts=0 viable=False
+  CELL dialagram|C: valid=0 attempts=0 viable=False
+  CELL dialagram|F: valid=0 attempts=0 viable=False
+  CELL dialagram|G: valid=0 attempts=0 viable=False

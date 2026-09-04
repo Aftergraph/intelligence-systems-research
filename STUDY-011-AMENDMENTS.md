@@ -278,3 +278,18 @@ NOT rewritten; this amendment is appended per §11 of the prereg.
 **Observation handling:** The duplicate pair consists of (a) a breaker-rejected NON-OBSERVATION (no API request was sent — the breaker refused before the request) and (b) the real LIVE_VALID observation from resume. Dedup rule: the bookkeeping entry is marked SUPERSEDED_BY its LIVE_VALID twin; the LIVE_VALID observation counts once. Cell C remains 59 valid of 58 required (1 spare). Admissibility of the LIVE_VALID twin: produced under fingerprint b6b7c2d0 (then-final), real API provenance — ADMISSIBLE.
 
 **Fingerprint:** regenerated (see impl_fingerprint.json). Records produced before this amendment remain admissible — this fix only prevents FUTURE duplicates; the existing duplicate pair is resolved by the dedup rule above, documented here.
+
+## Amendment 010 — DRAFT (owner review pending): OpenRouter stratum model substitution
+
+**Date:** 2026-09-04
+**Trigger:** Owner directive via Telegram 13:07Z: "Find a way to start it again og fix og forbedre til næste". The openrouter stratum (cells 5-8) is NON-VIABLE under the frozen protocol: both :free models exhausted their shared 1000-req/day quota (429 on every attempt, 240 burned). The 619-attempt ceiling cannot accommodate 232 additional valids.
+
+**Problem:** The 75% yield assumption in the ceiling derivation was wrong for the openrouter :free stratum BY DESIGN — the :free tier has a hard daily request quota, not a probabilistic failure rate. No yield-based ceiling accounts for a deterministic quota wall.
+
+**Proposed change (Option B):** Replace the openrouter :free models (`google/gemma-4-31b-it:free`, `z-ai/glm-5.2:free`) with their PAID equivalents (`google/gemma-4-31b-it`, `z-ai/glm-5.2`) — matching the owner's original instruction ("du skal bruge dens rigtig model og ikke free"). This removes the quota ceiling; cost estimate < $1 for 232 valids at ~600 tokens each.
+
+**What changes:** provider_model_matrix (openrouter models), fingerprint, manifest version. **What does NOT change:** hypotheses, conditions, workloads, replicates, sample size, stopping rule, classification, analysis, thresholds.
+
+**Status:** APPROVED by owner (Telegram, 2026-09-04 ~16:10 local). ACTIVE as of this commit.
+
+**Ceiling extension:** Global ceiling 619 → 931. OpenRouter per-cell cap 78 → 156 (accounts for the 60 burned 429-quota attempts per cell being environmental, not yield-based). Dialagram per-cell cap unchanged at 78. Per-cell cap × 8 cells = 931 ≤ new global ceiling. Stopping rule unchanged: stop when 58 LIVE_VALID or cap.

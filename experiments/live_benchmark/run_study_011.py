@@ -157,8 +157,8 @@ PROVIDERS = {
         # MUST match data/study011_provider_model_matrix.json v1.0.0+
         # (test_provider_config_models_match_frozen_matrix enforces this).
         "models": [
-            "google/gemma-4-31b-it:free",
-            "z-ai/glm-5.2:free",
+            "google/gemma-4-31b-it",
+            "z-ai/glm-5.2",
         ],
     },
     # Phase 2 providers — keys TBD, pending owner approval

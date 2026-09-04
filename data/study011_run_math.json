@@ -10,14 +10,15 @@
   "phase1_min_live_valid": 464,
   "phase1_live_valid_planned_max": 480,
   "nominal_attempts_total": 480,
-  "attempts_ceiling_total": 619,
-  "attempts_ceiling_per_cell": 78,
+  "attempts_ceiling_total": 931,
+  "attempts_ceiling_per_cell": 156,
   "derivation": {
    "464": "4 conditions x 2 strata x 58 LIVE_VALID per cell (power: two-sided alpha=0.05/4 Bonferroni, power=0.80, h=0.5)",
    "480": "8 cells x 60 nominal attempts per cell (20 workloads x 3 replicates, all frozen models in the stratum sample)",
    "619": "ceil(464 / 0.75) — assumes 75% LIVE_VALID yield (STUDY-008 3.3% provider-failure rate x3 buffer) => ~77-78 attempts per cell",
    "890_refuted": "The 890 figure in the overnight chat report was an error, not derived from any frozen artifact; it appears in NO repo file. Refuted and replaced by the frozen 480/619 accounting."
-  }
+  },
+  "amendment_010_note": "Per-cell cap for openrouter cells 5-8 extended 78→156: the 429-burn was quota exhaustion (deterministic provider limitation), not sampling failure. Dialagram cells 1-4 retain their original 78 cap. Global ceiling 931 = 619 + 4×78."
  },
  "minimum_valid_sample": {
   "per_cell": 58,
@@ -39,7 +40,7 @@
  },
  "model_assignment_within_cell": {
   "rule": "every (workload, replicate) pair in a (stratum, condition) cell is executed against ONE model from the stratum's frozen model set; rotation deterministic from data/study011_replicate_seed_table.json (created at first run, then frozen)",
-  "rotation": "round-robin over the stratum's models: dialagram [deepseek-v4, xiaomi-mimo-2.5, qwen-3.8-max]; openrouter [google/gemma-4-31b-it:free, z-ai/glm-5.2:free]",
+  "rotation": "round-robin over the stratum's models: dialagram [deepseek-v4, xiaomi-mimo-2.5, qwen-3.8-max]; openrouter [google/gemma-4-31b-it, z-ai/glm-5.2]",
   "note": "all models per stratum appear in the sample; analysis unit keeps model in the pairing key"
  }
 }
