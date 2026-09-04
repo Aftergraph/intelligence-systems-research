@@ -16,3 +16,6 @@ data/study011_runs/checkpoint.jsonl
 # OS
 Thumbs.db
 .DS_Store
+.study011_env
+*.env
+!.env.example
