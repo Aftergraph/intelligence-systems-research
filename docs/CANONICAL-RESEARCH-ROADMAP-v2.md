@@ -17,10 +17,10 @@
 | 0.2 | Independent lineage/dedupe audit — **DONE**: verdict FAIL→resolved by Amendment 012 (17bc1037 sub-window declared Block 3 continuation, zero run_id overlap, 6 in-flight extras reconciled; commit d484ab9) | **VALIDATED** |
 | 0.3 | Analyzer summary-writer fix (KeyError 'chi2' on empty block strata) | **IMPLEMENTED-pending-commit** — results.json authoritative; writer must tolerate EMPTY/NO_OBSERVATIONS strata |
 | 0.4 | Final statistical review — **DONE**: SOUND_WITH_HEDGES_REQUIRED; hedge applied to FINAL-CONFIRMATORY-SUMMARY.md (F converts abstention; G adds measured marginal H2 effect); no p-hacking found | **VALIDATED** |
-| 0.5 | Update claims registry, papers, roadmap with STUDY-011 verdicts + hedges | **PROPOSED** — next execution-order item |
+| 0.5 | Update claims registry, papers, roadmap with STUDY-011 verdicts + hedges — **DONE** (commit d4cd629): C-001 refined, C-008 added, C-007 live-reversed | **VALIDATED** |
 | 0.6 | Hard invariant: canonical dataset is immutable from now on (append-only corrections via amendment docs only) | **PREREGISTERED** — this roadmap binds it |
 
-**Gate G-S0:** 0.1-0.6 all closed → parallel tracks open.
+**Gate G-S0:** 0.1-0.6 all closed → parallel tracks open. **STATUS: 0.1-0.5 VALIDATED (commits 5cf5d29, d484ab9, 530dc8b, d4cd629); 0.6 immutability binding in force. G-S0 CLOSED.**
 
 ---
 
