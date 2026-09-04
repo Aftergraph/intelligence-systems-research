@@ -1,4 +1,54 @@
-<!DOCTYPE html>
+#!/usr/bin/env python3
+"""Generate self-contained dashboard HTML with EMBEDDED data. No fetch needed."""
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+BASE = Path(r"C:\Users\empir\Downloads\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026\Jonas_Abde_Intelligence_Systems_Research_Program_Q3_2026")
+RECORDS = BASE / "data" / "study011_runs" / "confirmatory" / "canonical-run-002" / "run_records.jsonl"
+OUT = BASE / "docs" / "study011-dashboard.html"
+
+def main():
+    recs = []
+    if RECORDS.exists():
+        for line in RECORDS.read_text(encoding="utf-8", errors="ignore").splitlines():
+            if line.strip():
+                try: recs.append(json.loads(line))
+                except: pass
+
+    cells = {}
+    for x in recs:
+        k = f"{x.get('provider_name','?')}|{x.get('condition','?')}"
+        c = cells.setdefault(k, {"att":0,"lv":0,"fail":0})
+        c["att"] += 1
+        if x.get("execution_class")=="LIVE_VALID": c["lv"] += 1
+        else: c["fail"] += 1
+
+    a010 = [x for x in recs if str(x.get("implementation_fingerprint","")).startswith("dfe3513c")]
+    a010_cells = {}
+    for x in a010:
+        k = f"{x.get('provider_name','?')}|{x.get('condition','?')}"
+        c = a010_cells.setdefault(k, {"att":0,"lv":0})
+        c["att"] += 1
+        if x.get("execution_class")=="LIVE_VALID": c["lv"] += 1
+
+    total_valid = sum(1 for x in recs if x.get("execution_class")=="LIVE_VALID")
+    blocks = {
+        "original_confirmatory": {"fp": "b6b7c2d0…", "records": sum(1 for x in recs if str(x.get("implementation_fingerprint","")).startswith("b6b7c2d0")), "valid": sum(1 for x in recs if str(x.get("implementation_fingerprint","")).startswith("b6b7c2d0") and x.get("execution_class")=="LIVE_VALID")},
+        "original_openrouter_free": {"fp": "0c588022…", "records": sum(1 for x in recs if x.get("provider_name")=="openrouter" and str(x.get("implementation_fingerprint","")).startswith("0c588022")), "valid": 0},
+        "post_amendment_010": {"fp": "dfe3513c…", "records": len(a010), "valid": sum(1 for x in a010 if x.get("execution_class")=="LIVE_VALID")},
+    }
+
+    data_json = json.dumps({"cells": cells, "a010_cells": a010_cells, "blocks": blocks,
+                            "total_records": len(recs), "total_valid": total_valid,
+                            "a010_records": len(a010), "a010_valid": sum(1 for x in a010 if x.get("execution_class")=="LIVE_VALID"),
+                            "last_updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")})
+
+    html = DATA_TEMPLATE.replace("__DATA__", data_json)
+    OUT.write_text(html, encoding="utf-8", newline="\n")
+    print(f"dashboard regenerated: {len(recs)} records, {total_valid} valid")
+
+DATA_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -72,7 +122,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans)}
 <div class="blocks" id="blk"></div>
 <div class="footer">STUDY-011 │ Amendment 010 │ self-contained │ generated <span id="gen">--</span></div>
 <script>
-const DATA = {"cells": {"dialagram|A": {"att": 60, "lv": 58, "fail": 2}, "dialagram|C": {"att": 61, "lv": 59, "fail": 2}, "dialagram|F": {"att": 60, "lv": 58, "fail": 2}, "dialagram|G": {"att": 60, "lv": 59, "fail": 1}, "openrouter|A": {"att": 121, "lv": 58, "fail": 63}, "openrouter|C": {"att": 108, "lv": 48, "fail": 60}, "openrouter|F": {"att": 60, "lv": 0, "fail": 60}, "openrouter|G": {"att": 82, "lv": 22, "fail": 60}}, "a010_cells": {"openrouter|A": {"att": 59, "lv": 58}, "openrouter|C": {"att": 48, "lv": 48}, "openrouter|G": {"att": 22, "lv": 22}}, "blocks": {"original_confirmatory": {"fp": "b6b7c2d0\u2026", "records": 244, "valid": 233}, "original_openrouter_free": {"fp": "0c588022\u2026", "records": 238, "valid": 0}, "post_amendment_010": {"fp": "dfe3513c\u2026", "records": 129, "valid": 128}}, "total_records": 612, "total_valid": 362, "a010_records": 129, "a010_valid": 128, "last_updated": "2026-09-04T16:07:32Z"};
+const DATA = __DATA__;
 // totals
 document.getElementById('v').textContent = DATA.total_valid;
 document.getElementById('vb').style.width = Math.min(100, DATA.total_valid/464*100) + '%';
@@ -127,4 +177,7 @@ for (const bd of blkDefs) {
 }
 </script>
 </body>
-</html>
+</html>"""
+
+if __name__ == "__main__":
+    main()
