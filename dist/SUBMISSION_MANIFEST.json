@@ -1,0 +1,62 @@
+{
+  "generator": "Jonas Abde Research Program Package Builder v1.0",
+  "date": "2026-09-04",
+  "packages": {
+    "uspto_patent": {
+      "archive": "uspto_provisional_patent_package.zip",
+      "sha256": "f2b4aee1915f8f8853701094bcdeab4e874de1ab1de1fca397950781e7557d04",
+      "files": {
+        "SPECIFICATION.md": "d4027b1c199820657b2f3aaf3160e4328dd6d2262b8cf0a55de40f429694dacb",
+        "FORM_PTO_SB_16_COVER_SHEET.md": "3af792f4c1f43971ffcf3da2d8728dcac70529cb8b8dfa3f6ea52e0f4d8a3b5d",
+        "PATENT-PRIOR-ART-AND-CLAIMS-ANALYSIS.md": "96d164339a74d3a79a0cfd47712d182c91350aef9cabe82a376aa823a7b8c14c",
+        "PRIVATE-INVENTION-RECORD-001.md": "8a8d14ded141c172ecf899c91f966b7aaac03b56422812d9cde996a85d5af210"
+      }
+    },
+    "ieee_standards": {
+      "archive": "ieee_standards_submission_package.zip",
+      "sha256": "a5b5cd9d3abc35ab651f066541548b0cbd8bbe89af4b44b875be23e174888218",
+      "files": {
+        "FORM_PAR_PROJECT_AUTHORIZATION_REQUEST.md": "908b181d39c37da23ef57f721f5c473c8eab43fcb8f65a33838adaa335dda49c",
+        "IEEE_LOI_RAND_Z_PATENT_STATEMENT.md": "6b6b41a069475e6f44838348151f98473ec1c130845fc74a3fca7acffa0dd645",
+        "RFC-0001-INTELLIGENCE-SYSTEM-CONTRACT.md": "5712ee2b8115ad49bcf72e04274c23ad2f3cc4c82c15c290a2d4ed059161f4aa",
+        "STANDARDS-CROSSWALK.md": "4a9fc87f59bfb3a1c688986c62b234c4c7a59b946053f8ab2fb43eef19639a2e",
+        "GOVERNANCE-AND-WORKING-GROUP-CHARTER.md": "2c8def0570bfb203a249844e04d125d1dec704861b4a8ac21a056fc71b155146",
+        "SPEC-001-MISSION-CONTRACT-v0.1.md": "581aee4f38e9e54f33e54f7fe360dc87b936c226e020dc93ccbe977f559f0806",
+        "schemas\\delegation.v0alpha1.json": "7243f1f5ff68372d38bad30fe51c173c6aed57ce6f0efcfff253fd10e6ad91d3",
+        "schemas\\evidence.v0alpha1.json": "3432a8ad8b6d859c417a80e0b63032964eb6096fb0819b82be3696e23a969a8f",
+        "schemas\\intelligence-system.v0alpha1.json": "a8a5209eaf9ccf9c33b45f8976a2fc9baf09b690acb1f6c916e01ddef26d1a6c",
+        "schemas\\mission.v0alpha1.json": "3864c6cf89d7f9e1a44021246c8beb3e5db9cca8d2911e249154f711eb4e18b0"
+      }
+    },
+    "nist_tevv": {
+      "archive": "nist_tevv_submission_package.zip",
+      "sha256": "b698c568fff56fc6848d16dfb44982ab6d9c0460d4201a1124e4e5c7257fb2ee",
+      "files": {
+        "NIST_TEVV_ATHLON_SUBMISSION_DOSSIER.md": "f2ecad78929bad175c9b0083eba3d3bd062ec23785ca1167975684bccd6ae405",
+        "STUDY-002-JAR-EXP-0001-EMPIRICAL-EVALUATION.md": "ce936bb0e18a9b9a68bc5c7fc4fce38632f48fec9e33e7de77ded1b61fe5a82a",
+        "STUDY-005-CONFOUNDER-ANALYSIS-REPORT.md": "4e7723c9833491156cce3219eca5ce4c8b0446726cd460fb3dea7bbbcf1ecb07"
+      }
+    },
+    "external_validation_vnext": {
+      "archive": "SPEC-001-EXTERNAL-VALIDATION-vNext-BUNDLE.zip",
+      "sha256": "21655f6c0f71f70b9e1137a813a9c74d98fa6f8df7fe6f7a655236415cf3aa80",
+      "files": {
+        "IMPLEMENTATION_RUBRIC.md": "102ef24774e9f629f3e1824afaba0e949c59b87c8672e230194fec265fe2df32",
+        "NORMATIVE_TERMINOLOGY.md": "c25aee5b04a1cb98627ddb5ed9ffedad9b58e6796b53ae2a0fab19f97ccb811e",
+        "README.md": "f778eb764908027acacf1e9ce20f993ffefa5848d126e543fc44e534be198e0d",
+        "SPECIFICATION.md": "581aee4f38e9e54f33e54f7fe360dc87b936c226e020dc93ccbe977f559f0806",
+        "conformance\\standalone_runner.py": "6b37d8c83e9e82f1a355c7df97cf0aaeb78bd8332e00b0e20366f4e88fdb5c7a",
+        "conformance\\test_cases.json": "f49630a84b2330aa05a65e375bb15f60ffd25d118ebf0756c9556d5e6487a536",
+        "schemas\\delegation.v0alpha1.json": "7243f1f5ff68372d38bad30fe51c173c6aed57ce6f0efcfff253fd10e6ad91d3",
+        "schemas\\evidence.v0alpha1.json": "3432a8ad8b6d859c417a80e0b63032964eb6096fb0819b82be3696e23a969a8f",
+        "schemas\\intelligence-system.v0alpha1.json": "a8a5209eaf9ccf9c33b45f8976a2fc9baf09b690acb1f6c916e01ddef26d1a6c",
+        "schemas\\mission.v0alpha1.json": "3864c6cf89d7f9e1a44021246c8beb3e5db9cca8d2911e249154f711eb4e18b0",
+        "schemas\\README.md": "103018cc0680d8aa7d6f544f0e106786df799674dda438beee0504581002db7f",
+        "test_vectors\\sample_delegation.json": "8d23c58b62189aafaf061d1435fbcace8eec7bfc50437cb9fb1d5aab21c94fa2",
+        "test_vectors\\sample_evidence.json": "8647f4850b4f8643c18cda4019dcbe022fd6c5b77fd2e5ce58e348f74bfc2b10",
+        "test_vectors\\sample_manifest.json": "4ca0eb4d31d492df86b0a2248dd4187d30ca3f9cd8d2d0106f14d4e4199e9a71",
+        "test_vectors\\sample_mission.json": "976ba81ef77c70ccaa6b63fc90619fc3fbb9327ed1f3b0176ede8432a3fb01df"
+      }
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "suite_version": "0.1.0",
+  "spec_ref": "SPEC-001-MISSION-CONTRACT-v0.1",
+  "date": "2026-09-03",
+  "pass_rate_pct": 100.0,
+  "results": [
+    {
+      "id": "TC-001",
+      "name": "Manifest Schema Conformance",
+      "level": "MANDATORY",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "TC-002",
+      "name": "Mission Contract Schema Conformance",
+      "level": "MANDATORY",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "TC-003",
+      "name": "Invariant 1: Non-Equivalence of Complete and Verified",
+      "level": "MANDATORY",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "TC-004",
+      "name": "Invariant 2: Evidence-Gated Outcome",
+      "level": "MANDATORY",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "TC-005",
+      "name": "Invariant 3: Purpose-Bound Authority Attenuation",
+      "level": "MANDATORY",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "TC-006",
+      "name": "Invariant 4: Budget Enforcement",
+      "level": "MANDATORY",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "TC-007",
+      "name": "Lifecycle State Machine Progression",
+      "level": "MANDATORY",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "TC-008",
+      "name": "OpenTelemetry GenAI Trajectory Event Compliance",
+      "level": "RECOMMENDED",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "TC-009",
+      "name": "Assurance Tier Compliance (Tier 0 Rejection)",
+      "level": "MANDATORY",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "TC-010",
+      "name": "Recovery Policy Execution",
+      "level": "MANDATORY",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "TC-011",
+      "name": "Delegation Expiration & Mid-flight Revocation",
+      "level": "MANDATORY",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "TC-012",
+      "name": "Sub-delegation Monotonic Attenuation (Invariant 3)",
+      "level": "MANDATORY",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "TC-013",
+      "name": "Multi-threaded State & Trajectory Concurrency Invariants",
+      "level": "MANDATORY",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "TC-014",
+      "name": "Minimum Assurance Tier Enforcement",
+      "level": "MANDATORY",
+      "status": "PASS",
+      "error": null
+    }
+  ]
+}

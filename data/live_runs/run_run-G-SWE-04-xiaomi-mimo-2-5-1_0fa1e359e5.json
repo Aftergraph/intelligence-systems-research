@@ -1,0 +1,73 @@
+{
+  "experiment_id": "STUDY-008-LIVE",
+  "run_id": "run-G-SWE-04-xiaomi-mimo-2-5-1",
+  "condition": "G",
+  "workload_id": "SWE-04",
+  "domain": "software_engineering",
+  "provider": "dialagram",
+  "router": "dialagram.me/router/v1",
+  "exact_model_id": "xiaomi-mimo-2.5",
+  "timestamp_iso": "2026-09-03T23:09:27Z",
+  "hashes": {
+    "system_prompt_sha256": "3fd78ef0d1b170f909ad403800d0869acedbb5bd47c9fc2c9b20804463c6dbed",
+    "mission_contract_sha256": "4fdd8c0acd84068cc8834fcaa0923a63b74332cc82c06efbacfd3801ae944657",
+    "request_parameters_sha256": "fa6094808405d25aa3a19534f5b19904d8593dd49b8d8b546c88bab9cf1fd951"
+  },
+  "raw_response": "[Dialagram Sim: xiaomi-mimo-2.5] Formulated plan with verified constraints.",
+  "tool_calls": [],
+  "tool_responses": [],
+  "routing_receipt": {
+    "selected_model": "qwen-3.8-max",
+    "provider": "dialagram",
+    "score": 10.0
+  },
+  "authority_receipts": [
+    {
+      "token_id": "del-swe-04",
+      "status": "AUTHORIZED"
+    }
+  ],
+  "budget_reservations": [
+    "res-6cfa8d970ab0"
+  ],
+  "budget_commits": [
+    "res-6cfa8d970ab0"
+  ],
+  "candidate_completion": {
+    "reported_complete": true
+  },
+  "assurance_receipts": [
+    {
+      "principal": "AssurancePrincipal",
+      "decision": "VERIFIED",
+      "timestamp": "2026-09-03T23:09:27Z"
+    }
+  ],
+  "evidence_references": [
+    "ev-SWE-04"
+  ],
+  "recovery_sequence": [
+    "JOURNAL_ROLLBACK_TO_CHECKPOINT",
+    "STATE_RECOVERY:FAIL-HALLUC"
+  ],
+  "usage": {
+    "input_tokens": 51,
+    "output_tokens": 40,
+    "total_tokens": 91,
+    "latency_ms": 0.0,
+    "cost_usd": 0.0
+  },
+  "final_mission_state": "VERIFIED",
+  "ground_truth": {
+    "ground_truth_pass": true
+  },
+  "verifier_output": {
+    "tier": "tier_2_deterministic",
+    "status": "PASS",
+    "exit_code": 0,
+    "recovery_state": "RESOLVED"
+  },
+  "verified_success": true,
+  "false_completion": false,
+  "manifest_sha256": "0fa1e359e516658a4789e47bff6fc4dea946b88c561672138a4c2ef3983c44c9"
+}

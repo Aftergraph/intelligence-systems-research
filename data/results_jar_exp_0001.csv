@@ -1,0 +1,201 @@
+task_id,condition,difficulty,actual_success,declared_success,is_verified,is_false_completion,total_tokens,control_plane_tokens,cost_usd,time_sec
+SWE-001,Condition 1 (Baseline),easy,True,True,True,False,12899,0,0.0172,4.09
+SWE-001,Condition 2 (Prompted Criteria),easy,True,True,True,False,12245,250,0.0163,4.94
+SWE-001,Condition 3 (LLM Judge),easy,True,True,True,False,17047,1650,0.0377,7.74
+SWE-001,Condition 4 (Evidence-Gated Runtime),easy,True,True,True,False,20324,824,0.031,6.3
+SWE-002,Condition 1 (Baseline),easy,True,True,True,False,14605,0,0.0195,3.75
+SWE-002,Condition 2 (Prompted Criteria),easy,False,False,False,False,11794,250,0.0157,4.77
+SWE-002,Condition 3 (LLM Judge),easy,True,True,True,False,16507,1650,0.037,8.41
+SWE-002,Condition 4 (Evidence-Gated Runtime),easy,True,True,True,False,13960,460,0.023,4.73
+SWE-003,Condition 1 (Baseline),easy,False,False,False,False,12574,0,0.0168,4.89
+SWE-003,Condition 2 (Prompted Criteria),easy,True,True,True,False,12911,250,0.0172,4.76
+SWE-003,Condition 3 (LLM Judge),easy,False,False,False,False,14091,1650,0.0338,7.6
+SWE-003,Condition 4 (Evidence-Gated Runtime),easy,True,True,True,False,13963,463,0.023,4.73
+SWE-004,Condition 1 (Baseline),easy,True,True,True,False,13284,0,0.0177,4.38
+SWE-004,Condition 2 (Prompted Criteria),easy,True,True,True,False,13333,250,0.0178,4.71
+SWE-004,Condition 3 (LLM Judge),easy,True,True,True,False,15757,1650,0.036,7.59
+SWE-004,Condition 4 (Evidence-Gated Runtime),easy,True,True,True,False,13963,463,0.023,4.73
+SWE-005,Condition 1 (Baseline),easy,True,True,True,False,14624,0,0.0195,4.68
+SWE-005,Condition 2 (Prompted Criteria),easy,True,True,True,False,15079,250,0.0201,4.65
+SWE-005,Condition 3 (LLM Judge),easy,True,True,True,False,15373,1650,0.0355,8.37
+SWE-005,Condition 4 (Evidence-Gated Runtime),easy,True,True,True,False,13963,463,0.023,4.73
+SWE-006,Condition 1 (Baseline),easy,True,True,True,False,14317,0,0.0191,3.89
+SWE-006,Condition 2 (Prompted Criteria),easy,False,False,False,False,13878,250,0.0185,4.87
+SWE-006,Condition 3 (LLM Judge),easy,True,True,True,False,16214,1650,0.0366,7.94
+SWE-006,Condition 4 (Evidence-Gated Runtime),easy,False,False,False,False,13969,469,0.023,4.73
+SWE-007,Condition 1 (Baseline),easy,True,True,True,False,13884,0,0.0185,4.58
+SWE-007,Condition 2 (Prompted Criteria),easy,True,True,True,False,14012,250,0.0187,4.59
+SWE-007,Condition 3 (LLM Judge),easy,True,True,True,False,13487,1650,0.033,7.4
+SWE-007,Condition 4 (Evidence-Gated Runtime),easy,True,True,True,False,13967,467,0.023,4.73
+SWE-008,Condition 1 (Baseline),easy,False,True,False,True,14786,0,0.0197,4.73
+SWE-008,Condition 2 (Prompted Criteria),easy,False,False,False,False,13421,250,0.0179,4.64
+SWE-008,Condition 3 (LLM Judge),easy,False,False,False,False,14834,1650,0.0348,8.33
+SWE-008,Condition 4 (Evidence-Gated Runtime),easy,True,True,True,False,13962,462,0.023,4.73
+SWE-009,Condition 1 (Baseline),easy,True,True,True,False,12062,0,0.0161,3.69
+SWE-009,Condition 2 (Prompted Criteria),easy,True,True,True,False,14545,250,0.0194,4.64
+SWE-009,Condition 3 (LLM Judge),easy,True,True,True,False,15078,1650,0.0351,8.15
+SWE-009,Condition 4 (Evidence-Gated Runtime),easy,True,True,True,False,13964,464,0.023,4.73
+SWE-010,Condition 1 (Baseline),easy,True,True,True,False,13701,0,0.0183,4.74
+SWE-010,Condition 2 (Prompted Criteria),easy,True,True,True,False,12375,250,0.0165,4.85
+SWE-010,Condition 3 (LLM Judge),easy,True,True,True,False,13615,1650,0.0332,7.96
+SWE-010,Condition 4 (Evidence-Gated Runtime),easy,True,True,True,False,13960,460,0.023,4.73
+SWE-011,Condition 1 (Baseline),easy,True,True,True,False,10636,0,0.0142,4.41
+SWE-011,Condition 2 (Prompted Criteria),easy,True,True,True,False,12881,250,0.0172,5.1
+SWE-011,Condition 3 (LLM Judge),easy,True,True,True,False,16832,1650,0.0374,7.63
+SWE-011,Condition 4 (Evidence-Gated Runtime),easy,True,True,True,False,13963,463,0.023,4.73
+SWE-012,Condition 1 (Baseline),easy,True,True,True,False,12205,0,0.0163,4.46
+SWE-012,Condition 2 (Prompted Criteria),easy,True,True,True,False,15191,250,0.0203,4.85
+SWE-012,Condition 3 (LLM Judge),easy,True,True,True,False,13286,1650,0.0327,8.26
+SWE-012,Condition 4 (Evidence-Gated Runtime),easy,True,True,True,False,13963,463,0.023,4.73
+SWE-013,Condition 1 (Baseline),easy,False,True,False,True,12872,0,0.0172,4.4
+SWE-013,Condition 2 (Prompted Criteria),easy,True,True,True,False,12127,250,0.0162,4.98
+SWE-013,Condition 3 (LLM Judge),easy,True,True,True,False,15777,1650,0.036,7.48
+SWE-013,Condition 4 (Evidence-Gated Runtime),easy,True,True,True,False,13963,463,0.023,4.73
+SWE-014,Condition 1 (Baseline),easy,True,True,True,False,14058,0,0.0187,3.89
+SWE-014,Condition 2 (Prompted Criteria),easy,True,True,True,False,15680,250,0.0209,4.61
+SWE-014,Condition 3 (LLM Judge),easy,True,True,True,False,17176,1650,0.0379,8.01
+SWE-014,Condition 4 (Evidence-Gated Runtime),easy,True,True,True,False,13969,469,0.023,4.73
+SWE-015,Condition 1 (Baseline),easy,True,True,True,False,13384,0,0.0178,4.27
+SWE-015,Condition 2 (Prompted Criteria),easy,True,True,True,False,12166,250,0.0162,5.15
+SWE-015,Condition 3 (LLM Judge),easy,False,False,False,False,15668,1650,0.0359,8.58
+SWE-015,Condition 4 (Evidence-Gated Runtime),easy,True,True,True,False,13967,467,0.023,4.73
+SWE-016,Condition 1 (Baseline),medium,True,True,True,False,28116,0,0.0469,10.18
+SWE-016,Condition 2 (Prompted Criteria),medium,False,False,False,False,29147,250,0.0486,13.08
+SWE-016,Condition 3 (LLM Judge),medium,True,True,True,False,30209,1650,0.0653,16.41
+SWE-016,Condition 4 (Evidence-Gated Runtime),medium,True,True,True,False,27462,462,0.05,12.6
+SWE-017,Condition 1 (Baseline),medium,True,True,True,False,28129,0,0.0469,9.97
+SWE-017,Condition 2 (Prompted Criteria),medium,True,True,True,False,29209,250,0.0487,13.47
+SWE-017,Condition 3 (LLM Judge),medium,False,False,False,False,25562,1650,0.0576,14.41
+SWE-017,Condition 4 (Evidence-Gated Runtime),medium,True,True,True,False,27464,464,0.05,12.6
+SWE-018,Condition 1 (Baseline),medium,False,False,False,False,26197,0,0.0437,10.48
+SWE-018,Condition 2 (Prompted Criteria),medium,False,True,False,True,24796,250,0.0413,13.04
+SWE-018,Condition 3 (LLM Judge),medium,True,True,True,False,28407,1650,0.0623,14.4
+SWE-018,Condition 4 (Evidence-Gated Runtime),medium,True,True,True,False,27460,460,0.05,12.6
+SWE-019,Condition 1 (Baseline),medium,False,True,False,True,24248,0,0.0404,11.69
+SWE-019,Condition 2 (Prompted Criteria),medium,True,True,True,False,31184,250,0.052,12.64
+SWE-019,Condition 3 (LLM Judge),medium,False,True,False,True,29101,1650,0.0635,14.11
+SWE-019,Condition 4 (Evidence-Gated Runtime),medium,False,False,False,False,27463,463,0.05,12.6
+SWE-020,Condition 1 (Baseline),medium,True,True,True,False,26059,0,0.0434,10.63
+SWE-020,Condition 2 (Prompted Criteria),medium,False,True,False,True,30412,250,0.0507,11.28
+SWE-020,Condition 3 (LLM Judge),medium,True,True,True,False,27051,1650,0.0601,16.42
+SWE-020,Condition 4 (Evidence-Gated Runtime),medium,True,True,True,False,27463,463,0.05,12.6
+SWE-021,Condition 1 (Baseline),medium,False,True,False,True,27856,0,0.0464,12.48
+SWE-021,Condition 2 (Prompted Criteria),medium,False,True,False,True,24313,250,0.0405,11.99
+SWE-021,Condition 3 (LLM Judge),medium,False,True,False,True,24811,1650,0.0564,14.38
+SWE-021,Condition 4 (Evidence-Gated Runtime),medium,False,False,False,False,27463,463,0.05,12.6
+SWE-022,Condition 1 (Baseline),medium,False,True,False,True,22998,0,0.0383,11.77
+SWE-022,Condition 2 (Prompted Criteria),medium,True,True,True,False,24761,250,0.0413,10.87
+SWE-022,Condition 3 (LLM Judge),medium,True,False,False,False,28856,1650,0.0631,16.42
+SWE-022,Condition 4 (Evidence-Gated Runtime),medium,True,True,True,False,27469,469,0.05,12.6
+SWE-023,Condition 1 (Baseline),medium,False,True,False,True,21465,0,0.0358,12.15
+SWE-023,Condition 2 (Prompted Criteria),medium,True,True,True,False,30195,250,0.0503,11.37
+SWE-023,Condition 3 (LLM Judge),medium,False,False,False,False,27125,1650,0.0602,16.22
+SWE-023,Condition 4 (Evidence-Gated Runtime),medium,True,True,True,False,27467,467,0.05,12.6
+SWE-024,Condition 1 (Baseline),medium,False,True,False,True,21557,0,0.0359,12.08
+SWE-024,Condition 2 (Prompted Criteria),medium,True,True,True,False,23095,250,0.0385,11.64
+SWE-024,Condition 3 (LLM Judge),medium,False,True,False,True,29681,1650,0.0645,15.26
+SWE-024,Condition 4 (Evidence-Gated Runtime),medium,True,True,True,False,27462,462,0.05,12.6
+SWE-025,Condition 1 (Baseline),medium,False,True,False,True,26532,0,0.0442,11.62
+SWE-025,Condition 2 (Prompted Criteria),medium,False,True,False,True,31591,250,0.0527,12.62
+SWE-025,Condition 3 (LLM Judge),medium,False,False,False,False,24440,1650,0.0557,14.23
+SWE-025,Condition 4 (Evidence-Gated Runtime),medium,True,True,True,False,27464,464,0.05,12.6
+SWE-026,Condition 1 (Baseline),medium,False,True,False,True,22812,0,0.038,12.56
+SWE-026,Condition 2 (Prompted Criteria),medium,True,True,True,False,25799,250,0.043,11.54
+SWE-026,Condition 3 (LLM Judge),medium,True,True,True,False,32051,1650,0.0684,14.67
+SWE-026,Condition 4 (Evidence-Gated Runtime),medium,True,True,True,False,39820,820,0.07,16.8
+SWE-027,Condition 1 (Baseline),medium,False,True,False,True,22361,0,0.0373,9.99
+SWE-027,Condition 2 (Prompted Criteria),medium,True,True,True,False,30846,250,0.0514,12.74
+SWE-027,Condition 3 (LLM Judge),medium,True,True,True,False,24170,1650,0.0553,14.55
+SWE-027,Condition 4 (Evidence-Gated Runtime),medium,True,True,True,False,27463,463,0.05,12.6
+SWE-028,Condition 1 (Baseline),medium,True,True,True,False,26910,0,0.0449,12.23
+SWE-028,Condition 2 (Prompted Criteria),medium,True,True,True,False,27475,250,0.0458,13.52
+SWE-028,Condition 3 (LLM Judge),medium,False,False,False,False,25946,1650,0.0582,14.37
+SWE-028,Condition 4 (Evidence-Gated Runtime),medium,False,False,False,False,27463,463,0.05,12.6
+SWE-029,Condition 1 (Baseline),medium,False,True,False,True,26957,0,0.0449,9.8
+SWE-029,Condition 2 (Prompted Criteria),medium,False,True,False,True,27753,250,0.0463,11.23
+SWE-029,Condition 3 (LLM Judge),medium,False,False,False,False,26441,1650,0.0591,14.85
+SWE-029,Condition 4 (Evidence-Gated Runtime),medium,False,False,False,False,27463,463,0.05,12.6
+SWE-030,Condition 1 (Baseline),medium,False,True,False,True,25823,0,0.043,9.72
+SWE-030,Condition 2 (Prompted Criteria),medium,True,True,True,False,30245,250,0.0504,13.57
+SWE-030,Condition 3 (LLM Judge),medium,True,True,True,False,29940,1650,0.0649,15.74
+SWE-030,Condition 4 (Evidence-Gated Runtime),medium,True,True,True,False,27469,469,0.05,12.6
+SWE-031,Condition 1 (Baseline),medium,True,True,True,False,25656,0,0.0428,9.68
+SWE-031,Condition 2 (Prompted Criteria),medium,True,True,True,False,24456,250,0.0408,12.7
+SWE-031,Condition 3 (LLM Judge),medium,True,True,True,False,31297,1650,0.0672,15.46
+SWE-031,Condition 4 (Evidence-Gated Runtime),medium,False,False,False,False,27467,467,0.05,12.6
+SWE-032,Condition 1 (Baseline),medium,False,False,False,False,22149,0,0.0369,10.96
+SWE-032,Condition 2 (Prompted Criteria),medium,True,True,True,False,23436,250,0.0391,11.39
+SWE-032,Condition 3 (LLM Judge),medium,True,True,True,False,30560,1650,0.0659,14.6
+SWE-032,Condition 4 (Evidence-Gated Runtime),medium,True,True,True,False,27462,462,0.05,12.6
+SWE-033,Condition 1 (Baseline),medium,True,True,True,False,24132,0,0.0402,11.09
+SWE-033,Condition 2 (Prompted Criteria),medium,False,False,False,False,27288,250,0.0455,12.72
+SWE-033,Condition 3 (LLM Judge),medium,False,False,False,False,29109,1650,0.0635,16.49
+SWE-033,Condition 4 (Evidence-Gated Runtime),medium,True,True,True,False,27464,464,0.05,12.6
+SWE-034,Condition 1 (Baseline),medium,True,True,True,False,24493,0,0.0408,11.45
+SWE-034,Condition 2 (Prompted Criteria),medium,False,True,False,True,31163,250,0.0519,11.04
+SWE-034,Condition 3 (LLM Judge),medium,True,True,True,False,30525,1650,0.0659,16.35
+SWE-034,Condition 4 (Evidence-Gated Runtime),medium,True,True,True,False,39820,820,0.07,16.8
+SWE-035,Condition 1 (Baseline),medium,False,True,False,True,29592,0,0.0493,11.82
+SWE-035,Condition 2 (Prompted Criteria),medium,False,False,False,False,29723,250,0.0495,12.42
+SWE-035,Condition 3 (LLM Judge),medium,True,True,True,False,30546,1650,0.0659,17.08
+SWE-035,Condition 4 (Evidence-Gated Runtime),medium,False,False,False,False,27463,463,0.05,12.6
+SWE-036,Condition 1 (Baseline),hard,False,True,False,True,54858,0,0.1097,22.67
+SWE-036,Condition 2 (Prompted Criteria),hard,False,False,False,False,61636,250,0.1233,27.47
+SWE-036,Condition 3 (LLM Judge),hard,False,False,False,False,58043,1650,0.1311,29.26
+SWE-036,Condition 4 (Evidence-Gated Runtime),hard,False,False,False,False,54463,463,0.113,29.4
+SWE-037,Condition 1 (Baseline),hard,False,True,False,True,52589,0,0.1052,24.55
+SWE-037,Condition 2 (Prompted Criteria),hard,True,True,True,False,45278,250,0.0906,29.16
+SWE-037,Condition 3 (LLM Judge),hard,False,True,False,True,51794,1650,0.1186,29.17
+SWE-037,Condition 4 (Evidence-Gated Runtime),hard,True,True,True,False,78823,823,0.161,39.2
+SWE-038,Condition 1 (Baseline),hard,True,True,True,False,42241,0,0.0845,24.35
+SWE-038,Condition 2 (Prompted Criteria),hard,False,True,False,True,50331,250,0.1007,27.48
+SWE-038,Condition 3 (LLM Judge),hard,False,True,False,True,58710,1650,0.1324,29.94
+SWE-038,Condition 4 (Evidence-Gated Runtime),hard,False,False,False,False,54469,469,0.113,29.4
+SWE-039,Condition 1 (Baseline),hard,False,True,False,True,53280,0,0.1066,29.17
+SWE-039,Condition 2 (Prompted Criteria),hard,False,True,False,True,55020,250,0.11,27.83
+SWE-039,Condition 3 (LLM Judge),hard,False,False,False,False,57015,1650,0.129,34.74
+SWE-039,Condition 4 (Evidence-Gated Runtime),hard,False,False,False,False,54467,467,0.113,29.4
+SWE-040,Condition 1 (Baseline),hard,False,True,False,True,59991,0,0.12,26.83
+SWE-040,Condition 2 (Prompted Criteria),hard,False,True,False,True,57520,250,0.115,32.12
+SWE-040,Condition 3 (LLM Judge),hard,False,False,False,False,61891,1650,0.1388,33.79
+SWE-040,Condition 4 (Evidence-Gated Runtime),hard,False,False,False,False,54462,462,0.113,29.4
+SWE-041,Condition 1 (Baseline),hard,False,True,False,True,58388,0,0.1168,29.51
+SWE-041,Condition 2 (Prompted Criteria),hard,True,True,True,False,50860,250,0.1017,29.09
+SWE-041,Condition 3 (LLM Judge),hard,False,True,False,True,59077,1650,0.1332,34.87
+SWE-041,Condition 4 (Evidence-Gated Runtime),hard,True,True,True,False,54464,464,0.113,29.4
+SWE-042,Condition 1 (Baseline),hard,False,True,False,True,49408,0,0.0988,30.79
+SWE-042,Condition 2 (Prompted Criteria),hard,False,False,False,False,62342,250,0.1247,24.1
+SWE-042,Condition 3 (LLM Judge),hard,True,True,True,False,56890,1650,0.1288,27.39
+SWE-042,Condition 4 (Evidence-Gated Runtime),hard,False,False,False,False,54460,460,0.113,29.4
+SWE-043,Condition 1 (Baseline),hard,False,True,False,True,43217,0,0.0864,26.74
+SWE-043,Condition 2 (Prompted Criteria),hard,False,True,False,True,63207,250,0.1264,28.32
+SWE-043,Condition 3 (LLM Judge),hard,False,False,False,False,56380,1650,0.1278,35.55
+SWE-043,Condition 4 (Evidence-Gated Runtime),hard,True,True,True,False,54463,463,0.113,29.4
+SWE-044,Condition 1 (Baseline),hard,True,True,True,False,47142,0,0.0943,30.38
+SWE-044,Condition 2 (Prompted Criteria),hard,True,True,True,False,48903,250,0.0978,30.16
+SWE-044,Condition 3 (LLM Judge),hard,True,True,True,False,62464,1650,0.1399,28.36
+SWE-044,Condition 4 (Evidence-Gated Runtime),hard,True,True,True,False,54463,463,0.113,29.4
+SWE-045,Condition 1 (Baseline),hard,False,True,False,True,44529,0,0.0891,28.46
+SWE-045,Condition 2 (Prompted Criteria),hard,True,True,True,False,46621,250,0.0932,29.08
+SWE-045,Condition 3 (LLM Judge),hard,False,False,False,False,54378,1650,0.1238,30.91
+SWE-045,Condition 4 (Evidence-Gated Runtime),hard,False,False,False,False,54463,463,0.113,29.4
+SWE-046,Condition 1 (Baseline),hard,False,True,False,True,57689,0,0.1154,24.62
+SWE-046,Condition 2 (Prompted Criteria),hard,False,True,False,True,56425,250,0.1128,31.09
+SWE-046,Condition 3 (LLM Judge),hard,False,False,False,False,49931,1650,0.1149,31.55
+SWE-046,Condition 4 (Evidence-Gated Runtime),hard,False,False,False,False,54469,469,0.113,29.4
+SWE-047,Condition 1 (Baseline),hard,False,False,False,False,50227,0,0.1005,26.03
+SWE-047,Condition 2 (Prompted Criteria),hard,True,True,True,False,57408,250,0.1148,31.71
+SWE-047,Condition 3 (LLM Judge),hard,True,True,True,False,60816,1650,0.1366,32.67
+SWE-047,Condition 4 (Evidence-Gated Runtime),hard,False,False,False,False,54467,467,0.113,29.4
+SWE-048,Condition 1 (Baseline),hard,True,True,True,False,51853,0,0.1037,23.59
+SWE-048,Condition 2 (Prompted Criteria),hard,False,True,False,True,62173,250,0.1243,25.22
+SWE-048,Condition 3 (LLM Judge),hard,False,False,False,False,56720,1650,0.1284,28.85
+SWE-048,Condition 4 (Evidence-Gated Runtime),hard,False,False,False,False,54462,462,0.113,29.4
+SWE-049,Condition 1 (Baseline),hard,False,True,False,True,42277,0,0.0846,25.52
+SWE-049,Condition 2 (Prompted Criteria),hard,False,False,False,False,56779,250,0.1136,26.61
+SWE-049,Condition 3 (LLM Judge),hard,False,False,False,False,50815,1650,0.1166,33.54
+SWE-049,Condition 4 (Evidence-Gated Runtime),hard,False,False,False,False,54464,464,0.113,29.4
+SWE-050,Condition 1 (Baseline),hard,True,True,True,False,54233,0,0.1085,28.1
+SWE-050,Condition 2 (Prompted Criteria),hard,False,True,False,True,57105,250,0.1142,24.21
+SWE-050,Condition 3 (LLM Judge),hard,False,False,False,False,47108,1650,0.1092,31.65
+SWE-050,Condition 4 (Evidence-Gated Runtime),hard,False,False,False,False,54460,460,0.113,29.4

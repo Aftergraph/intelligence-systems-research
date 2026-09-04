@@ -1,0 +1,69 @@
+{
+  "apiVersion": "intelligence.systems/v0alpha1",
+  "kind": "Mission",
+  "metadata": {
+    "id": "release-production",
+    "version": 1
+  },
+  "objective": {
+    "outcome": "Deploy the approved release to production without violating reliability constraints."
+  },
+  "inputs": {
+    "release_ref": {
+      "required": true
+    }
+  },
+  "success": {
+    "all": [
+      "build_passed",
+      "tests_passed",
+      "security_scan_passed",
+      "deployment_completed",
+      "production_health_verified"
+    ]
+  },
+  "constraints": {
+    "max_error_rate": 0.01,
+    "max_downtime_seconds": 30
+  },
+  "budget": {
+    "wall_clock": {
+      "max": "45m"
+    },
+    "money": {
+      "max": 10,
+      "currency": "EUR"
+    },
+    "human_interventions": {
+      "max": 3
+    }
+  },
+  "authority": {
+    "repository": {
+      "write": "allowed"
+    },
+    "production": {
+      "deploy": "approval_required"
+    }
+  },
+  "assurance": {
+    "verification": {
+      "independence": "required"
+    }
+  },
+  "evidence": {
+    "required": [
+      "build_result",
+      "test_result",
+      "deployment_receipt",
+      "health_check"
+    ]
+  },
+  "recovery": {
+    "retry_limit": 2,
+    "on_failure": [
+      "rollback",
+      "escalate"
+    ]
+  }
+}

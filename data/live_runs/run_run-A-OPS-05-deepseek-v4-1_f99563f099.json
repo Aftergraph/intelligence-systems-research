@@ -1,0 +1,46 @@
+{
+  "experiment_id": "STUDY-008-LIVE",
+  "run_id": "run-A-OPS-05-deepseek-v4-1",
+  "condition": "A",
+  "workload_id": "OPS-05",
+  "domain": "agent_operations",
+  "provider": "dialagram",
+  "router": "dialagram.me/router/v1",
+  "exact_model_id": "deepseek-v4",
+  "timestamp_iso": "2026-09-03T23:08:55Z",
+  "hashes": {
+    "system_prompt_sha256": "3fd78ef0d1b170f909ad403800d0869acedbb5bd47c9fc2c9b20804463c6dbed",
+    "mission_contract_sha256": "554b6e498706cf13935cb5c2d63af2d586137b91095d6954980dac5636b680a8",
+    "request_parameters_sha256": "06093eb1ab25eab51c1e01e1fd6793a7bd6dcfde5966c05d597952c5a685ef90"
+  },
+  "raw_response": "[Dialagram Sim: deepseek-v4] Formulated plan with verified constraints.",
+  "tool_calls": [],
+  "tool_responses": [],
+  "routing_receipt": null,
+  "authority_receipts": [],
+  "budget_reservations": [],
+  "budget_commits": [],
+  "candidate_completion": {
+    "reported_complete": true
+  },
+  "assurance_receipts": [],
+  "evidence_references": [
+    "ev-OPS-05"
+  ],
+  "recovery_sequence": [],
+  "usage": {
+    "input_tokens": 28,
+    "output_tokens": 25,
+    "total_tokens": 53,
+    "latency_ms": 0.0,
+    "cost_usd": 0.0
+  },
+  "final_mission_state": "COMPLETED",
+  "ground_truth": {
+    "ground_truth_pass": false
+  },
+  "verifier_output": {},
+  "verified_success": false,
+  "false_completion": true,
+  "manifest_sha256": "f99563f0993bf091c86b4d53d057ef466eee48dcfe955e59523c72df7877c533"
+}

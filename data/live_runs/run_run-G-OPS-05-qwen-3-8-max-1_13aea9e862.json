@@ -1,0 +1,73 @@
+{
+  "experiment_id": "STUDY-008-LIVE",
+  "run_id": "run-G-OPS-05-qwen-3-8-max-1",
+  "condition": "G",
+  "workload_id": "OPS-05",
+  "domain": "agent_operations",
+  "provider": "dialagram",
+  "router": "dialagram.me/router/v1",
+  "exact_model_id": "qwen-3.8-max",
+  "timestamp_iso": "2026-09-03T23:08:45Z",
+  "hashes": {
+    "system_prompt_sha256": "3fd78ef0d1b170f909ad403800d0869acedbb5bd47c9fc2c9b20804463c6dbed",
+    "mission_contract_sha256": "554b6e498706cf13935cb5c2d63af2d586137b91095d6954980dac5636b680a8",
+    "request_parameters_sha256": "3d1dfa1e64ba3b1747ac18b6197c0a5e33466d7cf7162a916e7e2e62201d5ffb"
+  },
+  "raw_response": "[Dialagram Sim: qwen-3.8-max] Formulated plan with verified constraints.",
+  "tool_calls": [],
+  "tool_responses": [],
+  "routing_receipt": {
+    "selected_model": "qwen-3.8-max",
+    "provider": "dialagram",
+    "score": 10.0
+  },
+  "authority_receipts": [
+    {
+      "token_id": "del-ops-05",
+      "status": "AUTHORIZED"
+    }
+  ],
+  "budget_reservations": [
+    "res-3e25294e85f6"
+  ],
+  "budget_commits": [
+    "res-3e25294e85f6"
+  ],
+  "candidate_completion": {
+    "reported_complete": true
+  },
+  "assurance_receipts": [
+    {
+      "principal": "AssurancePrincipal",
+      "decision": "VERIFIED",
+      "timestamp": "2026-09-03T23:08:45Z"
+    }
+  ],
+  "evidence_references": [
+    "ev-OPS-05"
+  ],
+  "recovery_sequence": [
+    "JOURNAL_ROLLBACK_TO_CHECKPOINT",
+    "STATE_RECOVERY:FAIL-PRESSURE"
+  ],
+  "usage": {
+    "input_tokens": 44,
+    "output_tokens": 40,
+    "total_tokens": 84,
+    "latency_ms": 0.0,
+    "cost_usd": 0.0
+  },
+  "final_mission_state": "VERIFIED",
+  "ground_truth": {
+    "ground_truth_pass": true
+  },
+  "verifier_output": {
+    "tier": "tier_2_deterministic",
+    "status": "PASS",
+    "exit_code": 0,
+    "recovery_state": "RESOLVED"
+  },
+  "verified_success": true,
+  "false_completion": false,
+  "manifest_sha256": "13aea9e86217a829faf225bd84a717e894abf1dd2528ce75bfd5fb54c3c881f3"
+}

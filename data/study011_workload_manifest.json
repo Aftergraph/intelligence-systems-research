@@ -1,0 +1,412 @@
+{
+  "_freeze_notice": "FROZEN STUDY-011 confirmatory set v1.0.0. After freeze, NO silent edits. Any change requires PROTOCOL_AMENDMENT entry + version bump + recompute hashes + new created_utc + new root hash. Retain prior manifest.",
+  "study_id": "STUDY-011",
+  "freeze_version": "1.0.0",
+  "created_utc": "2026-09-04T00:18:40Z",
+  "total_count": 20,
+  "token_heuristic": "estimated_tokens = ceil(word_count(prompt) * 4 / 3); all prompts verified <= 2000 tokens; see token_check",
+  "root_hash": "e823102a4ff09bfca560c95e341aa3eaf7a4003215abd3900749afc64d3e4e06",
+  "root_hash_method": "sha256(''.join(sorted(workload_sha256_list))) over canonical workload JSON sha256s",
+  "canonical_json_method": "json.dumps(obj, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')",
+  "replication_plan": {
+    "workload_count": 20,
+    "replicates_per_cell": 3,
+    "live_valid_per_cell": 60,
+    "power_target_per_cell": 58,
+    "phase1_live_valid": 480,
+    "phase1_target": 464,
+    "note": "20x3=60>=58 per (provider x condition) cell; controlled replication over breadth."
+  },
+  "counts_by_family": {
+    "Software Engineering": 4,
+    "Data/Transformation": 4,
+    "Operational/Tool Workflow": 4,
+    "Constraint/Authority Workflow": 4,
+    "Research/Structured Evidence": 4
+  },
+  "token_check": {
+    "max_tokens": 184,
+    "min_tokens": 66,
+    "all_lte_2000": true,
+    "per_workload": [
+      {
+        "workload_id": "S11-AUTH-01",
+        "words": 54,
+        "estimated_tokens": 72
+      },
+      {
+        "workload_id": "S11-AUTH-02",
+        "words": 49,
+        "estimated_tokens": 66
+      },
+      {
+        "workload_id": "S11-AUTH-03",
+        "words": 50,
+        "estimated_tokens": 67
+      },
+      {
+        "workload_id": "S11-AUTH-04",
+        "words": 58,
+        "estimated_tokens": 78
+      },
+      {
+        "workload_id": "S11-DATA-01",
+        "words": 65,
+        "estimated_tokens": 87
+      },
+      {
+        "workload_id": "S11-DATA-02",
+        "words": 79,
+        "estimated_tokens": 106
+      },
+      {
+        "workload_id": "S11-DATA-03",
+        "words": 138,
+        "estimated_tokens": 184
+      },
+      {
+        "workload_id": "S11-DATA-04",
+        "words": 77,
+        "estimated_tokens": 103
+      },
+      {
+        "workload_id": "S11-OPS-01",
+        "words": 64,
+        "estimated_tokens": 86
+      },
+      {
+        "workload_id": "S11-OPS-02",
+        "words": 66,
+        "estimated_tokens": 88
+      },
+      {
+        "workload_id": "S11-OPS-03",
+        "words": 55,
+        "estimated_tokens": 74
+      },
+      {
+        "workload_id": "S11-OPS-04",
+        "words": 63,
+        "estimated_tokens": 84
+      },
+      {
+        "workload_id": "S11-RES-01",
+        "words": 69,
+        "estimated_tokens": 92
+      },
+      {
+        "workload_id": "S11-RES-02",
+        "words": 66,
+        "estimated_tokens": 88
+      },
+      {
+        "workload_id": "S11-RES-03",
+        "words": 52,
+        "estimated_tokens": 70
+      },
+      {
+        "workload_id": "S11-RES-04",
+        "words": 61,
+        "estimated_tokens": 82
+      },
+      {
+        "workload_id": "S11-SWE-01",
+        "words": 107,
+        "estimated_tokens": 143
+      },
+      {
+        "workload_id": "S11-SWE-02",
+        "words": 95,
+        "estimated_tokens": 127
+      },
+      {
+        "workload_id": "S11-SWE-03",
+        "words": 87,
+        "estimated_tokens": 116
+      },
+      {
+        "workload_id": "S11-SWE-04",
+        "words": 82,
+        "estimated_tokens": 110
+      }
+    ]
+  },
+  "workloads": [
+    {
+      "workload_id": "S11-AUTH-01",
+      "version": "1.0.0",
+      "sha256": "a66ff408a97c942c628f01c68563321db0a8c3a340d95875a71a7d76d11a1756",
+      "task_family": "Constraint/Authority Workflow",
+      "estimated_tokens": 72,
+      "acceptance_criteria_hash": "602bc69be12c7078b69028f30845daf5b8eb507d8582af930df8f9ee15d0b4a0",
+      "fixture_hashes": {
+        "token_id": "a53b6af4b8f297b8a54e6ae3e3dfa79b27befd8dd5ce37b3520440d25378e382",
+        "capabilities": "cb3a85758366d3c47130676437b54bff5edc32db8dc393301a92a6642b40c7d7",
+        "requested": "5c56974de940de8831ebdafbc9164780aed8059ddb40dbdbf159820013c76d2e",
+        "decision": "6b61acae1726a14a843a9df0feececad474456868f335cba6d895c5c2c1a995b"
+      }
+    },
+    {
+      "workload_id": "S11-AUTH-02",
+      "version": "1.0.0",
+      "sha256": "6cc9d8bbf92487699a94718eaec54ce5ee7cf3a4f851a688b2b79fc08a8a1cf6",
+      "task_family": "Constraint/Authority Workflow",
+      "estimated_tokens": 66,
+      "acceptance_criteria_hash": "ff4c86d50ca3a2269e2aa3cd3f7271098331c7e0967b0656f5919936abe16360",
+      "fixture_hashes": {
+        "token_id": "63e6ebf6e3e3c6ebb93c2623249914528f93ddf88fd432e998fd97215a5ce342",
+        "budget": "0602d7c813c1f6e7351a5832730f29daf739674976caba8d9dd955be838d46ea",
+        "spent": "fb57fa98dd910f168ba9004d98a67e9786b0bb22f20c42793e7b2c9116a4a5d7",
+        "remaining": "8d938122d3904436fd32a463678148c7b7595bf667f263a65ab79059e5833a21",
+        "request_cost": "312b95ee5a344d2f7a16ad817ff70788980da6e30b9bb04b651d53847abd476f",
+        "decision": "65b666a4e58530da6f56235ddf6454b756f678ffe18b207609e716ace36c34f9"
+      }
+    },
+    {
+      "workload_id": "S11-AUTH-03",
+      "version": "1.0.0",
+      "sha256": "e667ca75d81b65d396893276b6ae794a7ff79d82f78823f56b49c9bc7219f7fa",
+      "task_family": "Constraint/Authority Workflow",
+      "estimated_tokens": 67,
+      "acceptance_criteria_hash": "03c18acc99a49d287a40dae1da94e2f5239f71914fbb70730cc63be73edb9084",
+      "fixture_hashes": {
+        "token_id": "b4958237cf8627018bf4957f4463a02375ad8fbf0a9b321326699e6c59ee651a",
+        "valid_until": "e4c1e80f1133daa912b24dbf4a354e52b02b3d811f5963f82f94f28d450c1591",
+        "now": "40a71de95ed3d5f35a628192185712426fa2eb5e0cf5671005a6d8bd9d657813",
+        "revoked": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
+        "decision": "7af183a663f103cc082161800636f62ffc88373e8896b3aa5f03b32af05a486c"
+      }
+    },
+    {
+      "workload_id": "S11-AUTH-04",
+      "version": "1.0.0",
+      "sha256": "7c9a8bf4176a8b20ecba1253747699d5ffde41670ff77552e642001bdf6b205a",
+      "task_family": "Constraint/Authority Workflow",
+      "estimated_tokens": 78,
+      "acceptance_criteria_hash": "071b61e3698351d27b099a265cd237198a415ad26df3eeef9fb044ce01c7154a",
+      "fixture_hashes": {
+        "requested": "6d25a851b1aa0a590cb1b40918400be43403b31d26452f56553f97569baa5e5b",
+        "minimal": "236938dcad8307ec3bbd59ce398d6311329cd26eb4711ebff5183f8f7eddceb9",
+        "purpose": "6c369630e277c9b8e186f541930adc60eac3ce986253e3ae8bdedeb04f6c1941",
+        "expiry": "7bf6d2e4c96f1e2ce80259d834c6a94f855f14ac85a7a9ed4005c2abe71194c7"
+      }
+    },
+    {
+      "workload_id": "S11-DATA-01",
+      "version": "1.0.0",
+      "sha256": "ceb4767577c62f8ad8535a6352a53b9711a99a2af49c7d394d48b959f85f6c0b",
+      "task_family": "Data/Transformation",
+      "estimated_tokens": 87,
+      "acceptance_criteria_hash": "ab901c6f1195cf06010f0aefbd4b9be1d99ecae9a21c928965c52af6f3372b97",
+      "fixture_hashes": {
+        "csv_rows": "2955bfa60dbafff3d6d8d1ef45419c72ed3093793b68617d60602cf24405199e",
+        "valid_ids": "ad5bcb279bddf86cf0220c5cd7679436e63f19cc9567da071e1a98b97fb3b48b",
+        "quarantine_ids": "18b058689d010062a25cd7fb949b2abfea1757d2de45ca3abdda17db956e506b"
+      }
+    },
+    {
+      "workload_id": "S11-DATA-02",
+      "version": "1.0.0",
+      "sha256": "90fe5d8abecb5f885ea48d40b73b7cae60756332dd59b79485ae70b7e51223ca",
+      "task_family": "Data/Transformation",
+      "estimated_tokens": 106,
+      "acceptance_criteria_hash": "ee298d3d447c322acfa5a293a78f15dfe2ebb55dae39797494d97d08bd4154f1",
+      "fixture_hashes": {
+        "ledger_P": "d40ebd9ae61cb8debdb6ff73480d6490fb1146f51e6852641668513ff3a38d2d",
+        "ledger_Q": "429680c7edf6f421b73d92a6ce6ecb57b72a7a24cd940813c51be5739ed95f09",
+        "delta": "bffb16d6fe1445f051b3cff3025340011b817b391ffc04dcd77d1452efa10c25",
+        "reconciled_total": "d6910189d03546cda0ba9135ebb4d9d81356e85a027d89e6959f682081d97bf0"
+      }
+    },
+    {
+      "workload_id": "S11-DATA-03",
+      "version": "1.0.0",
+      "sha256": "54113d10431a3f5f65c757c2f15e7577ab694443ebb9e3099d5ed4bd5256645a",
+      "task_family": "Data/Transformation",
+      "estimated_tokens": 184,
+      "acceptance_criteria_hash": "44d19fd1963b098935204838af2a98cf25c26081cc115c4d533317b51e67bcc9",
+      "fixture_hashes": {
+        "events": "4fbd1fd0113213e719965dfd2edcef56cbb04cc2985643a7ce361a15f3484b26",
+        "unique_first_seen": "838d5079f6332c0e5567f8cf1da7330a475c3d50cf95ec01d3062044b2416fd6",
+        "duplicate_count": "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+        "window_s": "39fa9ec190eee7b6f4dff1100d6343e10918d044c75eac8f9e9a2596173f80c9"
+      }
+    },
+    {
+      "workload_id": "S11-DATA-04",
+      "version": "1.0.0",
+      "sha256": "ecf2ba7bc8f8d3c7195e1cce4a792dc360abcb591a6aafc3ecf5498a1a782c80",
+      "task_family": "Data/Transformation",
+      "estimated_tokens": 103,
+      "acceptance_criteria_hash": "256cf84c931fae38b1da0160fa04d79a991cbe5ab4f223f34cb08f1e066a8d58",
+      "fixture_hashes": {
+        "payload1": "bdc29da045d23d5d35df7a4a8a37873d4f3ad06c92e6513bfb064a04ad3decc9",
+        "payload2": "9701961d643990c1df960532da237f229752f4c1952c81b695e06276767963a8",
+        "columns": "15d5af287e5a7dea447ea78c5f57a58a3967a83faa6ba08cdf12f605bcd8c36b"
+      }
+    },
+    {
+      "workload_id": "S11-OPS-01",
+      "version": "1.0.0",
+      "sha256": "6b5c8151823cc775111369b1fe00c5ee9b52caff974bfe40c6c140f9cbf39f5f",
+      "task_family": "Operational/Tool Workflow",
+      "estimated_tokens": 86,
+      "acceptance_criteria_hash": "ba91596075eb23cff8148be81250843c5f932086ceb76b2f15bb19fb430b424a",
+      "fixture_hashes": {
+        "steps": "4b9c3563ec9d5a0493016079f1858d6f1676f7903cf83d46faf9dff951adffb5",
+        "refresh_between": "294a60ed45073c7d1d850186ec561cde6211b5e97d978d73d5a310c05c884e02"
+      }
+    },
+    {
+      "workload_id": "S11-OPS-02",
+      "version": "1.0.0",
+      "sha256": "752b1ab3ef29d9d6dd38ec3c407f549beac2dd50d544134a92d7c8c3d1dce247",
+      "task_family": "Operational/Tool Workflow",
+      "estimated_tokens": 88,
+      "acceptance_criteria_hash": "cbc4f962f918a84edc3f8009f00aa1b4d02802e851d6b2b809e823ea5a6fdb4e",
+      "fixture_hashes": {
+        "worker": "0447816f651c580592f6d4af24f76fcde8335a720bb7e6063af58d2adbf04182",
+        "signal": "65c2302b3e59e7a721167cadce5ceb4cc4fcc601a797301bbd4de8ed41ad719b",
+        "order": "b15628cf0e2c280ac047ec92d824f82e2df28cf4d9da8bd9c9fd5a72b5dc4df3"
+      }
+    },
+    {
+      "workload_id": "S11-OPS-03",
+      "version": "1.0.0",
+      "sha256": "bc1c376cf967ce6f5b64df766a54ef295d6c46df2595eb3888b57bc7aec5526c",
+      "task_family": "Operational/Tool Workflow",
+      "estimated_tokens": 74,
+      "acceptance_criteria_hash": "446aa3f24c2600fee2d6de6b6e26957105eaa826a328be0a676ab6389e0d3427",
+      "fixture_hashes": {
+        "cap": "f1e42019aecc858ffbcca7fddec511b761b474916fde37b1a6ff321a9b459330",
+        "costs": "b92128dde05a0b234395094c4f08fc8ccef7a8b9efe3730f77186ec912382d6a",
+        "sum": "8633916dcc564eb3fb8b66b2a8cdbb521038f1b8273c441ebb9cf40da508f13e",
+        "remaining": "ce5d3aa79ae56155078af52e8fac68eb2d0a78489f82bc26c1e1bbc667ba9fde",
+        "decision": "789b44b9990c7d88da3542aa5c6b25148409a57d64b88f00362513cda78a031f"
+      }
+    },
+    {
+      "workload_id": "S11-OPS-04",
+      "version": "1.0.0",
+      "sha256": "e368cc3297d8b47ca0414053454a0dc180a6d1b1a0447cf96723a32cc16fce19",
+      "task_family": "Operational/Tool Workflow",
+      "estimated_tokens": 84,
+      "acceptance_criteria_hash": "553a8f4c26e3804f53297b93f012921e4ad3896d4dc447d0abe6000494ee1012",
+      "fixture_hashes": {
+        "log": "35aee10c7a610017d57332c9c79d7508f09c60f254504c87fad89b892b3a6df0",
+        "crash_point": "2de8f6671582c6ade2109c3fbfc275ced64d65784daf0d1247c55690cbd62af8",
+        "idempotency_key": "b40bfcc4b96fa81932b5a87526e2f8fa07f8e0eb0c5d66c3ec6303043c388f75"
+      }
+    },
+    {
+      "workload_id": "S11-RES-01",
+      "version": "1.0.0",
+      "sha256": "e9a42dea34efb5466179189ac5151bebbe3af4413edc9226925d5eeb5d513008",
+      "task_family": "Research/Structured Evidence",
+      "estimated_tokens": 92,
+      "acceptance_criteria_hash": "5c2b514e78eab223d291ecc9d6fa0ab976ed16ceee9e53c2c4c4d40d56476b8b",
+      "fixture_hashes": {
+        "claims": "7ba99397f1796955e1675233069362efa9b625268aa533be321361d635177097",
+        "sources": "61577b9b6c448cfc23150887e6ffba381c28358af6215316c46d87907d29ca40",
+        "mapping": "fefad4005840ee56be7dcfa7aa43a1711d6bac196b2cf210fd1be9e61eabd81a"
+      }
+    },
+    {
+      "workload_id": "S11-RES-02",
+      "version": "1.0.0",
+      "sha256": "ef359b9b0fa59ca2a7180213b424d7042aa18f30730cda4f349641ec997e93f5",
+      "task_family": "Research/Structured Evidence",
+      "estimated_tokens": 88,
+      "acceptance_criteria_hash": "7e9a2fe0848119a4a03b80106f3b7ac1e1271dccdde90dd5daddc1e0af663b6b",
+      "fixture_hashes": {
+        "X": "2fc29d24dbf70b62d660c5240f8367b2a543acf056dff005bb530201d84c2139",
+        "Y": "7768b282f3b4203565c523197b50081019ac8927230ea13b5e46383b1a62297e",
+        "differences": "abce48c8f244bafe8aa4d997bb3e0cf54fed160f2034203ef65ad64bf9c8344e"
+      }
+    },
+    {
+      "workload_id": "S11-RES-03",
+      "version": "1.0.0",
+      "sha256": "426cbd966058aff0f3023e5770a3632e144ea12464c8c1d78d1f6052414f7303",
+      "task_family": "Research/Structured Evidence",
+      "estimated_tokens": 70,
+      "acceptance_criteria_hash": "83fb56e7f1ebd3fe9cfe3413d0a48a7e358c789b5f371488959721cd1f32d831",
+      "fixture_hashes": {
+        "conc1": "14fbcc3ed0ed59d55ce40d15d038ff17a128f507fa8756b4b2bda58faa949d36",
+        "conc10": "ae9e94d6844cf33164ca2b0345927b80d0c2c33c28a674f53ba3dcf5e9a27392",
+        "table": "e9bdd4edd4c51513f386b12b90e34f3f8403fb2a956adee8f8d2942b3f2d3553"
+      }
+    },
+    {
+      "workload_id": "S11-RES-04",
+      "version": "1.0.0",
+      "sha256": "60f31db93760f5b15b75430365bada99a438e803d150c42a0a6f359d8db9889e",
+      "task_family": "Research/Structured Evidence",
+      "estimated_tokens": 82,
+      "acceptance_criteria_hash": "0fead7ebfee0df149a48f707db374a5076677c1fdf291821f39b8c02e5e8251f",
+      "fixture_hashes": {
+        "claims": "ddddfe1bb2e349e08acdffa5da038032e79c78c857879149cc9dd2dfc2b6e808",
+        "verified": "820fa023210d22e50378393d37e5b76aa805959e6387b5903832151e72cd8e2e",
+        "unverified": "9e130e5bd242ecffbf087af2322febd37b9f8f14797fb3f45e03b9f97c5a6d7b"
+      }
+    },
+    {
+      "workload_id": "S11-SWE-01",
+      "version": "1.0.0",
+      "sha256": "183df3a52463a866edd1934409d3bf3d87b2648fbe8b9794fdb853b81c5c66d1",
+      "task_family": "Software Engineering",
+      "estimated_tokens": 143,
+      "acceptance_criteria_hash": "fdfbc1a49e17589b9afa5548932c93123da006f3bf9152fcfa777cda23ffc807",
+      "fixture_hashes": {
+        "source_file": "e6aeadac4562b48631ff02e2df6510d6343a1c3c0815a7bc7454dfc39937f778",
+        "items": "b45ce6cd911e2a79335d906f3521ef0bab07aab7229f7058603302c8831c8248",
+        "per_page": "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+        "expected_page1": "7784d2c72a24031b6f93509c2163a212b3d7388f1ac7513692bd69e742e8b976",
+        "expected_page3": "9a3616dcd8bba762f4b0414e0e4a3e7f5c71fbc56d43b6f2701d55d05b100d20",
+        "expected_page4": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "workload_id": "S11-SWE-02",
+      "version": "1.0.0",
+      "sha256": "d8f72127a4543a4145d566b1d38c4edd3debe5264bccbe243aacae6c8bee78f5",
+      "task_family": "Software Engineering",
+      "estimated_tokens": 127,
+      "acceptance_criteria_hash": "faf8b663f029928519b671a3c84155729011d993a837e3dd3416e65643450c08",
+      "fixture_hashes": {
+        "source_file": "23f26cdc1776de86653559171744dae4f44c0dcdd9810abfed780cba8527d7b7",
+        "attack_input": "3eb2469f4169bc953b8f1a0b720dd0acb81791668f16b3a9f4ef2c33436ea710",
+        "expected_rows_for_attack": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+      }
+    },
+    {
+      "workload_id": "S11-SWE-03",
+      "version": "1.0.0",
+      "sha256": "4b1874fc435e7ae8ab888c93ef445423aeb53f5afdc8ec43725a60fd700bb591",
+      "task_family": "Software Engineering",
+      "estimated_tokens": 116,
+      "acceptance_criteria_hash": "53c289054e306254ec1db333a239ebd686f17d98ef2075d5dfe645fe74d002e3",
+      "fixture_hashes": {
+        "source_file": "68897ed4cba8de0fb9339a62fd54178295961bf07b762afdf9962aa72f5a4631",
+        "max_frame": "8b926d75599a618e21f1341318e66517be26e18cc7496783d2b59758c1333be8",
+        "frame_A": "39df2eb39c8ddb859929a0511b3fbbc8b99f8b32d9772b41268586f66b38cd81",
+        "frame_B": "a841a138ff4f44f7f83f1e7742f060de69fcdd1c332dbbfd0d420eea8666b2c7",
+        "frame_C": "bce66dbc252266c5fac9a5a41b773b1c3570df03acc7f7603f9557d531f1b762"
+      }
+    },
+    {
+      "workload_id": "S11-SWE-04",
+      "version": "1.0.0",
+      "sha256": "34e186c487244013abc147b8e8c2f0cae6f4edbfe2207cd971fb37584fe85c17",
+      "task_family": "Software Engineering",
+      "estimated_tokens": 110,
+      "acceptance_criteria_hash": "64227292d392df9872c11bfee8c3f64579b07ca74043f205a70e7780339fff60",
+      "fixture_hashes": {
+        "source_file": "da0e555d75e493b898b63e9878e9b99c0fdccc921206b483fdf69271eac5eab3",
+        "workers": "2c624232cdd221771294dfbb310aca000a0df6ac8b66b696d90ef06fdefb64a3",
+        "increments_each": "40510175845988f13f6162ed8526f0b09f73384467fa855e1e79b44a56562a58",
+        "expected_final": "ad5f9478d603fe97eae2bbff07f76fe7f18610343b5f3bc8e00945ee51b30d2c"
+      }
+    }
+  ]
+}

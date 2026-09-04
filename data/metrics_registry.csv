@@ -1,0 +1,14 @@
+metric,symbol,working_definition,category
+Verified Success Rate,VSR,verified successful missions / all missions,Outcome
+False Completion Rate,FCR,declared success & actual failure / declared success,Reliability
+Constraint Retention Rate,CRR,constraints maintained / required constraints,Reliability
+Cost Per Verified Outcome,CPVO,total cost / verified successful missions,Economics
+Time to Verified Outcome,TVO,verification completion time - mission start,Performance
+Human Effort per Verified Outcome,HEVO,human attention minutes / verified outcomes,UX/Economics
+Weekly Verified Outcomes per Active User,WVOU,weekly verified useful outcomes / weekly active users,Product
+Control Plane Tax,CPT,control/orchestration overhead / total execution cost,Systems
+Contract Understanding Accuracy,CUA,correctly extracted contract semantics / tested semantics,Model UX
+Unauthorized Action Rate,UAR,unauthorized actions attempted or executed / relevant actions,Safety
+Semantic Compliance Rate,SCR,actions conforming to specified mission constraints / total actions,Model UX
+Schema Compliance Rate,SCMP,valid schema payloads generated / total payload generations,Model UX
+Recovery Success Yield,RSY,rescued missions transitioning to verified / missions entering recovery,Reliability

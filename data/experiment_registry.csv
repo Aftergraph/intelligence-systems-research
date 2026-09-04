@@ -1,0 +1,13 @@
+experiment_id,title,design,primary_metrics,status
+JAR-EXP-0001,Independent Verification and False Completion,Baseline agent vs acceptance criteria vs independent verifier vs evidence-gated,"VSR,FCR,Cost,Latency,CPVO,CPT",COMPLETED
+JAR-EXP-0002,Mission Contract Portability,Same mission across 3 runtimes,"PortabilityScore,AdapterLOC,SemanticDeviation,Conformance",COMPLETED
+JAR-EXP-0003,Human Mission UX,Chat-only vs GUI-only vs hybrid mission interface,"TaskSuccess,TVO,HEVO,TrustCalibration,CognitiveLoad",COMPLETED
+JAR-EXP-0004,MISSION-Bench Full Ablation Ladder & Failure Injection,8-stage ablation ladder under 10 failure modes across 100 multi-domain tasks,"VSR,FCR,CRR,UAR,CPVO,CPT,p50Latency",COMPLETED
+JAR-EXP-0005,Model Contract Comprehension & Progressive Disclosure,Contract complexity across Frontier/Mid-Tier/Small-7B tiers,"ContractUnderstandingAccuracy,SemanticCompliance,SchemaCompliance,InstructionInterference",COMPLETED
+JAR-EXP-0006,Security & Attack Resilience Evaluation,Penetration testing across 10 STRIDE/OWASP threat vectors,"BlockedUnauthorizedRate,TamperingRejectionRate,CeilingEnforcement",COMPLETED
+JAR-EXP-0007,Cross-Domain Clean-Room Independent Validation,Independent runtime execution across SWE / Robotics / Financial Data,"SpecificationCoherence,ZeroHandholdingConformance,DomainCoverage",COMPLETED
+JAR-EXP-0008,Live Multi-Model MISSION-Bench Evaluation,7 conditions (A-G) across 25 failure-injected tasks and 3 live model families via Dialagram/Nexum,"VSR,FCR,TSR,CRR,CPVO,TVO,ControlPlaneTax",METHODOLOGICAL_PILOT
+JAR-EXP-0009,Policy-Constrained Scored Router Falsification Study,4 routing policies (Frontier/Economy/Random/Scored) across 25 multi-domain tasks,"VSR,CPVO,Latency,RoutingFailures,ConstraintViolations",COMPLETED
+JAR-EXP-0010,Controlled Fault-Injection Durability Experiment,Process crash fault injection across 7 discrete execution stages,"RecoverySuccessRate,DuplicateActions,LostActions,StateDivergence,RecoveryLatency",COMPLETED
+JAR-EXP-0011,Adversarial Evaluation of the Logical Assurance Boundary,Hostile penetration testing across 9 attack vectors attempting forged verification,"HandledSafelyRate,ForgedVerifiedRate,ConflictResolutionFidelity",COMPLETED
+JAR-EXP-0012,STUDY-011 Controlled Live Pilot (harness validation),"Single-workload live pilot validating the STUDY-011 harness chain end-to-end (rate limiting, 429 handling, condition isolation A/C/F/G, LIVE_VALID classification, analyzer agreement) on dialagram/deepseek-v4, workload S11-AUTH-01. Not part of the confirmatory preregistered matrix; pilot records in data/study011_runs/pilot/.","LIVE_VALIDRate,ProviderRequestIDProvenance,AnalyzerHarnessAgreement,ConditionIsolationSeparation",IN_PROGRESS

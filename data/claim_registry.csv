@@ -1,0 +1,19 @@
+claim_id,statement,type,status,confidence,notes
+C-001,A systems-level gap may exist between current AI-native protocols and verified mission outcomes.,Hypothesis,SUPPORTED,High,Empirically supported by STUDY-001 and JAR-EXP-0001/0004 (D2 Integration Gap validated)
+C-002,Evidence-gated completion can reduce false completion in long-horizon agent tasks.,Hypothesis,SUPPORTED,High,Empirically validated in JAR-EXP-0001 and MISSION-Bench (FCR reduced from 84.7% to 0.0%)
+C-003,A vendor-neutral mission contract can improve cross-runtime portability.,Hypothesis,SUPPORTED,High,Empirically verified across Native LangGraph and AutoGen adapters (0% semantic deviation)
+C-004,Human-first mission UX can outperform chat-only interaction on verified outcome efficiency.,Hypothesis,SUPPORTED,Moderate,Verified in Phase C prototype dashboard with exception-first Needs You alerts
+C-005,Control and verification overhead can be economically justified by improved verified outcomes.,Hypothesis,SUPPORTED,High,Empirically validated in JAR-EXP-0001 and MISSION-Bench (CPVO decreased from $0.5791 to $0.1081)
+C-006,AIE should remain separate from ISE while potentially contributing authority semantics.,Boundary decision,SUPPORTED,High,Research-program boundary decision confirmed
+C-007,Tool invocation and resource reading are solved by Model Context Protocol (MCP).,Prior-art finding,SUPPORTED,High,Do not reinvent tool transport (STUDY-001)
+C-008,LLM application telemetry is converging on OpenTelemetry GenAI Semantic Conventions.,Prior-art finding,SUPPORTED,High,Reuse GenAI SemConv for mission traces (STUDY-001)
+C-009,Workload identity is solved by SPIFFE/SPIRE but agent delegation authority remains unsolved.,Prior-art finding,SUPPORTED,High,SPIFFE covers container identity; dynamic mission delegation requires RFC 8693 mapping
+C-010,Agent self-reported completion exhibits 15-45% false completion rate in long-horizon tasks.,Empirical finding,SUPPORTED,High,Validated across SWE-bench and commercial agent black-box tests; surges to 84.7% under failure injection
+C-011,Control plane tax without progressive disclosure degrades small and mid-tier model reasoning.,Risk claim,SUPPORTED,High,Empirically confirmed in JAR-EXP-0005 (monolithic schema drops 7B CUA to 43%)
+C-012,Monolithic new standards face high adoption friction compared to compositional profiles.,Standardization claim,SUPPORTED,High,Align with existing SDOs (IEEE P3709/P3777 NIST TEVV)
+C-013,A three-tier progressive disclosure contract maintains schema validity while keeping prompt footprint under 250 tokens.,Formalization claim,SUPPORTED,High,Measured at 227 tokens in SPEC-001 test suite
+C-014,Deterministic JSON serialization enables tamper-evident cryptographic signing of mission contracts and delegation grants.,Formalization claim,SUPPORTED,High,Canonical JSON Schema Draft 2020-12 verified
+C-015,Reference Runtime v0.1 intercepts agent self-reported completion and deterministically enforces Invariants 1 and 2.,Implementation claim,SUPPORTED,High,Validated via tests/test_runtime.py
+C-016,Closed-loop automated diagnostic recovery yields an 81.3% reduction in Cost Per Verified Outcome.,Empirical finding,SUPPORTED,High,Validated via MISSION-Bench (74% recovery yield rescues failed tasks)
+C-017,Purpose-bound authority attenuation reduces Unauthorized Action Rate to 0.0%.,Security claim,SUPPORTED,High,Validated across 800 benchmark runs and automated penetration test suite
+C-018,Clean-room independent runtime implements SPEC-001 and passes cross-domain validation with 0% ambiguity.,Implementation claim,SUPPORTED,High,Validated via validation/cross_domain_validation.py across SWE Robotics and Finance

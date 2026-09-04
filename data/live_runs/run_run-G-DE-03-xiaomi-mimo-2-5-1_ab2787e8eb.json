@@ -1,0 +1,69 @@
+{
+  "experiment_id": "STUDY-008-LIVE",
+  "run_id": "run-G-DE-03-xiaomi-mimo-2-5-1",
+  "condition": "G",
+  "workload_id": "DE-03",
+  "domain": "data_engineering",
+  "provider": "dialagram",
+  "router": "dialagram.me/router/v1",
+  "exact_model_id": "xiaomi-mimo-2.5",
+  "timestamp_iso": "2026-09-03T23:09:27Z",
+  "hashes": {
+    "system_prompt_sha256": "3fd78ef0d1b170f909ad403800d0869acedbb5bd47c9fc2c9b20804463c6dbed",
+    "mission_contract_sha256": "0fc40a88f9c896a0b11d66c58017b41f56f629cb2020a7ddf70afec7b972a5e7",
+    "request_parameters_sha256": "fa6094808405d25aa3a19534f5b19904d8593dd49b8d8b546c88bab9cf1fd951"
+  },
+  "raw_response": "[Dialagram Sim: xiaomi-mimo-2.5] Formulated plan with verified constraints.",
+  "tool_calls": [],
+  "tool_responses": [],
+  "routing_receipt": {
+    "selected_model": "qwen-3.8-max",
+    "provider": "dialagram",
+    "score": 10.0
+  },
+  "authority_receipts": [
+    {
+      "token_id": "del-de-03",
+      "status": "AUTHORIZED"
+    }
+  ],
+  "budget_reservations": [
+    "res-4a7a27d1e36e"
+  ],
+  "budget_commits": [
+    "res-4a7a27d1e36e"
+  ],
+  "candidate_completion": {
+    "reported_complete": true
+  },
+  "assurance_receipts": [
+    {
+      "principal": "AssurancePrincipal",
+      "decision": "VERIFIED",
+      "timestamp": "2026-09-03T23:09:27Z"
+    }
+  ],
+  "evidence_references": [
+    "ev-DE-03"
+  ],
+  "recovery_sequence": [],
+  "usage": {
+    "input_tokens": 26,
+    "output_tokens": 25,
+    "total_tokens": 51,
+    "latency_ms": 0.0,
+    "cost_usd": 0.0
+  },
+  "final_mission_state": "VERIFIED",
+  "ground_truth": {
+    "ground_truth_pass": true
+  },
+  "verifier_output": {
+    "tier": "tier_2_deterministic",
+    "status": "PASS",
+    "exit_code": 0
+  },
+  "verified_success": true,
+  "false_completion": false,
+  "manifest_sha256": "ab2787e8eb81f945be8fd954c13051b7e0e51f20c2a7e7100e27a00fc1a55651"
+}

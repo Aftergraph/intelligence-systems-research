@@ -1,0 +1,28 @@
+apiVersion: intelligence.systems/v0alpha1
+kind: FilesystemPolicy
+
+read:
+  allow:
+    - "**"
+
+write:
+  allow:
+    - "src/**"
+    - "tests/**"
+    - "docs/**"
+
+deny:
+  - ".env"
+  - "secrets/**"
+  - "production-credentials/**"
+
+delete:
+  approval_required:
+    - "migrations/**"
+    - "infra/**"
+
+temporary:
+  lifecycle: mission
+
+secrets:
+  exposure: prohibited

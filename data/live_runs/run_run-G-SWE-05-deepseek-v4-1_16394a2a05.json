@@ -1,0 +1,73 @@
+{
+  "experiment_id": "STUDY-008-LIVE",
+  "run_id": "run-G-SWE-05-deepseek-v4-1",
+  "condition": "G",
+  "workload_id": "SWE-05",
+  "domain": "software_engineering",
+  "provider": "dialagram",
+  "router": "dialagram.me/router/v1",
+  "exact_model_id": "deepseek-v4",
+  "timestamp_iso": "2026-09-03T23:09:07Z",
+  "hashes": {
+    "system_prompt_sha256": "3fd78ef0d1b170f909ad403800d0869acedbb5bd47c9fc2c9b20804463c6dbed",
+    "mission_contract_sha256": "3724e52e30850e6f30a918f3c4a80cd0c24642892f07f9d0c113815f0eee4d6d",
+    "request_parameters_sha256": "06093eb1ab25eab51c1e01e1fd6793a7bd6dcfde5966c05d597952c5a685ef90"
+  },
+  "raw_response": "[Dialagram Sim: deepseek-v4] Formulated plan with verified constraints.",
+  "tool_calls": [],
+  "tool_responses": [],
+  "routing_receipt": {
+    "selected_model": "qwen-3.8-max",
+    "provider": "dialagram",
+    "score": 10.0
+  },
+  "authority_receipts": [
+    {
+      "token_id": "del-swe-05",
+      "status": "AUTHORIZED"
+    }
+  ],
+  "budget_reservations": [
+    "res-5be418d4d955"
+  ],
+  "budget_commits": [
+    "res-5be418d4d955"
+  ],
+  "candidate_completion": {
+    "reported_complete": true
+  },
+  "assurance_receipts": [
+    {
+      "principal": "AssurancePrincipal",
+      "decision": "VERIFIED",
+      "timestamp": "2026-09-03T23:09:07Z"
+    }
+  ],
+  "evidence_references": [
+    "ev-SWE-05"
+  ],
+  "recovery_sequence": [
+    "JOURNAL_ROLLBACK_TO_CHECKPOINT",
+    "STATE_RECOVERY:FAIL-VERIF"
+  ],
+  "usage": {
+    "input_tokens": 54,
+    "output_tokens": 40,
+    "total_tokens": 94,
+    "latency_ms": 0.0,
+    "cost_usd": 0.0
+  },
+  "final_mission_state": "VERIFIED",
+  "ground_truth": {
+    "ground_truth_pass": true
+  },
+  "verifier_output": {
+    "tier": "tier_2_deterministic",
+    "status": "PASS",
+    "exit_code": 0,
+    "recovery_state": "RESOLVED"
+  },
+  "verified_success": true,
+  "false_completion": false,
+  "manifest_sha256": "16394a2a053ee9082373a8818f56f0bf8c415b2104ada4299a479f14d2c4510e"
+}

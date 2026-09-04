@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://intelligence.systems/schemas/v0alpha1/intelligence-system.json",
+  "title": "IntelligenceSystem",
+  "description": "Root manifest defining an intelligent system boundary, imports, policies, and discovery protocols.",
+  "type": "object",
+  "required": ["apiVersion", "kind", "metadata", "purpose"],
+  "properties": {
+    "apiVersion": {
+      "type": "string",
+      "enum": ["intelligence.systems/v0alpha1"]
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["IntelligenceSystem"]
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "version": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "purpose": {
+      "type": "object",
+      "required": ["statement"],
+      "properties": {
+        "statement": {
+          "type": "string"
+        }
+      }
+    },
+    "imports": {
+      "type": "object",
+      "properties": {
+        "instructions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "skills": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "missions": {
+      "type": "object",
+      "properties": {
+        "directory": { "type": "string" }
+      }
+    },
+    "policies": {
+      "type": "object",
+      "properties": {
+        "directory": { "type": "string" }
+      }
+    },
+    "assurance": {
+      "type": "object",
+      "properties": {
+        "directory": { "type": "string" }
+      }
+    },
+    "discovery": {
+      "type": "object",
+      "properties": {
+        "protocols": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["mcp", "a2a", "local", "rest"]
+          }
+        }
+      }
+    },
+    "telemetry": {
+      "type": "object",
+      "properties": {
+        "mapping": {
+          "type": "string",
+          "enum": ["opentelemetry", "custom", "none"]
+        }
+      }
+    },
+    "extensions": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

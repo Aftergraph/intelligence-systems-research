@@ -1,0 +1,17 @@
+[
+  {
+    "pilot": "gitops_release",
+    "status": "VERIFIED",
+    "events": 10
+  },
+  {
+    "pilot": "data_pipeline",
+    "status": "BUDGET_CONTAINED",
+    "events": 6
+  },
+  {
+    "pilot": "sre_incident",
+    "status": "VERIFIED",
+    "events": 12
+  }
+]

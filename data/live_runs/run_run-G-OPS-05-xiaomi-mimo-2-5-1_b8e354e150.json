@@ -1,0 +1,73 @@
+{
+  "experiment_id": "STUDY-008-LIVE",
+  "run_id": "run-G-OPS-05-xiaomi-mimo-2-5-1",
+  "condition": "G",
+  "workload_id": "OPS-05",
+  "domain": "agent_operations",
+  "provider": "dialagram",
+  "router": "dialagram.me/router/v1",
+  "exact_model_id": "xiaomi-mimo-2.5",
+  "timestamp_iso": "2026-09-03T23:09:28Z",
+  "hashes": {
+    "system_prompt_sha256": "3fd78ef0d1b170f909ad403800d0869acedbb5bd47c9fc2c9b20804463c6dbed",
+    "mission_contract_sha256": "554b6e498706cf13935cb5c2d63af2d586137b91095d6954980dac5636b680a8",
+    "request_parameters_sha256": "fa6094808405d25aa3a19534f5b19904d8593dd49b8d8b546c88bab9cf1fd951"
+  },
+  "raw_response": "[Dialagram Sim: xiaomi-mimo-2.5] Formulated plan with verified constraints.",
+  "tool_calls": [],
+  "tool_responses": [],
+  "routing_receipt": {
+    "selected_model": "qwen-3.8-max",
+    "provider": "dialagram",
+    "score": 10.0
+  },
+  "authority_receipts": [
+    {
+      "token_id": "del-ops-05",
+      "status": "AUTHORIZED"
+    }
+  ],
+  "budget_reservations": [
+    "res-1903933918af"
+  ],
+  "budget_commits": [
+    "res-1903933918af"
+  ],
+  "candidate_completion": {
+    "reported_complete": true
+  },
+  "assurance_receipts": [
+    {
+      "principal": "AssurancePrincipal",
+      "decision": "VERIFIED",
+      "timestamp": "2026-09-03T23:09:28Z"
+    }
+  ],
+  "evidence_references": [
+    "ev-OPS-05"
+  ],
+  "recovery_sequence": [
+    "JOURNAL_ROLLBACK_TO_CHECKPOINT",
+    "STATE_RECOVERY:FAIL-PRESSURE"
+  ],
+  "usage": {
+    "input_tokens": 44,
+    "output_tokens": 40,
+    "total_tokens": 84,
+    "latency_ms": 0.69,
+    "cost_usd": 0.0
+  },
+  "final_mission_state": "VERIFIED",
+  "ground_truth": {
+    "ground_truth_pass": true
+  },
+  "verifier_output": {
+    "tier": "tier_2_deterministic",
+    "status": "PASS",
+    "exit_code": 0,
+    "recovery_state": "RESOLVED"
+  },
+  "verified_success": true,
+  "false_completion": false,
+  "manifest_sha256": "b8e354e15064e2f9e6f8bca3e0d28335a616ba6273f1bf1a6748af1e971bfc7e"
+}

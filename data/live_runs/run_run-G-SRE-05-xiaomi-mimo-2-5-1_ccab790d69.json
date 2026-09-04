@@ -1,0 +1,73 @@
+{
+  "experiment_id": "STUDY-008-LIVE",
+  "run_id": "run-G-SRE-05-xiaomi-mimo-2-5-1",
+  "condition": "G",
+  "workload_id": "SRE-05",
+  "domain": "devops_sre",
+  "provider": "dialagram",
+  "router": "dialagram.me/router/v1",
+  "exact_model_id": "xiaomi-mimo-2.5",
+  "timestamp_iso": "2026-09-03T23:09:27Z",
+  "hashes": {
+    "system_prompt_sha256": "3fd78ef0d1b170f909ad403800d0869acedbb5bd47c9fc2c9b20804463c6dbed",
+    "mission_contract_sha256": "38d14e7f80164bda05c23aa905d9fd044f9590045d28510dac2a63d7172094b2",
+    "request_parameters_sha256": "fa6094808405d25aa3a19534f5b19904d8593dd49b8d8b546c88bab9cf1fd951"
+  },
+  "raw_response": "[Dialagram Sim: xiaomi-mimo-2.5] Formulated plan with verified constraints.",
+  "tool_calls": [],
+  "tool_responses": [],
+  "routing_receipt": {
+    "selected_model": "qwen-3.8-max",
+    "provider": "dialagram",
+    "score": 10.0
+  },
+  "authority_receipts": [
+    {
+      "token_id": "del-sre-05",
+      "status": "AUTHORIZED"
+    }
+  ],
+  "budget_reservations": [
+    "res-c6c7bdea2a1f"
+  ],
+  "budget_commits": [
+    "res-c6c7bdea2a1f"
+  ],
+  "candidate_completion": {
+    "reported_complete": true
+  },
+  "assurance_receipts": [
+    {
+      "principal": "AssurancePrincipal",
+      "decision": "VERIFIED",
+      "timestamp": "2026-09-03T23:09:27Z"
+    }
+  ],
+  "evidence_references": [
+    "ev-SRE-05"
+  ],
+  "recovery_sequence": [
+    "JOURNAL_ROLLBACK_TO_CHECKPOINT",
+    "STATE_RECOVERY:FAIL-PARTIAL"
+  ],
+  "usage": {
+    "input_tokens": 49,
+    "output_tokens": 40,
+    "total_tokens": 89,
+    "latency_ms": 0.0,
+    "cost_usd": 0.0
+  },
+  "final_mission_state": "VERIFIED",
+  "ground_truth": {
+    "ground_truth_pass": true
+  },
+  "verifier_output": {
+    "tier": "tier_2_deterministic",
+    "status": "PASS",
+    "exit_code": 0,
+    "recovery_state": "RESOLVED"
+  },
+  "verified_success": true,
+  "false_completion": false,
+  "manifest_sha256": "ccab790d6938103b8d4e5d6dc518358bff025afe120ea3e6cbccc36d70f1d467"
+}

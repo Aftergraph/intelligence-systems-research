@@ -1,0 +1,46 @@
+{
+  "experiment_id": "STUDY-008-LIVE",
+  "run_id": "run-A-SWE-01-xiaomi-mimo-2-5-1",
+  "condition": "A",
+  "workload_id": "SWE-01",
+  "domain": "software_engineering",
+  "provider": "dialagram",
+  "router": "dialagram.me/router/v1",
+  "exact_model_id": "xiaomi-mimo-2.5",
+  "timestamp_iso": "2026-09-03T23:09:08Z",
+  "hashes": {
+    "system_prompt_sha256": "3fd78ef0d1b170f909ad403800d0869acedbb5bd47c9fc2c9b20804463c6dbed",
+    "mission_contract_sha256": "1d8dee17ec89947f58c28767a75447b20952db272667acfa5ba18684cd742e93",
+    "request_parameters_sha256": "fa6094808405d25aa3a19534f5b19904d8593dd49b8d8b546c88bab9cf1fd951"
+  },
+  "raw_response": "I'll start by exploring the codebase to understand the structure and locate the pagination parser and related tests.",
+  "tool_calls": [],
+  "tool_responses": [],
+  "routing_receipt": null,
+  "authority_receipts": [],
+  "budget_reservations": [],
+  "budget_commits": [],
+  "candidate_completion": {
+    "reported_complete": true
+  },
+  "assurance_receipts": [],
+  "evidence_references": [
+    "ev-SWE-01"
+  ],
+  "recovery_sequence": [],
+  "usage": {
+    "input_tokens": 54,
+    "output_tokens": 156,
+    "total_tokens": 210,
+    "latency_ms": 7406.856536865234,
+    "cost_usd": 0.0
+  },
+  "final_mission_state": "COMPLETED",
+  "ground_truth": {
+    "ground_truth_pass": true
+  },
+  "verifier_output": {},
+  "verified_success": true,
+  "false_completion": false,
+  "manifest_sha256": "8a99697769d8cf7db9a866d1fd78316283712191eb2d1771d11e5cc5c8441b23"
+}

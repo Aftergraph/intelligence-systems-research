@@ -1,0 +1,12 @@
+{
+  "id": "ev-vector-01",
+  "mission_id": "release-production",
+  "criterion_ref": "unit_tests_pass",
+  "tier": "tier_2_deterministic",
+  "verifier": {
+    "type": "test_runner",
+    "identifier": "pytest-v1"
+  },
+  "result": "SATISFIED",
+  "timestamp": "2026-09-04T00:00:00Z"
+}

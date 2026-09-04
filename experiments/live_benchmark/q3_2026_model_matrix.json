@@ -1,0 +1,213 @@
+{
+  "matrix_version": "Q3-2026-FROZEN-v2.0",
+  "effective_date": "2026-09-01",
+  "benchmark_freeze_timestamp": "2026-09-04T00:00:00Z",
+  "tiers": {
+    "frontier_reasoning": [
+      {
+        "provider": "openai",
+        "model_id": "o3",
+        "api_endpoint": "https://api.openai.com/v1/chat/completions",
+        "retrieved_at": "2026-09-01T00:00:00Z",
+        "source": "OpenAI Official Documentation & Pricing API",
+        "availability_status": "ACTIVE",
+        "pricing_source": "https://openai.com/pricing",
+        "pricing_per_million_tokens": {"input": 15.00, "output": 60.00},
+        "context_window": 200000,
+        "supports_tool_use": true,
+        "supports_reasoning": true,
+        "deprecation_status": "NONE"
+      },
+      {
+        "provider": "openai",
+        "model_id": "o1",
+        "api_endpoint": "https://api.openai.com/v1/chat/completions",
+        "retrieved_at": "2026-09-01T00:00:00Z",
+        "source": "OpenAI Official Documentation & Pricing API",
+        "availability_status": "ACTIVE",
+        "pricing_source": "https://openai.com/pricing",
+        "pricing_per_million_tokens": {"input": 15.00, "output": 60.00},
+        "context_window": 200000,
+        "supports_tool_use": true,
+        "supports_reasoning": true,
+        "deprecation_status": "NONE"
+      }
+    ],
+    "frontier_agentic": [
+      {
+        "provider": "anthropic",
+        "model_id": "claude-3-7-sonnet-20250219",
+        "api_endpoint": "https://api.anthropic.com/v1/messages",
+        "retrieved_at": "2026-09-01T00:00:00Z",
+        "source": "Anthropic Official API Documentation",
+        "availability_status": "ACTIVE",
+        "pricing_source": "https://anthropic.com/pricing",
+        "pricing_per_million_tokens": {"input": 3.00, "output": 15.00},
+        "context_window": 200000,
+        "supports_tool_use": true,
+        "supports_reasoning": true,
+        "deprecation_status": "NONE"
+      },
+      {
+        "provider": "openai",
+        "model_id": "gpt-4o",
+        "api_endpoint": "https://api.openai.com/v1/chat/completions",
+        "retrieved_at": "2026-09-01T00:00:00Z",
+        "source": "OpenAI Official API Documentation",
+        "availability_status": "ACTIVE",
+        "pricing_source": "https://openai.com/pricing",
+        "pricing_per_million_tokens": {"input": 2.50, "output": 10.00},
+        "context_window": 128000,
+        "supports_tool_use": true,
+        "supports_reasoning": false,
+        "deprecation_status": "NONE"
+      },
+      {
+        "provider": "google",
+        "model_id": "gemini-2.0-pro",
+        "api_endpoint": "https://generativelanguage.googleapis.com/v1beta/models",
+        "retrieved_at": "2026-09-01T00:00:00Z",
+        "source": "Google DeepMind Official AI Documentation",
+        "availability_status": "ACTIVE",
+        "pricing_source": "https://ai.google.dev/pricing",
+        "pricing_per_million_tokens": {"input": 1.25, "output": 5.00},
+        "context_window": 2000000,
+        "supports_tool_use": true,
+        "supports_reasoning": true,
+        "deprecation_status": "NONE"
+      }
+    ],
+    "nexum_router_multiprovider": [
+      {
+        "provider": "dialagram",
+        "model_id": "qwen-3.8-max",
+        "api_endpoint": "https://dialagram.me/router/v1/chat/completions",
+        "retrieved_at": "2026-09-04T00:00:00Z",
+        "source": "Dialagram Nexum Router Documentation (https://dialagram.me)",
+        "availability_status": "ACTIVE",
+        "pricing_source": "Dialagram Flat Subscription ($5.50/week, ≈$23.83/mo)",
+        "pricing_per_million_tokens": {"input": 0.00, "output": 0.00},
+        "context_window": 256000,
+        "supports_tool_use": true,
+        "supports_reasoning": true,
+        "deprecation_status": "NONE"
+      },
+      {
+        "provider": "dialagram",
+        "model_id": "deepseek-v4",
+        "api_endpoint": "https://dialagram.me/router/v1/chat/completions",
+        "retrieved_at": "2026-09-04T00:00:00Z",
+        "source": "Dialagram Nexum Router Documentation (https://dialagram.me)",
+        "availability_status": "ACTIVE",
+        "pricing_source": "Dialagram Flat Subscription ($5.50/week)",
+        "pricing_per_million_tokens": {"input": 0.00, "output": 0.00},
+        "context_window": 128000,
+        "supports_tool_use": true,
+        "supports_reasoning": true,
+        "deprecation_status": "NONE"
+      },
+      {
+        "provider": "dialagram",
+        "model_id": "xiaomi-mimo-2.5",
+        "api_endpoint": "https://dialagram.me/router/v1/chat/completions",
+        "retrieved_at": "2026-09-04T00:00:00Z",
+        "source": "Dialagram Nexum Router Documentation (https://dialagram.me)",
+        "availability_status": "ACTIVE",
+        "pricing_source": "Dialagram Flat Subscription ($5.50/week)",
+        "pricing_per_million_tokens": {"input": 0.00, "output": 0.00},
+        "context_window": 64000,
+        "supports_tool_use": true,
+        "supports_reasoning": false,
+        "deprecation_status": "NONE"
+      },
+      {
+        "provider": "dialagram",
+        "model_id": "tencent-hy3",
+        "api_endpoint": "https://dialagram.me/router/v1/chat/completions",
+        "retrieved_at": "2026-09-04T00:00:00Z",
+        "source": "Dialagram Nexum Router Documentation (https://dialagram.me)",
+        "availability_status": "ACTIVE",
+        "pricing_source": "Dialagram Flat Subscription ($5.50/week)",
+        "pricing_per_million_tokens": {"input": 0.00, "output": 0.00},
+        "context_window": 128000,
+        "supports_tool_use": true,
+        "supports_reasoning": true,
+        "deprecation_status": "NONE"
+      },
+      {
+        "provider": "dialagram",
+        "model_id": "meta-muse-spark-1.2",
+        "api_endpoint": "https://dialagram.me/router/v1/chat/completions",
+        "retrieved_at": "2026-09-04T00:00:00Z",
+        "source": "Dialagram Nexum Router Documentation (https://dialagram.me)",
+        "availability_status": "ACTIVE",
+        "pricing_source": "Dialagram Flat Subscription ($5.50/week)",
+        "pricing_per_million_tokens": {"input": 0.00, "output": 0.00},
+        "context_window": 200000,
+        "supports_tool_use": true,
+        "supports_reasoning": true,
+        "deprecation_status": "NONE"
+      }
+    ],
+    "economical_mid_tier": [
+      {
+        "provider": "anthropic",
+        "model_id": "claude-3-5-haiku-20241022",
+        "api_endpoint": "https://api.anthropic.com/v1/messages",
+        "retrieved_at": "2026-09-01T00:00:00Z",
+        "source": "Anthropic Pricing Documentation",
+        "availability_status": "ACTIVE",
+        "pricing_source": "https://anthropic.com/pricing",
+        "pricing_per_million_tokens": {"input": 0.80, "output": 4.00},
+        "context_window": 200000,
+        "supports_tool_use": true,
+        "supports_reasoning": false,
+        "deprecation_status": "NONE"
+      },
+      {
+        "provider": "openai",
+        "model_id": "gpt-4o-mini",
+        "api_endpoint": "https://api.openai.com/v1/chat/completions",
+        "retrieved_at": "2026-09-01T00:00:00Z",
+        "source": "OpenAI Pricing Documentation",
+        "availability_status": "ACTIVE",
+        "pricing_source": "https://openai.com/pricing",
+        "pricing_per_million_tokens": {"input": 0.15, "output": 0.60},
+        "context_window": 128000,
+        "supports_tool_use": true,
+        "supports_reasoning": false,
+        "deprecation_status": "NONE"
+      }
+    ],
+    "open_small_local": [
+      {
+        "provider": "local_ollama",
+        "model_id": "qwen2.5-coder:7b",
+        "api_endpoint": "http://localhost:11434/api/generate",
+        "retrieved_at": "2026-09-01T00:00:00Z",
+        "source": "Ollama Library (https://ollama.com/library/qwen2.5-coder)",
+        "availability_status": "ACTIVE",
+        "pricing_source": "Local Self-Hosted (Zero Marginal Cost)",
+        "pricing_per_million_tokens": {"input": 0.0, "output": 0.0},
+        "context_window": 32768,
+        "supports_tool_use": true,
+        "supports_reasoning": false,
+        "deprecation_status": "NONE"
+      },
+      {
+        "provider": "local_ollama",
+        "model_id": "llama3.1:8b-instruct-q8_0",
+        "api_endpoint": "http://localhost:11434/api/generate",
+        "retrieved_at": "2026-09-01T00:00:00Z",
+        "source": "Ollama Library",
+        "availability_status": "ACTIVE",
+        "pricing_source": "Local Self-Hosted (Zero Marginal Cost)",
+        "pricing_per_million_tokens": {"input": 0.0, "output": 0.0},
+        "context_window": 128000,
+        "supports_tool_use": false,
+        "supports_reasoning": false,
+        "deprecation_status": "NONE"
+      }
+    ]
+  }
+}

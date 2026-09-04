@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://intelligence.systems/schemas/v0alpha1/mission.json",
+  "title": "Mission",
+  "description": "Declarative mission contract defining intent, acceptance criteria, constraints, budget, authority, assurance, and recovery.",
+  "type": "object",
+  "required": ["apiVersion", "kind", "metadata", "objective", "success"],
+  "properties": {
+    "apiVersion": {
+      "type": "string",
+      "enum": ["intelligence.systems/v0alpha1"]
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["Mission"]
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$"
+        },
+        "version": {
+          "type": ["integer", "string"]
+        },
+        "name": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "objective": {
+      "type": "object",
+      "required": ["outcome"],
+      "properties": {
+        "outcome": {
+          "type": "string"
+        },
+        "context": {
+          "type": "string"
+        }
+      }
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "required": { "type": "boolean" },
+          "type": { "type": "string" },
+          "description": { "type": "string" },
+          "default": {}
+        }
+      }
+    },
+    "success": {
+      "type": "object",
+      "properties": {
+        "all": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "any": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "expression": {
+          "type": "string"
+        }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "wall_clock": {
+          "type": "object",
+          "properties": {
+            "max": { "type": "string" }
+          }
+        },
+        "tokens": {
+          "type": "object",
+          "properties": {
+            "max": { "type": "integer" }
+          }
+        },
+        "money": {
+          "type": "object",
+          "properties": {
+            "max": { "type": "number" },
+            "currency": { "type": "string" }
+          }
+        },
+        "human_interventions": {
+          "type": "object",
+          "properties": {
+            "max": { "type": "integer" }
+          }
+        }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "assurance": {
+      "type": "object",
+      "properties": {
+        "verification": {
+          "type": "object",
+          "properties": {
+            "independence": {
+              "type": "string",
+              "enum": ["required", "preferred", "optional", "none"]
+            },
+            "minimum_tier": {
+              "type": "string",
+              "enum": ["tier_0_self", "tier_1_model", "tier_2_deterministic", "tier_3_attestation"]
+            }
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "required": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "storage": {
+          "type": "string"
+        }
+      }
+    },
+    "recovery": {
+      "type": "object",
+      "properties": {
+        "retry_limit": {
+          "type": "integer"
+        },
+        "on_failure": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["retry", "rollback", "escalate", "pause", "abort", "compensate"]
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

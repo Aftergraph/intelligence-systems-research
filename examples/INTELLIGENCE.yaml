@@ -1,0 +1,34 @@
+apiVersion: intelligence.systems/v0alpha1
+kind: IntelligenceSystem
+
+metadata:
+  name: example-engineering-system
+  version: 0.1.0
+
+purpose:
+  statement: Safely evolve and operate the example software system.
+
+imports:
+  instructions:
+    - ../AGENTS.md
+  skills:
+    - ../.agents/skills/**/SKILL.md
+
+missions:
+  directory: ./.intelligence/missions
+
+policies:
+  directory: ./.intelligence/policies
+
+assurance:
+  directory: ./.intelligence/assurance
+
+discovery:
+  protocols:
+    - mcp
+    - a2a
+
+telemetry:
+  mapping: opentelemetry
+
+extensions: {}

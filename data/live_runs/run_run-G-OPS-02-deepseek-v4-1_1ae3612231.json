@@ -1,0 +1,69 @@
+{
+  "experiment_id": "STUDY-008-LIVE",
+  "run_id": "run-G-OPS-02-deepseek-v4-1",
+  "condition": "G",
+  "workload_id": "OPS-02",
+  "domain": "agent_operations",
+  "provider": "dialagram",
+  "router": "dialagram.me/router/v1",
+  "exact_model_id": "deepseek-v4",
+  "timestamp_iso": "2026-09-03T23:09:08Z",
+  "hashes": {
+    "system_prompt_sha256": "3fd78ef0d1b170f909ad403800d0869acedbb5bd47c9fc2c9b20804463c6dbed",
+    "mission_contract_sha256": "5128574ada031234b4e1c8228c47e6f7ad814684715f64c87107273530cc871c",
+    "request_parameters_sha256": "06093eb1ab25eab51c1e01e1fd6793a7bd6dcfde5966c05d597952c5a685ef90"
+  },
+  "raw_response": "[Dialagram Sim: deepseek-v4] Formulated plan with verified constraints.",
+  "tool_calls": [],
+  "tool_responses": [],
+  "routing_receipt": {
+    "selected_model": "qwen-3.8-max",
+    "provider": "dialagram",
+    "score": 10.0
+  },
+  "authority_receipts": [
+    {
+      "token_id": "del-ops-02",
+      "status": "AUTHORIZED"
+    }
+  ],
+  "budget_reservations": [
+    "res-37ea73a417b5"
+  ],
+  "budget_commits": [
+    "res-37ea73a417b5"
+  ],
+  "candidate_completion": {
+    "reported_complete": true
+  },
+  "assurance_receipts": [
+    {
+      "principal": "AssurancePrincipal",
+      "decision": "REJECTED_REVOKED",
+      "timestamp": "2026-09-03T23:09:08Z"
+    }
+  ],
+  "evidence_references": [
+    "ev-OPS-02"
+  ],
+  "recovery_sequence": [],
+  "usage": {
+    "input_tokens": 28,
+    "output_tokens": 25,
+    "total_tokens": 53,
+    "latency_ms": 0.0,
+    "cost_usd": 0.0
+  },
+  "final_mission_state": "ABORTED_AUTHORITY_REVOKED",
+  "ground_truth": {
+    "ground_truth_pass": false
+  },
+  "verifier_output": {
+    "tier": "tier_2_deterministic",
+    "status": "REVOKED",
+    "exit_code": 126
+  },
+  "verified_success": false,
+  "false_completion": false,
+  "manifest_sha256": "1ae3612231b1e8056cac8fe967a11cad494ff4e8dffeccacc69d776984f17ae0"
+}

@@ -1,0 +1,127 @@
+{
+  "_freeze_notice": "FROZEN STUDY-011 provider/model matrix v1.0.0. No silent substitution. Any change requires PROTOCOL_AMENDMENT entry + version bump + recomputed hash + new created_utc.",
+  "study_id": "STUDY-011",
+  "freeze_version": "1.0.0",
+  "created_utc": "2026-09-04T03:00:00Z",
+  "phase": 1,
+  "phase2_blocked_by": [
+    "owner_approval",
+    "paid_provider_keys",
+    "legal_hold"
+  ],
+  "provider_strata": [
+    {
+      "provider_stratum": "dialagram",
+      "endpoint": "https://dialagram.me/router/v1",
+      "auth_env_var": "DIALAGRAM_API_KEY",
+      "auth_fallback_env_var": "NEXUM_API_KEY",
+      "catalog_source": "providers/dialagram.py MODELS_CATALOG",
+      "catalog_sha256": "6ea140af0946ac5b23789f8d3b75eee5e8a1e911a2474933646cb2c849defd3e",
+      "models": [
+        {
+          "exact_model_id": "qwen-3.8-max",
+          "context_window": 256000,
+          "supports_tools": true,
+          "supports_reasoning": true,
+          "rationale": "Highest-context Dialagram model"
+        },
+        {
+          "exact_model_id": "deepseek-v4",
+          "context_window": 128000,
+          "supports_tools": true,
+          "supports_reasoning": true,
+          "rationale": "STUDY-008 LIVE_VALID (1 run on SWE-01); distinct family from qwen"
+        },
+        {
+          "exact_model_id": "xiaomi-mimo-2.5",
+          "context_window": 64000,
+          "supports_tools": true,
+          "supports_reasoning": true,
+          "rationale": "STUDY-008 LIVE_VALID (1 run on SWE-01); distinct family"
+        }
+      ],
+      "rate_limit": {
+        "concurrency": 1,
+        "pacing_seconds": 5.0,
+        "max_retries": 2,
+        "backoff_max_seconds": 60.0,
+        "circuit_breaker_threshold": 5,
+        "circuit_breaker_cooldown_seconds": 300
+      },
+      "study008_evidence": {
+        "live_valid_runs": 2,
+        "live_provider_failure_runs": 9,
+        "note": "Both LIVE_VALID runs were on this stratum (deepseek-v4, xiaomi-mimo-2.5 on SWE-01). 9/275 = 3.3% provider failure rate informs 619-attempt ceiling."
+      }
+    },
+    {
+      "provider_stratum": "openrouter",
+      "endpoint": "https://openrouter.ai/api/v1",
+      "auth_env_var": "OPENROUTER_API_KEY",
+      "catalog_source": "data/openrouter_model_catalog.json",
+      "catalog_retrieved_at": "2026-09-04T01:41:00Z",
+      "catalog_sha256": "74237a034aa14184c600f558d6a4935bdea7aaa5c8bfbf2e306dd432c4caae10",
+      "models": [
+        {
+          "exact_model_id": "google/gemma-4-31b-it:free",
+          "context_window": 262144,
+          "supports_tools": true,
+          "supports_reasoning": false,
+          "rationale": "Mid-tier Google free LLM, 256k ctx, distinct family from Dialagram stratum (Alibaba Qwen, DeepSeek, Xiaomi)"
+        },
+        {
+          "exact_model_id": "z-ai/glm-5.2:free",
+          "context_window": 256000,
+          "supports_tools": true,
+          "supports_reasoning": false,
+          "rationale": "Mid-tier Z-AI free LLM, 256k ctx, distinct family from both Dialagram and Gemma slots"
+        }
+      ],
+      "rate_limit": {
+        "concurrency": 1,
+        "pacing_seconds": 6.0,
+        "max_retries": 2,
+        "backoff_max_seconds": 60.0,
+        "circuit_breaker_threshold": 5,
+        "circuit_breaker_cooldown_seconds": 300
+      },
+      "study008_evidence": {
+        "live_valid_runs": 0,
+        "live_provider_failure_runs": 0,
+        "note": "STUDY-008 used Dialagram only. OpenRouter is new for STUDY-011; provider-failure rate assumed 5% for retry budget."
+      }
+    }
+  ],
+  "phase2_provider_strata_locked": [
+    {
+      "provider_stratum": "openai",
+      "endpoint": "https://api.openai.com/v1",
+      "auth_env_var": "OPENAI_API_KEY",
+      "status": "BLOCKED_PENDING_OWNER"
+    },
+    {
+      "provider_stratum": "anthropic",
+      "endpoint": "https://api.anthropic.com/v1",
+      "auth_env_var": "ANTHROPIC_API_KEY",
+      "status": "BLOCKED_PENDING_OWNER"
+    },
+    {
+      "provider_stratum": "google",
+      "endpoint": "https://generativelanguage.googleapis.com/v1beta",
+      "auth_env_var": "GOOGLE_API_KEY",
+      "status": "BLOCKED_PENDING_OWNER"
+    }
+  ],
+  "replication_plan": {
+    "live_valid_per_cell_target": 58,
+    "live_valid_per_cell_planned_max": 60,
+    "phase1_live_valid_target": 464,
+    "phase1_attempts_ceiling": 619,
+    "phase1_attempts_ceiling_basis": "464 target + ~3 retries/cell buffer derived from STUDY-008's 9/275=3.3% provider-failure rate (x3 buffer)"
+  },
+  "credential_hygiene": {
+    "no_hardcoded_keys": true,
+    "env_var_path_required": true,
+    "audit_note": "dialagram.py DIALAGRAM_DEFAULT_KEY is None (set in prior session); no key in any program source or fixture as of freeze."
+  }
+}

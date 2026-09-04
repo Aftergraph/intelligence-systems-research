@@ -1,0 +1,72 @@
+{
+  "experiment_id": "STUDY-008-LIVE",
+  "run_id": "run-G-DE-05-qwen-3-8-max-1",
+  "condition": "G",
+  "workload_id": "DE-05",
+  "domain": "data_engineering",
+  "provider": "dialagram",
+  "router": "dialagram.me/router/v1",
+  "exact_model_id": "qwen-3.8-max",
+  "timestamp_iso": "2026-09-03T23:08:45Z",
+  "hashes": {
+    "system_prompt_sha256": "3fd78ef0d1b170f909ad403800d0869acedbb5bd47c9fc2c9b20804463c6dbed",
+    "mission_contract_sha256": "50503320238c6fcbab7240361fecd9b56eb022a9a3205f5a6ed36d9f78bc81a6",
+    "request_parameters_sha256": "3d1dfa1e64ba3b1747ac18b6197c0a5e33466d7cf7162a916e7e2e62201d5ffb"
+  },
+  "raw_response": "[Dialagram Sim: qwen-3.8-max] Formulated plan with verified constraints.",
+  "tool_calls": [],
+  "tool_responses": [],
+  "routing_receipt": {
+    "selected_model": "qwen-3.8-max",
+    "provider": "dialagram",
+    "score": 10.0
+  },
+  "authority_receipts": [
+    {
+      "token_id": "del-de-05",
+      "status": "AUTHORIZED"
+    }
+  ],
+  "budget_reservations": [
+    "res-e1479f59912f"
+  ],
+  "budget_commits": [
+    "res-e1479f59912f"
+  ],
+  "candidate_completion": {
+    "reported_complete": true
+  },
+  "assurance_receipts": [
+    {
+      "principal": "AssurancePrincipal",
+      "decision": "REJECTED_EXHAUSTED",
+      "timestamp": "2026-09-03T23:08:45Z"
+    }
+  ],
+  "evidence_references": [
+    "ev-DE-05"
+  ],
+  "recovery_sequence": [
+    "JOURNAL_ROLLBACK_TO_CHECKPOINT",
+    "STATE_RECOVERY:FAIL-REC-EXH"
+  ],
+  "usage": {
+    "input_tokens": 41,
+    "output_tokens": 40,
+    "total_tokens": 81,
+    "latency_ms": 0.0,
+    "cost_usd": 0.0
+  },
+  "final_mission_state": "FAILED_EXHAUSTED",
+  "ground_truth": {
+    "ground_truth_pass": false
+  },
+  "verifier_output": {
+    "tier": "tier_2_deterministic",
+    "status": "FAIL",
+    "exit_code": 1
+  },
+  "verified_success": false,
+  "false_completion": false,
+  "manifest_sha256": "660ee1d643bc3cbb9f752ec6a41d279c37dc34e018888ff0f28879b605f911f1"
+}

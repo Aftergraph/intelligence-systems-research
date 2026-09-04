@@ -1,0 +1,123 @@
+{
+  "_freeze_notice": "FROZEN STUDY-011 pre-registration v1.0.0. SHA-256 ties this file to the artifacts below. Any change to a referenced artifact invalidates this manifest; bump freeze_version, recompute hashes, append PROTOCOL_AMENDMENT entry.",
+  "study_id": "STUDY-011",
+  "freeze_version": "1.0.0",
+  "created_utc": "2026-09-04T03:00:00Z",
+  "version": "1.0.0",
+  "phase": 1,
+  "artifacts": {
+    "preregistration_document": {
+      "path": "STUDY-011-LIVE-CROSS-PROVIDER-PREREGISTRATION.md",
+      "sha256": "70837af85a7191194fe5f67ee6087e940fb8734ded898e8551a27ad006e2bd38"
+    },
+    "preregistration_manifest": {
+      "path": "data/study011_preregistration_manifest.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "sha256_method": "self_referential_placeholder; real sha256 written to data/study011_preregistration_manifest.sha256 after write"
+    },
+    "workload_manifest": {
+      "path": "data/study011_workload_manifest.json",
+      "sha256": "b4d1c07b6168a5febd94be4acc67a1e91e5e417fda99a36d81a084e9870c4a4e",
+      "root_hash": "e823102a4ff09bfca560c95e341aa3eaf7a4003215abd3900749afc64d3e4e06",
+      "freeze_version": "1.0.0"
+    },
+    "workload_frozen_set": {
+      "path": "data/study011_workloads_frozen.json",
+      "sha256": "59f5f12cee984b71666ef7c09fdbc10ca26aa7e595a903f24f34d222a3302f14",
+      "freeze_version": "1.0.0"
+    },
+    "provider_model_matrix": {
+      "path": "data/study011_provider_model_matrix.json",
+      "sha256": "8eddd55ec12a5ed67706558c7ef8965c2143b99ae15b2e46576cc691ac20acb2",
+      "freeze_version": "1.0.0"
+    },
+    "openrouter_catalog_snapshot": {
+      "path": "data/openrouter_model_catalog.json",
+      "sha256": "74237a034aa14184c600f558d6a4935bdea7aaa5c8bfbf2e306dd432c4caae10",
+      "retrieved_at": "2026-09-04T01:41:00Z"
+    },
+    "dialagram_provider_source": {
+      "path": "providers/dialagram.py",
+      "sha256": "6ea140af0946ac5b23789f8d3b75eee5e8a1e911a2474933646cb2c849defd3e"
+    },
+    "harness": {
+      "path": "experiments/live_benchmark/run_study_011.py",
+      "sha256": "acdd991ad05462f6dfb1bfe2a6bc0d270fccfb116a2b0cf8d863ae8bfb2053f9"
+    },
+    "analyze_pipeline": {
+      "path": "experiments/live_benchmark/study011_analyze.py",
+      "sha256": "400138f6a4ed1a39a35fba05bb9c5a1fc9478935d015b64bf3205267a4023d1f"
+    },
+    "analyze_tests": {
+      "path": "tests/test_study011_analyze.py",
+      "sha256": "11efeb6725629b03867844045030cf24c027597d00fd0f49452d8b5e5625e915"
+    }
+  },
+  "design": {
+    "conditions": [
+      "A",
+      "C",
+      "F",
+      "G"
+    ],
+    "provider_strata": [
+      "dialagram",
+      "openrouter"
+    ],
+    "workload_count": 20,
+    "workload_families": [
+      "Software Engineering",
+      "Data/Transformation",
+      "Operational/Tool Workflow",
+      "Constraint/Authority Workflow",
+      "Research/Structured Evidence"
+    ],
+    "replicates_per_cell": 3,
+    "live_valid_per_cell_target": 58,
+    "live_valid_per_cell_planned_max": 60,
+    "phase1_live_valid_target": 464,
+    "phase1_attempts_ceiling": 619,
+    "alpha_per_hypothesis": 0.01,
+    "alpha_adjusted_bonferroni_h1": 0.00333,
+    "power_target": 0.8,
+    "seoi_cohens_h": 0.5
+  },
+  "hypotheses": {
+    "H1a": "G vs A on FCR, McNemar two-sided",
+    "H1b": "G vs A on VSR, McNemar two-sided",
+    "H1c": "F vs A on FCR, McNemar two-sided",
+    "H2": "G vs F on FCR, McNemar two-sided (secondary)",
+    "H3": "C vs A on VSR, McNemar two-sided (secondary)"
+  },
+  "exclusion_classes": [
+    "LIVE_VALID",
+    "LIVE_PROVIDER_FAILURE",
+    "LIVE_PROTOCOL_FAILURE",
+    "INVALID_PROTOCOL",
+    "EXCLUDED"
+  ],
+  "live_only_invariant": {
+    "enforced_in": "experiments/live_benchmark/run_study_011.py:enforce_live_only_invariant",
+    "rejects": [
+      "EXCLUDED",
+      "SIMULATED"
+    ],
+    "audit_note": "Any LIVE_ONLY attempt arriving with execution_class outside {LIVE_VALID, LIVE_PROVIDER_FAILURE, LIVE_PROTOCOL_FAILURE} is rejected at the harness level."
+  },
+  "dry_run_records_handling": {
+    "path": "data/live_benchmark_dry_runs/",
+    "schema_origin": "STUDY-008 (different schema; no is_live/http_status/execution_class fields)",
+    "study011_classification": "INVALID_PROTOCOL or EXCLUDED (verified by classify_execution())",
+    "audit_note": "Dry-run records cannot reach LIVE_VALID under any analysis path; the harness preflight refuses LIVE_ONLY without provider credentials, and the analyzer rejects schema-mismatched records."
+  },
+  "credential_hygiene": {
+    "no_keys_in_sources": true,
+    "dialagram_default_key": "None (DIALAGRAM_API_KEY env var required)",
+    "openrouter_default_key": "None (OPENROUTER_API_KEY env var required)",
+    "verified_by": "grep -rn 'dgr_live_\\|sk-or-v1-60c1c13d' against *.py/*.json/*.md, exit 0"
+  },
+  "stopping_rules": {
+    "continue_until": "every cell hits LIVE_VALID >= 58 OR phase1_attempts_ceiling reached",
+    "document_stopping_reason_per_stratum": true
+  }
+}

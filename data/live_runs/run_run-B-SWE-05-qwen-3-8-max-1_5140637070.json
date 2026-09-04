@@ -1,0 +1,46 @@
+{
+  "experiment_id": "STUDY-008-LIVE",
+  "run_id": "run-B-SWE-05-qwen-3-8-max-1",
+  "condition": "B",
+  "workload_id": "SWE-05",
+  "domain": "software_engineering",
+  "provider": "dialagram",
+  "router": "dialagram.me/router/v1",
+  "exact_model_id": "qwen-3.8-max",
+  "timestamp_iso": "2026-09-03T23:07:36Z",
+  "hashes": {
+    "system_prompt_sha256": "3fd78ef0d1b170f909ad403800d0869acedbb5bd47c9fc2c9b20804463c6dbed",
+    "mission_contract_sha256": "3724e52e30850e6f30a918f3c4a80cd0c24642892f07f9d0c113815f0eee4d6d",
+    "request_parameters_sha256": "3d1dfa1e64ba3b1747ac18b6197c0a5e33466d7cf7162a916e7e2e62201d5ffb"
+  },
+  "raw_response": "[Dialagram Sim: qwen-3.8-max] Formulated plan with verified constraints.",
+  "tool_calls": [],
+  "tool_responses": [],
+  "routing_receipt": null,
+  "authority_receipts": [],
+  "budget_reservations": [],
+  "budget_commits": [],
+  "candidate_completion": {
+    "reported_complete": true
+  },
+  "assurance_receipts": [],
+  "evidence_references": [
+    "ev-SWE-05"
+  ],
+  "recovery_sequence": [],
+  "usage": {
+    "input_tokens": 34,
+    "output_tokens": 25,
+    "total_tokens": 59,
+    "latency_ms": 0.0,
+    "cost_usd": 0.0
+  },
+  "final_mission_state": "COMPLETED",
+  "ground_truth": {
+    "ground_truth_pass": false
+  },
+  "verifier_output": {},
+  "verified_success": false,
+  "false_completion": true,
+  "manifest_sha256": "5140637070d0cb2b116fb2565a154e6b69227aa30f97787ac99c842efc29f127"
+}

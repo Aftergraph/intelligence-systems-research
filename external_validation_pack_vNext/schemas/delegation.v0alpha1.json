@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://intelligence.systems/schemas/v0alpha1/delegation.json",
+  "title": "Delegation",
+  "description": "Cryptographically bound delegation grant specifying principal, delegate, purpose, attenuated scope, budget, and expiration.",
+  "type": "object",
+  "required": ["id", "principal", "delegate", "purpose", "scope", "valid_from", "expires_at"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]+$"
+    },
+    "principal": {
+      "type": "string",
+      "format": "uri"
+    },
+    "delegate": {
+      "type": "string",
+      "format": "uri"
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "object",
+      "required": ["allowed_capabilities"],
+      "properties": {
+        "allowed_capabilities": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "denied_capabilities": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "max_tokens": { "type": "integer" },
+        "max_usd": { "type": "number" },
+        "max_actions": { "type": "integer" }
+      }
+    },
+    "valid_from": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "allow_redelegation": {
+      "type": "boolean",
+      "default": false
+    },
+    "max_delegation_depth": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 1
+    },
+    "signature": {
+      "type": "object",
+      "properties": {
+        "algorithm": { "type": "string" },
+        "public_key": { "type": "string" },
+        "value": { "type": "string" }
+      }
+    }
+  },
+  "additionalProperties": false
+}

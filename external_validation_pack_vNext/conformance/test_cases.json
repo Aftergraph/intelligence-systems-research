@@ -1,0 +1,86 @@
+[
+  {
+    "id": "TC-001",
+    "name": "Manifest Schema Conformance",
+    "description": "Validates that the runtime correctly parses and validates an IntelligenceSystem root manifest.",
+    "level": "MANDATORY"
+  },
+  {
+    "id": "TC-002",
+    "name": "Mission Contract Schema Conformance",
+    "description": "Validates that the runtime parses and validates a valid Mission contract conforming to SPEC-001.",
+    "level": "MANDATORY"
+  },
+  {
+    "id": "TC-003",
+    "name": "Invariant 1: Non-Equivalence of Complete and Verified",
+    "description": "Ensures agent self-declared finish_execution transitions state to VERIFYING and NEVER directly to VERIFIED.",
+    "level": "MANDATORY"
+  },
+  {
+    "id": "TC-004",
+    "name": "Invariant 2: Evidence-Gated Outcome",
+    "description": "Ensures mission only transitions to VERIFIED when all required criteria have valid qualifying SATISFIED evidence.",
+    "level": "MANDATORY"
+  },
+  {
+    "id": "TC-005",
+    "name": "Invariant 3: Purpose-Bound Authority Attenuation",
+    "description": "Ensures actions outside delegation scope or explicitly denied patterns are blocked with PermissionError.",
+    "level": "MANDATORY"
+  },
+  {
+    "id": "TC-006",
+    "name": "Invariant 4: Budget Enforcement",
+    "description": "Ensures actions exceeding token or currency budget are halted and transition state to NEEDS_INPUT.",
+    "level": "MANDATORY"
+  },
+  {
+    "id": "TC-007",
+    "name": "Lifecycle State Machine Progression",
+    "description": "Validates valid sequential state progression DRAFT -> READY -> AUTHORIZED -> RUNNING -> VERIFYING -> VERIFIED.",
+    "level": "MANDATORY"
+  },
+  {
+    "id": "TC-008",
+    "name": "OpenTelemetry GenAI Trajectory Event Compliance",
+    "description": "Validates that every action appends a timestamped, structured trajectory event with OTel semantic attributes.",
+    "level": "RECOMMENDED"
+  },
+  {
+    "id": "TC-009",
+    "name": "Assurance Tier Compliance (Tier 0 Rejection)",
+    "description": "Ensures Tier 0 (self-assertion) evidence is rejected as insufficient for high-assurance verified outcome.",
+    "level": "MANDATORY"
+  },
+  {
+    "id": "TC-010",
+    "name": "Recovery Policy Execution",
+    "description": "Ensures verification failure triggers RECOVERING state and retry loop when retry_limit > 0.",
+    "level": "MANDATORY"
+  },
+  {
+    "id": "TC-011",
+    "name": "Delegation Expiration & Mid-flight Revocation",
+    "description": "Ensures expired or revoked delegation tokens immediately prevent action execution and transition to REVOKED.",
+    "level": "MANDATORY"
+  },
+  {
+    "id": "TC-012",
+    "name": "Sub-delegation Monotonic Attenuation (Invariant 3)",
+    "description": "Validates that child delegation tokens cannot exceed parent permissions or maximum delegation depth.",
+    "level": "MANDATORY"
+  },
+  {
+    "id": "TC-013",
+    "name": "Multi-threaded State & Trajectory Concurrency Invariants",
+    "description": "Ensures concurrent thread execution maintains monotonic trajectory sequencing and exact budget integrity.",
+    "level": "MANDATORY"
+  },
+  {
+    "id": "TC-014",
+    "name": "Minimum Assurance Tier Enforcement",
+    "description": "Ensures evidence items failing to meet the declared minimum assurance tier (e.g. Tier 2 deterministic) fail verification.",
+    "level": "MANDATORY"
+  }
+]

@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://intelligence.systems/schemas/v0alpha1/evidence.json",
+  "title": "EvidenceItem",
+  "description": "Schema for verifiable proof items and verification results binding evidence to mission acceptance criteria.",
+  "type": "object",
+  "required": ["id", "mission_id", "criterion_ref", "tier", "verifier", "result", "timestamp"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]+$"
+    },
+    "mission_id": {
+      "type": "string"
+    },
+    "criterion_ref": {
+      "type": "string"
+    },
+    "tier": {
+      "type": "string",
+      "enum": ["tier_0_self", "tier_1_model", "tier_2_deterministic", "tier_3_attestation"]
+    },
+    "verifier": {
+      "type": "object",
+      "required": ["type", "identifier"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["test_harness", "linter", "compiler", "llm_judge", "human_operator", "cryptographic_service"]
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "result": {
+      "type": "string",
+      "enum": ["SATISFIED", "FAILED", "INDETERMINATE", "SKIPPED"]
+    },
+    "evidence_data": {
+      "type": "object",
+      "properties": {
+        "exit_code": { "type": "integer" },
+        "stdout": { "type": "string" },
+        "stderr": { "type": "string" },
+        "artifact_uri": { "type": "string" },
+        "artifact_hash": { "type": "string" },
+        "evaluator_score": { "type": "number" },
+        "evaluator_reasoning": { "type": "string" }
+      }
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "freshness_seconds": {
+      "type": "integer",
+      "default": 3600
+    },
+    "signature": {
+      "type": "object",
+      "properties": {
+        "algorithm": { "type": "string" },
+        "public_key": { "type": "string" },
+        "signature_bytes": { "type": "string" }
+      }
+    }
+  },
+  "additionalProperties": false
+}

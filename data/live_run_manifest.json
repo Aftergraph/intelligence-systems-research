@@ -1,0 +1,2504 @@
+{
+  "dataset_version": "STUDY-008-LIVE-v1.1",
+  "protocol_id": "STUDY-008-PREREG",
+  "preregistration_sha256": "8eb5f602042de444292544c1c64e84d6f4fee1b4dee42f4a183bdaae3f53ea2a",
+  "timestamp_iso": "2026-09-04T01:20:00Z",
+  "nominal_matrix": {
+    "workloads": 25,
+    "conditions": 7,
+    "models": 3,
+    "replications": 1,
+    "nominal_full_factorial_total": 525
+  },
+  "executed_matrix": {
+    "attempted_runs": 275,
+    "breakdown_by_model": {
+      "qwen-3.8-max": 175,
+      "deepseek-v4": 50,
+      "xiaomi-mimo-2.5": 50
+    },
+    "classification_breakdown": {
+      "LIVE_VALID": 2,
+      "LIVE_PROVIDER_FAILURE": 9,
+      "SIMULATED": 264
+    }
+  },
+  "dataset_root_sha256": "d976ab7678a371b79633f0d9d56aa96c5bdbcb39e898b0371fd5b933258cfb04",
+  "runs": [
+    {
+      "run_id": "run-A-DE-01-deepseek-v4-1",
+      "file": "run_run-A-DE-01-deepseek-v4-1_4d965b841f.json",
+      "sha256": "4d965b841fa742d25adc5769ac45fe430b7b2658592300852d598810f8c6b604",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "DE-01"
+    },
+    {
+      "run_id": "run-A-DE-01-qwen-3-8-max-1",
+      "file": "run_run-A-DE-01-qwen-3-8-max-1_e3c9208317.json",
+      "sha256": "e3c9208317f44e1887dbc572b58b163cdb2fe466c0ea9aafb8b296140de9613a",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-01"
+    },
+    {
+      "run_id": "run-A-DE-01-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-DE-01-xiaomi-mimo-2-5-1_b83374199c.json",
+      "sha256": "b83374199c8431d076d325eeec6d23792049f3b1771ee349c7a5185a488978b2",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "DE-01"
+    },
+    {
+      "run_id": "run-A-DE-02-deepseek-v4-1",
+      "file": "run_run-A-DE-02-deepseek-v4-1_75bdd46eed.json",
+      "sha256": "75bdd46eed9a3f19656103b863b7086b8f6e187ac96e005dd4a50c7f6f90a07d",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "DE-02"
+    },
+    {
+      "run_id": "run-A-DE-02-qwen-3-8-max-1",
+      "file": "run_run-A-DE-02-qwen-3-8-max-1_4671ef0d42.json",
+      "sha256": "4671ef0d425b1de2c62e607f90ba59671f83036e9cea29282c0acfee8053c982",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-02"
+    },
+    {
+      "run_id": "run-A-DE-02-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-DE-02-xiaomi-mimo-2-5-1_591e06d180.json",
+      "sha256": "591e06d180a87825d104ce3e887202ae1de73bd9047891a071340b842073eff6",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "DE-02"
+    },
+    {
+      "run_id": "run-A-DE-03-deepseek-v4-1",
+      "file": "run_run-A-DE-03-deepseek-v4-1_6161a13c17.json",
+      "sha256": "6161a13c17c4288f67cc8bee5a01d23da82c4963f1dc4becfb4bd94178be3e58",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "DE-03"
+    },
+    {
+      "run_id": "run-A-DE-03-qwen-3-8-max-1",
+      "file": "run_run-A-DE-03-qwen-3-8-max-1_cbd5233cf2.json",
+      "sha256": "cbd5233cf2316554a4c2a335b1c0952ffd2c40465689a9441e6836a7e5b8cf7f",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-03"
+    },
+    {
+      "run_id": "run-A-DE-03-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-DE-03-xiaomi-mimo-2-5-1_2bb6e97f06.json",
+      "sha256": "2bb6e97f0644f0a9f54c24a18eaeaa0b35f18b3cbbcc8b745b1c5f61724f4462",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "DE-03"
+    },
+    {
+      "run_id": "run-A-DE-04-deepseek-v4-1",
+      "file": "run_run-A-DE-04-deepseek-v4-1_058cf3ffdf.json",
+      "sha256": "058cf3ffdf312c8a4c3aff171b4ca72142adf538f8cb5fca8dc0f5de0dcb6736",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "DE-04"
+    },
+    {
+      "run_id": "run-A-DE-04-qwen-3-8-max-1",
+      "file": "run_run-A-DE-04-qwen-3-8-max-1_0a447392df.json",
+      "sha256": "0a447392df8038d4e9a73ae80fc1f6ec9ddd26ce0a5f706ff04a33dfd6a20bb2",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-04"
+    },
+    {
+      "run_id": "run-A-DE-04-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-DE-04-xiaomi-mimo-2-5-1_433ff3f481.json",
+      "sha256": "433ff3f481b7308576a5fafc2df3df7ea07e9095475b4d02be8e27884b8c164d",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "DE-04"
+    },
+    {
+      "run_id": "run-A-DE-05-deepseek-v4-1",
+      "file": "run_run-A-DE-05-deepseek-v4-1_15de051754.json",
+      "sha256": "15de051754a4f17d21d991e1d3743d0b9a8ac9e75932a99771ed11bcf7684790",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "DE-05"
+    },
+    {
+      "run_id": "run-A-DE-05-qwen-3-8-max-1",
+      "file": "run_run-A-DE-05-qwen-3-8-max-1_0e32591f6e.json",
+      "sha256": "0e32591f6e3caeb88185e840fc0b9e3c29aec05c9db03a26304404809bb84f7d",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-05"
+    },
+    {
+      "run_id": "run-A-DE-05-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-DE-05-xiaomi-mimo-2-5-1_9488464472.json",
+      "sha256": "948846447216ccd7a5aef26816a6967e3d3b1c9e12feb6c7a4c1e83ee86568be",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "DE-05"
+    },
+    {
+      "run_id": "run-A-OPS-01-deepseek-v4-1",
+      "file": "run_run-A-OPS-01-deepseek-v4-1_5fc79d7e92.json",
+      "sha256": "5fc79d7e92074ee2d2ee653bb8e0412c15150b434a64421727fbee5c5326e29d",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "OPS-01"
+    },
+    {
+      "run_id": "run-A-OPS-01-qwen-3-8-max-1",
+      "file": "run_run-A-OPS-01-qwen-3-8-max-1_eaf4662c64.json",
+      "sha256": "eaf4662c64567cf79b9084baae7d93708176f882521514b0d18e023e471154f3",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-01"
+    },
+    {
+      "run_id": "run-A-OPS-01-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-OPS-01-xiaomi-mimo-2-5-1_725d011e69.json",
+      "sha256": "725d011e6977c88c9a64227398e8485c12690554fab0d907c08fde6b8b94beb0",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "OPS-01"
+    },
+    {
+      "run_id": "run-A-OPS-02-deepseek-v4-1",
+      "file": "run_run-A-OPS-02-deepseek-v4-1_1ee011e958.json",
+      "sha256": "1ee011e9587bfff099aafe2be207bdd554389dd677ccfc31dd0f0e389229bc61",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "OPS-02"
+    },
+    {
+      "run_id": "run-A-OPS-02-qwen-3-8-max-1",
+      "file": "run_run-A-OPS-02-qwen-3-8-max-1_15781b94c1.json",
+      "sha256": "15781b94c16a96cbbaa0082267b0575f5f4e29ebdd6c115d38fb14cf4530e966",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-02"
+    },
+    {
+      "run_id": "run-A-OPS-02-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-OPS-02-xiaomi-mimo-2-5-1_a077bad8de.json",
+      "sha256": "a077bad8de0f793a84c6fb0f58235b20e75d8e2b67b436fd05c12d9209b706e8",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "OPS-02"
+    },
+    {
+      "run_id": "run-A-OPS-03-deepseek-v4-1",
+      "file": "run_run-A-OPS-03-deepseek-v4-1_578b447be8.json",
+      "sha256": "578b447be8fc2a8c050b590a73126c5775f2c3ed19bf4b184fb3ca49182bb768",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "OPS-03"
+    },
+    {
+      "run_id": "run-A-OPS-03-qwen-3-8-max-1",
+      "file": "run_run-A-OPS-03-qwen-3-8-max-1_935df26091.json",
+      "sha256": "935df2609177fafef39000029e70198db5527480db73ce5c3940353fe6f59987",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-03"
+    },
+    {
+      "run_id": "run-A-OPS-03-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-OPS-03-xiaomi-mimo-2-5-1_7a98a1a1de.json",
+      "sha256": "7a98a1a1dedef417ab6668bdaaa5bd3f4e0425050e41e9e2d3cc82671b4dfa74",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "OPS-03"
+    },
+    {
+      "run_id": "run-A-OPS-04-deepseek-v4-1",
+      "file": "run_run-A-OPS-04-deepseek-v4-1_73019d318e.json",
+      "sha256": "73019d318ec58ba54260becb9cb0c7e7baa1061ea9036915af65e0fd6ed8ad65",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "OPS-04"
+    },
+    {
+      "run_id": "run-A-OPS-04-qwen-3-8-max-1",
+      "file": "run_run-A-OPS-04-qwen-3-8-max-1_59a1116d68.json",
+      "sha256": "59a1116d68bc604889a62bc391b4c226f89551258504252422a75a7ec6531146",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-04"
+    },
+    {
+      "run_id": "run-A-OPS-04-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-OPS-04-xiaomi-mimo-2-5-1_1ead4bee19.json",
+      "sha256": "1ead4bee19d3d6f614cb2309098168082af4f313604a5e7e3602b0401ac3af74",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "OPS-04"
+    },
+    {
+      "run_id": "run-A-OPS-05-deepseek-v4-1",
+      "file": "run_run-A-OPS-05-deepseek-v4-1_f99563f099.json",
+      "sha256": "f99563f0993bf091c86b4d53d057ef466eee48dcfe955e59523c72df7877c533",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "OPS-05"
+    },
+    {
+      "run_id": "run-A-OPS-05-qwen-3-8-max-1",
+      "file": "run_run-A-OPS-05-qwen-3-8-max-1_df731f8b2d.json",
+      "sha256": "df731f8b2d0d7416746a49d9aaee692f29be8a01f360acc4c3fc41dfc8314864",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-05"
+    },
+    {
+      "run_id": "run-A-OPS-05-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-OPS-05-xiaomi-mimo-2-5-1_cec5822e67.json",
+      "sha256": "cec5822e6738016056c7004f700e5fa87246895078f47554e0791f6c5b9698fb",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "OPS-05"
+    },
+    {
+      "run_id": "run-A-RES-01-deepseek-v4-1",
+      "file": "run_run-A-RES-01-deepseek-v4-1_b2bfbfd357.json",
+      "sha256": "b2bfbfd357f4e4c230a56736d8ffab53a709f5b0ca865a0c0fd9cd3352b310e5",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "RES-01"
+    },
+    {
+      "run_id": "run-A-RES-01-qwen-3-8-max-1",
+      "file": "run_run-A-RES-01-qwen-3-8-max-1_a3b22e3404.json",
+      "sha256": "a3b22e34046fdb1721821e57051625a77ad1e257e144274c17149c0a9a339c11",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-01"
+    },
+    {
+      "run_id": "run-A-RES-01-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-RES-01-xiaomi-mimo-2-5-1_b6c09bebac.json",
+      "sha256": "b6c09bebac8d7a35b0f7d914f48e1ece597b75f97e93de8d11382668c4594759",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "RES-01"
+    },
+    {
+      "run_id": "run-A-RES-02-deepseek-v4-1",
+      "file": "run_run-A-RES-02-deepseek-v4-1_5b69f33a3c.json",
+      "sha256": "5b69f33a3c7e0fa379b8fa33cd669b87b6d8bce56d3d9dc3eaa9e32c6ee2e67a",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "RES-02"
+    },
+    {
+      "run_id": "run-A-RES-02-qwen-3-8-max-1",
+      "file": "run_run-A-RES-02-qwen-3-8-max-1_b3ba1f4d33.json",
+      "sha256": "b3ba1f4d335bedf4b76939785773bf4e0bfa2c2d4250ac4a01a62691005aa445",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-02"
+    },
+    {
+      "run_id": "run-A-RES-02-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-RES-02-xiaomi-mimo-2-5-1_1af3a7e86e.json",
+      "sha256": "1af3a7e86e36d70fa5be564ab2f419e2f8004d495eb64c346c7f180cac5de73f",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "RES-02"
+    },
+    {
+      "run_id": "run-A-RES-03-deepseek-v4-1",
+      "file": "run_run-A-RES-03-deepseek-v4-1_e7df21d25c.json",
+      "sha256": "e7df21d25c9c50f9fce676246796213741000efae04ae25068002aa427c02979",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "RES-03"
+    },
+    {
+      "run_id": "run-A-RES-03-qwen-3-8-max-1",
+      "file": "run_run-A-RES-03-qwen-3-8-max-1_28f06af629.json",
+      "sha256": "28f06af629f78cb8fda8add837013178abac4de553e026a0594dc197255cc059",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-03"
+    },
+    {
+      "run_id": "run-A-RES-03-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-RES-03-xiaomi-mimo-2-5-1_d3ec62007e.json",
+      "sha256": "d3ec62007eda18591c9c072917db5a426d41f3f9b1bcaf51e2dc6e93fca121ed",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "RES-03"
+    },
+    {
+      "run_id": "run-A-RES-04-deepseek-v4-1",
+      "file": "run_run-A-RES-04-deepseek-v4-1_2c23be0d94.json",
+      "sha256": "2c23be0d94e345380327e29e9928462dd0a17c3168c99c624f7229356d5134ae",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "RES-04"
+    },
+    {
+      "run_id": "run-A-RES-04-qwen-3-8-max-1",
+      "file": "run_run-A-RES-04-qwen-3-8-max-1_f0c45962f0.json",
+      "sha256": "f0c45962f00541703c9c772c2e8f8dd8d0d553f58eea534a5084226736b9d606",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-04"
+    },
+    {
+      "run_id": "run-A-RES-04-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-RES-04-xiaomi-mimo-2-5-1_6cb14edf85.json",
+      "sha256": "6cb14edf852d628aae020df29bd15dc5df281a187577b64c439b23250c57dd97",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "RES-04"
+    },
+    {
+      "run_id": "run-A-RES-05-deepseek-v4-1",
+      "file": "run_run-A-RES-05-deepseek-v4-1_ec31745eee.json",
+      "sha256": "ec31745eee9949eba177bfa987bacee00064d87f616e96025f046e25accf8ff2",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "RES-05"
+    },
+    {
+      "run_id": "run-A-RES-05-qwen-3-8-max-1",
+      "file": "run_run-A-RES-05-qwen-3-8-max-1_ca55df30de.json",
+      "sha256": "ca55df30de350dccd77770d03365c2ca83341a8b2ca1decdb25c0e8b46ab66f0",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-05"
+    },
+    {
+      "run_id": "run-A-RES-05-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-RES-05-xiaomi-mimo-2-5-1_2e74c4c8b5.json",
+      "sha256": "2e74c4c8b552e77be2c0aa277734322ed446052d01813f803d36d36f88753279",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "RES-05"
+    },
+    {
+      "run_id": "run-A-SRE-01-deepseek-v4-1",
+      "file": "run_run-A-SRE-01-deepseek-v4-1_47879c13ca.json",
+      "sha256": "47879c13ca0d27afdadbf6190efb3bd7aca629b7928192ae6130ddb1f8946c59",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "SRE-01"
+    },
+    {
+      "run_id": "run-A-SRE-01-qwen-3-8-max-1",
+      "file": "run_run-A-SRE-01-qwen-3-8-max-1_df75d3e9dd.json",
+      "sha256": "df75d3e9ddc9f9a391a91be74fd8d724705e3f2d3675675c546c1ccaf040c499",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-01"
+    },
+    {
+      "run_id": "run-A-SRE-01-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-SRE-01-xiaomi-mimo-2-5-1_e26dc5c2b6.json",
+      "sha256": "e26dc5c2b670d67ccaf094b21327a4c78478d0f169db0e392cc6bacdc3d2be68",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SRE-01"
+    },
+    {
+      "run_id": "run-A-SRE-02-deepseek-v4-1",
+      "file": "run_run-A-SRE-02-deepseek-v4-1_f7afd3317b.json",
+      "sha256": "f7afd3317b2ee777e8a255afbaf7b8bde525d38a13442ed90aad20f49c5498b3",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "SRE-02"
+    },
+    {
+      "run_id": "run-A-SRE-02-qwen-3-8-max-1",
+      "file": "run_run-A-SRE-02-qwen-3-8-max-1_6bd5e90674.json",
+      "sha256": "6bd5e906741bc22852ed6cc934e9231bc1223eb54c86d7f4c2dc0bcc4c962357",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-02"
+    },
+    {
+      "run_id": "run-A-SRE-02-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-SRE-02-xiaomi-mimo-2-5-1_caed298bd4.json",
+      "sha256": "caed298bd4b9911bbfd5cd585e140ae9271bff5a4eee1946dabd7e6bb8586cda",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SRE-02"
+    },
+    {
+      "run_id": "run-A-SRE-03-deepseek-v4-1",
+      "file": "run_run-A-SRE-03-deepseek-v4-1_2a190863cd.json",
+      "sha256": "2a190863cd3a8654dc8e6591aead7e08e4752ce1ad5cf22ad3c72a3f0e8f6163",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "SRE-03"
+    },
+    {
+      "run_id": "run-A-SRE-03-qwen-3-8-max-1",
+      "file": "run_run-A-SRE-03-qwen-3-8-max-1_ba438f9539.json",
+      "sha256": "ba438f95397390306074f0ba22d4e737ae99fdfecb4eabede429f2afec7fbee3",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-03"
+    },
+    {
+      "run_id": "run-A-SRE-03-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-SRE-03-xiaomi-mimo-2-5-1_2aec6a9da2.json",
+      "sha256": "2aec6a9da272b4ca3c2986cf5e81548f86d260db514f62e4590a5cbf858b2736",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SRE-03"
+    },
+    {
+      "run_id": "run-A-SRE-04-deepseek-v4-1",
+      "file": "run_run-A-SRE-04-deepseek-v4-1_a92bc06f2d.json",
+      "sha256": "a92bc06f2db7cf27a529fd0664822bf4fc1796e46f15e97b667f5e512ef75e15",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "SRE-04"
+    },
+    {
+      "run_id": "run-A-SRE-04-qwen-3-8-max-1",
+      "file": "run_run-A-SRE-04-qwen-3-8-max-1_31b32b6397.json",
+      "sha256": "31b32b639717c20f6d3bdf6ffd94d6ae2181509170254a2b40fcf81506cc0c4e",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-04"
+    },
+    {
+      "run_id": "run-A-SRE-04-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-SRE-04-xiaomi-mimo-2-5-1_c58915c2a3.json",
+      "sha256": "c58915c2a3c498b00c042dbb8b40c26f8cf126f33ae0bcb2b9805efb0e16036a",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SRE-04"
+    },
+    {
+      "run_id": "run-A-SRE-05-deepseek-v4-1",
+      "file": "run_run-A-SRE-05-deepseek-v4-1_d741a34bff.json",
+      "sha256": "d741a34bfffdb4aa48541b64b0b6ee5a7844ad965144cc8d37cd4d2da345532f",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "SRE-05"
+    },
+    {
+      "run_id": "run-A-SRE-05-qwen-3-8-max-1",
+      "file": "run_run-A-SRE-05-qwen-3-8-max-1_e1f41d724d.json",
+      "sha256": "e1f41d724dbc9468efb7fd5e105deae01cc3e5bf29c54d816b05f92e87761a81",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-05"
+    },
+    {
+      "run_id": "run-A-SRE-05-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-SRE-05-xiaomi-mimo-2-5-1_c2a5d1c89d.json",
+      "sha256": "c2a5d1c89db92a5d7b7820a411f58c73ab403838ed29341bb2082624b29115d8",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SRE-05"
+    },
+    {
+      "run_id": "run-A-SWE-01-deepseek-v4-1",
+      "file": "run_run-A-SWE-01-deepseek-v4-1_08699f3030.json",
+      "sha256": "08699f303073b68fdf9a8c7c3878aa6c567785f99add3701b4e88423908367be",
+      "classification": "LIVE_VALID",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "SWE-01"
+    },
+    {
+      "run_id": "run-A-SWE-01-qwen-3-8-max-1",
+      "file": "run_run-A-SWE-01-qwen-3-8-max-1_787401ebb0.json",
+      "sha256": "787401ebb0d409c3f040e930ca34fd35497ec6932285f61bd03b3da9ea275ba0",
+      "classification": "LIVE_PROVIDER_FAILURE",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-01"
+    },
+    {
+      "run_id": "run-A-SWE-01-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-SWE-01-xiaomi-mimo-2-5-1_8a99697769.json",
+      "sha256": "8a99697769d8cf7db9a866d1fd78316283712191eb2d1771d11e5cc5c8441b23",
+      "classification": "LIVE_VALID",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SWE-01"
+    },
+    {
+      "run_id": "run-A-SWE-02-deepseek-v4-1",
+      "file": "run_run-A-SWE-02-deepseek-v4-1_815693c7f8.json",
+      "sha256": "815693c7f87132570e72825d39f7f539849a26f2cb6b8a25477e6e12cd59582e",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "SWE-02"
+    },
+    {
+      "run_id": "run-A-SWE-02-qwen-3-8-max-1",
+      "file": "run_run-A-SWE-02-qwen-3-8-max-1_bc800ee4f0.json",
+      "sha256": "bc800ee4f0eab98df780701f6cfd888290eb7a5d5f2adee82ee56cf1b7452689",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-02"
+    },
+    {
+      "run_id": "run-A-SWE-02-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-SWE-02-xiaomi-mimo-2-5-1_712d5a72a8.json",
+      "sha256": "712d5a72a8d8ed5f79fafe13ba1da6fede2181ee63a09b6290608914d0fc9c70",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SWE-02"
+    },
+    {
+      "run_id": "run-A-SWE-03-deepseek-v4-1",
+      "file": "run_run-A-SWE-03-deepseek-v4-1_2a73e7575e.json",
+      "sha256": "2a73e7575ef3a2c10876690e68ae018134444f5628401d2719785949a632049c",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "SWE-03"
+    },
+    {
+      "run_id": "run-A-SWE-03-qwen-3-8-max-1",
+      "file": "run_run-A-SWE-03-qwen-3-8-max-1_42b4152f91.json",
+      "sha256": "42b4152f91af711639c600154d7e21b5ae3fe017bbbe2d9a0a4afba92b543997",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-03"
+    },
+    {
+      "run_id": "run-A-SWE-03-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-SWE-03-xiaomi-mimo-2-5-1_a2b004afa9.json",
+      "sha256": "a2b004afa9d90ad01e91c753d74d5c9a81c5244c1d302272d36d86f435b1dd22",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SWE-03"
+    },
+    {
+      "run_id": "run-A-SWE-04-deepseek-v4-1",
+      "file": "run_run-A-SWE-04-deepseek-v4-1_9ce6f9301c.json",
+      "sha256": "9ce6f9301c96dbae5f156bb9d397d9e7b27700bca0ec684830c2963ecdc90933",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "SWE-04"
+    },
+    {
+      "run_id": "run-A-SWE-04-qwen-3-8-max-1",
+      "file": "run_run-A-SWE-04-qwen-3-8-max-1_fb948a9d19.json",
+      "sha256": "fb948a9d198fd12b768c38ea822ff99c84c726d5e19a596aaa7eab8ca4aeba5e",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-04"
+    },
+    {
+      "run_id": "run-A-SWE-04-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-SWE-04-xiaomi-mimo-2-5-1_74c450350f.json",
+      "sha256": "74c450350ff94d4c7fed850436d8308b8a739eeb63884ed14d49b9b96e7892b4",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SWE-04"
+    },
+    {
+      "run_id": "run-A-SWE-05-deepseek-v4-1",
+      "file": "run_run-A-SWE-05-deepseek-v4-1_b79ced2613.json",
+      "sha256": "b79ced2613a3334b70c9ea76d1592abea4fc4428bb36f06c8e4502a0fdbafd8e",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "deepseek-v4",
+      "workload_id": "SWE-05"
+    },
+    {
+      "run_id": "run-A-SWE-05-qwen-3-8-max-1",
+      "file": "run_run-A-SWE-05-qwen-3-8-max-1_9f3b358a95.json",
+      "sha256": "9f3b358a95f966bb11c61757eb4ffe0360fbdae7fa155afb1e4cfac567df924b",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-05"
+    },
+    {
+      "run_id": "run-A-SWE-05-xiaomi-mimo-2-5-1",
+      "file": "run_run-A-SWE-05-xiaomi-mimo-2-5-1_b7280e567c.json",
+      "sha256": "b7280e567c0d0db309015e1d9a7f9a129bd2b3f5710612d6a65428261b77ec27",
+      "classification": "SIMULATED",
+      "condition": "A",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SWE-05"
+    },
+    {
+      "run_id": "run-B-DE-01-qwen-3-8-max-1",
+      "file": "run_run-B-DE-01-qwen-3-8-max-1_552fa4df6b.json",
+      "sha256": "552fa4df6b618cc59b32a70cf1787eb7aa3485fb2a5c7c652f28b5b93d50bcab",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-01"
+    },
+    {
+      "run_id": "run-B-DE-02-qwen-3-8-max-1",
+      "file": "run_run-B-DE-02-qwen-3-8-max-1_e8002ba321.json",
+      "sha256": "e8002ba3219a9a7e9998beddd610fb54fdd2e15e2fa5335ea0d99e74e9e9f723",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-02"
+    },
+    {
+      "run_id": "run-B-DE-03-qwen-3-8-max-1",
+      "file": "run_run-B-DE-03-qwen-3-8-max-1_d10f02e6c2.json",
+      "sha256": "d10f02e6c2dde4a0ba9c9f9a9cfa687a1d85a0022fdd9a6f69dd6cfa13ab8901",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-03"
+    },
+    {
+      "run_id": "run-B-DE-04-qwen-3-8-max-1",
+      "file": "run_run-B-DE-04-qwen-3-8-max-1_c4a585e3c1.json",
+      "sha256": "c4a585e3c1ba8c7cb63135e80ae59975a0b37f11f095010a1e91b2d4a0d23ef2",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-04"
+    },
+    {
+      "run_id": "run-B-DE-05-qwen-3-8-max-1",
+      "file": "run_run-B-DE-05-qwen-3-8-max-1_b243ba0e44.json",
+      "sha256": "b243ba0e4410e311ebf44ebebac6cd2215fb9f220e94fccb6a717a3d3aba5ae5",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-05"
+    },
+    {
+      "run_id": "run-B-OPS-01-qwen-3-8-max-1",
+      "file": "run_run-B-OPS-01-qwen-3-8-max-1_0d3ec932bf.json",
+      "sha256": "0d3ec932bfb0a7049992b29c42c2a56cba5fe567609f0429d4e61eaecf0ae05d",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-01"
+    },
+    {
+      "run_id": "run-B-OPS-02-qwen-3-8-max-1",
+      "file": "run_run-B-OPS-02-qwen-3-8-max-1_26e3409715.json",
+      "sha256": "26e34097156a86cfe8c89652a4fa66653fc8a4bb98125f8d1d8df814cbd31efc",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-02"
+    },
+    {
+      "run_id": "run-B-OPS-03-qwen-3-8-max-1",
+      "file": "run_run-B-OPS-03-qwen-3-8-max-1_a45d476d68.json",
+      "sha256": "a45d476d683f0a6fa4d5bf7f0b1e9c58ddb8f99c162f17e59de2fc81905e745f",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-03"
+    },
+    {
+      "run_id": "run-B-OPS-04-qwen-3-8-max-1",
+      "file": "run_run-B-OPS-04-qwen-3-8-max-1_71e5a857ba.json",
+      "sha256": "71e5a857baa6c41c27b00e6e312ccbbbd10f61833baeed40ec320ce21a0e1be1",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-04"
+    },
+    {
+      "run_id": "run-B-OPS-05-qwen-3-8-max-1",
+      "file": "run_run-B-OPS-05-qwen-3-8-max-1_365afa6863.json",
+      "sha256": "365afa6863ca1523fb1f60ac55e94ed1ed099b3c789a78bfb8e2f451610f2b6e",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-05"
+    },
+    {
+      "run_id": "run-B-RES-01-qwen-3-8-max-1",
+      "file": "run_run-B-RES-01-qwen-3-8-max-1_f0057fafea.json",
+      "sha256": "f0057fafea2cf6e55c1aa228507b3d8355c3906aa0f75c3ffdb199e0f27a4890",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-01"
+    },
+    {
+      "run_id": "run-B-RES-02-qwen-3-8-max-1",
+      "file": "run_run-B-RES-02-qwen-3-8-max-1_a8bcb28c29.json",
+      "sha256": "a8bcb28c2990bb079401915bc9a65942127e762cb81fe3eab6a6de25f101bb38",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-02"
+    },
+    {
+      "run_id": "run-B-RES-03-qwen-3-8-max-1",
+      "file": "run_run-B-RES-03-qwen-3-8-max-1_d8715764a2.json",
+      "sha256": "d8715764a221676f1addb02230ebe7456da3ef3bc5374199fb805941ff8c0741",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-03"
+    },
+    {
+      "run_id": "run-B-RES-04-qwen-3-8-max-1",
+      "file": "run_run-B-RES-04-qwen-3-8-max-1_11187357b9.json",
+      "sha256": "11187357b98705dc3c8887835908d13314e850013e329103d9e82c320f527db4",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-04"
+    },
+    {
+      "run_id": "run-B-RES-05-qwen-3-8-max-1",
+      "file": "run_run-B-RES-05-qwen-3-8-max-1_948f4d05c2.json",
+      "sha256": "948f4d05c273bad427395863047b8f26840d9d6e1ae144e2a7e271865d807496",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-05"
+    },
+    {
+      "run_id": "run-B-SRE-01-qwen-3-8-max-1",
+      "file": "run_run-B-SRE-01-qwen-3-8-max-1_6d45644e60.json",
+      "sha256": "6d45644e60537631894e64b299acea309e0b1c518ba33158f6c56f1e35544229",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-01"
+    },
+    {
+      "run_id": "run-B-SRE-02-qwen-3-8-max-1",
+      "file": "run_run-B-SRE-02-qwen-3-8-max-1_2a4144b004.json",
+      "sha256": "2a4144b00426c1b02fde850ca8964af945385d1473044419de627c31573037b3",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-02"
+    },
+    {
+      "run_id": "run-B-SRE-03-qwen-3-8-max-1",
+      "file": "run_run-B-SRE-03-qwen-3-8-max-1_4af49dc2e6.json",
+      "sha256": "4af49dc2e6f79c7d4ff39d4334b2fa06d5c602eda77c4d923d78037bc8285758",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-03"
+    },
+    {
+      "run_id": "run-B-SRE-04-qwen-3-8-max-1",
+      "file": "run_run-B-SRE-04-qwen-3-8-max-1_f5a6995802.json",
+      "sha256": "f5a699580284e79e000f5fc070c2cb16fb8bf4cb25e744c0e40bfd70e39669e5",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-04"
+    },
+    {
+      "run_id": "run-B-SRE-05-qwen-3-8-max-1",
+      "file": "run_run-B-SRE-05-qwen-3-8-max-1_5eac267315.json",
+      "sha256": "5eac2673151641bc7776b056c92ccc9245ac038d1d952c11ec867ef614fb4575",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-05"
+    },
+    {
+      "run_id": "run-B-SWE-01-qwen-3-8-max-1",
+      "file": "run_run-B-SWE-01-qwen-3-8-max-1_adb7175594.json",
+      "sha256": "adb71755943fc6a324aa4fee259b337b914b7a291691894b32e34e94ff6d681c",
+      "classification": "LIVE_PROVIDER_FAILURE",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-01"
+    },
+    {
+      "run_id": "run-B-SWE-02-qwen-3-8-max-1",
+      "file": "run_run-B-SWE-02-qwen-3-8-max-1_0daab00d16.json",
+      "sha256": "0daab00d164b52f4413092e2dd57230a1370f5a7b8ada84641556b014764cd72",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-02"
+    },
+    {
+      "run_id": "run-B-SWE-03-qwen-3-8-max-1",
+      "file": "run_run-B-SWE-03-qwen-3-8-max-1_3e59b0d2af.json",
+      "sha256": "3e59b0d2af43096001e31fe290772fd2faa4f7e9ed67b86f063918d6f3efbce2",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-03"
+    },
+    {
+      "run_id": "run-B-SWE-04-qwen-3-8-max-1",
+      "file": "run_run-B-SWE-04-qwen-3-8-max-1_92b420fc28.json",
+      "sha256": "92b420fc28d2c9ff8bed3012c53a1e5456c33e88fed24b1e6a9d113c780ef1ac",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-04"
+    },
+    {
+      "run_id": "run-B-SWE-05-qwen-3-8-max-1",
+      "file": "run_run-B-SWE-05-qwen-3-8-max-1_5140637070.json",
+      "sha256": "5140637070d0cb2b116fb2565a154e6b69227aa30f97787ac99c842efc29f127",
+      "classification": "SIMULATED",
+      "condition": "B",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-05"
+    },
+    {
+      "run_id": "run-C-DE-01-qwen-3-8-max-1",
+      "file": "run_run-C-DE-01-qwen-3-8-max-1_13d130e64c.json",
+      "sha256": "13d130e64c02f5c0299d6f3ed9a718996f3ade07ddac7404e2ca8118cdb44d5f",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-01"
+    },
+    {
+      "run_id": "run-C-DE-02-qwen-3-8-max-1",
+      "file": "run_run-C-DE-02-qwen-3-8-max-1_b621e74011.json",
+      "sha256": "b621e740119a3b93238642e4437c6e635a3ddb44c72071cf07857841852590d5",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-02"
+    },
+    {
+      "run_id": "run-C-DE-03-qwen-3-8-max-1",
+      "file": "run_run-C-DE-03-qwen-3-8-max-1_2f3ee1b1f8.json",
+      "sha256": "2f3ee1b1f86ff3044413d4ef5eda3c8edcd2269290837bb50089e92761833144",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-03"
+    },
+    {
+      "run_id": "run-C-DE-04-qwen-3-8-max-1",
+      "file": "run_run-C-DE-04-qwen-3-8-max-1_8893a0d101.json",
+      "sha256": "8893a0d1017941d4db70c1df5f927946c40e458e01964b2141e7ab3740d36569",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-04"
+    },
+    {
+      "run_id": "run-C-DE-05-qwen-3-8-max-1",
+      "file": "run_run-C-DE-05-qwen-3-8-max-1_78b1153616.json",
+      "sha256": "78b11536167fb179b47d42d41c84cebe9a008317ac49fdf2fc3b25a6e001ff72",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-05"
+    },
+    {
+      "run_id": "run-C-OPS-01-qwen-3-8-max-1",
+      "file": "run_run-C-OPS-01-qwen-3-8-max-1_8473fbccf5.json",
+      "sha256": "8473fbccf52ebd6ea5240651baba83e632623780c14cc5934d9007c6fd13c181",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-01"
+    },
+    {
+      "run_id": "run-C-OPS-02-qwen-3-8-max-1",
+      "file": "run_run-C-OPS-02-qwen-3-8-max-1_a04f70ee35.json",
+      "sha256": "a04f70ee35d592981a553c83fa91434493a979f64a014f95fe79e2f23c85a904",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-02"
+    },
+    {
+      "run_id": "run-C-OPS-03-qwen-3-8-max-1",
+      "file": "run_run-C-OPS-03-qwen-3-8-max-1_f3cf73867e.json",
+      "sha256": "f3cf73867eab759308763aa2811cd139a14c1c9a8ae434f2025099630aeb50ba",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-03"
+    },
+    {
+      "run_id": "run-C-OPS-04-qwen-3-8-max-1",
+      "file": "run_run-C-OPS-04-qwen-3-8-max-1_a508365d68.json",
+      "sha256": "a508365d68170db95db20da8f709bbd7203cebf162d06463a412b6c662327c08",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-04"
+    },
+    {
+      "run_id": "run-C-OPS-05-qwen-3-8-max-1",
+      "file": "run_run-C-OPS-05-qwen-3-8-max-1_439dec2b02.json",
+      "sha256": "439dec2b02fd079df3ea74ebc55599f3fa46fa049f4a3cad125adfdb6b62a72d",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-05"
+    },
+    {
+      "run_id": "run-C-RES-01-qwen-3-8-max-1",
+      "file": "run_run-C-RES-01-qwen-3-8-max-1_d4926ec93c.json",
+      "sha256": "d4926ec93c7c47e76c1afa64b728650e12e265fc8cb8c6374a8822d890531d1a",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-01"
+    },
+    {
+      "run_id": "run-C-RES-02-qwen-3-8-max-1",
+      "file": "run_run-C-RES-02-qwen-3-8-max-1_e5a51db6dc.json",
+      "sha256": "e5a51db6dcbd13190ca19efb5fd43932a90cd770b42d4aacdc2e3f5008ec04ca",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-02"
+    },
+    {
+      "run_id": "run-C-RES-03-qwen-3-8-max-1",
+      "file": "run_run-C-RES-03-qwen-3-8-max-1_7719a2b60d.json",
+      "sha256": "7719a2b60d57a25e74a1b4a0e40c15af06434be0b2a16d2596ba1833846abcb8",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-03"
+    },
+    {
+      "run_id": "run-C-RES-04-qwen-3-8-max-1",
+      "file": "run_run-C-RES-04-qwen-3-8-max-1_2f84675b52.json",
+      "sha256": "2f84675b520f794f460924e398ef6eb891bf90765fa59589c0cc19ef311f17b2",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-04"
+    },
+    {
+      "run_id": "run-C-RES-05-qwen-3-8-max-1",
+      "file": "run_run-C-RES-05-qwen-3-8-max-1_bcecef4284.json",
+      "sha256": "bcecef42840841762939520ad9d3057b2b57b124d9387eaa324bce008393277e",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-05"
+    },
+    {
+      "run_id": "run-C-SRE-01-qwen-3-8-max-1",
+      "file": "run_run-C-SRE-01-qwen-3-8-max-1_662a3c7f15.json",
+      "sha256": "662a3c7f1536fb9efbc89d01749918b2fd6157c9c62db77508e405934ca5ec8f",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-01"
+    },
+    {
+      "run_id": "run-C-SRE-02-qwen-3-8-max-1",
+      "file": "run_run-C-SRE-02-qwen-3-8-max-1_839d3d00b6.json",
+      "sha256": "839d3d00b68f712c92afd5d5d90e50d6b1526b4163ae471ad23322b4f5fda475",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-02"
+    },
+    {
+      "run_id": "run-C-SRE-03-qwen-3-8-max-1",
+      "file": "run_run-C-SRE-03-qwen-3-8-max-1_ecc45541f8.json",
+      "sha256": "ecc45541f8e5436731849c92e26f4731a74076ad8736cc2a9e280a6d446d401d",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-03"
+    },
+    {
+      "run_id": "run-C-SRE-04-qwen-3-8-max-1",
+      "file": "run_run-C-SRE-04-qwen-3-8-max-1_a833fa8688.json",
+      "sha256": "a833fa86884b4655bacb563e999431fe95e1e2b78b74a9af684b06e3be6bd5cd",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-04"
+    },
+    {
+      "run_id": "run-C-SRE-05-qwen-3-8-max-1",
+      "file": "run_run-C-SRE-05-qwen-3-8-max-1_5ea3f1e862.json",
+      "sha256": "5ea3f1e862710bb43cd88722c97ab580942cc7100e77c4211127c9dad6be4880",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-05"
+    },
+    {
+      "run_id": "run-C-SWE-01-qwen-3-8-max-1",
+      "file": "run_run-C-SWE-01-qwen-3-8-max-1_3f16d1d5ce.json",
+      "sha256": "3f16d1d5ce8e80f1d40105f534b859ed2b13517784391974d05714593de33a8d",
+      "classification": "LIVE_PROVIDER_FAILURE",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-01"
+    },
+    {
+      "run_id": "run-C-SWE-02-qwen-3-8-max-1",
+      "file": "run_run-C-SWE-02-qwen-3-8-max-1_1d4343035b.json",
+      "sha256": "1d4343035b7e059900d92d6c70dd790a56dfa94ab32460d56021b216eac8d4cb",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-02"
+    },
+    {
+      "run_id": "run-C-SWE-03-qwen-3-8-max-1",
+      "file": "run_run-C-SWE-03-qwen-3-8-max-1_6b5313b0ac.json",
+      "sha256": "6b5313b0ac562c7e5295ae0d7bf42b9e6be0ebdb3f0dbb0e49ef11e1c566b397",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-03"
+    },
+    {
+      "run_id": "run-C-SWE-04-qwen-3-8-max-1",
+      "file": "run_run-C-SWE-04-qwen-3-8-max-1_99066ed1e6.json",
+      "sha256": "99066ed1e6ac3c2473ab6f964f29b596fe700d1b8911fed86d49789a0b8109b3",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-04"
+    },
+    {
+      "run_id": "run-C-SWE-05-qwen-3-8-max-1",
+      "file": "run_run-C-SWE-05-qwen-3-8-max-1_ba6de928b9.json",
+      "sha256": "ba6de928b9a4b07a68e0950529a78875bca3f0de82a9204ceddb185c6c43b68b",
+      "classification": "SIMULATED",
+      "condition": "C",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-05"
+    },
+    {
+      "run_id": "run-D-DE-01-qwen-3-8-max-1",
+      "file": "run_run-D-DE-01-qwen-3-8-max-1_2902250a5b.json",
+      "sha256": "2902250a5bd7558e6d8d7a19c4e5d5fd815905c8c01c66bd08cb9789cb9e5e49",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-01"
+    },
+    {
+      "run_id": "run-D-DE-02-qwen-3-8-max-1",
+      "file": "run_run-D-DE-02-qwen-3-8-max-1_e83c7ce08d.json",
+      "sha256": "e83c7ce08db5e8813e92235747377660ab9fee1ab806d0ec9652b6c395978af1",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-02"
+    },
+    {
+      "run_id": "run-D-DE-03-qwen-3-8-max-1",
+      "file": "run_run-D-DE-03-qwen-3-8-max-1_978446a921.json",
+      "sha256": "978446a9219276d65d389662517d6c25e5a01a3136897c59cd2dbacaffa80e93",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-03"
+    },
+    {
+      "run_id": "run-D-DE-04-qwen-3-8-max-1",
+      "file": "run_run-D-DE-04-qwen-3-8-max-1_396cb551c8.json",
+      "sha256": "396cb551c85e5d80568bc40b47faf1907c80469cad52f8c7ab28cf8add9135d2",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-04"
+    },
+    {
+      "run_id": "run-D-DE-05-qwen-3-8-max-1",
+      "file": "run_run-D-DE-05-qwen-3-8-max-1_bdc97309f3.json",
+      "sha256": "bdc97309f36a4050d1eaf5be1a603121f6491b013c5a20f7dd47339e8e222ef2",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-05"
+    },
+    {
+      "run_id": "run-D-OPS-01-qwen-3-8-max-1",
+      "file": "run_run-D-OPS-01-qwen-3-8-max-1_e2748f5934.json",
+      "sha256": "e2748f5934bfb38b085083ad561ca77457b99c5eae03b2130c22768fce108b10",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-01"
+    },
+    {
+      "run_id": "run-D-OPS-02-qwen-3-8-max-1",
+      "file": "run_run-D-OPS-02-qwen-3-8-max-1_278a76cb60.json",
+      "sha256": "278a76cb60d31dae020ca35d6f3c36a6d1cc55721a71d2bb9235ca07ca92bb78",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-02"
+    },
+    {
+      "run_id": "run-D-OPS-03-qwen-3-8-max-1",
+      "file": "run_run-D-OPS-03-qwen-3-8-max-1_57f3ee45f6.json",
+      "sha256": "57f3ee45f6adf988a930a9cffba23ad31d4aeaffb67ceac1aa0e9b312f401389",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-03"
+    },
+    {
+      "run_id": "run-D-OPS-04-qwen-3-8-max-1",
+      "file": "run_run-D-OPS-04-qwen-3-8-max-1_ffa238b6b8.json",
+      "sha256": "ffa238b6b8129b3a9597c4c321fe175835a06a3c859d731532f1b6f36ea0d6b7",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-04"
+    },
+    {
+      "run_id": "run-D-OPS-05-qwen-3-8-max-1",
+      "file": "run_run-D-OPS-05-qwen-3-8-max-1_c8f5c8bebd.json",
+      "sha256": "c8f5c8bebd74fce05e57c36b3b59337b1c569dfd3e579b63afe8395b15d7b112",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-05"
+    },
+    {
+      "run_id": "run-D-RES-01-qwen-3-8-max-1",
+      "file": "run_run-D-RES-01-qwen-3-8-max-1_7f14a4ee48.json",
+      "sha256": "7f14a4ee48833a02e52ab8a71e152d12bb9eda5d0ab273120dba315151c18800",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-01"
+    },
+    {
+      "run_id": "run-D-RES-02-qwen-3-8-max-1",
+      "file": "run_run-D-RES-02-qwen-3-8-max-1_e2cdb823a5.json",
+      "sha256": "e2cdb823a52ad01944a492fa2adea510a4e555603df22872301027fb8d7eada5",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-02"
+    },
+    {
+      "run_id": "run-D-RES-03-qwen-3-8-max-1",
+      "file": "run_run-D-RES-03-qwen-3-8-max-1_ef11d14ee3.json",
+      "sha256": "ef11d14ee3e80141fe2f81efc238dfa9a56bc11375f87c902cc1100d2cea6abe",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-03"
+    },
+    {
+      "run_id": "run-D-RES-04-qwen-3-8-max-1",
+      "file": "run_run-D-RES-04-qwen-3-8-max-1_58e1d3f473.json",
+      "sha256": "58e1d3f4739499a8977cd0b6da907556727b4ae0c269eedea67f0db14f8d1296",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-04"
+    },
+    {
+      "run_id": "run-D-RES-05-qwen-3-8-max-1",
+      "file": "run_run-D-RES-05-qwen-3-8-max-1_c29d5279ef.json",
+      "sha256": "c29d5279ef8484a42858f5e669aca1fc4cd8e31ba86c14b82d4df971e7fad9e4",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-05"
+    },
+    {
+      "run_id": "run-D-SRE-01-qwen-3-8-max-1",
+      "file": "run_run-D-SRE-01-qwen-3-8-max-1_a4681e8748.json",
+      "sha256": "a4681e874852975afbd0336caa25888399da31e672f53a1a340f3d0d2f416ea7",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-01"
+    },
+    {
+      "run_id": "run-D-SRE-02-qwen-3-8-max-1",
+      "file": "run_run-D-SRE-02-qwen-3-8-max-1_f8f8d70449.json",
+      "sha256": "f8f8d70449f7ac08d15cf19714766a2374481c3045682b3847684bc6b30dcfd4",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-02"
+    },
+    {
+      "run_id": "run-D-SRE-03-qwen-3-8-max-1",
+      "file": "run_run-D-SRE-03-qwen-3-8-max-1_1bcb75cd79.json",
+      "sha256": "1bcb75cd7913fab79748774121d69de632d1e87ce44af9de5094abec5f972540",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-03"
+    },
+    {
+      "run_id": "run-D-SRE-04-qwen-3-8-max-1",
+      "file": "run_run-D-SRE-04-qwen-3-8-max-1_300a04d606.json",
+      "sha256": "300a04d60671c90777ed3ca391d764006a6faea58cf5427b9f1952d16bc30c66",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-04"
+    },
+    {
+      "run_id": "run-D-SRE-05-qwen-3-8-max-1",
+      "file": "run_run-D-SRE-05-qwen-3-8-max-1_9f1c404f42.json",
+      "sha256": "9f1c404f42e994a8cb4a7b1f0ccdc851d1bfd5bc305d0c80829486f033a9c7df",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-05"
+    },
+    {
+      "run_id": "run-D-SWE-01-qwen-3-8-max-1",
+      "file": "run_run-D-SWE-01-qwen-3-8-max-1_8d551f7c21.json",
+      "sha256": "8d551f7c214def06b37cc91f5fc83ed3021ad7f487a127c45a03c4083578df27",
+      "classification": "LIVE_PROVIDER_FAILURE",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-01"
+    },
+    {
+      "run_id": "run-D-SWE-02-qwen-3-8-max-1",
+      "file": "run_run-D-SWE-02-qwen-3-8-max-1_feab44ec49.json",
+      "sha256": "feab44ec494cd47c93ac1c2734b3f1102ad5f303287b5bc124c952fbaca07742",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-02"
+    },
+    {
+      "run_id": "run-D-SWE-03-qwen-3-8-max-1",
+      "file": "run_run-D-SWE-03-qwen-3-8-max-1_1828433b35.json",
+      "sha256": "1828433b35595439b50e52bd2906a81754371b4b2a5574ed0119e3b9f5a10030",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-03"
+    },
+    {
+      "run_id": "run-D-SWE-04-qwen-3-8-max-1",
+      "file": "run_run-D-SWE-04-qwen-3-8-max-1_ec9f9c3d06.json",
+      "sha256": "ec9f9c3d0670f19a61d89877680adc2822e44bc8c5bf7e134c38f226a0a1af48",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-04"
+    },
+    {
+      "run_id": "run-D-SWE-05-qwen-3-8-max-1",
+      "file": "run_run-D-SWE-05-qwen-3-8-max-1_f44bd29fab.json",
+      "sha256": "f44bd29fabd5256c63bacb9e4b40bc4507418bc76bd391267523f90cabce423f",
+      "classification": "SIMULATED",
+      "condition": "D",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-05"
+    },
+    {
+      "run_id": "run-E-DE-01-qwen-3-8-max-1",
+      "file": "run_run-E-DE-01-qwen-3-8-max-1_a0bbdc5571.json",
+      "sha256": "a0bbdc55719db100373c5c5abfb83917fceb57218f9e21ff4d730282a1e2fb00",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-01"
+    },
+    {
+      "run_id": "run-E-DE-02-qwen-3-8-max-1",
+      "file": "run_run-E-DE-02-qwen-3-8-max-1_3accbed7b6.json",
+      "sha256": "3accbed7b68fcbccbd9ee56ed5bc87f7610a26fa5ba455d9528ddefb4bf4fcd2",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-02"
+    },
+    {
+      "run_id": "run-E-DE-03-qwen-3-8-max-1",
+      "file": "run_run-E-DE-03-qwen-3-8-max-1_decb0aa00f.json",
+      "sha256": "decb0aa00f541144db4d8f6e1e551d290538689db865923e3ef0141b2a0b5a3a",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-03"
+    },
+    {
+      "run_id": "run-E-DE-04-qwen-3-8-max-1",
+      "file": "run_run-E-DE-04-qwen-3-8-max-1_da5c7141b3.json",
+      "sha256": "da5c7141b3527eaaae69950dd986828b4c769bdb5fa6032c11a6fc7961860b76",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-04"
+    },
+    {
+      "run_id": "run-E-DE-05-qwen-3-8-max-1",
+      "file": "run_run-E-DE-05-qwen-3-8-max-1_7cfe3ca15b.json",
+      "sha256": "7cfe3ca15bca5e61aabe427ea82314c8cd535508cb8ffae4b6399dfd36333921",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-05"
+    },
+    {
+      "run_id": "run-E-OPS-01-qwen-3-8-max-1",
+      "file": "run_run-E-OPS-01-qwen-3-8-max-1_b778a270fc.json",
+      "sha256": "b778a270fce085042dafcb879de428e371f3f0f5993b1bd5ca90b19cb657ca19",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-01"
+    },
+    {
+      "run_id": "run-E-OPS-02-qwen-3-8-max-1",
+      "file": "run_run-E-OPS-02-qwen-3-8-max-1_37d9c348d1.json",
+      "sha256": "37d9c348d1bc2a209628460cdf51f06b30054d1c916a537bbea2987ad2ced330",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-02"
+    },
+    {
+      "run_id": "run-E-OPS-03-qwen-3-8-max-1",
+      "file": "run_run-E-OPS-03-qwen-3-8-max-1_ac8eaf1599.json",
+      "sha256": "ac8eaf1599c6de88c8606a66be6d9c540f8353e1fd13975aad674e4934ab41d4",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-03"
+    },
+    {
+      "run_id": "run-E-OPS-04-qwen-3-8-max-1",
+      "file": "run_run-E-OPS-04-qwen-3-8-max-1_3e8ea43f88.json",
+      "sha256": "3e8ea43f88108e4291cd3e88b8e8489a7add21f55c7cdc1a3997656b830da56f",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-04"
+    },
+    {
+      "run_id": "run-E-OPS-05-qwen-3-8-max-1",
+      "file": "run_run-E-OPS-05-qwen-3-8-max-1_8dfa23cc3b.json",
+      "sha256": "8dfa23cc3b5eca71ee162ae8665ea337a2aa0f9951faebeb3a0f8d620f3d7516",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-05"
+    },
+    {
+      "run_id": "run-E-RES-01-qwen-3-8-max-1",
+      "file": "run_run-E-RES-01-qwen-3-8-max-1_7d23e4c75a.json",
+      "sha256": "7d23e4c75ab9b450663922b67b099ed081487cb0a416af3ee3a8c5076f466c72",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-01"
+    },
+    {
+      "run_id": "run-E-RES-02-qwen-3-8-max-1",
+      "file": "run_run-E-RES-02-qwen-3-8-max-1_07dcb738ce.json",
+      "sha256": "07dcb738cee8d92d87aa166b28b9652cd5d81056d319d80cf9302ae103844360",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-02"
+    },
+    {
+      "run_id": "run-E-RES-03-qwen-3-8-max-1",
+      "file": "run_run-E-RES-03-qwen-3-8-max-1_8e60062bb8.json",
+      "sha256": "8e60062bb8aa9166828e0abf32fbd235a088310c2a25dacd1a3f38c5935df6b9",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-03"
+    },
+    {
+      "run_id": "run-E-RES-04-qwen-3-8-max-1",
+      "file": "run_run-E-RES-04-qwen-3-8-max-1_a0ee7ab035.json",
+      "sha256": "a0ee7ab0355db0f680ec98fa39b4c6aff92db36f712f8be2df9052013c4dd558",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-04"
+    },
+    {
+      "run_id": "run-E-RES-05-qwen-3-8-max-1",
+      "file": "run_run-E-RES-05-qwen-3-8-max-1_0b488016ab.json",
+      "sha256": "0b488016abae0cca0a80e839d0b600a50fc5b7f5e7d424ad6c9cabb90aa3648c",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-05"
+    },
+    {
+      "run_id": "run-E-SRE-01-qwen-3-8-max-1",
+      "file": "run_run-E-SRE-01-qwen-3-8-max-1_806fa7f411.json",
+      "sha256": "806fa7f41106b2abe2e54699dbd5ad74b6a41b6cc6d6c83fcb2bde2e5bb2e0c8",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-01"
+    },
+    {
+      "run_id": "run-E-SRE-02-qwen-3-8-max-1",
+      "file": "run_run-E-SRE-02-qwen-3-8-max-1_0ec868501a.json",
+      "sha256": "0ec868501ae9065d6b6cd0db279a5330d31aa7ccaa1bf07c617ae6fa45c45c9f",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-02"
+    },
+    {
+      "run_id": "run-E-SRE-03-qwen-3-8-max-1",
+      "file": "run_run-E-SRE-03-qwen-3-8-max-1_634486b94b.json",
+      "sha256": "634486b94be968031e29e4eb3b5299f773314bb7ccb5943c66c5ef305d981fc4",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-03"
+    },
+    {
+      "run_id": "run-E-SRE-04-qwen-3-8-max-1",
+      "file": "run_run-E-SRE-04-qwen-3-8-max-1_cdf42b0b8d.json",
+      "sha256": "cdf42b0b8dfe0cebd073eab12af397be3a7f5922d54f27c2507723a545183ba2",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-04"
+    },
+    {
+      "run_id": "run-E-SRE-05-qwen-3-8-max-1",
+      "file": "run_run-E-SRE-05-qwen-3-8-max-1_e960d1d7a1.json",
+      "sha256": "e960d1d7a1ae6414ddc0ea6409f93ee70ef024b6825aef33e83fb756f8909b50",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-05"
+    },
+    {
+      "run_id": "run-E-SWE-01-qwen-3-8-max-1",
+      "file": "run_run-E-SWE-01-qwen-3-8-max-1_75ef64adae.json",
+      "sha256": "75ef64adae08536345e77bb561a0fa4154b29890181bebdbc6c7405b29cea016",
+      "classification": "LIVE_PROVIDER_FAILURE",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-01"
+    },
+    {
+      "run_id": "run-E-SWE-02-qwen-3-8-max-1",
+      "file": "run_run-E-SWE-02-qwen-3-8-max-1_e84da81754.json",
+      "sha256": "e84da817545343c62d4cb3680914d8af64cd9bd1a0ee9f14188345c2ca31a1ce",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-02"
+    },
+    {
+      "run_id": "run-E-SWE-03-qwen-3-8-max-1",
+      "file": "run_run-E-SWE-03-qwen-3-8-max-1_7a0204e53d.json",
+      "sha256": "7a0204e53d8c3bcf0e4107c8b5152f067b3f72f8ddd975d5a6c82c5522c6e5bb",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-03"
+    },
+    {
+      "run_id": "run-E-SWE-04-qwen-3-8-max-1",
+      "file": "run_run-E-SWE-04-qwen-3-8-max-1_c8e72b48ca.json",
+      "sha256": "c8e72b48cab44816b7975b64ce687f7794f92322d7954f0f70ae5dff5a1c753d",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-04"
+    },
+    {
+      "run_id": "run-E-SWE-05-qwen-3-8-max-1",
+      "file": "run_run-E-SWE-05-qwen-3-8-max-1_b2462105d7.json",
+      "sha256": "b2462105d772bc0a542e59d47f124d18edccf0eb73f8e2805366cce01528e5ca",
+      "classification": "SIMULATED",
+      "condition": "E",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-05"
+    },
+    {
+      "run_id": "run-F-DE-01-qwen-3-8-max-1",
+      "file": "run_run-F-DE-01-qwen-3-8-max-1_bbb4d00a59.json",
+      "sha256": "bbb4d00a59edb68b62f5c01df7c59c5c10567dca945792190d9651e0174bca94",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-01"
+    },
+    {
+      "run_id": "run-F-DE-02-qwen-3-8-max-1",
+      "file": "run_run-F-DE-02-qwen-3-8-max-1_182c27b0bb.json",
+      "sha256": "182c27b0bb04767de19e270be63c0e992bafbd70e988d8768ab2185da6148f30",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-02"
+    },
+    {
+      "run_id": "run-F-DE-03-qwen-3-8-max-1",
+      "file": "run_run-F-DE-03-qwen-3-8-max-1_f551a56462.json",
+      "sha256": "f551a564623635289e3cd2209f398b42907f8579c25380e02ec98e6b29691759",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-03"
+    },
+    {
+      "run_id": "run-F-DE-04-qwen-3-8-max-1",
+      "file": "run_run-F-DE-04-qwen-3-8-max-1_ff7e47d258.json",
+      "sha256": "ff7e47d2580569ad84e1ea3f182440487af43459dfca2f71c5f2bd17c2243083",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-04"
+    },
+    {
+      "run_id": "run-F-DE-05-qwen-3-8-max-1",
+      "file": "run_run-F-DE-05-qwen-3-8-max-1_d610a5112e.json",
+      "sha256": "d610a5112e94304cdb666fa437384903adbe64fae24f2ab5cd421c832fb18609",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-05"
+    },
+    {
+      "run_id": "run-F-OPS-01-qwen-3-8-max-1",
+      "file": "run_run-F-OPS-01-qwen-3-8-max-1_c1583e450b.json",
+      "sha256": "c1583e450b90c85ac26c398221325755e9c05447a9d993b0bb97d00bf8ca92ed",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-01"
+    },
+    {
+      "run_id": "run-F-OPS-02-qwen-3-8-max-1",
+      "file": "run_run-F-OPS-02-qwen-3-8-max-1_6f09a9c95f.json",
+      "sha256": "6f09a9c95f819c377a40963791f6056e567a80663ae79ccfc6d015772b6834ec",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-02"
+    },
+    {
+      "run_id": "run-F-OPS-03-qwen-3-8-max-1",
+      "file": "run_run-F-OPS-03-qwen-3-8-max-1_cbd6cecddb.json",
+      "sha256": "cbd6cecddbc93621eb5f3e949f82c4da9501141bb0f74f8585828cb933be08d2",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-03"
+    },
+    {
+      "run_id": "run-F-OPS-04-qwen-3-8-max-1",
+      "file": "run_run-F-OPS-04-qwen-3-8-max-1_e28416c4ef.json",
+      "sha256": "e28416c4efaa514eb76a3f744a9a510382e60d1caaf4d5fd241d1ba8f56b2424",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-04"
+    },
+    {
+      "run_id": "run-F-OPS-05-qwen-3-8-max-1",
+      "file": "run_run-F-OPS-05-qwen-3-8-max-1_0f13ac8663.json",
+      "sha256": "0f13ac866361088a5f78620b58f9dd3383a36aa154a7e24574be2ddb5c12dcce",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-05"
+    },
+    {
+      "run_id": "run-F-RES-01-qwen-3-8-max-1",
+      "file": "run_run-F-RES-01-qwen-3-8-max-1_a8046f0ccb.json",
+      "sha256": "a8046f0ccbabdd94f008c536fe38581c1ebb3e37318fe0af4f8efa5863813e6d",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-01"
+    },
+    {
+      "run_id": "run-F-RES-02-qwen-3-8-max-1",
+      "file": "run_run-F-RES-02-qwen-3-8-max-1_fa72eee7e0.json",
+      "sha256": "fa72eee7e064dc24beaace618271f37b4cc8f045d5d40084cf552bebda03303e",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-02"
+    },
+    {
+      "run_id": "run-F-RES-03-qwen-3-8-max-1",
+      "file": "run_run-F-RES-03-qwen-3-8-max-1_8e57212036.json",
+      "sha256": "8e5721203626ab5dc33b32144a0f7fe20433abb5e54fb1c5fc50839a638b91b9",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-03"
+    },
+    {
+      "run_id": "run-F-RES-04-qwen-3-8-max-1",
+      "file": "run_run-F-RES-04-qwen-3-8-max-1_76d9f45d28.json",
+      "sha256": "76d9f45d28dc855af0f483719df5ead0c43ebb8812a58a82608b0e6d3154f890",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-04"
+    },
+    {
+      "run_id": "run-F-RES-05-qwen-3-8-max-1",
+      "file": "run_run-F-RES-05-qwen-3-8-max-1_26bdaaef79.json",
+      "sha256": "26bdaaef79792f9ce52a299f56136e8ceba37388401f84cedfce34668a7d26b6",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-05"
+    },
+    {
+      "run_id": "run-F-SRE-01-qwen-3-8-max-1",
+      "file": "run_run-F-SRE-01-qwen-3-8-max-1_83c0491b8d.json",
+      "sha256": "83c0491b8d3fc2bddf353581eb7d8641a06a1c64e3c99f3e139df20ddb904647",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-01"
+    },
+    {
+      "run_id": "run-F-SRE-02-qwen-3-8-max-1",
+      "file": "run_run-F-SRE-02-qwen-3-8-max-1_4040039eec.json",
+      "sha256": "4040039eec0899cd29127cc4fa54821b461b8046dd69feb69ac5c883b8ab5c91",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-02"
+    },
+    {
+      "run_id": "run-F-SRE-03-qwen-3-8-max-1",
+      "file": "run_run-F-SRE-03-qwen-3-8-max-1_08ed87fbf2.json",
+      "sha256": "08ed87fbf2742799e88c219cb60ae2a84f93e93933b5f5cc1a870c7192eb2ffe",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-03"
+    },
+    {
+      "run_id": "run-F-SRE-04-qwen-3-8-max-1",
+      "file": "run_run-F-SRE-04-qwen-3-8-max-1_8e1652ec99.json",
+      "sha256": "8e1652ec99a79c4bdf1582afb4a4e18654d3c0f18fd754a7bd9d81ab6a40fe10",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-04"
+    },
+    {
+      "run_id": "run-F-SRE-05-qwen-3-8-max-1",
+      "file": "run_run-F-SRE-05-qwen-3-8-max-1_9abeb5fdf0.json",
+      "sha256": "9abeb5fdf023dee4fc3a3d8daefeb1a305c5ea22bb4032e1d4d4be88e3ae4f1e",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-05"
+    },
+    {
+      "run_id": "run-F-SWE-01-qwen-3-8-max-1",
+      "file": "run_run-F-SWE-01-qwen-3-8-max-1_43ef6dbaa5.json",
+      "sha256": "43ef6dbaa5e9360719d60229adf9bf97c25fa8dd5d8e08f77255c20e4dd9ad64",
+      "classification": "LIVE_PROVIDER_FAILURE",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-01"
+    },
+    {
+      "run_id": "run-F-SWE-02-qwen-3-8-max-1",
+      "file": "run_run-F-SWE-02-qwen-3-8-max-1_dd9dfcfd69.json",
+      "sha256": "dd9dfcfd698bdae0b3bb590647e467113c3d2bed0ace062bd74e11d3149aa6b7",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-02"
+    },
+    {
+      "run_id": "run-F-SWE-03-qwen-3-8-max-1",
+      "file": "run_run-F-SWE-03-qwen-3-8-max-1_8011519875.json",
+      "sha256": "801151987540970826a5d756445ce8b2dadf1ee84a1f91be2cee77838e11bdad",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-03"
+    },
+    {
+      "run_id": "run-F-SWE-04-qwen-3-8-max-1",
+      "file": "run_run-F-SWE-04-qwen-3-8-max-1_9e66349d95.json",
+      "sha256": "9e66349d953740fbc18dfa0a14bc7b56584ab9bce9f295b5f0b46df000c4d584",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-04"
+    },
+    {
+      "run_id": "run-F-SWE-05-qwen-3-8-max-1",
+      "file": "run_run-F-SWE-05-qwen-3-8-max-1_70f987e931.json",
+      "sha256": "70f987e9316518743e642f60390c16d4f15b26b53f440463e078c33afc24ea99",
+      "classification": "SIMULATED",
+      "condition": "F",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-05"
+    },
+    {
+      "run_id": "run-G-DE-01-deepseek-v4-1",
+      "file": "run_run-G-DE-01-deepseek-v4-1_becf29f2fe.json",
+      "sha256": "becf29f2fe28452ea77ee40106a6fef08a0e7baf8ddc66633fd1445eb96db685",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "DE-01"
+    },
+    {
+      "run_id": "run-G-DE-01-qwen-3-8-max-1",
+      "file": "run_run-G-DE-01-qwen-3-8-max-1_2eb8276152.json",
+      "sha256": "2eb827615253cd0e416e2ecd60c70bb9766e185502a7b0830adcfb510bf84a4a",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-01"
+    },
+    {
+      "run_id": "run-G-DE-01-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-DE-01-xiaomi-mimo-2-5-1_2d9fb5ea97.json",
+      "sha256": "2d9fb5ea970646ab92272c793e3f0fe44589cce2197fab20461d45b8af8ceb91",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "DE-01"
+    },
+    {
+      "run_id": "run-G-DE-02-deepseek-v4-1",
+      "file": "run_run-G-DE-02-deepseek-v4-1_bd9516d39c.json",
+      "sha256": "bd9516d39c1eb444272879eeda528a59069baa2362a1d356fbf7c724b7c50fa1",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "DE-02"
+    },
+    {
+      "run_id": "run-G-DE-02-qwen-3-8-max-1",
+      "file": "run_run-G-DE-02-qwen-3-8-max-1_33cdc7c55f.json",
+      "sha256": "33cdc7c55f517e6e1979b73016b3ad39ad30131ba3545c409c8ae0a51cb5a9dd",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-02"
+    },
+    {
+      "run_id": "run-G-DE-02-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-DE-02-xiaomi-mimo-2-5-1_81a0b94c61.json",
+      "sha256": "81a0b94c61b4899165688cd2c7d5f7cc52cf1026aefc38dd7223969ad4093f82",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "DE-02"
+    },
+    {
+      "run_id": "run-G-DE-03-deepseek-v4-1",
+      "file": "run_run-G-DE-03-deepseek-v4-1_5faf32268b.json",
+      "sha256": "5faf32268b63c440d476ffc786ae6f2e58e4f156be9ee1683cf8b5386a12bc21",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "DE-03"
+    },
+    {
+      "run_id": "run-G-DE-03-qwen-3-8-max-1",
+      "file": "run_run-G-DE-03-qwen-3-8-max-1_9adf203e86.json",
+      "sha256": "9adf203e868cfdafc1964c6dcfcfbadcbaad846a78a3e5d37dd2ef17b57c763d",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-03"
+    },
+    {
+      "run_id": "run-G-DE-03-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-DE-03-xiaomi-mimo-2-5-1_ab2787e8eb.json",
+      "sha256": "ab2787e8eb81f945be8fd954c13051b7e0e51f20c2a7e7100e27a00fc1a55651",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "DE-03"
+    },
+    {
+      "run_id": "run-G-DE-04-deepseek-v4-1",
+      "file": "run_run-G-DE-04-deepseek-v4-1_eaa9212e11.json",
+      "sha256": "eaa9212e11efef2093d566132d60462027db9663319e57fb56781c0523c000c8",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "DE-04"
+    },
+    {
+      "run_id": "run-G-DE-04-qwen-3-8-max-1",
+      "file": "run_run-G-DE-04-qwen-3-8-max-1_084fdc3ed1.json",
+      "sha256": "084fdc3ed1edbb810d4552e804846ecd9d2c9390117b66c0163736657f468623",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-04"
+    },
+    {
+      "run_id": "run-G-DE-04-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-DE-04-xiaomi-mimo-2-5-1_29497f5ff5.json",
+      "sha256": "29497f5ff5942772bc244214b82401737d637e4752d7db6184ee4befa7759a23",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "DE-04"
+    },
+    {
+      "run_id": "run-G-DE-05-deepseek-v4-1",
+      "file": "run_run-G-DE-05-deepseek-v4-1_56d2b0b8c4.json",
+      "sha256": "56d2b0b8c4dbcbcb7010be911037a98edabb5c08294c64fb06d3278c3af9f032",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "DE-05"
+    },
+    {
+      "run_id": "run-G-DE-05-qwen-3-8-max-1",
+      "file": "run_run-G-DE-05-qwen-3-8-max-1_660ee1d643.json",
+      "sha256": "660ee1d643bc3cbb9f752ec6a41d279c37dc34e018888ff0f28879b605f911f1",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "DE-05"
+    },
+    {
+      "run_id": "run-G-DE-05-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-DE-05-xiaomi-mimo-2-5-1_31429be7a6.json",
+      "sha256": "31429be7a69d023647d0c29d1961d540f2dbe3d8439c75c2a4ed486daf38fee7",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "DE-05"
+    },
+    {
+      "run_id": "run-G-OPS-01-deepseek-v4-1",
+      "file": "run_run-G-OPS-01-deepseek-v4-1_d67ed0b3b7.json",
+      "sha256": "d67ed0b3b73173272952b274728de4de3831789036069d5d2fafdc1472c1af94",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "OPS-01"
+    },
+    {
+      "run_id": "run-G-OPS-01-qwen-3-8-max-1",
+      "file": "run_run-G-OPS-01-qwen-3-8-max-1_684e24d378.json",
+      "sha256": "684e24d3789a2f5dafddd824da3c648ff2340f409358089254d0c5e878d70015",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-01"
+    },
+    {
+      "run_id": "run-G-OPS-01-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-OPS-01-xiaomi-mimo-2-5-1_647b2f5013.json",
+      "sha256": "647b2f5013f479f245e26fa64a2dc28d18569316fee833fecb1bf752498293f7",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "OPS-01"
+    },
+    {
+      "run_id": "run-G-OPS-02-deepseek-v4-1",
+      "file": "run_run-G-OPS-02-deepseek-v4-1_1ae3612231.json",
+      "sha256": "1ae3612231b1e8056cac8fe967a11cad494ff4e8dffeccacc69d776984f17ae0",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "OPS-02"
+    },
+    {
+      "run_id": "run-G-OPS-02-qwen-3-8-max-1",
+      "file": "run_run-G-OPS-02-qwen-3-8-max-1_554fb85287.json",
+      "sha256": "554fb85287deea658c049de162779001f68dcf2ce76a8825bd2d8e86388f8b7c",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-02"
+    },
+    {
+      "run_id": "run-G-OPS-02-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-OPS-02-xiaomi-mimo-2-5-1_5c1668cc8d.json",
+      "sha256": "5c1668cc8df6f426caae57a05197946c49764fee3b15f0107786f144d4aa52de",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "OPS-02"
+    },
+    {
+      "run_id": "run-G-OPS-03-deepseek-v4-1",
+      "file": "run_run-G-OPS-03-deepseek-v4-1_50c4a559a6.json",
+      "sha256": "50c4a559a6a664d452bd1a306d91b7d42f75cd407753b77b5ea07c46692debdd",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "OPS-03"
+    },
+    {
+      "run_id": "run-G-OPS-03-qwen-3-8-max-1",
+      "file": "run_run-G-OPS-03-qwen-3-8-max-1_00a0b3a417.json",
+      "sha256": "00a0b3a417b8569e0c9cf9b8085e4541ddf4dd81f2eaf86c8908f00edca0e069",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-03"
+    },
+    {
+      "run_id": "run-G-OPS-03-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-OPS-03-xiaomi-mimo-2-5-1_15b07c0301.json",
+      "sha256": "15b07c030120e05dc8e7452ad63429c6bca0a2a09726430e128410e03abec5b5",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "OPS-03"
+    },
+    {
+      "run_id": "run-G-OPS-04-deepseek-v4-1",
+      "file": "run_run-G-OPS-04-deepseek-v4-1_ab83c8fd16.json",
+      "sha256": "ab83c8fd16523ad2a83ed18e3c2eb96afbfce16093e59004caa002fd3516a6e7",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "OPS-04"
+    },
+    {
+      "run_id": "run-G-OPS-04-qwen-3-8-max-1",
+      "file": "run_run-G-OPS-04-qwen-3-8-max-1_8461e0b7c4.json",
+      "sha256": "8461e0b7c4db40360662bcb87a432d6721c3c2d1587f2957c1016792eb482399",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-04"
+    },
+    {
+      "run_id": "run-G-OPS-04-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-OPS-04-xiaomi-mimo-2-5-1_af0eccae55.json",
+      "sha256": "af0eccae55904da8a5204296b15b849ad8bfd097346a2720727c63833266afcf",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "OPS-04"
+    },
+    {
+      "run_id": "run-G-OPS-05-deepseek-v4-1",
+      "file": "run_run-G-OPS-05-deepseek-v4-1_fa681ff628.json",
+      "sha256": "fa681ff6287d43e0c80b92c3a1af19e395193bdbbfc51824037becbcbf3728cb",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "OPS-05"
+    },
+    {
+      "run_id": "run-G-OPS-05-qwen-3-8-max-1",
+      "file": "run_run-G-OPS-05-qwen-3-8-max-1_13aea9e862.json",
+      "sha256": "13aea9e86217a829faf225bd84a717e894abf1dd2528ce75bfd5fb54c3c881f3",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "OPS-05"
+    },
+    {
+      "run_id": "run-G-OPS-05-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-OPS-05-xiaomi-mimo-2-5-1_b8e354e150.json",
+      "sha256": "b8e354e15064e2f9e6f8bca3e0d28335a616ba6273f1bf1a6748af1e971bfc7e",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "OPS-05"
+    },
+    {
+      "run_id": "run-G-RES-01-deepseek-v4-1",
+      "file": "run_run-G-RES-01-deepseek-v4-1_64ce75bcc3.json",
+      "sha256": "64ce75bcc31221687e24a9c9217365f23d890753306bff536623218aa5853f21",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "RES-01"
+    },
+    {
+      "run_id": "run-G-RES-01-qwen-3-8-max-1",
+      "file": "run_run-G-RES-01-qwen-3-8-max-1_95468ff523.json",
+      "sha256": "95468ff5231c78a86fc0ed2d759171b309865c500be03de4425f8dde6bd94f66",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-01"
+    },
+    {
+      "run_id": "run-G-RES-01-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-RES-01-xiaomi-mimo-2-5-1_9f61d1bee3.json",
+      "sha256": "9f61d1bee30777a0e8a3ba306b16af459ace33d70aba0945e7e6c5740c3e42a6",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "RES-01"
+    },
+    {
+      "run_id": "run-G-RES-02-deepseek-v4-1",
+      "file": "run_run-G-RES-02-deepseek-v4-1_75cca30acc.json",
+      "sha256": "75cca30acc6c0012eb10827aa1021cae850ce00cd23088dcd4221fe2c6c3676a",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "RES-02"
+    },
+    {
+      "run_id": "run-G-RES-02-qwen-3-8-max-1",
+      "file": "run_run-G-RES-02-qwen-3-8-max-1_feddff6172.json",
+      "sha256": "feddff6172520e55806610f4b1fe99d72bd7acd65af851a9d6ba0671b4dade21",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-02"
+    },
+    {
+      "run_id": "run-G-RES-02-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-RES-02-xiaomi-mimo-2-5-1_d0f630c966.json",
+      "sha256": "d0f630c96675011c57141694d12cd382c821d731025e1bc5bcb5e9bbdb33f09d",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "RES-02"
+    },
+    {
+      "run_id": "run-G-RES-03-deepseek-v4-1",
+      "file": "run_run-G-RES-03-deepseek-v4-1_9c46872c90.json",
+      "sha256": "9c46872c9018b9efd418f4e2602239902f0c767b01fd862b53d76c8938d240fb",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "RES-03"
+    },
+    {
+      "run_id": "run-G-RES-03-qwen-3-8-max-1",
+      "file": "run_run-G-RES-03-qwen-3-8-max-1_2e5420f3f2.json",
+      "sha256": "2e5420f3f28f60ef0bc71aadfe98413ab5941615a6aa43cfea9ac2a0deb58d82",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-03"
+    },
+    {
+      "run_id": "run-G-RES-03-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-RES-03-xiaomi-mimo-2-5-1_023b0831f1.json",
+      "sha256": "023b0831f15107dd86df2e7b4f9ec7b5fe5601fe6185371e1851bcce93a549d2",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "RES-03"
+    },
+    {
+      "run_id": "run-G-RES-04-deepseek-v4-1",
+      "file": "run_run-G-RES-04-deepseek-v4-1_17a2370afd.json",
+      "sha256": "17a2370afdc4cdaa510fbb6fd84f6f0d05cb2b9ccede964ce9b77fdcb42cc36f",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "RES-04"
+    },
+    {
+      "run_id": "run-G-RES-04-qwen-3-8-max-1",
+      "file": "run_run-G-RES-04-qwen-3-8-max-1_487a3526a8.json",
+      "sha256": "487a3526a805792b60f86435b81500c34c99e9bce2184aeae79ccc6ceee51c80",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-04"
+    },
+    {
+      "run_id": "run-G-RES-04-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-RES-04-xiaomi-mimo-2-5-1_39c654c5d2.json",
+      "sha256": "39c654c5d2c085c562f9b7d6f129ceddde7a65ee936a0c75282c7a8571828436",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "RES-04"
+    },
+    {
+      "run_id": "run-G-RES-05-deepseek-v4-1",
+      "file": "run_run-G-RES-05-deepseek-v4-1_c0a286982d.json",
+      "sha256": "c0a286982d314e7e801e4657f70079ea6413e362b0e9848f9403bc2ed8ed6459",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "RES-05"
+    },
+    {
+      "run_id": "run-G-RES-05-qwen-3-8-max-1",
+      "file": "run_run-G-RES-05-qwen-3-8-max-1_aacbfad0bb.json",
+      "sha256": "aacbfad0bb1c7261d52a67ac3142f4c3939aece24e735da4995b2dbf631c312b",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "RES-05"
+    },
+    {
+      "run_id": "run-G-RES-05-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-RES-05-xiaomi-mimo-2-5-1_ba1e140609.json",
+      "sha256": "ba1e140609d1b8fd85eed69bd326cbb3269bf94d1397c7ec480f8cbec380fb91",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "RES-05"
+    },
+    {
+      "run_id": "run-G-SRE-01-deepseek-v4-1",
+      "file": "run_run-G-SRE-01-deepseek-v4-1_644ff74564.json",
+      "sha256": "644ff7456484ea160e7f6d14e05737de7386582cedd6ce1566d5e758cf35c392",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "SRE-01"
+    },
+    {
+      "run_id": "run-G-SRE-01-qwen-3-8-max-1",
+      "file": "run_run-G-SRE-01-qwen-3-8-max-1_3d8a65f132.json",
+      "sha256": "3d8a65f132fa11ec11df96b6dcc06450c2571b0f2a1c0613b2d2c1dc7fe90b93",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-01"
+    },
+    {
+      "run_id": "run-G-SRE-01-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-SRE-01-xiaomi-mimo-2-5-1_d1bef9ba62.json",
+      "sha256": "d1bef9ba62d61565db402cb92b9a87708c7b994f8aadb233acc3fef02cedd307",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SRE-01"
+    },
+    {
+      "run_id": "run-G-SRE-02-deepseek-v4-1",
+      "file": "run_run-G-SRE-02-deepseek-v4-1_e6a019ba62.json",
+      "sha256": "e6a019ba62394a608fe974b1072e5980006d4e7e0ad96cac0778bd47614892e0",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "SRE-02"
+    },
+    {
+      "run_id": "run-G-SRE-02-qwen-3-8-max-1",
+      "file": "run_run-G-SRE-02-qwen-3-8-max-1_a0b953a418.json",
+      "sha256": "a0b953a418ebe238fcf93185e219f5fc51f51a47143856888938244f2a2ffb8b",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-02"
+    },
+    {
+      "run_id": "run-G-SRE-02-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-SRE-02-xiaomi-mimo-2-5-1_aa1543bd69.json",
+      "sha256": "aa1543bd69834a9275bd465c23f8cc669982f12ed868075e6cf621a1948a910a",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SRE-02"
+    },
+    {
+      "run_id": "run-G-SRE-03-deepseek-v4-1",
+      "file": "run_run-G-SRE-03-deepseek-v4-1_3c49bf7d60.json",
+      "sha256": "3c49bf7d60d6e6902e6592c319df4cb7d1407d2db06a80b71675ca47b5aed8cb",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "SRE-03"
+    },
+    {
+      "run_id": "run-G-SRE-03-qwen-3-8-max-1",
+      "file": "run_run-G-SRE-03-qwen-3-8-max-1_b54ee571ab.json",
+      "sha256": "b54ee571ab97ff7a6f48e4172e6383241e051557d892019660634c9997475cb3",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-03"
+    },
+    {
+      "run_id": "run-G-SRE-03-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-SRE-03-xiaomi-mimo-2-5-1_20f5a8054d.json",
+      "sha256": "20f5a8054d79bae0e2bcf94aa7817865064a09ead9c20a84be097aa8e60ecba6",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SRE-03"
+    },
+    {
+      "run_id": "run-G-SRE-04-deepseek-v4-1",
+      "file": "run_run-G-SRE-04-deepseek-v4-1_83d327bab5.json",
+      "sha256": "83d327bab5627929afd3de38bed959ea860899e80fea926f66de32670567751c",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "SRE-04"
+    },
+    {
+      "run_id": "run-G-SRE-04-qwen-3-8-max-1",
+      "file": "run_run-G-SRE-04-qwen-3-8-max-1_dfd868aac3.json",
+      "sha256": "dfd868aac33b08f6262d7e4b0606d39ebc0401cf1bdf91382a386aa6a4a67b6f",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-04"
+    },
+    {
+      "run_id": "run-G-SRE-04-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-SRE-04-xiaomi-mimo-2-5-1_121c6d5037.json",
+      "sha256": "121c6d50371339588c835c0fe30b3b6b5217b58c290ef9dda119e0a2575d2a47",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SRE-04"
+    },
+    {
+      "run_id": "run-G-SRE-05-deepseek-v4-1",
+      "file": "run_run-G-SRE-05-deepseek-v4-1_f46439297b.json",
+      "sha256": "f46439297b00a034e7e78dd20a52c418187227141631f91dadf499e832c77078",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "SRE-05"
+    },
+    {
+      "run_id": "run-G-SRE-05-qwen-3-8-max-1",
+      "file": "run_run-G-SRE-05-qwen-3-8-max-1_35df62fb21.json",
+      "sha256": "35df62fb21fefba0431df234e10bebd666ece442de0a2afa84ed022b48960aeb",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "SRE-05"
+    },
+    {
+      "run_id": "run-G-SRE-05-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-SRE-05-xiaomi-mimo-2-5-1_ccab790d69.json",
+      "sha256": "ccab790d6938103b8d4e5d6dc518358bff025afe120ea3e6cbccc36d70f1d467",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SRE-05"
+    },
+    {
+      "run_id": "run-G-SWE-01-deepseek-v4-1",
+      "file": "run_run-G-SWE-01-deepseek-v4-1_cc3b869ffe.json",
+      "sha256": "cc3b869ffe6874be22aa2639132fe44fc91df6e1e0b95d87c342c0aa8f6b9e99",
+      "classification": "LIVE_PROVIDER_FAILURE",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "SWE-01"
+    },
+    {
+      "run_id": "run-G-SWE-01-qwen-3-8-max-1",
+      "file": "run_run-G-SWE-01-qwen-3-8-max-1_cc92906ced.json",
+      "sha256": "cc92906ced4bcca1bf58e560b44784c75ef04d88d0e8ba60962dd20adcff33b5",
+      "classification": "LIVE_PROVIDER_FAILURE",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-01"
+    },
+    {
+      "run_id": "run-G-SWE-01-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-SWE-01-xiaomi-mimo-2-5-1_757c6ec788.json",
+      "sha256": "757c6ec7881f5296ddc7f4b285a17bf830e023b2406f4ff8632233fd28d1b8e9",
+      "classification": "LIVE_PROVIDER_FAILURE",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SWE-01"
+    },
+    {
+      "run_id": "run-G-SWE-02-deepseek-v4-1",
+      "file": "run_run-G-SWE-02-deepseek-v4-1_8f7db1052a.json",
+      "sha256": "8f7db1052a118dc415afa2fe891112b1a56fc1025a12f6e6d1229472d0b20fa4",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "SWE-02"
+    },
+    {
+      "run_id": "run-G-SWE-02-qwen-3-8-max-1",
+      "file": "run_run-G-SWE-02-qwen-3-8-max-1_628a2be9e7.json",
+      "sha256": "628a2be9e721c548eb5581b6238d6ecc215fbd8114fc0abad2ea208d90553736",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-02"
+    },
+    {
+      "run_id": "run-G-SWE-02-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-SWE-02-xiaomi-mimo-2-5-1_3bf2bc4d84.json",
+      "sha256": "3bf2bc4d84e416417e356f2413fb37f5eba46f9e3ed070ed4de0a0af362736ed",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SWE-02"
+    },
+    {
+      "run_id": "run-G-SWE-03-deepseek-v4-1",
+      "file": "run_run-G-SWE-03-deepseek-v4-1_d8123cd399.json",
+      "sha256": "d8123cd3992bc8b5f7d09b688fe74adc0166fcb4f89a6b492345405d33be5405",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "SWE-03"
+    },
+    {
+      "run_id": "run-G-SWE-03-qwen-3-8-max-1",
+      "file": "run_run-G-SWE-03-qwen-3-8-max-1_1a025660ab.json",
+      "sha256": "1a025660ab8e1c5bbdb108e104bf18ec8f3a33c463b2a239cc7b3fbdbccee87a",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-03"
+    },
+    {
+      "run_id": "run-G-SWE-03-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-SWE-03-xiaomi-mimo-2-5-1_7535c81f8c.json",
+      "sha256": "7535c81f8cf0644fb652e8a2b9d3a1a2e51a51fa40e899b193791b52c64f254f",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SWE-03"
+    },
+    {
+      "run_id": "run-G-SWE-04-deepseek-v4-1",
+      "file": "run_run-G-SWE-04-deepseek-v4-1_aa1ea4da78.json",
+      "sha256": "aa1ea4da78d1c5e6d5d1c1510f22f8a16cc0fbc72c24263591ccfe8853473291",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "SWE-04"
+    },
+    {
+      "run_id": "run-G-SWE-04-qwen-3-8-max-1",
+      "file": "run_run-G-SWE-04-qwen-3-8-max-1_298b62161a.json",
+      "sha256": "298b62161a2b2d57182a760958a0fc3ba6884b36475e9d9e996297ad90b9dfda",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-04"
+    },
+    {
+      "run_id": "run-G-SWE-04-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-SWE-04-xiaomi-mimo-2-5-1_0fa1e359e5.json",
+      "sha256": "0fa1e359e516658a4789e47bff6fc4dea946b88c561672138a4c2ef3983c44c9",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SWE-04"
+    },
+    {
+      "run_id": "run-G-SWE-05-deepseek-v4-1",
+      "file": "run_run-G-SWE-05-deepseek-v4-1_16394a2a05.json",
+      "sha256": "16394a2a053ee9082373a8818f56f0bf8c415b2104ada4299a479f14d2c4510e",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "deepseek-v4",
+      "workload_id": "SWE-05"
+    },
+    {
+      "run_id": "run-G-SWE-05-qwen-3-8-max-1",
+      "file": "run_run-G-SWE-05-qwen-3-8-max-1_b291ca1705.json",
+      "sha256": "b291ca1705b4e70a740989546c24a5bd58c81528273260f7ec693c66bac3cd7c",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "qwen-3.8-max",
+      "workload_id": "SWE-05"
+    },
+    {
+      "run_id": "run-G-SWE-05-xiaomi-mimo-2-5-1",
+      "file": "run_run-G-SWE-05-xiaomi-mimo-2-5-1_70bb70514c.json",
+      "sha256": "70bb70514cb95377d9ead717aa9ceaf62270ea57f04669fed6d3da1da4b3c1cb",
+      "classification": "SIMULATED",
+      "condition": "G",
+      "model": "xiaomi-mimo-2.5",
+      "workload_id": "SWE-05"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "del-vector-01",
+  "principal": "urn:p:test",
+  "delegate": "urn:d:test",
+  "purpose": "urn:mission:release-production:v1",
+  "scope": {
+    "allowed_capabilities": [
+      "mcp://*"
+    ]
+  },
+  "valid_from": "2026-09-01T00:00:00Z",
+  "expires_at": "2026-09-30T00:00:00Z"
+}

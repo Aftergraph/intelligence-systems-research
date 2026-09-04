@@ -1,0 +1,65 @@
+[
+  {
+    "kill_point": "AFTER_MODEL_RESPONSE",
+    "mission_id": "msn-fault-after-model-response",
+    "recovered_successfully": true,
+    "duplicate_actions": 0,
+    "lost_actions": 0,
+    "state_divergence": false,
+    "recovery_latency_ms": 2.0
+  },
+  {
+    "kill_point": "AFTER_TOOL_REQUEST",
+    "mission_id": "msn-fault-after-tool-request",
+    "recovered_successfully": true,
+    "duplicate_actions": 0,
+    "lost_actions": 0,
+    "state_divergence": false,
+    "recovery_latency_ms": 1.32
+  },
+  {
+    "kill_point": "AFTER_EXTERNAL_EFFECT",
+    "mission_id": "msn-fault-after-external-effect",
+    "recovered_successfully": true,
+    "duplicate_actions": 0,
+    "lost_actions": 0,
+    "state_divergence": false,
+    "recovery_latency_ms": 1.0
+  },
+  {
+    "kill_point": "BEFORE_JOURNAL_COMMIT",
+    "mission_id": "msn-fault-before-journal-commit",
+    "recovered_successfully": true,
+    "duplicate_actions": 0,
+    "lost_actions": 1,
+    "state_divergence": false,
+    "recovery_latency_ms": 2.05
+  },
+  {
+    "kill_point": "AFTER_JOURNAL_COMMIT",
+    "mission_id": "msn-fault-after-journal-commit",
+    "recovered_successfully": true,
+    "duplicate_actions": 0,
+    "lost_actions": 0,
+    "state_divergence": false,
+    "recovery_latency_ms": 1.0
+  },
+  {
+    "kill_point": "DURING_RECOVERY",
+    "mission_id": "msn-fault-during-recovery",
+    "recovered_successfully": true,
+    "duplicate_actions": 0,
+    "lost_actions": 0,
+    "state_divergence": false,
+    "recovery_latency_ms": 3.99
+  },
+  {
+    "kill_point": "DURING_PROVIDER_FALLBACK",
+    "mission_id": "msn-fault-during-provider-fallback",
+    "recovered_successfully": true,
+    "duplicate_actions": 0,
+    "lost_actions": 0,
+    "state_divergence": false,
+    "recovery_latency_ms": 2.01
+  }
+]

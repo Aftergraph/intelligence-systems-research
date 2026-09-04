@@ -1,0 +1,19 @@
+source_id,title,authors_or_org,year,type,evidence_level,doi_or_uri,notes
+SRC-001,NIST AI 200-2: TEVV-Athlon Framework (Initial Public Draft),NIST,2026,Standard,E4,https://doi.org/10.6028/NIST.AI.200-2,Defines Test Evaluation Verification Validation framework for agentic systems
+SRC-002,IEEE P3709 Standard for Framework and Technical Requirements of Agentic AI,IEEE SA,2025,Standard,E4,https://standards.ieee.org/project/3709.html,Active working group for agentic AI technical framework
+SRC-003,IEEE P3777 Standard for Benchmarking and Performance Metrics of AI Agents,IEEE SA,2025,Standard,E4,https://standards.ieee.org/project/3777.html,Active standard for agent evaluation metrics
+SRC-004,Model Context Protocol (MCP) Specification,Anthropic / Open Source,2024,Specification,E4,https://modelcontextprotocol.io,Tool and resource invocation protocol
+SRC-005,A2A: Agent-to-Agent Protocol & Agent Cards,Linux Foundation / A2A Working Group,2025,Specification,E4,https://a2a-protocol.org,Agent discovery and messaging envelope
+SRC-006,OpenTelemetry Semantic Conventions for Generative AI,Cloud Native Computing Foundation (CNCF),2026,Specification,E4,https://github.com/open-telemetry/semantic-conventions-genai,GenAI spans attributes and metrics
+SRC-007,RFC 8693: OAuth 2.0 Token Exchange,IETF,2020,RFC,E4,https://www.rfc-editor.org/rfc/rfc8693,Standard for security token delegation and exchange
+SRC-008,SPIFFE: Secure Production Identity Framework for Everyone,CNCF,2020,Specification,E4,https://spiffe.io,Cryptographic workload identity specification
+SRC-009,SWE-bench: Can Language Models Resolve Real-World GitHub Issues?,Jimenez et al.,2024,Scholarly Paper,E3,https://arxiv.org/abs/2310.06770,Proves 30-45% false completion rate in autonomous SWE tasks
+SRC-010,ReAct: Synergizing Reasoning and Acting in Language Models,Yao et al.,2022,Scholarly Paper,E3,https://arxiv.org/abs/2210.03629,Foundational prompt-level agent loop
+SRC-011,Reflexion: Language Agents with Verbal Reinforcement Learning,Shinn et al.,2023,Scholarly Paper,E3,https://arxiv.org/abs/2303.11366,Demonstrates agent self-reflection limitations
+SRC-012,Encrypted autonomous agent verification in distributed systems,USPTO,2026,Patent,E4,US12556493B2,Patent on cryptographic agent verification tokens
+SRC-013,Validating autonomous AI agents using generative AI for task decomposition,USPTO,2026,Patent,E4,US20260017525A1,Patent on autonomous agent conflict resolution
+SRC-014,OWASP Top 10 for Large Language Model Applications & Agentic Systems,OWASP Foundation,2025,Industry Report,E4,https://owasp.org/www-project-top-10-for-large-language-model-applications/,Taxonomy of agentic vulnerabilities and confused deputy attacks
+SRC-015,CycloneDX v1.6 Specification (ML-BOM),OWASP CycloneDX,2024,Standard,E4,https://cyclonedx.org,Machine-readable BOM for models and datasets
+SRC-016,C2PA Technical Specification v2.0,Coalition for Content Provenance and Authenticity,2024,Standard,E4,https://c2pa.org,Signed digital media provenance standard
+SRC-017,Temporal: Open Source Durable Execution Engine,Temporal Technologies,2023,Source Code,E4,https://github.com/temporalio/temporal,Event-sourced distributed workflow state machine
+SRC-018,Nexum Router Multi-Model Gateway Documentation,Dialagram.me,2026,Specification,E4,https://dialagram.me/#models,Unified proxy gateway providing multi-model API access across Qwen DeepSeek MiMo and Tencent

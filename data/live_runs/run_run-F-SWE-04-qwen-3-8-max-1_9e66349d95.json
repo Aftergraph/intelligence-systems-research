@@ -1,0 +1,54 @@
+{
+  "experiment_id": "STUDY-008-LIVE",
+  "run_id": "run-F-SWE-04-qwen-3-8-max-1",
+  "condition": "F",
+  "workload_id": "SWE-04",
+  "domain": "software_engineering",
+  "provider": "dialagram",
+  "router": "dialagram.me/router/v1",
+  "exact_model_id": "qwen-3.8-max",
+  "timestamp_iso": "2026-09-03T23:08:32Z",
+  "hashes": {
+    "system_prompt_sha256": "3fd78ef0d1b170f909ad403800d0869acedbb5bd47c9fc2c9b20804463c6dbed",
+    "mission_contract_sha256": "4fdd8c0acd84068cc8834fcaa0923a63b74332cc82c06efbacfd3801ae944657",
+    "request_parameters_sha256": "3d1dfa1e64ba3b1747ac18b6197c0a5e33466d7cf7162a916e7e2e62201d5ffb"
+  },
+  "raw_response": "[Dialagram Sim: qwen-3.8-max] Formulated plan with verified constraints.",
+  "tool_calls": [],
+  "tool_responses": [],
+  "routing_receipt": null,
+  "authority_receipts": [],
+  "budget_reservations": [],
+  "budget_commits": [],
+  "candidate_completion": {
+    "reported_complete": true
+  },
+  "assurance_receipts": [],
+  "evidence_references": [
+    "ev-SWE-04"
+  ],
+  "recovery_sequence": [
+    "DIAGNOSTIC_ANALYSIS:FAIL-HALLUC",
+    "CORRECTION_PATCH_APPLIED"
+  ],
+  "usage": {
+    "input_tokens": 57,
+    "output_tokens": 45,
+    "total_tokens": 102,
+    "latency_ms": 0.0,
+    "cost_usd": 0.0
+  },
+  "final_mission_state": "VERIFIED",
+  "ground_truth": {
+    "ground_truth_pass": true
+  },
+  "verifier_output": {
+    "tier": "tier_2_deterministic",
+    "status": "PASS",
+    "exit_code": 0,
+    "recovery_turns": 1
+  },
+  "verified_success": true,
+  "false_completion": false,
+  "manifest_sha256": "9e66349d953740fbc18dfa0a14bc7b56584ab9bce9f295b5f0b46df000c4d584"
+}
