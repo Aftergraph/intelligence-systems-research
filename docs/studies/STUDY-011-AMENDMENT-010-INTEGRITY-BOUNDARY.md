@@ -61,11 +61,20 @@
 | Models | `google/gemma-4-31b-it` (paid), `z-ai/glm-5.2` (paid) |
 | Fingerprint | `dfe3513c72c5d8d6` |
 | Ceiling | 931 global / 156 per cell (openrouter) |
-| Total records | 75 |
-| LIVE_VALID | 74 |
+| Total records | 107 |
+| LIVE_VALID | 106 |
 | Excluded | 1 |
-| Yield | 98.7%% |
+| Yield | 99.1% |
 | Owner approval | Telegram, 2026-09-04 (Amendment 010 ACTIVE) |
+
+### Per-cell breakdown (openrouter paid)
+
+| Cell | Valid | Model breakdown |
+|------|-------|-----------------|
+| A | 58 | gemma-4-31b-it: 39, glm-5.2: 19 |
+| C | 48 | gemma-4-31b-it: 32, glm-5.2: 16 |
+| F | 0 | — |
+| G | 0 | — |
 
 **Analysis status: EXPLICIT SEPARATE ANALYSIS REQUIRED.** These observations were produced under a different model tier (paid vs free), a different ceiling (931 vs 619), and a different fingerprint. They CANNOT be pooled with Block 1 for inferential purposes unless a pre-specified statistical justification is added to the preregistration via a formal amendment.
 
