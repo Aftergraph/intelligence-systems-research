@@ -1,0 +1,67 @@
+{
+  "manifestVersion": "1.0",
+  "studyId": "STUDY-013",
+  "gateId": "G-13a",
+  "bundleName": "External Implementation Recruit Bundle",
+  "description": "Public files provided to independent implementers for SPEC-001 clean-room implementation",
+  "status": "APPROVED-ACTIVE",
+  "ownerApproved": "2026-09-04",
+  "files": [
+    {
+      "path": "SPECIFICATION.md",
+      "description": "Normative SPEC-001 specification v0.1",
+      "sha256": "581aee4f38e9e54f33e54f7fe360dc87b936c226e020dc93ccbe977f559f0806"
+    },
+    {
+      "path": "BLINDED_INTEROPERABILITY_CHALLENGE.md",
+      "description": "Challenge protocol for external implementers",
+      "sha256": "bcd1a1b5aa883b0b8dc295e2f0839d8af1bfad298252ec3e2a7e736136c56dad"
+    },
+    {
+      "path": "IMPLEMENTATION_RULES_AND_RUBRIC.md",
+      "description": "Scoring criteria and measurement protocol",
+      "sha256": "0bdb12728d11c2cab0e5765959112ef92f9947fa5148ce6fda8845ffcdbb501b"
+    },
+    {
+      "path": "conformance/standalone_runner.py",
+      "description": "Self-contained conformance test runner",
+      "sha256": "6b37d8c83e9e82f1a355c7df97cf0aaeb78bd8332e00b0e20366f4e88fdb5c7a"
+    },
+    {
+      "path": "schemas/mission.v0alpha1.json",
+      "description": "JSON Schema 2020-12 for Mission Contract",
+      "sha256": "3864c6cf89d7f9e1a44021246c8beb3e5db9cca8d2911e249154f711eb4e18b0"
+    },
+    {
+      "path": "schemas/delegation.v0alpha1.json",
+      "description": "JSON Schema for delegation tokens",
+      "sha256": "7243f1f5ff68372d38bad30fe51c173c6aed57ce6f0efcfff253fd10e6ad91d3"
+    },
+    {
+      "path": "schemas/evidence.v0alpha1.json",
+      "description": "JSON Schema for evidence receipts",
+      "sha256": "3432a8ad8b6d859c417a80e0b63032964eb6096fb0819b82be3696e23a969a8f"
+    },
+    {
+      "path": "test_vectors/sample_mission.json",
+      "description": "Sample mission for testing",
+      "sha256": "976ba81ef77c70ccaa6b63fc90619fc3fbb9327ed1f3b0176ede8432a3fb01df"
+    },
+    {
+      "path": "test_vectors/sample_delegation.json",
+      "description": "Sample delegation token for testing",
+      "sha256": "8d23c58b62189aafaf061d1435fbcace8eec7bfc50437cb9fb1d5aab21c94fa2"
+    },
+    {
+      "path": "test_vectors/sample_evidence.json",
+      "description": "Sample evidence bundle for testing",
+      "sha256": "8647f4850b4f8643c18cda4019dcbe022fd6c5b77fd2e5ce58e348f74bfc2b10"
+    }
+  ],
+  "exclusions": [
+    "Reference implementation source code",
+    "Internal test implementation details",
+    "Architecture implementation notes",
+    "Any code from the internal codebase"
+  ]
+}
