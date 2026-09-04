@@ -30,7 +30,7 @@
 
 Move from controlled/simulated bench to live models/providers under real faults.
 
-- A.1 Live workload execution on ≥2 providers, ≥3 models incl. one small/open (per 16-BENCH model matrix) — **PROPOSED** (STUDY-008 precedent v1.1-AUDITED exists; STUDY-011 infra reusable)
+- A.1 Live workload execution on ≥2 providers, ≥3 models incl. one small/open (per 16-BENCH model matrix) — **PREREGISTERED-DRAFT** (STUDY-008-LIVE-v2-PREREGISTRATION.md, commit 285ff1b; pending owner approval)
 - A.2 Real-fault injection: provider 429/5xx, latency spikes, malformed responses, mid-mission crash+resume — **PROPOSED**
 - A.3 Metrics: VSR, FCR, UAR (unauthorized action rate), recovery correctness, CPVO, CPT — **PREREGISTERED** in bench docs; live thresholds to freeze in A.1 prereg
 - A.4 Blinding/scoring: automated scoring from frozen workloads only, no LLM-judge without inter-rater validation — **PROPOSED**
@@ -41,7 +41,7 @@ Move from controlled/simulated bench to live models/providers under real faults.
 
 - B.1 Chat-only vs Mission/Needs-You/progressive-disclosure arms — **PREREGISTERED** (STUDY-006-PREREG-001, recruitment pending)
 - B.2 Measures: human control perception, intervention accuracy, cognitive load (NASA-TLX), trust calibration, takeover success — **PREREGISTERED**
-- B.3 Recruitment/IRB (Q-006) — **BLOCKED** on participant pipeline + consent instrument
+- B.3 Recruitment/IRB (Q-006) — **UNBLOCK INSTRUMENTS READY** (pilots/: recruitment plan, GDPR consent form, session scripts; commit 285ff1b) — pending owner ethics sign-off
 - B.4 System-in-the-loop: arms run against the REAL platform chain (TG admission → AIE → WORKS), not mockups — **PROPOSED** (requires Track A infra stable)
 
 **Gate G-B1:** IRB/consent + ≥N participants → run. **Gate G-B2:** results → HCI claims registry (C-004/H-003).
