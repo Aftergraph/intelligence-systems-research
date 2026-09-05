@@ -41,6 +41,15 @@ jobs:
         with:
           lfs: false
 
+      # Workspace contract: test_mission_state_contract.py imports aie_runtime
+      # (AIE Mission dataclass cross-check), so AIE is materialized as sibling
+      # inside the workspace and its src is put on PYTHONPATH.
+      - name: Checkout aie sibling
+        uses: actions/checkout@v4
+        with:
+          repository: Aftergraph/aie
+          path: aie
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -62,6 +71,9 @@ jobs:
       - name: Run pytest
         run: |
           python -m pytest -v --tb=short
+        env:
+          PYTHONPATH: ${{ github.workspace }}/aie/src
+          AIE_RUNTIME_PATH: ${{ github.workspace }}/aie
 
       - name: Run audit
         run: |
