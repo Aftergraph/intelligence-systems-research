@@ -130,7 +130,7 @@ def test_live_provider_failure_allowed_in_live_only():
 
 
 def test_runner_cell_math_matches_frozen_plan():
-    """2 strata x 4 conditions = 8 cells; nominal 60/cell; ceiling 619."""
+    """2 strata x 4 conditions = 8 cells; nominal 60/cell; ceiling per Amendment 010 (931)."""
     rm = json.load(open(Path(workspace) / "data" / "study011_run_math.json", encoding="utf-8"))
     d = rm["derivation"]
-    assert d["cells"] == 8 and d["nominal_attempts_total"] == 480 and d["attempts_ceiling_total"] == 619
+    assert d["cells"] == 8 and d["nominal_attempts_total"] == 480 and d["attempts_ceiling_total"] == 931

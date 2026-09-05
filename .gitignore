@@ -19,3 +19,5 @@ Thumbs.db
 .study011_env
 *.env
 !.env.example
+
+dist/

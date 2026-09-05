@@ -1,0 +1,80 @@
+{
+ "cells": {
+  "dialagram|A": {
+   "att": 60,
+   "lv": 58,
+   "fail": 2
+  },
+  "dialagram|C": {
+   "att": 61,
+   "lv": 59,
+   "fail": 2
+  },
+  "dialagram|F": {
+   "att": 60,
+   "lv": 58,
+   "fail": 2
+  },
+  "dialagram|G": {
+   "att": 60,
+   "lv": 59,
+   "fail": 1
+  },
+  "openrouter|A": {
+   "att": 121,
+   "lv": 58,
+   "fail": 63
+  },
+  "openrouter|C": {
+   "att": 108,
+   "lv": 48,
+   "fail": 60
+  },
+  "openrouter|F": {
+   "att": 60,
+   "lv": 0,
+   "fail": 60
+  },
+  "openrouter|G": {
+   "att": 82,
+   "lv": 22,
+   "fail": 60
+  }
+ },
+ "a010_cells": {
+  "openrouter|A": {
+   "att": 59,
+   "lv": 58
+  },
+  "openrouter|C": {
+   "att": 48,
+   "lv": 48
+  },
+  "openrouter|G": {
+   "att": 22,
+   "lv": 22
+  }
+ },
+ "total_records": 612,
+ "total_valid": 362,
+ "a010_records": 129,
+ "a010_valid": 128,
+ "blocks": {
+  "original_confirmatory": {
+   "fp": "b6b7c2d0\u2026",
+   "records": 244,
+   "valid": 233
+  },
+  "original_openrouter_free": {
+   "fp": "0c588022\u2026",
+   "records": 238,
+   "valid": 0
+  },
+  "post_amendment_010": {
+   "fp": "dfe3513c\u2026",
+   "records": 129,
+   "valid": 128
+  }
+ },
+ "last_updated": "2026-09-04T16:06:45Z"
+}

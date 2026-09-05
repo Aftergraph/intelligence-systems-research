@@ -71,7 +71,7 @@ The program operated under strict falsification discipline (Occam's razor / pars
 > classified as a methodological pilot: 2 `LIVE_VALID` runs out of
 > 275 attempts, with the remaining 264 silently substituted by a
 > harness bug (`is_live_call = (idx == 0)`). The audit correctly
-> detected this. The fix is in STUDY-011, which is at the pre-execution
+> detected this. The fix is in STUDY-011, which is **executing** (Amendment 010 active,
 > gate.
 
 ---
@@ -94,7 +94,7 @@ python cli/mission_cli.py audit
 # Inspect live mission dashboard via developer CLI
 python cli/mission_cli.py status examples/mission.release.yaml
 
-# STUDY-011 pre-execution preflight (DRY_RUN, no network)
+# STUDY-011 preflight (historical — pre-execution DRY_RUN, no network)
 python experiments/live_benchmark/run_study_011.py --mode DRY_RUN --phase 1 --preflight-only
 ```
 
@@ -122,11 +122,11 @@ python experiments/live_benchmark/run_study_011.py --mode DRY_RUN --phase 1 --pr
 - [`STUDY-011-LIVE-CROSS-PROVIDER-PREREGISTRATION.md`](STUDY-011-LIVE-CROSS-PROVIDER-PREREGISTRATION.md) — Pre-registration v1.0.0 + 2 amendments (see `STUDY-011-AMENDMENTS.md`).
 - [`STUDY-011-READINESS-REPORT.md`](STUDY-011-READINESS-REPORT.md) — Current STUDY-011 status (RUNNING; Amendment 010 active).
 
-### 4. STUDY-011 Pre-Execution Artifacts (Frozen)
-- `data/study011_workload_manifest.json` (freeze v1.0.0, root hash `e823102a4ff09bfca560c95e341aa3eaf7a4003215abd3900749afc64d3e4e06`)
-- `data/study011_workloads_frozen.json` (freeze v1.0.0)
-- `data/study011_provider_model_matrix.json` (freeze v1.0.0; 3 Dialagram + 2 OpenRouter free models)
-- `data/study011_preregistration_manifest.json` (v1.0.2 after 2 amendments)
+### 4. STUDY-011 Frozen Artifacts (ORIGINAL FREEZE — historical)
+- `data/study011_workload_manifest.json` (ORIGINAL FREEZE v1.0.0, root hash `e823102a4ff09bfca560c95e341aa3eaf7a4003215abd3900749afc64d3e4e06`)
+- `data/study011_workloads_frozen.json` (ORIGINAL FREEZE v1.0.0)
+- `data/study011_provider_model_matrix.json` (ORIGINAL FREEZE v1.0.0: 3 Dialagram + 2 OpenRouter :free models → **Amendment 010**: OpenRouter models upgraded to paid `gemma-4-31b-it` + `glm-5.2`)
+- `data/study011_preregistration_manifest.json` (v1.0.0 base + Amendments 001–010 ACTIVE)
 - `data/study011_preregistration_manifest.sha256` (sidecar)
 - `experiments/live_benchmark/run_study_011.py` (harness, 770 lines, LIVE_ONLY invariant enforced)
 - `experiments/live_benchmark/study011_analyze.py` (pre-data offline analysis, 1,253 lines)
@@ -159,7 +159,7 @@ python experiments/live_benchmark/run_study_011.py --mode DRY_RUN --phase 1 --pr
 - `data/objection_registry.csv` — OBJ-001 through OBJ-007.
 - `data/decision_log.csv` — DEC-001 through DEC-018.
 - `data/experiment_registry.csv` — JAR-EXP-0001..0011. **Note:** JAR-EXP-0008 is `METHODOLOGICAL_PILOT` (was incorrectly `COMPLETED` pre-audit).
-- `data/open_questions.csv` — Q-001..Q-012. Q-010 and Q-011 updated to reflect STUDY-011 pre-execution gate.
+- `data/open_questions.csv` — Q-001..Q-012. Q-010 and Q-011 updated to reflect STUDY-011 executing state (Amendment 010).
 - `data/standards_gap_matrix.csv` — 14 industry standards.
 - `data/conformance_report.json` — 14/14 Passed.
 - `data/results_jar_exp_0001.csv` — 200 SWE benchmark runs (deterministic testbed).

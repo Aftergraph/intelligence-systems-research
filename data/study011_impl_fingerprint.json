@@ -1,6 +1,6 @@
 {
- "code_snapshot_hash": "dfe3513c72c5d8d6c8c900a2ce9fa178b3321772ef323406bccd6632d7717f92",
- "created_utc": "2026-09-04T14:38:32Z",
+ "amendment_note": "Regenerated per Amendment 011 (post-execution writer fix, declared change)",
+ "created_utc": "2026-09-04T17:26:13Z",
  "dependency_lock_hash": "7c8c0922bbd516840bdc8493db08eb63b329c41c0d2422102aeaabeba59396ca",
  "files": {
   "data/study011_dependency_lock.txt": "7c8c0922bbd516840bdc8493db08eb63b329c41c0d2422102aeaabeba59396ca",
@@ -10,13 +10,11 @@
   "data/study011_workload_manifest.json": "2f21e0827f9c7f8d4f044acac9635cee84376250d595115b68dc4634159bbe18",
   "data/study011_workloads_frozen.json": "74405d75f9be2a1d7335b829b8c84e21efeb65178962811d2c59f99424f89237",
   "experiments/live_benchmark/run_study_011.py": "73a75068acbe46c3726e71e97590472734c477c0a9e52a9cd56595705b675f44",
-  "experiments/live_benchmark/study011_analyze.py": "400138f6a4ed1a39a35fba05bb9c5a1fc9478935d015b64bf3205267a4023d1f",
+  "experiments/live_benchmark/study011_analyze.py": "385984c2fb4e2e44f3aa58a1e8abc1725a7119f14f29713a9d216f40d0d000c9",
   "experiments/live_benchmark/study011_rate_limit.py": "06c20d210c7de683ec455e580fee6b42f3a7b0171b7eb3ff732ad91372aab353",
   "experiments/live_benchmark/verifier_v2.py": "dbf1fbb3d00ab83ad169cf2899b70f755b9ad2835375673469c35808c7e881c9"
  },
  "platform": "Windows-10-10.0.26220-SP0",
- "preregistration_manifest_version": "1.0.4",
  "python_version": "3.11.15",
- "tag": "STUDY-011-PRECONFIRMATORY",
- "verifier_version": "2.0.0"
+ "tag": "STUDY-011-PRECONFIRMATORY"
 }

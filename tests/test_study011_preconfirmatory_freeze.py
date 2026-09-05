@@ -134,10 +134,15 @@ def test_run_math_matches_prereg():
     assert 4 * 2 * 58 == 464
     assert d["nominal_attempts_total"] == 480
     assert 8 * 60 == 480
-    assert d["attempts_ceiling_total"] == 619
+    # Amendment 010: per-cell cap for openrouter cells 5-8 extended 78→156
+    # (429-burn = deterministic quota exhaustion, not sampling failure).
+    # Global ceiling 931 = 619 + 4×78.
+    assert d["attempts_ceiling_total"] == 931
+    assert d["attempts_ceiling_per_cell"] == 156
     import math
-    assert math.ceil(464 / 0.75) == 619
-    assert rm["maximum_attempts_per_cell"] == 78
+    assert math.ceil(464 / 0.75) == 619  # base ceiling pre-amendment still holds
+    assert 619 + 4 * 78 == 931
+    assert rm["maximum_attempts_per_cell"] == 78  # dialagram cells 1-4 retain 78
     assert rm["stopping_rule"]["per_cell"].startswith("stop the cell when LIVE_VALID >= 58")
     assert "no simulation fallback" in rm["stopping_rule"]["on_non_viable"].lower()
 
