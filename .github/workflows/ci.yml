@@ -49,6 +49,10 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          # Deterministic bootstrap: ISR ships no requirements-test.txt, so
+          # pytest+httpx are installed explicitly (audit 2026-09-05: CI
+          # failed on missing pytest before any test ran).
+          pip install pytest httpx
           if [ -f requirements-test.txt ]; then
             pip install -r requirements-test.txt
           fi
@@ -75,6 +79,9 @@ jobs:
           python-version: "3.11"
       - name: Install conformance deps
         run: |
+          # This job name says "Node.js conformance" but the actual test
+          # entrypoint is python -m pytest, so pytest must be present.
+          pip install pytest
           if [ -f external_validation_pack_vNext/conformance/requirements.txt ]; then
             pip install -r external_validation_pack_vNext/conformance/requirements.txt
           fi
