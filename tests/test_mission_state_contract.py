@@ -4,6 +4,9 @@ Validates that the ISR MissionLifecycle FSM and the AIE Mission dataclass both
 conform to after-graph-governance/docs/contracts/mission-state/1.0.json.
 
 Run: PYTHONPATH=src python -m pytest tests/test_mission_state_contract.py -q
+
+Contract resolution: AGC_CONTRACTS_DIR env var -> side-by-side GOV checkout ->
+vendored copy in contracts/mission-state/1.0.json (see tests/conftest.py).
 """
 import json
 import sys
@@ -12,8 +15,11 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))  # tests/ for conftest import
 
-CONTRACT_PATH = Path(__file__).resolve().parent.parent.parent / "after-graph-governance" / "docs" / "contracts" / "mission-state" / "1.0.json"
+from conftest import resolve_contract_path
+
+CONTRACT_PATH = resolve_contract_path()
 
 
 @pytest.fixture(scope="module")
