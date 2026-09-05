@@ -41,6 +41,15 @@ jobs:
         with:
           lfs: false
 
+      # Workspace contract: test_mission_state_contract.py imports aie_runtime
+      # (AIE Mission dataclass cross-check), so AIE is materialized as sibling
+      # inside the workspace and its src is put on PYTHONPATH.
+      - name: Checkout aie sibling
+        uses: actions/checkout@v4
+        with:
+          repository: Aftergraph/aie
+          path: aie
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -49,8 +58,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements-test.txt ]; then
-            pip install -r requirements-test.txt
+          # Deterministic bootstrap: requirements-test.txt now exists and
+          # pins the packages the actual test/audit code imports.
+          pip install -r requirements-test.txt
+          if [ -f requirements-test-extra.txt ]; then
+            pip install -r requirements-test-extra.txt
           fi
           if [ -f setup.py ]; then
             pip install -e .
@@ -59,6 +71,9 @@ jobs:
       - name: Run pytest
         run: |
           python -m pytest -v --tb=short
+        env:
+          PYTHONPATH: ${{ github.workspace }}/aie/src
+          AIE_RUNTIME_PATH: ${{ github.workspace }}/aie
 
       - name: Run audit
         run: |
@@ -75,6 +90,9 @@ jobs:
           python-version: "3.11"
       - name: Install conformance deps
         run: |
+          # This job name says "Node.js conformance" but the actual test
+          # entrypoint is python -m pytest, so pytest must be present.
+          pip install pytest
           if [ -f external_validation_pack_vNext/conformance/requirements.txt ]; then
             pip install -r external_validation_pack_vNext/conformance/requirements.txt
           fi
@@ -95,6 +113,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install Node conformance deps
+        run: |
+          # Despite the job name, the conformance entrypoint is a python
+          # pytest file, so python must be set up and pytest installed.
+          pip install pytest
       - name: Run Node conformance tests
         run: |
           if [ -f tests/test_node_conformance.py ]; then
