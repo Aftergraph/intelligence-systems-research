@@ -2,6 +2,12 @@ name: JAR-EXP-0013 controlled host
 
 on:
   workflow_dispatch:
+    inputs:
+      host_config_path:
+        description: "Absolute path to the machine-local controlled-host JSON config"
+        required: true
+        default: "C:\\Aftergraph\\JAR-EXP-0013\\controlled-host.json"
+        type: string
 
 permissions:
   contents: read
@@ -14,8 +20,6 @@ jobs:
   controlled-host:
     runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
     timeout-minutes: 30
-    env:
-      JAR_EXP_0013_HOST_CONFIG: ${{ vars.JAR_EXP_0013_HOST_CONFIG }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -39,19 +43,24 @@ jobs:
       - name: Require machine-local host configuration
         shell: pwsh
         run: |
-          if ([string]::IsNullOrWhiteSpace($env:JAR_EXP_0013_HOST_CONFIG)) {
-            throw "Repository variable JAR_EXP_0013_HOST_CONFIG is not configured"
+          $configPath = "${{ inputs.host_config_path }}"
+          if ([string]::IsNullOrWhiteSpace($configPath)) {
+            throw "workflow_dispatch input host_config_path is required"
           }
-          if (-not (Test-Path -LiteralPath $env:JAR_EXP_0013_HOST_CONFIG)) {
-            throw "Controlled-host config does not exist at configured path"
+          if (-not [IO.Path]::IsPathFullyQualified($configPath)) {
+            throw "host_config_path must be an absolute Windows path"
+          }
+          if (-not (Test-Path -LiteralPath $configPath)) {
+            throw "Controlled-host config does not exist at requested path: $configPath"
           }
 
       - name: Probe controlled Windows Hermes host
         shell: pwsh
         run: |
+          $configPath = "${{ inputs.host_config_path }}"
           $outDir = Join-Path $env:RUNNER_TEMP "jar-exp-0013"
           New-Item -ItemType Directory -Force -Path $outDir | Out-Null
-          python -m experiments.runtime_acceleration.controlled_host --config "$env:JAR_EXP_0013_HOST_CONFIG" --output (Join-Path $outDir "controlled-host-probe.json")
+          python -m experiments.runtime_acceleration.controlled_host --config "$configPath" --output (Join-Path $outDir "controlled-host-probe.json")
 
       - name: Upload non-secret probe evidence
         if: always()
