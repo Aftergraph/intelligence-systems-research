@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import argparse
+import json
 from pathlib import Path
 from typing import Callable
 
@@ -10,6 +12,7 @@ from .phase2_bindings import (
 )
 from .phase2_rpc import build_worker_rpc_runner
 from .phase2_tool_microbench import execute_tool_microbench_plan
+from .protocol import load_protocol
 from .runtime_bridge import HermesWorkerClient
 
 
@@ -144,8 +147,8 @@ class Phase2WorkerLifecycle:
         if self.stock_worker is not None or self.toolrush_worker is not None:
             self._close_current()
 
-        # Idempotently re-verify fixture identity before every fresh worker pair. This happens
-        # outside measured timing and refuses foreign content rather than overwriting it.
+        # Re-verify deterministic fixture identity before every fresh worker pair. This is
+        # outside the measurement timer and refuses foreign content instead of overwriting it.
         self.fixture = prepare_tool_microbench_workspace(self.workspace)
 
         stock = None
@@ -237,3 +240,50 @@ def run_controlled_phase2(
         )
     finally:
         lifecycle.close()
+
+
+def _load_json(path: str | Path, label: str) -> dict:
+    with Path(path).open("r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+    if not isinstance(payload, dict):
+        raise TypeError(f"{label} must be a JSON object")
+    return payload
+
+
+def _parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Execute JAR-EXP-0013 Phase-2 tool microbenchmarks on a READY host."
+    )
+    parser.add_argument("--config", required=True, help="Controlled-host JSON config")
+    parser.add_argument("--plan", required=True, help="Frozen TOOL_MICROBENCH JSON plan")
+    parser.add_argument("--probe", required=True, help="READY controlled-host probe JSON")
+    parser.add_argument("--protocol", required=True, help="Frozen protocol.yaml")
+    parser.add_argument("--evidence-root", required=True, help="Append-only evidence root")
+    parser.add_argument("--execution-id", required=True, help="Unique immutable execution id")
+    return parser
+
+
+def main(
+    argv: list[str] | None = None,
+    *,
+    runner: Callable[..., dict] = run_controlled_phase2,
+) -> int:
+    args = _parser().parse_args(argv)
+    config = _load_json(args.config, "controlled-host config")
+    plan = _load_json(args.plan, "Phase-2 plan")
+    probe = _load_json(args.probe, "controlled-host probe")
+    protocol = load_protocol(Path(args.protocol))
+    summary = runner(
+        config,
+        plan,
+        probe,
+        protocol,
+        evidence_root=Path(args.evidence_root),
+        execution_id=args.execution_id,
+    )
+    print(json.dumps(summary, indent=2, sort_keys=True))
+    return 0 if summary.get("state") == "COMPLETE" else 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
