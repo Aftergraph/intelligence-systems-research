@@ -36,7 +36,16 @@ The controlled host is exposed to GitHub Actions only through a dedicated self-h
 
 The runner must be registered for `Aftergraph/intelligence-systems-research` or an Aftergraph runner group that grants this repository access. Do not reuse the label on an unrelated machine, because that would make host identity ambiguous.
 
-Create a machine-local JSON file from `experiments/runtime_acceleration/controlled-host.example.json`, adjusting only local paths. The config MUST NOT contain credentials, provider tokens, cookies, or other secrets. Set repository variable `JAR_EXP_0013_HOST_CONFIG` to the absolute path of that machine-local file.
+The repository now includes `experiments/runtime_acceleration/bootstrap-self-hosted-runner.ps1`. It pins GitHub Actions runner `2.337.0`, verifies the Windows x64 archive against SHA256 `1150692afa94e71f872017e254ea55b6eece1eece3fe7e3a6d4c93d0a1b85cfc`, registers the dedicated label, and installs the runner as a Windows service. The registration token is read as a secure string and is never stored in the repository.
+
+Run the bootstrap from elevated PowerShell after obtaining a short-lived repository runner registration token from GitHub:
+
+```powershell
+Set-Location <path-to-intelligence-systems-research>
+.\experiments\runtime_acceleration\bootstrap-self-hosted-runner.ps1
+```
+
+Create a machine-local JSON file from `experiments/runtime_acceleration/controlled-host.example.json`, adjusting only local paths. The config MUST NOT contain credentials, provider tokens, cookies, or other secrets. The manual workflow accepts the absolute path as the `host_config_path` dispatch input, so no repository variable is required.
 
 The workflow `.github/workflows/jar-exp-0013-controlled-host.yml` is manual-only and targets the dedicated runner. Its probe performs no provider calls and no production mutation.
 
@@ -79,7 +88,7 @@ Classify it through `check_preflight`. A contaminated block remains in raw evide
 
 ## Probe execution
 
-Run the manual `JAR-EXP-0013 controlled host` workflow. It must finish with a `READY` probe before confirmatory measurements begin. `BLOCKED` means a path, source pin, doctor/version check, or protocol contract failed. `CONTAMINATED` means the host is correctly configured but not clean enough for a confirmatory timing block.
+Run the manual `JAR-EXP-0013 controlled host` workflow and provide the absolute machine-local config path in `host_config_path`. It must finish with a `READY` probe before confirmatory measurements begin. `BLOCKED` means a path, source pin, doctor/version check, or protocol contract failed. `CONTAMINATED` means the host is correctly configured but not clean enough for a confirmatory timing block.
 
 The uploaded `controlled-host-probe.json` contains command metadata and host preflight state but intentionally omits raw command stdout/stderr to reduce secret-leak risk.
 
@@ -138,4 +147,4 @@ Until controlled-host evidence exists, all three remain `INCONCLUSIVE_NO_LIVE_DA
 
 ## Current implementation evidence
 
-The live-host bridge was validated on branch head `8f46ff55138fefa146857fa9dc6fd6977878c7c0` by GitHub Actions run `34015835041`: Ubuntu functional, Windows functional, and analysis-fixtures all completed successfully. This validates bridge portability and test behavior only. It is not controlled-host performance evidence.
+Runner-bootstrap and controlled-host dispatch behavior were validated on branch head `c32fa93b61ac35caebfbe6f08aa8882396c341f4` by GitHub Actions run `34016027454`: 53/53 runtime-acceleration tests passed on the Ubuntu functional job, with Windows functional and analysis-fixtures also successful. This validates repository-side bootstrap and bridge behavior only. It is not controlled-host performance evidence.
