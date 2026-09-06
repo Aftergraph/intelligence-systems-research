@@ -1,12 +1,16 @@
 from __future__ import annotations
 
+import argparse
 import json
 import random
 from pathlib import Path
 from typing import Callable
 
+import yaml
+
 from .evidence import write_run_evidence
 from .host_preflight import check_preflight
+from .protocol import load_protocol
 from .verification.differential import compare_observable
 
 _EXPECTED_CONDITIONS = ("A", "B")
@@ -411,3 +415,33 @@ def execute_tool_microbench_plan(
     }
     _write_json_exclusive(session / "summary.json", summary)
     return summary
+
+
+def load_tool_microbench_workload(path: str | Path) -> dict:
+    with Path(path).open("r", encoding="utf-8") as handle:
+        payload = yaml.safe_load(handle)
+    return _require_mapping(payload, "tool microbenchmark workload")
+
+
+def _parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Freeze the JAR-EXP-0013 Phase-2 A/B tool microbenchmark plan."
+    )
+    parser.add_argument("--workload", required=True, help="Frozen tool_microbench.yaml")
+    parser.add_argument("--protocol", required=True, help="Frozen protocol.yaml")
+    parser.add_argument("--output", required=True, help="Exclusive output plan JSON")
+    return parser
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = _parser().parse_args(argv)
+    workload = load_tool_microbench_workload(Path(args.workload))
+    protocol = load_protocol(Path(args.protocol))
+    plan = build_tool_microbench_plan(workload, protocol)
+    write_tool_microbench_plan(Path(args.output), plan)
+    print(json.dumps(plan, indent=2, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
