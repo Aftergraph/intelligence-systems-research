@@ -48,7 +48,7 @@ def test_ready_host_freezes_unique_trace_measurement_plan():
     assert '"--repetitions", "20"' in text
     assert '"--seed", "130013"' in text
     assert "trace-plan-$planStamp.json" in text
-    assert "Get-Date -AsUTC" in text
+    assert "[DateTime]::UtcNow" in text
     assert "Phase-1 trace plan" in text
 
 
