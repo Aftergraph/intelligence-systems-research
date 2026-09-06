@@ -62,7 +62,9 @@ def build_tool_microbench_plan(workload: dict, protocol: dict) -> dict:
     sequence = 0
     pair_count = 0
     for operation in operations:
-        samples = [("cold", 0)] + [("warm", repetition) for repetition in range(1, warm_repetitions + 1)]
+        samples = [("cold", 0)] + [
+            ("warm", repetition) for repetition in range(1, warm_repetitions + 1)
+        ]
         for sample_kind, repetition in samples:
             pair_count += 1
             pair_id = f"{operation}-{sample_kind}-{repetition:02d}"
@@ -100,14 +102,24 @@ def write_tool_microbench_plan(path: str | Path, plan: dict) -> None:
     _write_json_exclusive(Path(path), _require_mapping(plan, "plan"))
 
 
-def _validate_execution_contract(plan: dict, protocol: dict, host_probe: dict) -> list[tuple[str, list[dict]]]:
+def _validate_execution_contract(
+    plan: dict, protocol: dict, host_probe: dict
+) -> list[tuple[str, list[dict]]]:
     plan = _require_mapping(plan, "plan")
     protocol = _require_mapping(protocol, "protocol")
     host_probe = _require_mapping(host_probe, "host probe")
 
-    if host_probe.get("experiment_id") != "JAR-EXP-0013" or host_probe.get("state") != "READY":
-        raise ValueError("Phase-2 tool microbenchmark requires a JAR-EXP-0013 controlled host in READY state")
-    if plan.get("experiment_id") != "JAR-EXP-0013" or protocol.get("experiment_id") != "JAR-EXP-0013":
+    if (
+        host_probe.get("experiment_id") != "JAR-EXP-0013"
+        or host_probe.get("state") != "READY"
+    ):
+        raise ValueError(
+            "Phase-2 tool microbenchmark requires a JAR-EXP-0013 controlled host in READY state"
+        )
+    if (
+        plan.get("experiment_id") != "JAR-EXP-0013"
+        or protocol.get("experiment_id") != "JAR-EXP-0013"
+    ):
         raise ValueError("unexpected JAR-EXP-0013 experiment identity")
     if plan.get("phase") != "TOOL_MICROBENCH" or plan.get("plan_only") is not True:
         raise ValueError("Phase-2 requires the frozen TOOL_MICROBENCH plan")
@@ -160,7 +172,9 @@ def _validate_execution_contract(plan: dict, protocol: dict, host_probe: dict) -
 
     pairs = list(grouped.items())
     for pair_id, pair_runs in pairs:
-        if len(pair_runs) != 2 or {run["condition"] for run in pair_runs} != set(_EXPECTED_CONDITIONS):
+        if len(pair_runs) != 2 or {
+            run["condition"] for run in pair_runs
+        } != set(_EXPECTED_CONDITIONS):
             raise ValueError(f"paired block {pair_id} must contain A/B exactly once")
         signatures = {
             (run["operation"], run["sample_kind"], run["repetition"])
@@ -243,18 +257,23 @@ def execute_tool_microbench_plan(
     execution_id: str,
     operation_runner: Callable[[str, str, str, int], dict],
     snapshot_provider: Callable[[], dict],
+    pair_prepare: Callable[[str, list[dict]], None] | None = None,
 ) -> dict:
     """Execute frozen A/B tool microbenchmark pairs on an already-READY host.
 
     ``operation_runner`` owns the real operation timing boundary. This executor owns frozen
-    ordering, host cleanliness, differential correctness, and immutable evidence. It never
-    substitutes a fallback treatment.
+    ordering, host cleanliness, differential correctness, and immutable evidence. ``pair_prepare``
+    runs before the paired-block preflight snapshot so a host orchestrator can establish the
+    exact treatment lifecycle outside the measured interval without contaminating the snapshot.
+    No fallback treatment is substituted.
     """
     pairs = _validate_execution_contract(plan, protocol, host_probe)
     if not str(execution_id).strip():
         raise ValueError("execution_id must be non-empty")
     if not callable(operation_runner) or not callable(snapshot_provider):
         raise TypeError("operation_runner and snapshot_provider must be callable")
+    if pair_prepare is not None and not callable(pair_prepare):
+        raise TypeError("pair_prepare must be callable when provided")
 
     root = Path(evidence_root)
     root.mkdir(parents=True, exist_ok=True)
@@ -270,6 +289,8 @@ def execute_tool_microbench_plan(
     correctness_failures = 0
 
     for pair_id, pair_runs in pairs:
+        if pair_prepare is not None:
+            pair_prepare(pair_id, [dict(run) for run in pair_runs])
         snapshot = dict(snapshot_provider())
         preflight = check_preflight(snapshot, limits)
         representative = pair_runs[0]
@@ -309,7 +330,9 @@ def execute_tool_microbench_plan(
                 result = _failed_result(exc)
             executed.append((run, result))
 
-        control = next((result for run, result in executed if run["condition"] == "A"), None)
+        control = next(
+            (result for run, result in executed if run["condition"] == "A"), None
+        )
         for run, result in executed:
             condition = run["condition"]
             verifier = _verify(condition, result, control)
