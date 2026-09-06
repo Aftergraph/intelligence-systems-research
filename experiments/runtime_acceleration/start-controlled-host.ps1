@@ -210,8 +210,32 @@ else {
     finally {
         Pop-Location
     }
+
+    $phase1SessionDir = Join-Path $resolvedEvidenceDir $phase1ExecutionId
+    $phase1SummaryPath = Join-Path $phase1SessionDir "summary.json"
+    $phase1AnalysisJson = Join-Path $phase1SessionDir "phase1-analysis.json"
+    $phase1AnalysisMarkdown = Join-Path $phase1SessionDir "phase1-analysis.md"
+    Assert-Path "Phase-1 summary" $phase1SummaryPath
+
+    Push-Location $repoRoot
+    try {
+        Invoke-NativeChecked -Executable $harnessPython -Arguments @(
+            "-m", "experiments.runtime_acceleration.phase1_analysis",
+            "--summary", $phase1SummaryPath,
+            "--protocol", $protocolPath,
+            "--json-output", $phase1AnalysisJson,
+            "--markdown-output", $phase1AnalysisMarkdown
+        ) -FailureMessage "JAR-EXP-0013 Phase-1 analysis did not complete cleanly"
+    }
+    finally {
+        Pop-Location
+    }
+
     Write-Host "Controlled Phase-1 execution completed: $phase1ExecutionId"
     Write-Host "Evidence root: $resolvedEvidenceDir"
+    Write-Host "Phase-1 analysis JSON: $phase1AnalysisJson"
+    Write-Host "Phase-1 analysis report: $phase1AnalysisMarkdown"
+    Write-Host "Promotion gates remain INCONCLUSIVE after Phase-1 trace analysis."
 }
 
 if (-not $DispatchWorkflow) {
