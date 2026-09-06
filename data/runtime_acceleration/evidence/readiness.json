@@ -1,11 +1,11 @@
 {
   "experiment_id": "JAR-EXP-0013",
-  "state": "LIVE_HOST_BRIDGE_READY_FOR_SELF_HOSTED_RUNNER",
-  "validated_head": "8f46ff55138fefa146857fa9dc6fd6977878c7c0",
+  "state": "SELF_HOSTED_RUNNER_BOOTSTRAP_READY",
+  "validated_head": "fa3fc18e7e5bf1b4e23696b07398ffa7e67acd8a",
   "hosted_validation": {
-    "workflow_run_id": 34015835041,
+    "workflow_run_id": 34016079283,
     "conclusion": "success",
-    "tests_passed": 50,
+    "tests_passed": 53,
     "tests_failed": 0,
     "ubuntu_functional": "success",
     "windows_functional": "success",
@@ -13,30 +13,39 @@
     "live_provider_calls": 0,
     "production_mutations": 0
   },
-  "live_host_bridge": {
-    "command_execution": "EXPLICIT_ARGV_NO_SHELL",
-    "revision_validation": "FAIL_CLOSED",
-    "toolrush_doctor": "WIRED",
-    "obscura_version_probe": "WIRED",
-    "obscura_cdp_binding": "LOOPBACK_ONLY",
-    "protocol_revision": 2,
-    "preflight_limits": {
-      "cpu_percent_max": 20.0,
-      "memory_percent_max": 80.0,
-      "require_ac_power": true
-    },
-    "self_hosted_runner_labels": [
+  "runner_bootstrap": {
+    "script": "experiments/runtime_acceleration/bootstrap-self-hosted-runner.ps1",
+    "runner_version": "2.337.0",
+    "runner_archive_sha256": "1150692afa94e71f872017e254ea55b6eece1eece3fe7e3a6d4c93d0a1b85cfc",
+    "registration_token_storage": "NONE_SECURE_PROMPT_ONLY",
+    "service_install": "WIRED",
+    "labels": [
       "self-hosted",
       "Windows",
       "X64",
       "aftergraph-jar-exp-0013"
     ]
   },
+  "live_host_bridge": {
+    "command_execution": "EXPLICIT_ARGV_NO_SHELL",
+    "revision_validation": "FAIL_CLOSED",
+    "toolrush_doctor": "WIRED",
+    "obscura_version_probe": "WIRED",
+    "obscura_cdp_binding": "LOOPBACK_ONLY",
+    "controlled_host_workflow": "MANUAL_ONLY",
+    "host_config_source": "WORKFLOW_DISPATCH_ABSOLUTE_PATH",
+    "protocol_revision": 2,
+    "preflight_limits": {
+      "cpu_percent_max": 20.0,
+      "memory_percent_max": 80.0,
+      "require_ac_power": true
+    }
+  },
   "promotion_gates": {
     "G-TR": "INCONCLUSIVE_NO_LIVE_DATA",
     "G-OB": "INCONCLUSIVE_NO_LIVE_DATA",
     "G-COMB": "INCONCLUSIVE_NO_LIVE_DATA"
   },
-  "next_dependency": "Register the real controlled Windows Hermes machine as the dedicated self-hosted runner and execute the manual controlled-host workflow.",
-  "note": "Bridge readiness and hosted CI are not performance evidence."
+  "next_dependency": "Obtain a short-lived GitHub runner registration token on the real Windows Hermes machine, run bootstrap-self-hosted-runner.ps1 as Administrator, create the machine-local controlled-host JSON, then dispatch the manual JAR-EXP-0013 controlled-host workflow.",
+  "note": "Bootstrap readiness and hosted CI are not performance evidence."
 }
