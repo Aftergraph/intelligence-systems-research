@@ -88,6 +88,20 @@ def _measure_trace(steps: list[dict], adapter) -> dict:
     }
 
 
+def _failed_execution(exc: Exception, *, prior_error: str | None = None) -> dict:
+    error = f"{type(exc).__name__}: {exc}"
+    if prior_error:
+        error = f"{prior_error}; cleanup {error}"
+    return {
+        "trace_wall_clock_ms": None,
+        "tool_time_total_ms": None,
+        "browser_time_total_ms": None,
+        "steps": [],
+        "observables": [],
+        "error": error,
+    }
+
+
 def _verifier_for(condition: str, execution: dict, control: dict | None) -> dict:
     if execution.get("error") is not None:
         return {
@@ -178,19 +192,23 @@ def execute_phase1_plan(
         executed: list[tuple[dict, dict]] = []
         for run in pair_runs:
             condition = run["condition"]
+            adapter = None
             try:
                 adapter = adapter_factory(condition)
                 execution = _measure_trace(steps, adapter)
                 execution["error"] = None
             except Exception as exc:  # Fail closed: record the treatment failure, never fallback.
-                execution = {
-                    "trace_wall_clock_ms": None,
-                    "tool_time_total_ms": None,
-                    "browser_time_total_ms": None,
-                    "steps": [],
-                    "observables": [],
-                    "error": f"{type(exc).__name__}: {exc}",
-                }
+                execution = _failed_execution(exc)
+            finally:
+                if adapter is not None:
+                    try:
+                        close = getattr(adapter, "close")
+                        close()
+                    except Exception as close_exc:
+                        execution = _failed_execution(
+                            close_exc,
+                            prior_error=execution.get("error"),
+                        )
             executed.append((run, execution))
 
         control_execution = next(
