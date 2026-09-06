@@ -104,14 +104,17 @@ def test_phase2_execution_freezes_plan_and_runs_analysis_before_nonclean_exit():
 def test_start_controlled_host_powershell_syntax_is_valid():
     command = (
         "$errors=$null; "
-        "[System.Management.Automation.Language.Parser]::ParseFile($args[0],[ref]$null,[ref]$errors) | Out-Null; "
+        "[System.Management.Automation.Language.Parser]::ParseFile($env:JAR_EXP_PS1,[ref]$null,[ref]$errors) | Out-Null; "
         "if ($errors.Count -gt 0) { $errors | ForEach-Object { Write-Error $_ }; exit 1 }"
     )
+    env = dict(os.environ)
+    env["JAR_EXP_PS1"] = str(START_CONTROLLED_HOST)
     result = subprocess.run(
-        ["powershell", "-NoProfile", "-Command", command, str(START_CONTROLLED_HOST)],
+        ["powershell", "-NoProfile", "-Command", command],
         capture_output=True,
         text=True,
         check=False,
+        env=env,
     )
     assert result.returncode == 0, result.stderr or result.stdout
 
