@@ -29,6 +29,8 @@ _TOOLRUSH_FLAGS = (
     "TOOLRUSH_SEARCH",
     "TOOLRUSH_PERSIST",
 )
+WORKER_OPERATIONS = frozenset({"read", "search", "shell", "rpc_batch"})
+_PHASE1_HANDLER_OPERATIONS = ("read", "search", "shell")
 
 
 def _mode(value: str) -> str:
@@ -108,7 +110,8 @@ class HermesWorkerClient:
 
     Stock and ToolRush use identical IPC and live in different processes so imported
     plugin state, environment flags, warm shells, and module monkey-patches cannot
-    leak across the experimental boundary.
+    leak across the experimental boundary. Phase-1 handlers remain restricted to
+    read/search/shell; Phase-2 may explicitly invoke ``rpc_batch`` through execute().
     """
 
     def __init__(
@@ -255,13 +258,13 @@ class HermesWorkerClient:
     def handlers(self) -> dict[str, Callable[[dict], dict]]:
         return {
             operation: (lambda payload, op=operation: self.execute(op, payload))
-            for operation in ("read", "search", "shell")
+            for operation in _PHASE1_HANDLER_OPERATIONS
         }
 
     def execute(self, operation: str, payload: dict) -> dict:
         if self._closed:
             raise RuntimeBridgeError(f"{self.mode} Hermes worker client is closed")
-        if operation not in {"read", "search", "shell"}:
+        if operation not in WORKER_OPERATIONS:
             raise RuntimeBridgeError(f"unsupported Hermes worker operation: {operation}")
         if not isinstance(payload, dict):
             raise TypeError("Hermes worker payload must be a mapping")
@@ -320,7 +323,6 @@ class HermesWorkerClient:
                             f"{self.mode} Hermes worker protocol expected closed, got {response}"
                         )
                 except RuntimeBridgeError:
-                    # Cleanup still has to reap the worker; callers already have primary evidence.
                     pass
             try:
                 self.process.wait(timeout=2.0)
@@ -393,7 +395,7 @@ def _worker_handlers(worker) -> dict:
     handlers = factory()
     if not isinstance(handlers, dict):
         raise RuntimeBridgeError("Hermes worker handlers() must return a mapping")
-    missing = [operation for operation in ("read", "search", "shell") if operation not in handlers]
+    missing = [operation for operation in _PHASE1_HANDLER_OPERATIONS if operation not in handlers]
     if missing:
         raise RuntimeBridgeError(f"Hermes worker is missing handlers: {', '.join(missing)}")
     return handlers
