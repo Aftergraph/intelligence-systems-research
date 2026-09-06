@@ -1,0 +1,9 @@
+{
+  "experiment_id": "JAR-EXP-0013",
+  "hermes_python": "C:/dev/AppData/Local/hermes/hermes-agent/.venv/Scripts/python.exe",
+  "toolrush_repo": "C:/dev/toolrush",
+  "toolrush_doctor": "C:/dev/AppData/Local/hermes/plugins/toolrush/doctor.py",
+  "obscura_repo": "C:/dev/obscura",
+  "obscura_executable": "C:/dev/obscura/target/release/obscura.exe",
+  "obscura_port": 9222
+}
