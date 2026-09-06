@@ -8,9 +8,13 @@ import inspect
 import json
 import os
 from pathlib import Path
+import socket
 import sys
+import threading
 import traceback
 import uuid
+
+from .phase2_rpc import execute_rpc_batch
 
 
 _TOOLRUSH_FLAGS = (
@@ -96,6 +100,143 @@ def decode_tool_envelope(raw: str) -> dict:
     return value
 
 
+class GeneratedRpcHarness:
+    """One persistent generated Hermes RPC client/server pair inside an isolated worker."""
+
+    def __init__(
+        self,
+        client_namespace: dict,
+        *,
+        server_socket=None,
+        stop_event=None,
+        server_thread=None,
+        restore_env: dict[str, str | None] | None = None,
+    ):
+        if not isinstance(client_namespace, dict):
+            raise TypeError("generated RPC client namespace must be a mapping")
+        self.client_namespace = client_namespace
+        self.server_socket = server_socket
+        self.stop_event = stop_event
+        self.server_thread = server_thread
+        self.restore_env = dict(restore_env or {})
+        self._closed = False
+        self.surface = {
+            "transport": "tcp_loopback",
+            "sequential_available": callable(client_namespace.get("_call")),
+            "parallel_available": callable(client_namespace.get("parallel")),
+            "allowed_tools": ["read_file", "search_files"],
+        }
+
+    @classmethod
+    def from_installed_hermes(cls, *, mode: str):
+        from tools.code_execution_tool import _rpc_server_loop, generate_hermes_tools_module
+        import model_tools
+
+        server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        server.bind(("127.0.0.1", 0))
+        server.listen()
+        port = int(server.getsockname()[1])
+        stop = threading.Event()
+        counter = [0]
+        tool_call_log: list = []
+        token = uuid.uuid4().hex
+        restore_env = {
+            "HERMES_RPC_SOCKET": os.environ.get("HERMES_RPC_SOCKET"),
+            "HERMES_RPC_TOKEN": os.environ.get("HERMES_RPC_TOKEN"),
+        }
+        os.environ["HERMES_RPC_SOCKET"] = f"tcp://127.0.0.1:{port}"
+        os.environ["HERMES_RPC_TOKEN"] = token
+
+        def dispatch(name, args):
+            return model_tools.handle_function_call(
+                name,
+                args,
+                task_id=f"jar-exp-0013-rpc-{uuid.uuid4().hex}",
+            )
+
+        thread = threading.Thread(
+            target=_rpc_server_loop,
+            args=(
+                server,
+                "jar-exp-0013-phase2",
+                tool_call_log,
+                counter,
+                100000,
+                frozenset({"read_file", "search_files"}),
+                stop,
+                token,
+            ),
+            kwargs={"dispatch": dispatch},
+            name=f"jar-exp-0013-{mode}-generated-rpc",
+            daemon=True,
+        )
+        thread.start()
+        namespace: dict = {}
+        try:
+            exec(generate_hermes_tools_module(["read_file", "search_files"]), namespace)
+            harness = cls(
+                namespace,
+                server_socket=server,
+                stop_event=stop,
+                server_thread=thread,
+                restore_env=restore_env,
+            )
+            if not harness.surface["sequential_available"]:
+                raise RuntimeError("generated Hermes RPC client does not expose _call")
+            if str(mode).strip().lower() == "toolrush" and not harness.surface["parallel_available"]:
+                raise RuntimeError("ToolRush worker generated RPC client does not expose parallel")
+            return harness
+        except Exception:
+            stop.set()
+            sock = namespace.get("_sock")
+            if sock is not None:
+                try:
+                    sock.close()
+                except Exception:
+                    pass
+            try:
+                server.close()
+            except Exception:
+                pass
+            thread.join(timeout=3.0)
+            for key, old_value in restore_env.items():
+                if old_value is None:
+                    os.environ.pop(key, None)
+                else:
+                    os.environ[key] = old_value
+            raise
+
+    def execute(self, strategy: str, calls: object) -> list[dict]:
+        if self._closed:
+            raise RuntimeError("generated RPC harness is closed")
+        return execute_rpc_batch(self.client_namespace, strategy, calls)
+
+    def close(self) -> None:
+        if self._closed:
+            return
+        self._closed = True
+        if self.stop_event is not None:
+            self.stop_event.set()
+        sock = self.client_namespace.get("_sock")
+        if sock is not None:
+            try:
+                sock.close()
+            except Exception:
+                pass
+        if self.server_socket is not None:
+            try:
+                self.server_socket.close()
+            except Exception:
+                pass
+        if self.server_thread is not None:
+            self.server_thread.join(timeout=3.0)
+        for key, old_value in self.restore_env.items():
+            if old_value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = old_value
+
+
 def dispatch_operation(
     operation: str,
     payload: dict,
@@ -104,11 +245,21 @@ def dispatch_operation(
     file_tools,
     environment,
     task_id: str,
+    rpc_harness: GeneratedRpcHarness | None = None,
 ) -> dict:
     """Dispatch one benchmark operation through the installed Hermes surfaces."""
     if not isinstance(payload, dict):
         raise TypeError("operation payload must be a mapping")
-    if operation == "read":
+    if operation == "rpc_batch":
+        if rpc_harness is None:
+            raise RuntimeError("generated RPC harness is not initialized")
+        result = {
+            "results": rpc_harness.execute(
+                payload.get("strategy", ""),
+                payload.get("calls"),
+            )
+        }
+    elif operation == "read":
         result = decode_tool_envelope(
             file_tools.read_file_tool(**read_kwargs(payload, workspace, task_id=task_id))
         )
@@ -281,8 +432,8 @@ def main(argv: list[str] | None = None) -> int:
 
     protocol_out = sys.stdout
     cleanup = None
+    rpc_harness = None
     try:
-        # Keep third-party/import diagnostics off the JSONL control channel.
         with redirect_stdout(sys.stderr):
             file_tools, environment, surface, cleanup = bootstrap_runtime(
                 hermes_root=args.hermes_root,
@@ -290,6 +441,8 @@ def main(argv: list[str] | None = None) -> int:
                 mode=args.mode,
                 toolrush_plugin=args.toolrush_plugin,
             )
+            rpc_harness = GeneratedRpcHarness.from_installed_hermes(mode=args.mode)
+            surface["rpc"] = dict(rpc_harness.surface)
         _write_protocol(protocol_out, {"type": "ready", "surface": surface})
 
         for raw_line in sys.stdin:
@@ -314,6 +467,7 @@ def main(argv: list[str] | None = None) -> int:
                         file_tools=file_tools,
                         environment=environment,
                         task_id=f"jar-exp-0013-{uuid.uuid4().hex}",
+                        rpc_harness=rpc_harness,
                     )
                 _write_protocol(
                     protocol_out,
@@ -346,6 +500,12 @@ def main(argv: list[str] | None = None) -> int:
             pass
         return 2
     finally:
+        if rpc_harness is not None:
+            try:
+                with redirect_stdout(sys.stderr):
+                    rpc_harness.close()
+            except Exception:
+                traceback.print_exc(file=sys.stderr)
         if cleanup is not None:
             try:
                 with redirect_stdout(sys.stderr):
