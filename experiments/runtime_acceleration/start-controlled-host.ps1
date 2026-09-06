@@ -40,7 +40,12 @@ function Assert-Path([string]$Name, [string]$Path) {
     }
 }
 
-function Invoke-NativeChecked([string]$Executable, [string[]]$Arguments, [string]$FailureMessage) {
+function Invoke-NativeChecked {
+    param(
+        [Parameter(Mandatory = $true)][string]$Executable,
+        [Parameter(Mandatory = $true)][string[]]$Arguments,
+        [Parameter(Mandatory = $true)][string]$FailureMessage
+    )
     & $Executable @Arguments
     if ($LASTEXITCODE -ne 0) {
         throw "$FailureMessage (exit code $LASTEXITCODE)."
@@ -65,14 +70,14 @@ $harnessRoot = [IO.Path]::GetFullPath($HarnessVenv)
 $harnessPython = Join-Path $harnessRoot "Scripts\python.exe"
 if (-not (Test-Path -LiteralPath $harnessPython)) {
     New-Item -ItemType Directory -Force -Path (Split-Path -Parent $harnessRoot) | Out-Null
-    Invoke-NativeChecked $pythonCommand @("-m", "venv", $harnessRoot) "Failed to create isolated JAR-EXP-0013 harness venv"
+    Invoke-NativeChecked -Executable $pythonCommand -Arguments @("-m", "venv", $harnessRoot) -FailureMessage "Failed to create isolated JAR-EXP-0013 harness venv"
 }
 Assert-Path "Harness Python" $harnessPython
 
 Push-Location $repoRoot
 try {
-    Invoke-NativeChecked $harnessPython @("-m", "pip", "install", "-r", "requirements-test.txt", "psutil>=6,<7") "Failed to install isolated JAR-EXP-0013 dependencies"
-    Invoke-NativeChecked $harnessPython @("-m", "pytest", "tests/runtime_acceleration", "-q") "JAR-EXP-0013 functional suite failed on the controlled host"
+    Invoke-NativeChecked -Executable $harnessPython -Arguments @("-m", "pip", "install", "-r", "requirements-test.txt", "psutil>=6,<7") -FailureMessage "Failed to install isolated JAR-EXP-0013 dependencies"
+    Invoke-NativeChecked -Executable $harnessPython -Arguments @("-m", "pytest", "tests/runtime_acceleration", "-q") -FailureMessage "JAR-EXP-0013 functional suite failed on the controlled host"
 }
 finally {
     Pop-Location
@@ -125,7 +130,10 @@ Write-Host "Probe evidence: $probePath"
 
 if ($probe.state -ne "READY") {
     Write-Host "Controlled-host probe is not READY; confirmatory performance execution is blocked."
-    exit $(if ($probeExit -ne 0) { $probeExit } else { 2 })
+    if ($probeExit -ne 0) {
+        exit $probeExit
+    }
+    exit 2
 }
 
 Write-Host "Controlled-host probe READY. The machine may enter the preregistered measurement phases."
@@ -165,7 +173,7 @@ if (-not $SkipRunnerRegistration -and -not (Test-Path -LiteralPath $runnerIdenti
         $secureToken = $null
     }
 }
-elif (Test-Path -LiteralPath $runnerIdentity) {
+elseif (Test-Path -LiteralPath $runnerIdentity) {
     Write-Host "Dedicated JAR-EXP-0013 runner identity already exists; registration is skipped."
 }
 else {
