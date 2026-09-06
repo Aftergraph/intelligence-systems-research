@@ -1,0 +1,36 @@
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+BOOTSTRAP = ROOT / "experiments/runtime_acceleration/bootstrap-self-hosted-runner.ps1"
+CONTROLLED_WORKFLOW = ROOT / ".github/workflows/jar-exp-0013-controlled-host.yml"
+
+
+def test_runner_bootstrap_is_pinned_verified_and_dedicated():
+    text = BOOTSTRAP.read_text(encoding="utf-8")
+    assert 'RunnerVersion = "2.337.0"' in text
+    assert '1150692afa94e71f872017e254ea55b6eece1eece3fe7e3a6d4c93d0a1b85cfc' in text
+    assert "Get-FileHash" in text
+    assert "SHA256" in text
+    assert "actions-runner-win-x64-$RunnerVersion.zip" in text
+    assert "https://github.com/Aftergraph/intelligence-systems-research" in text
+    assert "aftergraph-jar-exp-0013" in text
+    assert "config.cmd" in text
+    assert "--unattended" in text
+    assert "svc.cmd" in text
+    assert "install" in text
+    assert "start" in text
+
+
+def test_runner_bootstrap_does_not_embed_registration_secret():
+    text = BOOTSTRAP.read_text(encoding="utf-8").lower()
+    assert "ghp_" not in text
+    assert "github_pat_" not in text
+    assert "registrationtoken = \"" not in text
+
+
+def test_controlled_workflow_accepts_machine_local_path_without_repo_variable():
+    text = CONTROLLED_WORKFLOW.read_text(encoding="utf-8")
+    assert "host_config_path:" in text
+    assert "workflow_dispatch:" in text
+    assert "inputs.host_config_path" in text
+    assert "JAR_EXP_0013_HOST_CONFIG" not in text
