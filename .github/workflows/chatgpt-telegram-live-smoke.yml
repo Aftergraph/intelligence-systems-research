@@ -1,0 +1,106 @@
+name: ChatGPT Telegram V4 live smoke
+
+on:
+  push:
+    branches:
+      - ops/chatgpt-telegram-live-smoke-20260906
+
+permissions:
+  contents: read
+
+concurrency:
+  group: chatgpt-telegram-live-smoke
+  cancel-in-progress: false
+
+jobs:
+  telegram-live-smoke:
+    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    timeout-minutes: 5
+    steps:
+      - name: Send and edit one Telegram V4 status card
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $task = "chatgpt-live-e2e-${{ github.run_id }}"
+          $hermesHome = 'C:\Users\empir\AppData\Local\hermes\profiles\avc'
+          $wrapper = 'C:\Users\empir\bin\hermes.cmd'
+
+          if (-not (Test-Path -LiteralPath $wrapper)) {
+            $found = Get-Command hermes -ErrorAction SilentlyContinue
+            if ($null -eq $found) {
+              throw "Hermes wrapper not found at expected path and not present on PATH"
+            }
+            $wrapper = $found.Source
+          }
+          if (-not (Test-Path -LiteralPath $hermesHome)) {
+            throw "AVC Hermes profile not found at expected path"
+          }
+
+          $env:HERMES_HOME = $hermesHome
+          $stateDir = Join-Path $hermesHome 'status'
+
+          function Get-TaskState([string]$taskId) {
+            if (-not (Test-Path -LiteralPath $stateDir)) { return $null }
+            $matches = @()
+            Get-ChildItem -LiteralPath $stateDir -Filter 'telegram-*.json' -File -ErrorAction SilentlyContinue | ForEach-Object {
+              try {
+                $obj = Get-Content -LiteralPath $_.FullName -Raw | ConvertFrom-Json
+                if ($obj.task_id -eq $taskId) {
+                  $matches += [pscustomobject]@{
+                    path = $_.FullName
+                    message_id = [string]$obj.message_id
+                    updated_at = [double]$obj.updated_at
+                  }
+                }
+              } catch { }
+            }
+            return $matches | Sort-Object updated_at -Descending | Select-Object -First 1
+          }
+
+          $event1 = @{
+            task_id = $task
+            status = 'INFO'
+            current = 1
+            total = 2
+            phase = 'live-smoke'
+            message = 'ChatGPT → GitHub self-hosted runner → local Hermes → Telegram. Første live status.'
+          } | ConvertTo-Json -Compress
+
+          & $wrapper send --to 'telegram:Jonas' --status-key $task --event $event1
+          if ($LASTEXITCODE -ne 0) { throw "Initial Hermes Telegram status send failed with exit $LASTEXITCODE" }
+
+          $first = Get-TaskState $task
+          if ($null -eq $first -or [string]::IsNullOrWhiteSpace($first.message_id)) {
+            throw "Initial send returned success but no persisted Telegram state/message_id was found"
+          }
+          $id1 = $first.message_id
+          $updated1 = $first.updated_at
+          Write-Host "Initial Telegram status persisted as message_id=$id1"
+
+          Start-Sleep -Seconds 2
+
+          $event2 = @{
+            task_id = $task
+            status = 'COMPLETE'
+            current = 2
+            total = 2
+            phase = 'verified'
+            message = 'Live E2E verificeret: samme Telegram-besked blev redigeret in-place.'
+          } | ConvertTo-Json -Compress
+
+          & $wrapper send --to 'telegram:Jonas' --status-key $task --event $event2
+          if ($LASTEXITCODE -ne 0) { throw "Hermes Telegram status edit failed with exit $LASTEXITCODE" }
+
+          $second = Get-TaskState $task
+          if ($null -eq $second) { throw "Telegram state disappeared after edit" }
+          $id2 = $second.message_id
+          $updated2 = $second.updated_at
+
+          if ($id1 -ne $id2) {
+            throw "Edit-in-place invariant failed: first message_id=$id1 second message_id=$id2"
+          }
+          if ($updated2 -lt $updated1) {
+            throw "State updated_at moved backwards"
+          }
+
+          Write-Host "LIVE_E2E_OK message_id=$id2 same_message_id=true updated_at_before=$updated1 updated_at_after=$updated2"
