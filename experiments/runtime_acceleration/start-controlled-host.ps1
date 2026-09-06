@@ -93,7 +93,6 @@ finally {
     Pop-Location
 }
 
-# Fail early on all runtime-local treatment paths before producing READY evidence.
 Assert-Path "Hermes Python" $HermesPython
 Assert-Path "Hermes root" $HermesRoot
 Assert-Path "ToolRush repository" $ToolRushRepo
@@ -103,8 +102,6 @@ Assert-Path "Obscura repository" $ObscuraRepo
 Assert-Path "Obscura executable" $ObscuraExecutable
 Assert-Path "Chromium executable" $ChromiumExecutable
 
-# Create the isolated deterministic tool workspace before any measured run. This setup is
-# outside the timed executor and is identical for stock and ToolRush conditions.
 $resolvedWorkspace = [IO.Path]::GetFullPath($Workspace)
 $fixtureWorkspace = Join-Path $resolvedWorkspace "fixture"
 New-Item -ItemType Directory -Force -Path $fixtureWorkspace | Out-Null
@@ -132,8 +129,6 @@ $config | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath $HostConfigPath -En
 $resolvedConfig = [IO.Path]::GetFullPath($HostConfigPath)
 Write-Host "Machine-local controlled-host config written: $resolvedConfig"
 
-# Run the authoritative preflight locally first. This avoids depending on workflow_dispatch
-# availability on the default branch and gives the operator immediate READY/BLOCKED evidence.
 $resolvedEvidenceDir = [IO.Path]::GetFullPath($EvidenceDir)
 New-Item -ItemType Directory -Force -Path $resolvedEvidenceDir | Out-Null
 $probePath = Join-Path $resolvedEvidenceDir "controlled-host-probe.json"
@@ -164,8 +159,6 @@ if ($probe.state -ne "READY") {
 
 Write-Host "Controlled-host probe READY. The machine may enter the preregistered measurement phases."
 
-# Freeze deterministic Phase-1 order only after the host passes READY. Plan creation itself
-# produces no timings and invokes no treatment.
 $plansDir = Join-Path $resolvedEvidenceDir "plans"
 New-Item -ItemType Directory -Force -Path $plansDir | Out-Null
 $planStamp = [DateTime]::UtcNow.ToString("yyyyMMddTHHmmssfffZ")
@@ -197,15 +190,14 @@ else {
     Write-Host "Starting controlled Phase-1 execution: $phase1ExecutionId"
     Push-Location $repoRoot
     try {
-        Invoke-NativeChecked -Executable $harnessPython -Arguments @(
-            "-m", "experiments.runtime_acceleration.phase1_host_run",
-            "--config", $resolvedConfig,
-            "--plan", $tracePlanPath,
-            "--probe", $probePath,
-            "--protocol", $protocolPath,
-            "--evidence-root", $resolvedEvidenceDir,
-            "--execution-id", $phase1ExecutionId
-        ) -FailureMessage "JAR-EXP-0013 Phase-1 controlled execution did not complete cleanly"
+        & $harnessPython -m experiments.runtime_acceleration.phase1_host_run `
+            --config $resolvedConfig `
+            --plan $tracePlanPath `
+            --probe $probePath `
+            --protocol $protocolPath `
+            --evidence-root $resolvedEvidenceDir `
+            --execution-id $phase1ExecutionId
+        $phase1RunExit = $LASTEXITCODE
     }
     finally {
         Pop-Location
@@ -231,11 +223,16 @@ else {
         Pop-Location
     }
 
-    Write-Host "Controlled Phase-1 execution completed: $phase1ExecutionId"
+    Write-Host "Controlled Phase-1 execution finished: $phase1ExecutionId"
     Write-Host "Evidence root: $resolvedEvidenceDir"
     Write-Host "Phase-1 analysis JSON: $phase1AnalysisJson"
     Write-Host "Phase-1 analysis report: $phase1AnalysisMarkdown"
     Write-Host "Promotion gates remain INCONCLUSIVE after Phase-1 trace analysis."
+
+    if ($phase1RunExit -ne 0) {
+        Write-Host "Diagnostic Phase-1 analysis was retained, but the controlled execution was non-clean (exit code $phase1RunExit)."
+        exit $phase1RunExit
+    }
 }
 
 if (-not $DispatchWorkflow) {
@@ -244,8 +241,6 @@ if (-not $DispatchWorkflow) {
     exit 0
 }
 
-# Optional GitHub self-hosted workflow path. GitHub CLI owns credential storage; only a
-# short-lived runner registration token is materialized, and it is cleared after bootstrap.
 Assert-Command "gh"
 & gh auth status --hostname github.com | Out-Null
 if ($LASTEXITCODE -ne 0) {
