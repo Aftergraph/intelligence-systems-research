@@ -2,7 +2,9 @@
 
 ## Purpose
 
-Execute the first authoritative JAR-EXP-0013 performance block on a real Windows Hermes host. GitHub-hosted runner timings are functional evidence only and MUST NOT be promoted as performance evidence.
+Execute authoritative JAR-EXP-0013 performance measurements on a real Windows Hermes host. GitHub-hosted runner timings are functional evidence only and MUST NOT be promoted as performance evidence.
+
+The implementation harness may be complete while the experiment remains inconclusive. No performance or promotion claim is valid until controlled-host evidence exists and the preregistered analysis passes.
 
 ## Required host
 
@@ -25,44 +27,88 @@ Do not silently update any treatment during the experiment. A changed treatment 
 | C | Stock Hermes | Obscura |
 | D | ToolRush | Obscura |
 
-## Local-first one-command handoff
+## Local-first operator path
 
-The default authoritative readiness path is local execution on the controlled Windows host. This deliberately avoids depending on `workflow_dispatch` availability from a workflow that has not yet landed on the repository default branch.
+Open elevated PowerShell in a checkout of `research/jar-exp-0013-runtime-acceleration`.
 
-Open elevated PowerShell in a checkout of `research/jar-exp-0013-runtime-acceleration` and run:
+### Safe default: readiness + frozen plan only
 
 ```powershell
 Set-Location <path-to-intelligence-systems-research>
 .\experiments\runtime_acceleration\start-controlled-host.ps1
 ```
 
-By default the script:
+The safe default performs host preparation, verification, the authoritative local readiness probe, and freezes the deterministic Phase-1 schedule. It deliberately does **not** start measured A/B/C/D treatments.
+
+### Explicit Phase-1 measurement execution
+
+After reviewing the `READY` probe and frozen schedule, explicitly opt into the measured trace replay:
+
+```powershell
+.\experiments\runtime_acceleration\start-controlled-host.ps1 -RunPhase1
+```
+
+`-RunPhase1` executes the frozen 20 paired blocks × 4 conditions = 80 planned Phase-1 runs. The switch is intentionally required so a routine readiness check cannot accidentally create performance observations.
+
+## What `start-controlled-host.ps1` does
+
+The script:
 
 1. requires Administrator privileges and Python 3.11;
-2. creates an isolated harness venv under `C:\Aftergraph\JAR-EXP-0013\harness-venv`;
-3. installs the research test dependencies plus `psutil` into that venv, not the Hermes application environment;
+2. creates an isolated harness venv at `C:\Aftergraph\JAR-EXP-0013\harness-venv`;
+3. installs research test dependencies, `psutil`, and the pinned Python Playwright client into the harness venv, not the Hermes application environment;
 4. runs the complete `tests/runtime_acceleration` suite and stops on any failure;
-5. fail-closes if the configured Hermes, ToolRush, ToolRush doctor, Obscura checkout, or Obscura executable path is missing;
-6. writes the machine-local, non-secret `controlled-host.json`;
-7. runs `experiments.runtime_acceleration.controlled_host` locally;
-8. writes `C:\Aftergraph\JAR-EXP-0013\evidence\controlled-host-probe.json`;
-9. exits non-zero unless the probe state is exactly `READY`.
+5. fail-closes if configured Hermes, ToolRush, Obscura, or Chromium runtime paths are missing;
+6. creates an isolated benchmark workspace at `C:\Aftergraph\JAR-EXP-0013\workspace` and writes the deterministic tool fixture outside measured timing;
+7. writes a machine-local, non-secret `controlled-host.json` containing the exact runtime paths;
+8. runs `experiments.runtime_acceleration.controlled_host` and writes `controlled-host-probe.json`;
+9. exits non-zero unless probe state is exactly `READY`;
+10. freezes the deterministic Phase-1 A/B/C/D order using 20 paired blocks and seed `130013`;
+11. stops before measurement unless `-RunPhase1` was supplied;
+12. with `-RunPhase1`, invokes `experiments.runtime_acceleration.phase1_host_run` with the exact config, probe, protocol, plan, evidence root, and unique execution id.
 
-The default path does **not** require GitHub CLI, does not create a runner, does not call a model/provider, and does not mutate production services.
+The host configuration includes these runtime fields in addition to the read-only probe paths:
 
-If local paths differ, provide the corresponding PowerShell parameters explicitly. The host config MUST NOT contain credentials, provider tokens, cookies, or other secrets.
+- `hermes_python`
+- `hermes_root`
+- `workspace`
+- `toolrush_repo`
+- `toolrush_doctor`
+- `toolrush_plugin`
+- `obscura_repo`
+- `obscura_executable`
+- `chromium_executable`
+
+If local paths differ, provide the corresponding PowerShell parameters explicitly. The config MUST NOT contain credentials, provider tokens, cookies, or other secrets.
+
+## Phase-1 runtime composition
+
+`phase1_host_run` fail-closes before starting treatments unless the host probe is `READY` and ToolRush/Obscura pins match the frozen protocol.
+
+For each controlled execution it:
+
+- starts one loopback-only deterministic fixture server;
+- starts one persistent stock Hermes worker;
+- starts one separate persistent ToolRush Hermes worker;
+- uses equal JSONL request/response transport for the two Hermes lanes;
+- launches a fresh Chromium backend for each A/B run that requests one;
+- starts a fresh Obscura loopback CDP server and connects with Playwright `connectOverCDP` semantics for each C/D run that requests one;
+- restricts benchmark browser navigation to the loopback fixture origin;
+- executes the frozen run order without fallback substitution;
+- closes each per-run browser adapter exactly once;
+- always closes both persistent Hermes workers when the execution scope exits.
+
+If treatment execution or cleanup fails, the affected run is recorded as an execution error and its timing is not preserved as valid performance evidence.
 
 ## Optional self-hosted GitHub Actions path
 
-The repository still supports a dedicated self-hosted runner for centrally triggered reproduction. Use:
+The repository also supports a dedicated self-hosted runner for centrally triggered reproduction:
 
 ```powershell
 .\experiments\runtime_acceleration\start-controlled-host.ps1 -DispatchWorkflow
 ```
 
-Only this optional path requires authenticated `gh`. It obtains a short-lived repository runner registration token in memory, invokes `bootstrap-self-hosted-runner.ps1` when a dedicated runner identity is absent, and dispatches `jar-exp-0013-controlled-host.yml`.
-
-The dedicated runner uses all four labels:
+This path is optional and separate from `-RunPhase1`. Only it requires authenticated `gh`. The dedicated runner uses all four labels:
 
 - `self-hosted`
 - `Windows`
@@ -71,7 +117,7 @@ The dedicated runner uses all four labels:
 
 `bootstrap-self-hosted-runner.ps1` pins GitHub Actions runner `2.337.0` and verifies the Windows x64 archive against SHA256 `1150692afa94e71f872017e254ea55b6eece1eece3fe7e3a6d4c93d0a1b85cfc` before configuration.
 
-GitHub requires a manually dispatched workflow to be available in the repository's dispatchable/default-branch workflow set. Until this workflow has landed there, remote dispatch may be unavailable even though the research branch contains the file. That limitation MUST NOT block the local authoritative probe.
+GitHub requires a manually dispatched workflow to be available in the repository's dispatchable/default-branch workflow set. Until that workflow lands there, remote dispatch may be unavailable even though the research branch contains it. That does not block the local authoritative path.
 
 ## Host setup gate
 
@@ -86,13 +132,13 @@ Before measurement begins:
 7. Record OS/build, CPU, RAM, power state, dependency versions, Hermes revision, Chromium version, and treatment revisions.
 8. Ensure no secret value is written to the evidence directory.
 
-ToolRush activation requires a fresh Hermes gateway process after the pinned treatment is installed. A new chat inside an already-running old gateway does not establish treatment activation. Do not restart a busy production gateway merely to satisfy the experiment; use a controlled experiment window.
+ToolRush activation requires a fresh isolated Hermes worker process. Do not restart a busy production gateway merely to satisfy the experiment.
 
-Obscura's pinned CDP interface is started on loopback. Playwright clients must use `connectOverCDP`, not Playwright's own `connect` protocol.
+Obscura's pinned CDP interface is started on loopback. Playwright clients use `connectOverCDP`, not Playwright's proprietary `connect` protocol.
 
 ## Preflight gate
 
-Protocol revision 3 preserves the limits frozen in revision 2:
+Protocol revision 3 freezes:
 
 - CPU utilization: `<= 20.0%`
 - memory utilization: `<= 80.0%`
@@ -100,11 +146,62 @@ Protocol revision 3 preserves the limits frozen in revision 2:
 
 Host-local configuration may not weaken or replace those values.
 
-Before each timing block capture CPU utilization, memory utilization, AC/battery state, power mode where exposed, background-process count, and thermal state where exposed. A contaminated block remains in raw evidence and MUST NOT be silently deleted.
+Before each paired timing block the executor captures the preflight snapshot. A contaminated block is recorded and excluded from treatment execution; it is not silently deleted.
+
+## Phase 1: deterministic trace replay
+
+The frozen trace contains identical tool and browser operations for A/B/C/D. The measurement plan contains 20 paired blocks, with each block containing A/B/C/D exactly once in the seeded randomized order.
+
+The controlled executor records:
+
+- trace wall-clock time;
+- total tool time;
+- total browser time;
+- per-step timings;
+- condition and paired-block identity;
+- preflight snapshot;
+- exact treatment pins;
+- verifier result and differential correctness classification;
+- execution/cleanup errors without fallback substitution.
+
+Condition A is the block reference. B/C/D must remain semantically equivalent to A or the difference is retained as a correctness failure.
+
+## Later confirmatory phases
+
+### Phase 2: tool microbenchmarks
+
+Run frozen tool operations under A and B. Record one meaningful cold sample and at least 20 warm measured samples per operation/condition pair.
+
+### Phase 3: browser conformance and microbenchmarks
+
+Run Chromium and Obscura against the local controlled fixture server. Record startup, navigation, DOM/evaluation, screenshot, CDP/session, redirects, storage, timeout, memory, and unsupported-feature behavior. Public-web smoke tests remain exploratory.
+
+### Phase 4: real missions
+
+Run identical verifier-backed missions across A/B/C/D with the same model/provider configuration for each paired block. Confirmatory promotion requires at least 100 total verified mission attempts per condition, balanced across frozen mission classes. Continue beyond the floor when needed to establish the preregistered confidence/non-inferiority bounds.
+
+## Evidence contract
+
+For local controlled execution, the default root is:
+
+`C:\Aftergraph\JAR-EXP-0013\evidence`
+
+Each Phase-1 execution receives a unique immutable id such as `phase1-<UTC timestamp>`. Under that execution directory the harness writes:
+
+- `summary.json`
+- `blocks/<pair-id>.json`
+- `runs/<run-id>/metadata.json`
+- `runs/<run-id>/metrics.json`
+- `runs/<run-id>/stdout.log`
+- `runs/<run-id>/stderr.log`
+- `runs/<run-id>/verifier.json`
+- `runs/<run-id>/artifacts.sha256`
+
+The execution directory is exclusive-create. Reusing an execution id fails before treatments run. Finalized run evidence is append-only and pair/block identity is retained.
 
 ## Statistical gate
 
-Protocol revision 3 freezes the confirmatory statistics before the first controlled-host performance observation:
+Protocol revision 3 freezes:
 
 - 95% confidence level;
 - paired percentile bootstrap for paired timing/effect measurements;
@@ -113,55 +210,22 @@ Protocol revision 3 freezes the confirmatory statistics before the first control
 - promotion requires the lower 95% confidence bound to meet the frozen effect threshold;
 - mission-success non-inferiority requires the lower treatment-minus-control bound to be `>= -0.05`.
 
-The minimum 100 mission attempts per condition is an evidence floor, not an automatic statistical pass. If a point estimate clears a threshold but the lower confidence bound does not, the gate remains `INCONCLUSIVE`. If the point estimate itself is below a frozen effect threshold, the gate is `FAIL`.
+The minimum 100 mission attempts per condition is an evidence floor, not an automatic pass. If a point estimate clears a threshold but the lower confidence bound does not, the gate remains `INCONCLUSIVE`.
 
 ## Probe states
 
-`READY` means source pins, read-only diagnostics, path contracts, and host preflight all passed. `BLOCKED` means a path, source pin, doctor/version check, or protocol contract failed. `CONTAMINATED` means the host is correctly configured but the current load is not clean enough for a confirmatory timing block.
-
-The probe records non-secret command metadata and host preflight state while intentionally omitting raw diagnostic stdout/stderr.
-
-## Execution order after READY
-
-### Phase 1: deterministic trace replay
-
-Run the frozen trace-replay workloads first. Use at least 20 measured repetitions per trace/condition pair. Counterbalance or randomize A/B/C/D order with the recorded seed. Preserve pair identity in raw data so the preregistered paired bootstrap can resample paired blocks.
-
-### Phase 2: tool microbenchmarks
-
-Run the frozen tool operations under A and B. Record one meaningful cold sample and at least 20 warm measured samples per operation/condition pair.
-
-### Phase 3: browser conformance and microbenchmarks
-
-Run Chromium and Obscura against the local controlled fixture server. Record startup, navigation, DOM/evaluation, screenshot, CDP/session, redirects, storage, timeout and unsupported-feature behavior. Public-web smoke tests remain exploratory.
-
-### Phase 4: real missions
-
-Run identical verifier-backed missions across A/B/C/D with the same model/provider configuration for each paired block. Confirmatory promotion requires at least 100 total verified mission attempts per condition, balanced across frozen mission classes. Continue beyond the floor when needed to establish the preregistered confidence/non-inferiority bounds; do not weaken the confidence gate to force a verdict.
-
-## Evidence contract
-
-Each completed measurement run writes a unique run directory under `data/runtime_acceleration/raw/` containing:
-
-- `metadata.json`
-- `metrics.json`
-- `stdout.log`
-- `stderr.log`
-- `verifier.json`
-- `artifacts.sha256`
-
-Raw evidence is append-only after finalization. Aggregates MUST be reproducible from raw evidence, and pair/block identity must be retained in non-secret metadata.
+`READY` means source pins, read-only diagnostics, path contracts, and host preflight passed. `BLOCKED` means a path, source pin, doctor/version check, or protocol contract failed. `CONTAMINATED` means the host is configured but the current load is not clean enough for confirmatory timing.
 
 ## Stop conditions
 
-Stop the affected confirmatory block when a source pin drifts, preflight is contaminated, a treatment silently falls back to control behavior, a required correctness/safety contract fails, the verifier differs between comparable conditions, evidence cannot be persisted without secrets, host instability prevents comparable timing, or pair identity is lost.
+Stop the affected confirmatory block when a source pin drifts, preflight is contaminated, a treatment falls back to control behavior, a required correctness/safety contract fails, evidence cannot be persisted safely, host instability prevents comparable timing, or pair identity is lost.
 
-## Analysis and gates
+## Promotion gates
 
-After controlled-host data exists, compute point estimates and preregistered 95% intervals, then evaluate:
+After controlled-host data exists, compute the preregistered point estimates and 95% intervals, then evaluate:
 
 - `G-TR`: ToolRush candidate
 - `G-OB`: Obscura candidate
 - `G-COMB`: combined candidate
 
-Until controlled-host evidence exists, all three remain `INCONCLUSIVE_NO_LIVE_DATA`.
+Until controlled-host performance evidence exists, all three remain `INCONCLUSIVE_NO_LIVE_DATA`.
