@@ -78,6 +78,24 @@ def test_phase1_diagnostic_analysis_runs_before_nonclean_exit():
     assert "Diagnostic Phase-1 analysis was retained" in text
 
 
+def test_phase2_execution_freezes_plan_and_runs_analysis_before_nonclean_exit():
+    text = START_CONTROLLED_HOST.read_text(encoding="utf-8")
+    assert "[switch]$RunPhase2" in text
+    assert "experiments.runtime_acceleration.phase2_tool_microbench" in text
+    assert "tool_microbench.yaml" in text
+    assert "phase2-plan-$phase2PlanStamp.json" in text
+    assert "experiments.runtime_acceleration.phase2_host_run" in text
+    assert "experiments.runtime_acceleration.phase2_analysis" in text
+    assert "phase2-analysis.json" in text
+    assert "phase2-analysis.md" in text
+    assert "$phase2RunExit = $LASTEXITCODE" in text
+    run_index = text.index("experiments.runtime_acceleration.phase2_host_run")
+    analysis_index = text.index("experiments.runtime_acceleration.phase2_analysis")
+    exit_index = text.index("if ($phase2RunExit -ne 0)")
+    assert run_index < analysis_index < exit_index
+    assert "Promotion gates remain INCONCLUSIVE after Phase-2 tool analysis" in text
+
+
 def test_one_command_host_start_uses_authenticated_gh_and_short_lived_token():
     text = START_CONTROLLED_HOST.read_text(encoding="utf-8")
     assert "gh auth status" in text
