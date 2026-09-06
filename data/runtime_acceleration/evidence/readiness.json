@@ -1,0 +1,17 @@
+{
+  "experiment_id": "JAR-EXP-0013",
+  "state": "HARNESS_READY_FOR_CONTROLLED_HOST_RUN",
+  "local_validation": {
+    "tests_passed": 38,
+    "tests_failed": 0,
+    "dry_run": "READY_FOR_CONTROLLED_HOST_RUN",
+    "live_provider_calls": 0,
+    "production_mutations": 0
+  },
+  "promotion_gates": {
+    "G-TR": "INCONCLUSIVE_NO_LIVE_DATA",
+    "G-OB": "INCONCLUSIVE_NO_LIVE_DATA",
+    "G-COMB": "INCONCLUSIVE_NO_LIVE_DATA"
+  },
+  "note": "This is harness readiness evidence only; it is not performance evidence."
+}
