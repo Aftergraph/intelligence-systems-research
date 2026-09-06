@@ -1,4 +1,8 @@
+import os
 from pathlib import Path
+import subprocess
+
+import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 BOOTSTRAP = ROOT / "experiments/runtime_acceleration/bootstrap-self-hosted-runner.ps1"
@@ -94,6 +98,22 @@ def test_phase2_execution_freezes_plan_and_runs_analysis_before_nonclean_exit():
     exit_index = text.index("if ($phase2RunExit -ne 0)")
     assert run_index < analysis_index < exit_index
     assert "Promotion gates remain INCONCLUSIVE after Phase-2 tool analysis" in text
+
+
+@pytest.mark.skipif(os.name != "nt", reason="PowerShell parser verification runs on Windows CI")
+def test_start_controlled_host_powershell_syntax_is_valid():
+    command = (
+        "$errors=$null; "
+        "[System.Management.Automation.Language.Parser]::ParseFile($args[0],[ref]$null,[ref]$errors) | Out-Null; "
+        "if ($errors.Count -gt 0) { $errors | ForEach-Object { Write-Error $_ }; exit 1 }"
+    )
+    result = subprocess.run(
+        ["powershell", "-NoProfile", "-Command", command, str(START_CONTROLLED_HOST)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr or result.stdout
 
 
 def test_one_command_host_start_uses_authenticated_gh_and_short_lived_token():
