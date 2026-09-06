@@ -41,6 +41,17 @@ def test_one_command_host_start_uses_local_probe_before_optional_dispatch():
     assert "research/jar-exp-0013-runtime-acceleration" in text
 
 
+def test_ready_host_freezes_unique_trace_measurement_plan():
+    text = START_CONTROLLED_HOST.read_text(encoding="utf-8")
+    assert "experiments.runtime_acceleration.measurement_plan" in text
+    assert "trace_replay.yaml" in text
+    assert '"--repetitions", "20"' in text
+    assert '"--seed", "130013"' in text
+    assert "trace-plan-$planStamp.json" in text
+    assert "Get-Date -AsUTC" in text
+    assert "Phase-1 trace plan" in text
+
+
 def test_one_command_host_start_uses_authenticated_gh_and_short_lived_token():
     text = START_CONTROLLED_HOST.read_text(encoding="utf-8")
     assert "gh auth status" in text
