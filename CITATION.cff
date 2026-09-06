@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+title: "Jonas Abde Intelligence Systems Research Program"
+message: "If you use SPEC-001, MISSION-Bench, the reference runtime, datasets, or research artifacts, cite this repository and the exact commit or release used."
+type: software
+authors:
+  - family-names: "Abde"
+    given-names: "Jonas"
+repository-code: "https://github.com/Aftergraph/intelligence-systems-research"
+url: "https://github.com/Aftergraph/intelligence-systems-research"
+license: Apache-2.0
+date-released: "2026-09-04"
+keywords:
+  - artificial intelligence
+  - autonomous agents
+  - verifiable intelligent systems
+  - mission contracts
+  - evidence gating
+  - delegated authority
+  - agent evaluation
+  - MISSION-Bench
