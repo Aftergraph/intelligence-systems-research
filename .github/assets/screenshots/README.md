@@ -1,17 +1,21 @@
-# Screenshot evidence contract — Intelligence Systems Research
+# Evidence contract — ABDE Intelligence Systems Research
 
-`product-main.webp` is a technical product visual rendered from the repository architecture. It is **not** a UI screenshot.
+Research repository (studies, registries, conformance) — no web UI to
+capture. Honest evidence instead:
 
-Actual UI screenshots may only be committed when reproduced from a running build.
+## Real conformance evidence (2026-09-06)
 
-Capture contract:
-- `01-overview.webp` — 1920×1080
-- `02-primary-workflow.webp` — 1920×1080
-- `03-detail-view.webp` — 1920×1080
-- `04-live-state.webp` — 1920×1080
-- `05-evidence.webp` — 1920×1080
-- `06-mobile.webp` — native/mobile
-- `07-dark-mode.webp` — 1920×1080
-- `08-command-interface.webp` — 1920×1080
+- `python conformance/runner.py` → **14/14 PASSED (100.0%)** — SPEC-001 Phase G
+  suite at exact HEAD f9fd62d (manifest schema, invariants 1-4, lifecycle,
+  OpenTelemetry compliance, assurance tiers, recovery, delegation,
+  concurrency, min-tier enforcement).
 
-Generated or edited mock UI must never be presented as evidence of implemented behavior.
+Full transcript: agent workspace `v2-audit/evidence/ISR-CONFORMANCE-EVIDENCE.md`.
+
+Live study runners require API keys (`.study011_env`) and are not run here.
+
+`product-main.webp` (a technical product visual rendered from repository
+architecture, **not** a UI screenshot) was removed — no UI surface exists.
+
+Generated or edited mock UI must never be presented as evidence of
+implemented behavior.
