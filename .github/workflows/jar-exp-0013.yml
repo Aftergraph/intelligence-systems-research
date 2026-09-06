@@ -9,14 +9,18 @@ on:
       - "tests/runtime_acceleration/**"
       - "data/runtime_acceleration/**"
       - "data/experiment_registry.csv"
+      - "JAR-EXP-0013-RUNTIME-ACCELERATION.md"
       - ".github/workflows/jar-exp-0013.yml"
+      - ".github/workflows/jar-exp-0013-controlled-host.yml"
   pull_request:
     paths:
       - "experiments/runtime_acceleration/**"
       - "tests/runtime_acceleration/**"
       - "data/runtime_acceleration/**"
       - "data/experiment_registry.csv"
+      - "JAR-EXP-0013-RUNTIME-ACCELERATION.md"
       - ".github/workflows/jar-exp-0013.yml"
+      - ".github/workflows/jar-exp-0013-controlled-host.yml"
 
 permissions:
   contents: read
