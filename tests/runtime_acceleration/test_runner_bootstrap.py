@@ -68,6 +68,16 @@ def test_phase1_execution_automatically_writes_trace_analysis_outputs():
     assert "Promotion gates remain INCONCLUSIVE after Phase-1 trace analysis" in text
 
 
+def test_phase1_diagnostic_analysis_runs_before_nonclean_exit():
+    text = START_CONTROLLED_HOST.read_text(encoding="utf-8")
+    assert "$phase1RunExit = $LASTEXITCODE" in text
+    run_index = text.index("experiments.runtime_acceleration.phase1_host_run")
+    analysis_index = text.index("experiments.runtime_acceleration.phase1_analysis")
+    exit_index = text.index("if ($phase1RunExit -ne 0)")
+    assert run_index < analysis_index < exit_index
+    assert "Diagnostic Phase-1 analysis was retained" in text
+
+
 def test_one_command_host_start_uses_authenticated_gh_and_short_lived_token():
     text = START_CONTROLLED_HOST.read_text(encoding="utf-8")
     assert "gh auth status" in text
