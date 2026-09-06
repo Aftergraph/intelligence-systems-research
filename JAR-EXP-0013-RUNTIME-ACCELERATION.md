@@ -19,6 +19,8 @@ The bridge now adds:
 - secret-minimized machine-readable probe evidence;
 - a manual self-hosted GitHub Actions workflow restricted to `[self-hosted, Windows, X64, aftergraph-jar-exp-0013]`.
 
+Hosted validation on head `8f46ff55138fefa146857fa9dc6fd6977878c7c0` completed successfully in GitHub Actions run `34015835041` on Ubuntu functional, Windows functional, and analysis-fixtures. That is bridge validation, not performance evidence.
+
 The controlled-host workflow cannot become authoritative evidence until the real Windows Hermes machine is registered with the dedicated runner label and the probe returns `READY` on that machine.
 
 ## Scientific boundary
