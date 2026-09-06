@@ -163,7 +163,7 @@ requests==2.33.0
 rich==14.3.3
 rpds-py==0.30.0
 ruamel.yaml.clib==0.2.15
-ruamel.yaml==0.18.17
+ruamel.yaml==0.19.1
 s3transfer==0.16.1
 semver==3.0.4
 sentry-sdk==2.64.0
