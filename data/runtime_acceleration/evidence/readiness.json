@@ -1,83 +1,24 @@
 {
   "experiment_id": "JAR-EXP-0013",
-  "state": "PHASE1_HOST_BINDINGS_READY",
-  "validated_code_head": "2d4e0a1ff0078edb8845d3ee7724c36fa62b1da3",
+  "state": "PHASE2_TOOL_MICROBENCH_READY_FOR_CONTROLLED_HOST",
+  "branch": "research/jar-exp-0013-phase2-tool-microbench",
+  "validated_code_head": "f930fd5e96825c83fa035dec3bffb0a5f6b74c63",
+  "base_main": "f5de043c5053d737c04bfd07c909c92353ead03e",
   "hosted_validation": {
-    "workflow_run_id": 34021227923,
+    "workflow_run_id": 34038717183,
     "conclusion": "success",
-    "tests_passed": 79,
+    "tests_passed": 147,
     "tests_failed": 0,
     "ubuntu_functional": "success",
     "windows_functional": "success",
     "analysis_fixtures": "success",
     "live_provider_calls": 0,
-    "production_mutations": 0
+    "production_mutations": 0,
+    "timing_authority": "NONE_HOSTED_RUNNER_TIMING_IS_FUNCTIONAL_ONLY"
   },
-  "runner_bootstrap": {
-    "script": "experiments/runtime_acceleration/bootstrap-self-hosted-runner.ps1",
-    "runner_version": "2.337.0",
-    "runner_archive_sha256": "1150692afa94e71f872017e254ea55b6eece1eece3fe7e3a6d4c93d0a1b85cfc",
-    "registration_token_storage": "NONE_SHORT_LIVED_ONLY",
-    "role": "OPTIONAL_REMOTE_REPRODUCTION"
-  },
-  "one_command_host_handoff": {
-    "script": "experiments/runtime_acceleration/start-controlled-host.ps1",
-    "default_mode": "LOCAL_FIRST",
-    "requires": ["ELEVATED_POWERSHELL", "PYTHON_3_11", "PINNED_TOOLRUSH_CHECKOUT", "PINNED_OBSCURA_CHECKOUT", "HERMES_PYTHON"],
-    "local_probe": "AUTHORITATIVE_READINESS_GATE",
-    "local_probe_evidence": "C:/Aftergraph/JAR-EXP-0013/evidence/controlled-host-probe.json",
-    "branch": "research/jar-exp-0013-runtime-acceleration"
-  },
-  "phase1_trace_plan": {
-    "generator": "experiments/runtime_acceleration/measurement_plan.py",
-    "conditions": ["A", "B", "C", "D"],
-    "paired_blocks": 20,
-    "planned_runs": 80,
-    "seed": 130013,
-    "generation_gate": "ONLY_AFTER_CONTROLLED_HOST_READY",
-    "performance_evidence": false
-  },
-  "phase1_executor": {
-    "module": "experiments/runtime_acceleration/phase1_executor.py",
-    "requires_ready_host_probe": true,
-    "validates_frozen_plan": true,
-    "preflight_before_each_paired_block": true,
-    "contaminated_blocks_execute_treatments": false,
-    "silent_fallback": false,
-    "differential_reference": "CONDITION_A",
-    "append_only_execution_id": true,
-    "append_only_per_run_hash_manifest": true,
-    "metrics": ["trace_wall_clock_ms", "tool_time_total_ms", "browser_time_total_ms", "step_timings"]
-  },
-  "phase1_host_bindings": {
-    "module": "experiments/runtime_acceleration/phase1_bindings.py",
-    "matrix": {
-      "A": {"tool_layer": "stock_hermes", "browser_layer": "chromium"},
-      "B": {"tool_layer": "toolrush", "browser_layer": "chromium"},
-      "C": {"tool_layer": "stock_hermes", "browser_layer": "obscura"},
-      "D": {"tool_layer": "toolrush", "browser_layer": "obscura"}
-    },
-    "toolrush_pin_enforced_for_B_D": true,
-    "toolrush_enabled_gate_enforced_for_B_D": true,
-    "obscura_pin_enforced_for_C_D": true,
-    "browser_operation_namespace": "browser_*",
-    "tool_browser_fallthrough": false,
-    "construction": "LAZY_FAIL_CLOSED",
-    "fallback": "NONE",
-    "test_contract": {
-      "exact_matrix": "VERIFIED",
-      "browser_routing": "VERIFIED",
-      "unknown_condition": "VERIFIED_FAIL_CLOSED",
-      "toolrush_disabled_or_revision_drift": "VERIFIED_FAIL_CLOSED",
-      "obscura_revision_drift": "VERIFIED_FAIL_CLOSED",
-      "missing_browser_backend": "VERIFIED_FAIL_CLOSED",
-      "unknown_tool_operation_browser_fallthrough": "VERIFIED_ABSENT"
-    }
-  },
-  "source_evidence": {
-    "toolrush_v2_plugin_role": "ToolRush patches Hermes runtime lanes; core Hermes owns native reads/search and the plugin owns warm-shell integration",
-    "toolrush_pin": "4ecd8810fdc9e6e0c64af3d532f876d06f6a278e",
-    "obscura_pin": "a1e09de68c7617b8079fbb1661b0548c501971c1"
+  "source_pins": {
+    "toolrush": "4ecd8810fdc9e6e0c64af3d532f876d06f6a278e",
+    "obscura": "a1e09de68c7617b8079fbb1661b0548c501971c1"
   },
   "statistical_contract": {
     "confidence_level": 0.95,
@@ -85,13 +26,80 @@
     "bootstrap_resamples": 10000,
     "bootstrap_seed": 130013,
     "mission_success_noninferiority_margin": 0.05,
-    "promotion_requires_ci_lower_bound": true
+    "promotion_requires_ci_lower_bound": true,
+    "tool_overhead_reduction_min": 0.30
+  },
+  "controlled_host_preflight": {
+    "cpu_percent_max": 20.0,
+    "memory_percent_max": 80.0,
+    "require_ac_power": true,
+    "before_every_paired_block": true,
+    "contaminated_block_executes_treatments": false
+  },
+  "one_command_host_handoff": {
+    "script": "experiments/runtime_acceleration/start-controlled-host.ps1",
+    "default_mode": "LOCAL_FIRST_PLAN_ONLY",
+    "phase1_switch": "-RunPhase1",
+    "phase2_switch": "-RunPhase2",
+    "requires": [
+      "ELEVATED_POWERSHELL",
+      "PYTHON_3_11",
+      "PINNED_TOOLRUSH_CHECKOUT",
+      "PINNED_OBSCURA_CHECKOUT",
+      "REAL_HERMES_PYTHON_AND_ROOT"
+    ],
+    "local_probe": "AUTHORITATIVE_READINESS_GATE",
+    "local_probe_evidence": "C:/Aftergraph/JAR-EXP-0013/evidence/controlled-host-probe.json"
+  },
+  "phase1": {
+    "conditions": ["A", "B", "C", "D"],
+    "paired_blocks": 20,
+    "planned_runs": 80,
+    "performance_gate_eligible": false
+  },
+  "phase2": {
+    "phase": "TOOL_MICROBENCH",
+    "conditions": ["A", "B"],
+    "workload": "experiments/runtime_acceleration/workloads/tool_microbench.yaml",
+    "operations": 13,
+    "cold_pairs_per_operation": 1,
+    "warm_pairs_per_operation": 20,
+    "paired_blocks": 273,
+    "planned_runs": 546,
+    "plan_generator": "experiments.runtime_acceleration.phase2_tool_microbench",
+    "host_runner": "experiments.runtime_acceleration.phase2_host_run",
+    "analysis": "experiments.runtime_acceleration.phase2_analysis",
+    "fresh_worker_pair_per_operation": true,
+    "worker_startup_inside_operation_timer": false,
+    "same_pair_reused_for_operation_cold_and_warm": true,
+    "real_hermes_surfaces": ["read", "search", "shell"],
+    "generated_rpc_transport": "TCP_LOOPBACK",
+    "generated_rpc_control": "SEQUENTIAL_CALL",
+    "generated_rpc_toolrush_parallel": true,
+    "fallback": "NONE",
+    "append_only_evidence": true,
+    "differential_reference": "CONDITION_A",
+    "performance_evidence": false,
+    "host_execution_required": true
+  },
+  "phase2_analysis_boundary": {
+    "cold_samples": "REPORTED_SEPARATELY",
+    "confirmatory_effect": "PAIRED_WARM_A_VS_B",
+    "g_tr_tool_overhead_component": "EVALUATABLE_AFTER_LIVE_PHASE2",
+    "full_g_tr": "REQUIRES_TOOL_MISSION_WALL_AND_MISSION_SUCCESS_NONINFERIORITY",
+    "promotion_gate_eligible": false
+  },
+  "runner_bootstrap": {
+    "script": "experiments/runtime_acceleration/bootstrap-self-hosted-runner.ps1",
+    "runner_version": "2.337.0",
+    "runner_archive_sha256": "1150692afa94e71f872017e254ea55b6eece1eece3fe7e3a6d4c93d0a1b85cfc",
+    "role": "OPTIONAL_REMOTE_REPRODUCTION"
   },
   "promotion_gates": {
     "G-TR": "INCONCLUSIVE_NO_LIVE_DATA",
     "G-OB": "INCONCLUSIVE_NO_LIVE_DATA",
     "G-COMB": "INCONCLUSIVE_NO_LIVE_DATA"
   },
-  "next_dependency": "Implement the controlled Windows host runtime bridge that obtains the real Stock Hermes and ToolRush handler surfaces plus Chromium and Obscura browser backends, then feeds them into build_condition_adapter_factory. This bridge must inspect the installed Hermes runtime rather than inventing substitute handlers. Live 80-run execution remains blocked until those real host surfaces are resolved.",
-  "note": "A/B/C/D binding logic is verified with synthetic surfaces. It is not performance evidence and it does not prove the installed Windows Hermes APIs are compatible."
+  "next_dependency": "Run start-controlled-host.ps1 -RunPhase2 on the real controlled Windows Hermes host after resolving the machine's actual Hermes/ToolRush/Obscura/Chromium paths. Preserve all evidence and do not relax pins or preflight thresholds.",
+  "note": "Phase-2 orchestration, real Hermes/ToolRush binding, generated RPC, analysis, and Windows handoff are implementation-ready. No live controlled-host Phase-2 performance observations exist in this repository state."
 }
