@@ -34,6 +34,20 @@ class BoundTraceAdapter:
         return result
 
 
+def _materialize_browser_backend(candidate):
+    """Resolve one browser backend per adapter while preserving legacy object inputs."""
+    if candidate is None:
+        return None
+    if callable(getattr(candidate, "perform", None)):
+        return candidate
+    if callable(candidate):
+        backend = candidate()
+        if backend is None or not callable(getattr(backend, "perform", None)):
+            raise HostBindingError("browser backend factory returned an invalid backend")
+        return backend
+    return candidate
+
+
 def build_condition_adapter_factory(
     *,
     stock_handlers: dict,
@@ -48,8 +62,10 @@ def build_condition_adapter_factory(
 
     Construction is deliberately lazy. A control condition does not require a treatment
     dependency that it does not use, while any requested treatment still fails closed on
-    disabled lanes, revision drift, or an unavailable browser backend. No fallback path
-    exists in this layer.
+    disabled lanes, revision drift, or an unavailable browser backend. Browser inputs may
+    be concrete backends (for compatibility/tests) or zero-argument factories. Factories
+    are resolved for every adapter construction so controlled measurements can use a fresh
+    browser session for each run. No fallback path exists in this layer.
     """
     frozen_stock_handlers = dict(stock_handlers)
     frozen_toolrush_handlers = dict(toolrush_handlers)
@@ -67,9 +83,12 @@ def build_condition_adapter_factory(
 
     def make_browser_layer(condition: str):
         if condition in {"A", "B"}:
-            return ChromiumAdapter(chromium_backend)
+            return ChromiumAdapter(_materialize_browser_backend(chromium_backend))
         if condition in {"C", "D"}:
-            return ObscuraAdapter(obscura_backend, actual_revision=str(obscura_revision))
+            return ObscuraAdapter(
+                _materialize_browser_backend(obscura_backend),
+                actual_revision=str(obscura_revision),
+            )
         raise HostBindingError(f"unknown Phase-1 condition: {condition}")
 
     def factory(condition: str) -> BoundTraceAdapter:
