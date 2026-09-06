@@ -57,6 +57,17 @@ def test_ready_host_freezes_unique_trace_measurement_plan():
     assert "Phase-1 trace plan" in text
 
 
+def test_phase1_execution_automatically_writes_trace_analysis_outputs():
+    text = START_CONTROLLED_HOST.read_text(encoding="utf-8")
+    assert "experiments.runtime_acceleration.phase1_analysis" in text
+    assert "summary.json" in text
+    assert "phase1-analysis.json" in text
+    assert "phase1-analysis.md" in text
+    assert '"--json-output"' in text
+    assert '"--markdown-output"' in text
+    assert "Promotion gates remain INCONCLUSIVE after Phase-1 trace analysis" in text
+
+
 def test_one_command_host_start_uses_authenticated_gh_and_short_lived_token():
     text = START_CONTROLLED_HOST.read_text(encoding="utf-8")
     assert "gh auth status" in text
