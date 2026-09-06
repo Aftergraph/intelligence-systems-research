@@ -1,9 +1,13 @@
 {
   "experiment_id": "JAR-EXP-0013",
   "state": "LIVE_HOST_BRIDGE_READY_FOR_SELF_HOSTED_RUNNER",
-  "local_validation": {
-    "tests_failed": 0,
-    "hosted_ci": "GREEN_UBUNTU_WINDOWS_ANALYSIS",
+  "validated_head": "8f46ff55138fefa146857fa9dc6fd6977878c7c0",
+  "hosted_validation": {
+    "workflow_run_id": 34015835041,
+    "conclusion": "success",
+    "ubuntu_functional": "success",
+    "windows_functional": "success",
+    "analysis_fixtures": "success",
     "live_provider_calls": 0,
     "production_mutations": 0
   },
