@@ -1,0 +1,16 @@
+workload_id: jar-exp-0013-tool-microbench-v1
+warm_repetitions: 20
+operations:
+  - bounded_read
+  - paginated_read
+  - exact_search
+  - repository_search
+  - context_search
+  - no_match_search
+  - file_discovery
+  - shell_builtin
+  - python_process
+  - git_process
+  - sequential_read_rpc
+  - parallel_read_rpc
+  - mixed_read_search_rpc

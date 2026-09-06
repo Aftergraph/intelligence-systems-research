@@ -1,0 +1,31 @@
+workload_id: jar-exp-0013-browser-compat-v1
+fixture_only: true
+required_cases:
+  - id: static-navigation
+    operation: navigate
+    route: /static
+  - id: dynamic-javascript
+    operation: query
+    route: /dynamic
+    selector: "#dynamic"
+  - id: redirect
+    operation: navigate
+    route: /redirect
+  - id: form-echo
+    operation: form
+    route: /form
+  - id: cookie-roundtrip
+    operation: cookie
+    route: /cookie
+  - id: timeout
+    operation: navigate
+    route: /slow?ms=250
+  - id: http-error
+    operation: navigate
+    route: /error
+  - id: screenshot
+    operation: screenshot
+  - id: evaluate
+    operation: evaluate
+  - id: pdf
+    operation: pdf

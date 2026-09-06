@@ -1,0 +1,18 @@
+{
+  "experiment_id": "JAR-EXP-0013",
+  "revision": 1,
+  "sources": {
+    "isr": {
+      "repository": "Aftergraph/intelligence-systems-research",
+      "commit": "f9fd62d57408308788822162d9ded7d9741dbb10"
+    },
+    "toolrush": {
+      "repository": "OnlyTerp/toolrush",
+      "commit": "4ecd8810fdc9e6e0c64af3d532f876d06f6a278e"
+    },
+    "obscura": {
+      "repository": "h4ckf0r0day/obscura",
+      "commit": "a1e09de68c7617b8079fbb1661b0548c501971c1"
+    }
+  }
+}

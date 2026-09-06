@@ -1,0 +1,72 @@
+name: JAR-EXP-0013 controlled host
+
+on:
+  workflow_dispatch:
+    inputs:
+      host_config_path:
+        description: "Absolute path to the machine-local controlled-host JSON config"
+        required: true
+        default: "C:\\Aftergraph\\JAR-EXP-0013\\controlled-host.json"
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: jar-exp-0013-controlled-host
+  cancel-in-progress: false
+
+jobs:
+  controlled-host:
+    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/jar-exp-0013-runtime-acceleration
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install isolated bridge dependencies
+        shell: pwsh
+        run: |
+          python -m pip install -r requirements-test.txt "psutil>=6,<7"
+
+      - name: Run complete JAR-EXP-0013 functional suite
+        shell: pwsh
+        run: |
+          python -m pytest tests/runtime_acceleration -q
+
+      - name: Require machine-local host configuration
+        shell: pwsh
+        run: |
+          $configPath = "${{ inputs.host_config_path }}"
+          if ([string]::IsNullOrWhiteSpace($configPath)) {
+            throw "workflow_dispatch input host_config_path is required"
+          }
+          if (-not [IO.Path]::IsPathFullyQualified($configPath)) {
+            throw "host_config_path must be an absolute Windows path"
+          }
+          if (-not (Test-Path -LiteralPath $configPath)) {
+            throw "Controlled-host config does not exist at requested path: $configPath"
+          }
+
+      - name: Probe controlled Windows Hermes host
+        shell: pwsh
+        run: |
+          $configPath = "${{ inputs.host_config_path }}"
+          $outDir = Join-Path $env:RUNNER_TEMP "jar-exp-0013"
+          New-Item -ItemType Directory -Force -Path $outDir | Out-Null
+          python -m experiments.runtime_acceleration.controlled_host --config "$configPath" --output (Join-Path $outDir "controlled-host-probe.json")
+
+      - name: Upload non-secret probe evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jar-exp-0013-controlled-host-probe-${{ github.run_id }}
+          path: ${{ runner.temp }}/jar-exp-0013/controlled-host-probe.json
+          if-no-files-found: warn
+          retention-days: 30

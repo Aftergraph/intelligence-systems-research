@@ -1,0 +1,60 @@
+name: JAR-EXP-0013 reproducibility
+
+on:
+  push:
+    branches:
+      - research/jar-exp-0013-runtime-acceleration
+    paths:
+      - "experiments/runtime_acceleration/**"
+      - "tests/runtime_acceleration/**"
+      - "data/runtime_acceleration/**"
+      - "data/experiment_registry.csv"
+      - "JAR-EXP-0013-RUNTIME-ACCELERATION.md"
+      - ".github/workflows/jar-exp-0013.yml"
+      - ".github/workflows/jar-exp-0013-controlled-host.yml"
+  pull_request:
+    paths:
+      - "experiments/runtime_acceleration/**"
+      - "tests/runtime_acceleration/**"
+      - "data/runtime_acceleration/**"
+      - "data/experiment_registry.csv"
+      - "JAR-EXP-0013-RUNTIME-ACCELERATION.md"
+      - ".github/workflows/jar-exp-0013.yml"
+      - ".github/workflows/jar-exp-0013-controlled-host.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  functional:
+    name: Functional (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install test dependencies
+        run: python -m pip install -r requirements-test.txt
+      - name: Run JAR-EXP-0013 unit suite
+        run: python -m pytest tests/runtime_acceleration -q
+      - name: Validate registry identity
+        shell: python
+        run: |
+          import csv
+          rows = list(csv.DictReader(open("data/experiment_registry.csv", encoding="utf-8")))
+          assert sum(row["experiment_id"] == "JAR-EXP-0013" for row in rows) == 1
+
+  analysis-fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install -r requirements-test.txt
+      - run: python -m pytest tests/runtime_acceleration/test_analysis.py tests/runtime_acceleration/test_promotion_gates.py -q
