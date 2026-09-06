@@ -25,28 +25,63 @@ Do not silently update any treatment during the experiment. A changed source rev
 | C | Stock Hermes | Obscura |
 | D | ToolRush | Obscura |
 
+## Dedicated self-hosted runner
+
+The controlled host is exposed to GitHub Actions only through a dedicated self-hosted runner with all four labels:
+
+- `self-hosted`
+- `Windows`
+- `X64`
+- `aftergraph-jar-exp-0013`
+
+The runner must be registered for `Aftergraph/intelligence-systems-research` or an Aftergraph runner group that grants this repository access. Do not reuse the label on an unrelated machine, because that would make host identity ambiguous.
+
+Create a machine-local JSON file from `experiments/runtime_acceleration/controlled-host.example.json`, adjusting only local paths. The config MUST NOT contain credentials, provider tokens, cookies, or other secrets. Set repository variable `JAR_EXP_0013_HOST_CONFIG` to the absolute path of that machine-local file.
+
+The workflow `.github/workflows/jar-exp-0013-controlled-host.yml` is manual-only and targets the dedicated runner. Its probe performs no provider calls and no production mutation.
+
 ## Host setup gate
 
 1. Check out `research/jar-exp-0013-runtime-acceleration`.
-2. Use Python 3.11 and install `requirements-test.txt`.
+2. Use Python 3.11 and install `requirements-test.txt` plus `psutil` into the runner Python environment, not the Hermes application virtual environment.
 3. Run `python -m pytest tests/runtime_acceleration -q` and require zero failures.
 4. Verify the exact ToolRush and Obscura revisions above.
-5. Verify the stock Hermes and Chromium baselines used for condition A.
-6. Record OS/build, CPU, RAM, power state, dependency versions, Hermes revision, Chromium version, and treatment revisions.
-7. Ensure no secret value is written to the evidence directory.
+5. Run the ToolRush read-only doctor smoke with the Hermes Python executable configured for the host.
+6. Verify the Obscura executable can report its version. The planned CDP server is loopback-only at `127.0.0.1`.
+7. Verify the stock Hermes and Chromium baselines used for condition A before measurement begins.
+8. Record OS/build, CPU, RAM, power state, dependency versions, Hermes revision, Chromium version, and treatment revisions.
+9. Ensure no secret value is written to the evidence directory.
+
+ToolRush activation requires a fresh Hermes gateway process after the pinned treatment is installed. A new chat inside an already-running old gateway does not establish treatment activation. Do not restart a busy production gateway merely to satisfy the experiment; use the controlled experiment window.
+
+Obscura's pinned CDP interface is started as `obscura serve --port 9222 --host 127.0.0.1`. Playwright clients must use `connectOverCDP` rather than Playwright's own `connect` protocol.
 
 ## Preflight gate
+
+Protocol revision 2 freezes these values before live performance collection:
+
+- CPU utilization: <=20.0%
+- memory utilization: <=80.0%
+- AC power: required
+
+Host-local config may not weaken or replace those values. The bridge rejects a differing `preflight_limits` override.
 
 Before each timing block, collect a host snapshot containing at least:
 
 - CPU utilization
 - memory utilization
 - AC/battery state
-- fixed power mode
+- fixed power mode where exposed
 - background process count
 - thermal state when exposed by the platform
 
-Classify it with the frozen limits in `protocol.yaml` through `check_preflight`. A contaminated block remains in raw evidence and MUST NOT be silently deleted.
+Classify it through `check_preflight`. A contaminated block remains in raw evidence and MUST NOT be silently deleted.
+
+## Probe execution
+
+Run the manual `JAR-EXP-0013 controlled host` workflow. It must finish with a `READY` probe before confirmatory measurements begin. `BLOCKED` means a path, source pin, doctor/version check, or protocol contract failed. `CONTAMINATED` means the host is correctly configured but not clean enough for a confirmatory timing block.
+
+The uploaded `controlled-host-probe.json` contains command metadata and host preflight state but intentionally omits raw command stdout/stderr to reduce secret-leak risk.
 
 ## Execution order
 
