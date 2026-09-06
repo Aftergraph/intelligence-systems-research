@@ -27,11 +27,6 @@ def _config(tmp_path: Path) -> dict:
         "obscura_repo": str(obscura_repo),
         "obscura_executable": str(obscura_exe),
         "obscura_port": 9222,
-        "preflight_limits": {
-            "cpu_percent_max": 20.0,
-            "memory_percent_max": 80.0,
-            "require_ac_power": True,
-        },
     }
 
 
@@ -50,12 +45,16 @@ def _clean_snapshot():
     }
 
 
-def test_probe_host_ready_requires_exact_pins_and_clean_preflight(tmp_path):
-    config = _config(tmp_path)
-    revisions = {
+def _revisions(config: dict) -> dict:
+    return {
         str(Path(config["toolrush_repo"])): TOOLRUSH_PIN,
         str(Path(config["obscura_repo"])): OBSCURA_PIN,
     }
+
+
+def test_probe_host_ready_requires_exact_pins_and_protocol_preflight(tmp_path):
+    config = _config(tmp_path)
+    revisions = _revisions(config)
     result = probe_host(
         config,
         runner=_runner,
@@ -65,6 +64,11 @@ def test_probe_host_ready_requires_exact_pins_and_clean_preflight(tmp_path):
     assert result["state"] == "READY"
     assert result["pins"]["toolrush"] == TOOLRUSH_PIN
     assert result["pins"]["obscura"] == OBSCURA_PIN
+    assert result["preflight_limits"] == {
+        "cpu_percent_max": 20.0,
+        "memory_percent_max": 80.0,
+        "require_ac_power": True,
+    }
     assert result["preflight"]["clean"] is True
     assert result["toolrush_doctor"]["returncode"] == 0
     assert result["obscura_version"]["returncode"] == 0
@@ -87,10 +91,7 @@ def test_probe_host_blocks_revision_drift(tmp_path):
 
 def test_probe_host_marks_dirty_machine_contaminated(tmp_path):
     config = _config(tmp_path)
-    revisions = {
-        str(Path(config["toolrush_repo"])): TOOLRUSH_PIN,
-        str(Path(config["obscura_repo"])): OBSCURA_PIN,
-    }
+    revisions = _revisions(config)
     result = probe_host(
         config,
         runner=_runner,
@@ -103,3 +104,21 @@ def test_probe_host_marks_dirty_machine_contaminated(tmp_path):
     )
     assert result["state"] == "CONTAMINATED"
     assert result["preflight"]["reasons"] == ["cpu_percent"]
+
+
+def test_probe_host_rejects_host_override_that_weakens_frozen_preflight(tmp_path):
+    config = _config(tmp_path)
+    config["preflight_limits"] = {
+        "cpu_percent_max": 99.0,
+        "memory_percent_max": 99.0,
+        "require_ac_power": False,
+    }
+    revisions = _revisions(config)
+    result = probe_host(
+        config,
+        runner=_runner,
+        revision_reader=lambda path: revisions[str(Path(path))],
+        snapshot_provider=_clean_snapshot,
+    )
+    assert result["state"] == "BLOCKED"
+    assert "preflight_limits override differs from frozen protocol" in result["reasons"]
