@@ -51,20 +51,41 @@ def _group_pairs(summary: dict) -> list[tuple[str, dict[str, dict]]]:
     return pairs
 
 
-def _metric(run: dict, name: str) -> float:
-    metrics = _require_mapping(run.get("metrics"), "run metrics")
+def _metric_or_none(run: dict, name: str) -> float | None:
+    metrics = run.get("metrics")
+    if not isinstance(metrics, dict):
+        return None
     value = metrics.get(name)
     if isinstance(value, bool) or not isinstance(value, (int, float)):
-        raise ValueError(f"Phase-1 metric {name} must be numeric for every completed run")
+        return None
     value = float(value)
     if value <= 0.0:
-        raise ValueError(f"Phase-1 metric {name} must be > 0")
+        return None
     return value
 
 
 def _verified(run: dict) -> bool:
     verifier = _require_mapping(run.get("verifier"), "run verifier")
     return verifier.get("verified") is True
+
+
+def _inconclusive_effect(
+    *,
+    control_condition: str,
+    treatment_condition: str,
+    metric_name: str,
+    paired_blocks: int,
+) -> dict:
+    return {
+        "status": "INCONCLUSIVE",
+        "reason": "invalid_or_missing_metric",
+        "control_condition": control_condition,
+        "treatment_condition": treatment_condition,
+        "metric": metric_name,
+        "paired_blocks": paired_blocks,
+        "confidence_level": 0.95,
+        "method": "paired_percentile_bootstrap",
+    }
 
 
 def analyze_phase1_summary(summary: dict, protocol: dict) -> dict:
@@ -89,11 +110,26 @@ def analyze_phase1_summary(summary: dict, protocol: dict) -> dict:
     pairs = _group_pairs(summary)
     effects: dict[str, dict] = {}
     for effect_name, (control_condition, treatment_condition, metric_name) in _TRACE_METRICS.items():
-        control = [_metric(by_condition[control_condition], metric_name) for _, by_condition in pairs]
-        treatment = [_metric(by_condition[treatment_condition], metric_name) for _, by_condition in pairs]
-        effect = paired_bootstrap_median_reduction(control, treatment, seed=seed, resamples=resamples)
+        control = [_metric_or_none(by_condition[control_condition], metric_name) for _, by_condition in pairs]
+        treatment = [_metric_or_none(by_condition[treatment_condition], metric_name) for _, by_condition in pairs]
+        if any(value is None for value in control) or any(value is None for value in treatment):
+            effects[effect_name] = _inconclusive_effect(
+                control_condition=control_condition,
+                treatment_condition=treatment_condition,
+                metric_name=metric_name,
+                paired_blocks=len(pairs),
+            )
+            continue
+
+        effect = paired_bootstrap_median_reduction(
+            [float(value) for value in control],
+            [float(value) for value in treatment],
+            seed=seed,
+            resamples=resamples,
+        )
         effect.update(
             {
+                "status": "ESTIMATED",
                 "control_condition": control_condition,
                 "treatment_condition": treatment_condition,
                 "metric": metric_name,
@@ -130,6 +166,9 @@ def analyze_phase1_summary(summary: dict, protocol: dict) -> dict:
         "correctness_failures": derived_correctness_failures,
         "verification_rate": verification_rate,
         "effects": effects,
+        "performance_effects_complete": all(
+            effect.get("status") == "ESTIMATED" for effect in effects.values()
+        ),
         "promotion_gate_eligible": False,
         "promotion_gates": gates,
     }
@@ -142,6 +181,7 @@ def render_phase1_report(result: dict) -> str:
         f"- Source execution: `{result.get('source_execution_id')}`",
         f"- Paired blocks analyzed: {result['paired_blocks_analyzed']}",
         f"- Correctness failures: {result['correctness_failures']}",
+        f"- Performance effects complete: {'YES' if result['performance_effects_complete'] else 'NO'}",
         "- Promotion gate eligible: NO",
         "",
         "## Verification rate",
@@ -151,10 +191,13 @@ def render_phase1_report(result: dict) -> str:
 
     lines.extend(["", "## Paired trace effects"])
     for name, effect in result["effects"].items():
-        lines.append(
-            f"- {name}: {effect['observed_reduction']:.3%} "
-            f"(95% CI {effect['ci_low']:.3%} to {effect['ci_high']:.3%})"
-        )
+        if effect.get("status") == "ESTIMATED":
+            lines.append(
+                f"- {name}: {effect['observed_reduction']:.3%} "
+                f"(95% CI {effect['ci_low']:.3%} to {effect['ci_high']:.3%})"
+            )
+        else:
+            lines.append(f"- {name}: INCONCLUSIVE ({effect.get('reason', 'unavailable')})")
 
     lines.extend(["", "## Promotion gates"])
     for gate in ("G-TR", "G-OB", "G-COMB"):
@@ -163,7 +206,7 @@ def render_phase1_report(result: dict) -> str:
     lines.extend(
         [
             "",
-            "> Phase-1 deterministic trace evidence is diagnostic performance evidence only. ",
+            "> Phase-1 deterministic trace evidence is diagnostic performance evidence only.",
             "> It cannot promote G-TR, G-OB, or G-COMB without the preregistered later-phase evidence.",
         ]
     )
