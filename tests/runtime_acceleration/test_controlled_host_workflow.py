@@ -38,10 +38,10 @@ def test_local_phase1_execution_requires_explicit_operator_switch():
     text = START.read_text(encoding="utf-8")
     assert "[switch]$RunPhase1" in text
     assert "if (-not $RunPhase1)" in text
-    assert '"hermes_root"' in text
-    assert '"workspace"' in text
-    assert '"toolrush_plugin"' in text
-    assert '"chromium_executable"' in text
+    assert "hermes_root =" in text
+    assert "workspace =" in text
+    assert "toolrush_plugin =" in text
+    assert "chromium_executable =" in text
     assert '"-m", "experiments.runtime_acceleration.phase1_host_run"' in text
     assert '"--plan", $tracePlanPath' in text
     assert '"--probe", $probePath' in text
