@@ -8,11 +8,16 @@ param(
     [string]$EvidenceDir = "C:\Aftergraph\JAR-EXP-0013\evidence",
     [string]$HostConfigPath = "C:\Aftergraph\JAR-EXP-0013\controlled-host.json",
     [string]$HermesPython = "C:\dev\AppData\Local\hermes\hermes-agent\.venv\Scripts\python.exe",
+    [string]$HermesRoot = "C:\dev\AppData\Local\hermes\hermes-agent",
+    [string]$Workspace = "C:\Aftergraph\JAR-EXP-0013\workspace",
     [string]$ToolRushRepo = "C:\dev\toolrush",
     [string]$ToolRushDoctor = "C:\dev\AppData\Local\hermes\plugins\toolrush\doctor.py",
+    [string]$ToolRushPlugin = "C:\dev\AppData\Local\hermes\plugins\toolrush\__init__.py",
     [string]$ObscuraRepo = "C:\dev\obscura",
     [string]$ObscuraExecutable = "C:\dev\obscura\target\release\obscura.exe",
+    [string]$ChromiumExecutable = "C:\Program Files\Google\Chrome\Application\chrome.exe",
     [int]$ObscuraPort = 9222,
+    [switch]$RunPhase1,
     [switch]$SkipRunnerRegistration,
     [switch]$DispatchWorkflow
 )
@@ -76,19 +81,36 @@ Assert-Path "Harness Python" $harnessPython
 
 Push-Location $repoRoot
 try {
-    Invoke-NativeChecked -Executable $harnessPython -Arguments @("-m", "pip", "install", "-r", "requirements-test.txt", "psutil>=6,<7") -FailureMessage "Failed to install isolated JAR-EXP-0013 dependencies"
+    Invoke-NativeChecked -Executable $harnessPython -Arguments @(
+        "-m", "pip", "install",
+        "-r", "requirements-test.txt",
+        "psutil>=6,<7",
+        "playwright==1.62.0"
+    ) -FailureMessage "Failed to install isolated JAR-EXP-0013 dependencies"
     Invoke-NativeChecked -Executable $harnessPython -Arguments @("-m", "pytest", "tests/runtime_acceleration", "-q") -FailureMessage "JAR-EXP-0013 functional suite failed on the controlled host"
 }
 finally {
     Pop-Location
 }
 
-# Fail early on host-local treatment paths before creating probe configuration.
+# Fail early on all runtime-local treatment paths before producing READY evidence.
 Assert-Path "Hermes Python" $HermesPython
+Assert-Path "Hermes root" $HermesRoot
 Assert-Path "ToolRush repository" $ToolRushRepo
 Assert-Path "ToolRush doctor" $ToolRushDoctor
+Assert-Path "ToolRush plugin" $ToolRushPlugin
 Assert-Path "Obscura repository" $ObscuraRepo
 Assert-Path "Obscura executable" $ObscuraExecutable
+Assert-Path "Chromium executable" $ChromiumExecutable
+
+# Create the isolated deterministic tool workspace before any measured run. This setup is
+# outside the timed executor and is identical for stock and ToolRush conditions.
+$resolvedWorkspace = [IO.Path]::GetFullPath($Workspace)
+$fixtureWorkspace = Join-Path $resolvedWorkspace "fixture"
+New-Item -ItemType Directory -Force -Path $fixtureWorkspace | Out-Null
+$sourceFixture = Join-Path $fixtureWorkspace "source_a.py"
+$fixtureText = "# deterministic-marker`ndef benchmark_value():`n    return `"alpha`"`n"
+[IO.File]::WriteAllText($sourceFixture, $fixtureText, [Text.UTF8Encoding]::new($false))
 
 $configDirectory = Split-Path -Parent ([IO.Path]::GetFullPath($HostConfigPath))
 New-Item -ItemType Directory -Force -Path $configDirectory | Out-Null
@@ -96,10 +118,14 @@ New-Item -ItemType Directory -Force -Path $configDirectory | Out-Null
 $config = [ordered]@{
     experiment_id = "JAR-EXP-0013"
     hermes_python = ([IO.Path]::GetFullPath($HermesPython))
+    hermes_root = ([IO.Path]::GetFullPath($HermesRoot))
+    workspace = $resolvedWorkspace
     toolrush_repo = ([IO.Path]::GetFullPath($ToolRushRepo))
     toolrush_doctor = ([IO.Path]::GetFullPath($ToolRushDoctor))
+    toolrush_plugin = ([IO.Path]::GetFullPath($ToolRushPlugin))
     obscura_repo = ([IO.Path]::GetFullPath($ObscuraRepo))
     obscura_executable = ([IO.Path]::GetFullPath($ObscuraExecutable))
+    chromium_executable = ([IO.Path]::GetFullPath($ChromiumExecutable))
     obscura_port = $ObscuraPort
 }
 $config | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath $HostConfigPath -Encoding UTF8
@@ -138,14 +164,14 @@ if ($probe.state -ne "READY") {
 
 Write-Host "Controlled-host probe READY. The machine may enter the preregistered measurement phases."
 
-# Freeze the deterministic Phase-1 execution order only after the host passes READY.
-# This creates no timings and invokes no treatment. The resulting plan is immutable because
-# measurement_plan opens the file in exclusive-create mode.
+# Freeze deterministic Phase-1 order only after the host passes READY. Plan creation itself
+# produces no timings and invokes no treatment.
 $plansDir = Join-Path $resolvedEvidenceDir "plans"
 New-Item -ItemType Directory -Force -Path $plansDir | Out-Null
 $planStamp = [DateTime]::UtcNow.ToString("yyyyMMddTHHmmssfffZ")
 $tracePlanPath = Join-Path $plansDir "trace-plan-$planStamp.json"
 $tracePath = Join-Path $repoRoot "experiments\runtime_acceleration\workloads\trace_replay.yaml"
+$protocolPath = Join-Path $repoRoot "experiments\runtime_acceleration\protocol.yaml"
 
 Push-Location $repoRoot
 try {
@@ -161,11 +187,36 @@ finally {
     Pop-Location
 }
 Write-Host "Phase-1 trace plan frozen: $tracePlanPath"
-Write-Host "Phase-1 schedule: 20 paired blocks x 4 conditions = 80 planned runs; this is not performance evidence."
+Write-Host "Phase-1 schedule: 20 paired blocks x 4 conditions = 80 planned runs; plan creation is not performance evidence."
+
+if (-not $RunPhase1) {
+    Write-Host "Phase-1 measurements were NOT started. Re-run with -RunPhase1 after reviewing READY probe and frozen plan."
+}
+else {
+    $phase1ExecutionId = "phase1-" + [DateTime]::UtcNow.ToString("yyyyMMddTHHmmssfffZ")
+    Write-Host "Starting controlled Phase-1 execution: $phase1ExecutionId"
+    Push-Location $repoRoot
+    try {
+        Invoke-NativeChecked -Executable $harnessPython -Arguments @(
+            "-m", "experiments.runtime_acceleration.phase1_host_run",
+            "--config", $resolvedConfig,
+            "--plan", $tracePlanPath,
+            "--probe", $probePath,
+            "--protocol", $protocolPath,
+            "--evidence-root", $resolvedEvidenceDir,
+            "--execution-id", $phase1ExecutionId
+        ) -FailureMessage "JAR-EXP-0013 Phase-1 controlled execution did not complete cleanly"
+    }
+    finally {
+        Pop-Location
+    }
+    Write-Host "Controlled Phase-1 execution completed: $phase1ExecutionId"
+    Write-Host "Evidence root: $resolvedEvidenceDir"
+}
 
 if (-not $DispatchWorkflow) {
     Write-Host "GitHub self-hosted workflow dispatch is optional and was not requested."
-    Write-Host "Local probe evidence is authoritative for host readiness; hosted-runner timing remains non-performance evidence."
+    Write-Host "Hosted-runner timing remains non-performance evidence."
     exit 0
 }
 
