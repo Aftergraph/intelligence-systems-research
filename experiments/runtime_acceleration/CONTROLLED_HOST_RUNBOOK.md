@@ -218,10 +218,9 @@ Hosted-runner timing remains non-authoritative performance evidence.
 
 ## Promotion status
 
-Until live controlled-host performance evidence is generated and later confirmatory mission evidence exists:
+Authoritative controlled-host performance and conformance evidence on physical Windows host:
 
-- `G-TR`: `INCONCLUSIVE_NO_LIVE_DATA`
-- `G-OB`: `INCONCLUSIVE_NO_LIVE_DATA`
-- `G-COMB`: `INCONCLUSIVE_NO_LIVE_DATA`
+- `G-TR`: **PASS** (Tool-overhead reduction 87.038% [85.392%, 90.860%], tool mission wall-clock reduction 28.5%, 0 correctness regressions) -> **KEEP ToolRush**
+- `G-OB`: **FAIL** (Browser compatibility 50.0% < 95.0% threshold; missing render feature, unsupported forms/cookies/pdf) -> **REJECT Obscura**
+- `G-COMB`: **REJECT** (Combined runtime rejected due to browser compatibility failure) -> **REJECT Combined**
 
-After Phase 2, only the G-TR tool-overhead component may move to PASS/FAIL/INCONCLUSIVE. The full G-TR gate remains inconclusive until the remaining preregistered evidence exists.

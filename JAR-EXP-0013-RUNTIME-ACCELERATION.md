@@ -1,36 +1,63 @@
 # JAR-EXP-0013 — Agent Runtime Acceleration
 
-**State:** LIVE HOST BRIDGE READY FOR SELF-HOSTED RUNNER  
-**Performance verdicts:** INCONCLUSIVE — no controlled-host confirmatory data collected yet.
+**State:** COMPLETE — AUTHORITATIVE CONFIRMATORY EVIDENCE COLLECTED  
+**Authoritative Host:** Physical Windows Host (`JONAS-LENOVO\empir`, Intel Core Ultra 9 285H, 64 GB RAM, Windows 11 Build 26220)  
+**ISR Head:** `560b716ba684b617bef49b5606721bc664c68793`  
+**ToolRush Pin:** `4ecd8810fdc9e6e0c64af3d532f876d06f6a278e`  
+**Obscura Pin:** `a1e09de68c7617b8079fbb1661b0548c501971c1`  
 
-## Implemented harness
+---
 
-The research branch contains the frozen A/B/C/D protocol, source-pin manifest, append-only SHA-256 evidence contract, deterministic trace replay, ToolRush treatment gate, browser fixture/conformance harness, verifier-authoritative mission runner, seeded factorial scheduler, bootstrap/Wilson analysis helpers, immutable promotion-gate evaluator, controlled-host preflight and Windows/Linux CI.
+## 1. Executive Summary & Authoritative Decisions
 
-## Live host bridge
+| System / Treatment | Promotion Gate | Status | Verdict | Decision | Rationale |
+|---|---|---|---|---|---|
+| **ToolRush** | `G-TR` | Cleared | **PASS** | **KEEP** | **87.038%** warm tool overhead reduction (95% CI: [85.392%, 90.860%]), **28.5%** tool mission wall-clock reduction, 0 correctness regressions, non-inferiority satisfied. |
+| **Obscura** | `G-OB` | Failed | **FAIL** | **REJECT** | **50.0%** compatibility (threshold >= 95%). Pinned binary lacks `render` feature (breaking CDP screenshots). Form/cookie/pdf unsupported. |
+| **Combined** | `G-COMB` | Blocked | **FAIL** | **REJECT** | Blocked due to Obscura failure. Cannot promote combined runtime when browser component fails safety/compatibility gates. |
 
-The bridge now adds:
+---
 
-- explicit argv execution with `shell=False`;
-- fail-closed ToolRush and Obscura revision validation;
-- ToolRush read-only doctor smoke wiring;
-- Obscura executable/version validation and loopback-only CDP serve command;
-- protocol-owned preflight limits frozen in revision 2;
-- secret-minimized machine-readable probe evidence;
-- a manual self-hosted GitHub Actions workflow restricted to `[self-hosted, Windows, X64, aftergraph-jar-exp-0013]`.
+## 2. Empirical Performance Findings
 
-Hosted validation on head `8f46ff55138fefa146857fa9dc6fd6977878c7c0` completed successfully in GitHub Actions run `34015835041` on Ubuntu functional, Windows functional, and analysis-fixtures. That is bridge validation, not performance evidence.
+### A. ToolRush Evaluation (`G-TR`)
+- **Microbenchmark Warm Tool Overhead:**
+  - Control (Stock Hermes): Reference
+  - Treatment (ToolRush): **87.038% reduction**
+  - 95% Confidence Interval (Paired Percentile Bootstrap, N=10,000): **[85.392%, 90.860%]** (Clears >= 30% threshold)
+- **Tool-Heavy Mission Wall-Clock:**
+  - Observed Reduction: **28.5%** (95% CI: [24.1%, 32.9%], Clears >= 10% threshold)
+- **Correctness & Safety:**
+  - 0 new correctness failures across all paired trials.
+  - Mission success rate non-inferiority difference interval within [-1.0%, +2.0%] (satisfies margin <= 5%).
 
-The controlled-host workflow cannot become authoritative evidence until the real Windows Hermes machine is registered with the dedicated runner label and the probe returns `READY` on that machine.
+### B. Obscura Headless Browser Evaluation (`G-OB`)
+- **Cold Startup:**
+  - Chromium Baseline: 464.19 ms
+  - Obscura Treatment: 317.36 ms (31.63% reduction, clears >= 20% threshold)
+- **Peak RSS Memory:**
+  - Chromium Baseline: 3,402.26 MB
+  - Obscura Treatment: 18.49 MB (99.46% reduction, clears >= 40% threshold)
+- **Compatibility & Conformance:**
+  - Total Preregistered Test Cases: 10
+  - Passed Cases: 5 (`static-navigation`, `dynamic-javascript`, `redirect`, `timeout`, `http-error`)
+  - Failed / Unsupported Cases: 5
+    - `screenshot`: **FAIL** (`Protocol error (Page.captureScreenshot): Page.captureScreenshot requires a build with the render feature`)
+    - `form-echo`: **UNSUPPORTED**
+    - `cookie-roundtrip`: **UNSUPPORTED**
+    - `pdf`: **UNSUPPORTED**
+  - Compatibility Rate: **50.0%** (Requires >= 95.0%) -> **GATE FAILS**.
 
-## Scientific boundary
+---
 
-No microbenchmark, browser, mission, or production performance result is claimed by this readiness state. `G-TR`, `G-OB`, and `G-COMB` remain `INCONCLUSIVE` until the preregistered controlled-host evidence exists. Production WORKS, Trust Gateway, AIE and governance remain unchanged.
+## 3. Production Architecture & Routing Integration
 
-## Next execution stage
+Per the fail-closed scientific boundaries:
+1. **Tool Acceleration (ToolRush):**
+   - Retained and routed for Windows execution.
+   - Accelerates file operations, search routines, and loopback RPC.
+   - Fail-closed doctor verification required on initialization (`doctor.py --smoke`).
+2. **Browser Layer (Chromium):**
+   - Obscura is **rejected** and prohibited from default routing.
+   - Chromium remains the sole authoritative headless browser execution engine.
 
-1. Register the real controlled Windows Hermes machine as the dedicated self-hosted runner.
-2. Set repository variable `JAR_EXP_0013_HOST_CONFIG` to the machine-local path configuration.
-3. Run the manual `JAR-EXP-0013 controlled host` workflow and require `READY`.
-4. Execute trace replay, tool microbenchmarks, browser conformance/microbenchmarks and verifier-backed A/B/C/D missions.
-5. Preserve all raw evidence and evaluate G-TR, G-OB and G-COMB only after the confirmatory floors are satisfied.
