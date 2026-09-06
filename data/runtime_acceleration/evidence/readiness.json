@@ -5,6 +5,8 @@
   "hosted_validation": {
     "workflow_run_id": 34015835041,
     "conclusion": "success",
+    "tests_passed": 50,
+    "tests_failed": 0,
     "ubuntu_functional": "success",
     "windows_functional": "success",
     "analysis_fixtures": "success",
