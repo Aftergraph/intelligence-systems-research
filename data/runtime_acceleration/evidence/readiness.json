@@ -1,17 +1,36 @@
 {
   "experiment_id": "JAR-EXP-0013",
-  "state": "HARNESS_READY_FOR_CONTROLLED_HOST_RUN",
+  "state": "LIVE_HOST_BRIDGE_READY_FOR_SELF_HOSTED_RUNNER",
   "local_validation": {
-    "tests_passed": 38,
     "tests_failed": 0,
-    "dry_run": "READY_FOR_CONTROLLED_HOST_RUN",
+    "hosted_ci": "GREEN_UBUNTU_WINDOWS_ANALYSIS",
     "live_provider_calls": 0,
     "production_mutations": 0
+  },
+  "live_host_bridge": {
+    "command_execution": "EXPLICIT_ARGV_NO_SHELL",
+    "revision_validation": "FAIL_CLOSED",
+    "toolrush_doctor": "WIRED",
+    "obscura_version_probe": "WIRED",
+    "obscura_cdp_binding": "LOOPBACK_ONLY",
+    "protocol_revision": 2,
+    "preflight_limits": {
+      "cpu_percent_max": 20.0,
+      "memory_percent_max": 80.0,
+      "require_ac_power": true
+    },
+    "self_hosted_runner_labels": [
+      "self-hosted",
+      "Windows",
+      "X64",
+      "aftergraph-jar-exp-0013"
+    ]
   },
   "promotion_gates": {
     "G-TR": "INCONCLUSIVE_NO_LIVE_DATA",
     "G-OB": "INCONCLUSIVE_NO_LIVE_DATA",
     "G-COMB": "INCONCLUSIVE_NO_LIVE_DATA"
   },
-  "note": "This is harness readiness evidence only; it is not performance evidence."
+  "next_dependency": "Register the real controlled Windows Hermes machine as the dedicated self-hosted runner and execute the manual controlled-host workflow.",
+  "note": "Bridge readiness and hosted CI are not performance evidence."
 }
