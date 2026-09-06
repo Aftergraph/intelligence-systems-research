@@ -108,6 +108,25 @@ python experiments/live_benchmark/run_study_011.py --mode DRY_RUN --phase 1 --pr
 
 ---
 
+## System visuals
+
+Real architecture diagrams (repo-specific, source in `.github/assets/architecture/`):
+
+<p align="center">
+  <img src=".github/assets/architecture/system-context.svg" alt="Intelligence Systems Research in the Aftergraph ecosystem context" width="90%">
+  <br><em>System context</em>
+</p>
+
+<p align="center">
+  <img src=".github/assets/architecture/architecture.svg" alt="Intelligence Systems Research system architecture" width="90%">
+  <br><em>Architecture</em>
+</p>
+
+<p align="center">
+  <img src=".github/assets/architecture/workflow.svg" alt="Intelligence Systems Research primary workflow" width="90%">
+  <br><em>Primary workflow</em>
+</p>
+
 ## Repository Map
 
 ### 1. Normative Specification & Schemas
