@@ -133,7 +133,7 @@ $config = [ordered]@{
     chromium_executable = ([IO.Path]::GetFullPath($ChromiumExecutable))
     obscura_port = $ObscuraPort
 }
-$config | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath $HostConfigPath -Encoding UTF8
+[IO.File]::WriteAllText($HostConfigPath, ($config | ConvertTo-Json -Depth 4), [Text.UTF8Encoding]::new($false))
 $resolvedConfig = [IO.Path]::GetFullPath($HostConfigPath)
 Write-Host "Machine-local controlled-host config written: $resolvedConfig"
 

@@ -100,6 +100,25 @@ def decode_tool_envelope(raw: str) -> dict:
     return value
 
 
+def _normalize_search_envelope(result: dict) -> dict:
+    """Normalize matches and files lists to be deterministic regardless of filesystem traversal order."""
+    if not isinstance(result, dict):
+        return result
+    if isinstance(result.get("matches"), list):
+        def _match_sort_key(m: dict):
+            return (
+                str(m.get("path", "")).replace("\\", "/").lower(),
+                int(m.get("line", m.get("line_number", 0))),
+                str(m.get("content", m.get("text", ""))),
+            )
+        result["matches"] = sorted(result["matches"], key=_match_sort_key)
+    if isinstance(result.get("files"), list):
+        result["files"] = sorted(
+            [str(f).replace("\\", "/").lower() for f in result["files"]]
+        )
+    return result
+
+
 class GeneratedRpcHarness:
     """One persistent generated Hermes RPC client/server pair inside an isolated worker."""
 
@@ -129,7 +148,11 @@ class GeneratedRpcHarness:
 
     @classmethod
     def from_installed_hermes(cls, *, mode: str):
-        from tools.code_execution_tool import _rpc_server_loop, generate_hermes_tools_module
+        try:
+            from tools.code_execution_rpc import _rpc_server_loop
+        except ImportError:
+            from tools.code_execution_tool import _rpc_server_loop  # type: ignore[no-redef]
+        from tools.code_execution_tool import generate_hermes_tools_module
         import model_tools
 
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -264,8 +287,10 @@ def dispatch_operation(
             file_tools.read_file_tool(**read_kwargs(payload, workspace, task_id=task_id))
         )
     elif operation == "search":
-        result = decode_tool_envelope(
-            file_tools.search_tool(**search_kwargs(payload, workspace, task_id=task_id))
+        result = _normalize_search_envelope(
+            decode_tool_envelope(
+                file_tools.search_tool(**search_kwargs(payload, workspace, task_id=task_id))
+            )
         )
     elif operation == "shell":
         command = payload.get("command")
