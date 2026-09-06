@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from importlib import import_module
+from pathlib import Path
 
 import pytest
 
@@ -200,8 +201,11 @@ def test_page_backend_query_evaluate_and_screenshot_are_stable(tmp_path):
     }
     assert backend.perform("evaluate", {"script": "() => 7"}) == {"value": 7}
     shot = backend.perform("screenshot", {"path": "shots/a.png"})
-    assert shot["path"].endswith("shots/a.png")
-    assert page.screenshot_calls[-1]["path"].endswith("shots/a.png")
+    assert Path(shot["path"]).relative_to(tmp_path.resolve()) == Path("shots/a.png")
+    assert (
+        Path(page.screenshot_calls[-1]["path"]).relative_to(tmp_path.resolve())
+        == Path("shots/a.png")
+    )
 
     with pytest.raises(runtime.BrowserRuntimeError, match="evidence"):
         backend.perform("screenshot", {"path": "../escape.png"})
