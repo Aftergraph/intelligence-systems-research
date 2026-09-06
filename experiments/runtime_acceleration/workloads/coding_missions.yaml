@@ -1,0 +1,11 @@
+workload_id: jar-exp-0013-coding-missions-v1
+missions:
+  - id: repo-inspection-01
+    class: repository_inspection
+    verifier: deterministic_target_finding
+  - id: code-search-01
+    class: code_search_heavy
+    verifier: deterministic_target_finding
+  - id: read-heavy-01
+    class: read_heavy
+    verifier: artifact_assertions

@@ -1,0 +1,10 @@
+workload_id: jar-exp-0013-mixed-missions-v1
+missions:
+  - id: browser-research-01
+    class: browser_research
+    fixture_only: true
+    verifier: extracted_fact_assertions
+  - id: mixed-01
+    class: mixed
+    fixture_only: true
+    verifier: composite_acceptance_criteria
