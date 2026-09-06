@@ -188,15 +188,18 @@ if (-not $RunPhase1) {
 else {
     $phase1ExecutionId = "phase1-" + [DateTime]::UtcNow.ToString("yyyyMMddTHHmmssfffZ")
     Write-Host "Starting controlled Phase-1 execution: $phase1ExecutionId"
+    $phase1Arguments = @(
+        "-m", "experiments.runtime_acceleration.phase1_host_run",
+        "--config", $resolvedConfig,
+        "--plan", $tracePlanPath,
+        "--probe", $probePath,
+        "--protocol", $protocolPath,
+        "--evidence-root", $resolvedEvidenceDir,
+        "--execution-id", $phase1ExecutionId
+    )
     Push-Location $repoRoot
     try {
-        & $harnessPython -m experiments.runtime_acceleration.phase1_host_run `
-            --config $resolvedConfig `
-            --plan $tracePlanPath `
-            --probe $probePath `
-            --protocol $protocolPath `
-            --evidence-root $resolvedEvidenceDir `
-            --execution-id $phase1ExecutionId
+        & $harnessPython @phase1Arguments
         $phase1RunExit = $LASTEXITCODE
     }
     finally {
