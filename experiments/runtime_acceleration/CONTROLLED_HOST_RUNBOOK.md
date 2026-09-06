@@ -135,3 +135,7 @@ After controlled-host data exists, run the registered analysis and promotion gat
 - `G-COMB`: combined candidate
 
 Until controlled-host evidence exists, all three remain `INCONCLUSIVE_NO_LIVE_DATA`.
+
+## Current implementation evidence
+
+The live-host bridge was validated on branch head `8f46ff55138fefa146857fa9dc6fd6977878c7c0` by GitHub Actions run `34015835041`: Ubuntu functional, Windows functional, and analysis-fixtures all completed successfully. This validates bridge portability and test behavior only. It is not controlled-host performance evidence.
