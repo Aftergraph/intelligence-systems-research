@@ -138,6 +138,31 @@ if ($probe.state -ne "READY") {
 
 Write-Host "Controlled-host probe READY. The machine may enter the preregistered measurement phases."
 
+# Freeze the deterministic Phase-1 execution order only after the host passes READY.
+# This creates no timings and invokes no treatment. The resulting plan is immutable because
+# measurement_plan opens the file in exclusive-create mode.
+$plansDir = Join-Path $resolvedEvidenceDir "plans"
+New-Item -ItemType Directory -Force -Path $plansDir | Out-Null
+$planStamp = [DateTime]::UtcNow.ToString("yyyyMMddTHHmmssfffZ")
+$tracePlanPath = Join-Path $plansDir "trace-plan-$planStamp.json"
+$tracePath = Join-Path $repoRoot "experiments\runtime_acceleration\workloads\trace_replay.yaml"
+
+Push-Location $repoRoot
+try {
+    Invoke-NativeChecked -Executable $harnessPython -Arguments @(
+        "-m", "experiments.runtime_acceleration.measurement_plan",
+        "--trace", $tracePath,
+        "--output", $tracePlanPath,
+        "--repetitions", "20",
+        "--seed", "130013"
+    ) -FailureMessage "Failed to freeze JAR-EXP-0013 Phase-1 trace plan"
+}
+finally {
+    Pop-Location
+}
+Write-Host "Phase-1 trace plan frozen: $tracePlanPath"
+Write-Host "Phase-1 schedule: 20 paired blocks x 4 conditions = 80 planned runs; this is not performance evidence."
+
 if (-not $DispatchWorkflow) {
     Write-Host "GitHub self-hosted workflow dispatch is optional and was not requested."
     Write-Host "Local probe evidence is authoritative for host readiness; hosted-runner timing remains non-performance evidence."
