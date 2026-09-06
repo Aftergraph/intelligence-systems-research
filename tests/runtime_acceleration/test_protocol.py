@@ -18,12 +18,25 @@ def test_protocol_freezes_conditions_thresholds_and_source_pins():
 
 def test_protocol_freezes_controlled_host_preflight_before_live_data():
     protocol = load_protocol(ROOT / "experiments/runtime_acceleration/protocol.yaml")
-    assert protocol["revision"] == 2
+    assert protocol["revision"] == 3
     assert protocol["preflight"] == {
         "cpu_percent_max": 20.0,
         "memory_percent_max": 80.0,
         "require_ac_power": True,
     }
+
+
+def test_protocol_r3_freezes_statistical_promotion_rules_before_live_data():
+    protocol = load_protocol(ROOT / "experiments/runtime_acceleration/protocol.yaml")
+    assert protocol["analysis"] == {
+        "confidence_level": 0.95,
+        "effect_interval_method": "paired_percentile_bootstrap",
+        "bootstrap_resamples": 10000,
+        "bootstrap_seed": 130013,
+        "mission_success_interval_method": "newcombe_wilson",
+        "promotion_requires_ci_lower_bound": True,
+    }
+    assert protocol["promotion_gates"]["G-TR"]["requires"]["mission_success_noninferiority_margin"] == 0.05
 
 
 def test_protocol_rejects_wrong_experiment_id(tmp_path):
