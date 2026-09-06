@@ -1,9 +1,13 @@
 {
   "experiment_id": "JAR-EXP-0013",
   "hermes_python": "C:/dev/AppData/Local/hermes/hermes-agent/.venv/Scripts/python.exe",
+  "hermes_root": "C:/dev/AppData/Local/hermes/hermes-agent",
+  "workspace": "C:/Aftergraph/JAR-EXP-0013/workspace",
   "toolrush_repo": "C:/dev/toolrush",
   "toolrush_doctor": "C:/dev/AppData/Local/hermes/plugins/toolrush/doctor.py",
+  "toolrush_plugin": "C:/dev/AppData/Local/hermes/plugins/toolrush/__init__.py",
   "obscura_repo": "C:/dev/obscura",
   "obscura_executable": "C:/dev/obscura/target/release/obscura.exe",
+  "chromium_executable": "C:/Program Files/Google/Chrome/Application/chrome.exe",
   "obscura_port": 9222
 }
