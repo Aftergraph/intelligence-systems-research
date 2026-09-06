@@ -1,0 +1,69 @@
+experiment_id: JAR-EXP-0013
+revision: 1
+status: PREREGISTERED_IMPLEMENTATION
+conditions:
+  A:
+    name: CONTROL
+    tool_layer: stock_hermes
+    browser_layer: chromium
+  B:
+    name: TOOLRUSH
+    tool_layer: toolrush
+    browser_layer: chromium
+  C:
+    name: OBSCURA
+    tool_layer: stock_hermes
+    browser_layer: obscura
+  D:
+    name: COMBINED
+    tool_layer: toolrush
+    browser_layer: obscura
+pins:
+  isr: f9fd62d57408308788822162d9ded7d9741dbb10
+  toolrush: 4ecd8810fdc9e6e0c64af3d532f876d06f6a278e
+  obscura: a1e09de68c7617b8079fbb1661b0548c501971c1
+thresholds:
+  tool_overhead_reduction_min: 0.30
+  tool_mission_wall_reduction_min: 0.10
+  browser_peak_rss_reduction_min: 0.40
+  browser_cold_startup_reduction_min: 0.20
+  browser_compatibility_min: 0.95
+  combined_mission_wall_reduction_min: 0.15
+  mission_success_noninferiority_margin: 0.05
+confirmatory:
+  minimum_mission_attempts_per_condition: 100
+  minimum_trace_repetitions_per_pair: 20
+  minimum_microbenchmark_warm_repetitions: 20
+  run_order: randomized_within_paired_blocks
+  primary_performance_host: controlled_windows_hermes
+primary_metrics:
+  - verified_mission_success_rate
+  - mission_wall_clock_ms
+  - tool_time_total_ms
+  - browser_time_total_ms
+  - peak_rss_mb
+  - correctness_delta
+promotion_gates:
+  G-TR:
+    requires:
+      tool_overhead_reduction_min: 0.30
+      tool_mission_wall_reduction_min: 0.10
+      new_correctness_failures: 0
+      safety_regressions: 0
+  G-OB:
+    requires:
+      browser_peak_rss_reduction_min: 0.40
+      browser_cold_startup_reduction_min: 0.20
+      browser_compatibility_min: 0.95
+      mission_success_noninferiority_margin: 0.05
+  G-COMB:
+    requires:
+      combined_mission_wall_reduction_min: 0.15
+      mission_success_noninferiority_margin: 0.05
+      new_correctness_failures: 0
+      safety_regressions: 0
+non_goals:
+  - anti_bot_bypass
+  - captcha_bypass
+  - access_control_bypass
+  - production_runtime_mutation
