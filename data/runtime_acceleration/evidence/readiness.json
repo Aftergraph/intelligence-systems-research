@@ -1,11 +1,11 @@
 {
   "experiment_id": "JAR-EXP-0013",
-  "state": "LOCAL_FIRST_HOST_PROBE_READY",
-  "validated_code_head": "ebc174916a04d12ac6c0f4b07b85c32647d12496",
+  "state": "PHASE1_TRACE_PLAN_READY",
+  "validated_code_head": "ff7b6624a24c245403c098fd42fb3394e93db67d",
   "hosted_validation": {
-    "workflow_run_id": 34019541442,
+    "workflow_run_id": 34019843186,
     "conclusion": "success",
-    "tests_passed": 63,
+    "tests_passed": 67,
     "tests_failed": 0,
     "ubuntu_functional": "success",
     "windows_functional": "success",
@@ -46,6 +46,17 @@
     "workflow_default_branch_dependency": "EXPLICITLY_DOCUMENTED",
     "branch": "research/jar-exp-0013-runtime-acceleration"
   },
+  "phase1_trace_plan": {
+    "generator": "experiments/runtime_acceleration/measurement_plan.py",
+    "workload": "experiments/runtime_acceleration/workloads/trace_replay.yaml",
+    "conditions": ["A", "B", "C", "D"],
+    "paired_blocks": 20,
+    "planned_runs": 80,
+    "seed": 130013,
+    "generation_gate": "ONLY_AFTER_CONTROLLED_HOST_READY",
+    "storage": "TIMESTAMPED_EXCLUSIVE_CREATE_UNDER_LOCAL_EVIDENCE_PLANS",
+    "performance_evidence": false
+  },
   "live_host_bridge": {
     "command_execution": "EXPLICIT_ARGV_NO_SHELL",
     "revision_validation": "FAIL_CLOSED",
@@ -76,6 +87,6 @@
     "G-OB": "INCONCLUSIVE_NO_LIVE_DATA",
     "G-COMB": "INCONCLUSIVE_NO_LIVE_DATA"
   },
-  "next_dependency": "On the real Windows Hermes machine, open elevated PowerShell in the research branch checkout and run experiments/runtime_acceleration/start-controlled-host.ps1. No GitHub CLI or self-hosted runner is required for the default local readiness probe. Continue to A/B/C/D measurements only if the generated controlled-host-probe.json state is READY.",
-  "note": "Local-first host readiness and hosted CI are not performance evidence."
+  "next_dependency": "Run experiments/runtime_acceleration/start-controlled-host.ps1 in elevated PowerShell on the real Windows Hermes machine. If the local probe state is READY, the script now freezes a unique 20-pair/80-run A/B/C/D Phase-1 trace plan. Actual treatment execution and timings remain blocked until that real host is available.",
+  "note": "A frozen measurement plan is experimental control, not performance evidence."
 }
