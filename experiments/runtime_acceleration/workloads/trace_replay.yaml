@@ -1,0 +1,21 @@
+trace_id: jar-exp-0013-trace-001
+revision: 1
+steps:
+  - operation: read
+    payload:
+      path: fixture/source_a.py
+      start_line: 1
+      end_line: 40
+  - operation: search
+    payload:
+      query: deterministic-marker
+      path: fixture
+  - operation: shell
+    payload:
+      command: python -c "print('trace-ok')"
+  - operation: browser_navigate
+    payload:
+      url: fixture://static
+  - operation: browser_query
+    payload:
+      selector: "#deterministic-marker"
