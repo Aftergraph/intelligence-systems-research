@@ -4,7 +4,7 @@
 
 Execute authoritative JAR-EXP-0013 performance measurements on a real Windows Hermes host. GitHub-hosted runner timings are functional evidence only and MUST NOT be promoted as performance evidence.
 
-The implementation harness may be complete while the experiment remains inconclusive. No performance or promotion claim is valid until controlled-host evidence exists and the preregistered analysis passes.
+The implementation harness may be complete while the experiment remains inconclusive. No performance or promotion claim is valid until controlled-host evidence exists and the preregistered later-phase analysis passes.
 
 ## Required host
 
@@ -29,11 +29,13 @@ Do not silently update any treatment during the experiment. A changed treatment 
 
 ## Local-first operator path
 
-Open elevated PowerShell in a checkout of `research/jar-exp-0013-runtime-acceleration`.
+Open elevated PowerShell in a current checkout of canonical `main` and record its exact commit before measurement.
 
 ### Safe default: readiness + frozen plan only
 
 ```powershell
+git switch main
+git pull
 Set-Location <path-to-intelligence-systems-research>
 .\experiments\runtime_acceleration\start-controlled-host.ps1
 ```
@@ -65,7 +67,9 @@ The script:
 9. exits non-zero unless probe state is exactly `READY`;
 10. freezes the deterministic Phase-1 A/B/C/D order using 20 paired blocks and seed `130013`;
 11. stops before measurement unless `-RunPhase1` was supplied;
-12. with `-RunPhase1`, invokes `experiments.runtime_acceleration.phase1_host_run` with the exact config, probe, protocol, plan, evidence root, and unique execution id.
+12. with `-RunPhase1`, invokes `experiments.runtime_acceleration.phase1_host_run` with the exact config, probe, protocol, plan, evidence root, and unique execution id;
+13. analyzes the resulting `summary.json` with the preregistered paired-bootstrap settings and writes immutable `phase1-analysis.json` and `phase1-analysis.md`;
+14. retains diagnostic analysis even when Phase-1 is non-clean, then returns the non-zero Phase-1 exit code.
 
 The host configuration includes these runtime fields in addition to the read-only probe paths:
 
@@ -98,7 +102,17 @@ For each controlled execution it:
 - closes each per-run browser adapter exactly once;
 - always closes both persistent Hermes workers when the execution scope exits.
 
-If treatment execution or cleanup fails, the affected run is recorded as an execution error and its timing is not preserved as valid performance evidence.
+If treatment execution or cleanup fails, the affected run is recorded as an execution error and its timing is not preserved as valid performance evidence. The Phase-1 analyzer does not drop the affected paired block or impute a timing. Instead the affected paired effect is explicitly reported `INCONCLUSIVE (invalid_or_missing_metric)`.
+
+## Phase-1 analysis boundary
+
+The automatic Phase-1 analyzer preserves paired-block identity and computes diagnostic paired-bootstrap effects only when every required timing in that effect is valid:
+
+- A → B: `tool_time_total_ms` reduction;
+- A → C: `browser_time_total_ms` reduction;
+- A → D: `trace_wall_clock_ms` reduction.
+
+It also reports verifier rates and correctness failures. Phase-1 trace evidence is **not** promotion-gate eligible. `G-TR`, `G-OB`, and `G-COMB` remain `INCONCLUSIVE` with reason `phase1_trace_only`, regardless of the observed Phase-1 point estimates.
 
 ## Optional self-hosted GitHub Actions path
 
@@ -117,13 +131,13 @@ This path is optional and separate from `-RunPhase1`. Only it requires authentic
 
 `bootstrap-self-hosted-runner.ps1` pins GitHub Actions runner `2.337.0` and verifies the Windows x64 archive against SHA256 `1150692afa94e71f872017e254ea55b6eece1eece3fe7e3a6d4c93d0a1b85cfc` before configuration.
 
-GitHub requires a manually dispatched workflow to be available in the repository's dispatchable/default-branch workflow set. Until that workflow lands there, remote dispatch may be unavailable even though the research branch contains it. That does not block the local authoritative path.
+The controlled-host workflow is canonical on `main`, and the operator script defaults optional workflow dispatch to `main`. The remote workflow remains a reproduction path; hosted-runner timing is not authoritative performance evidence.
 
 ## Host setup gate
 
 Before measurement begins:
 
-1. Check out `research/jar-exp-0013-runtime-acceleration` and record the exact commit.
+1. Check out current canonical `main` and record the exact commit.
 2. Require the full runtime-acceleration test suite to pass on the real host.
 3. Verify exact ToolRush and Obscura revisions against the frozen pins above.
 4. Run the ToolRush read-only doctor smoke using the configured Hermes Python.
@@ -189,6 +203,8 @@ For local controlled execution, the default root is:
 Each Phase-1 execution receives a unique immutable id such as `phase1-<UTC timestamp>`. Under that execution directory the harness writes:
 
 - `summary.json`
+- `phase1-analysis.json`
+- `phase1-analysis.md`
 - `blocks/<pair-id>.json`
 - `runs/<run-id>/metadata.json`
 - `runs/<run-id>/metrics.json`
@@ -197,7 +213,7 @@ Each Phase-1 execution receives a unique immutable id such as `phase1-<UTC times
 - `runs/<run-id>/verifier.json`
 - `runs/<run-id>/artifacts.sha256`
 
-The execution directory is exclusive-create. Reusing an execution id fails before treatments run. Finalized run evidence is append-only and pair/block identity is retained.
+The execution directory is exclusive-create. Reusing an execution id fails before treatments run. Finalized run evidence is append-only and pair/block identity is retained. Analysis outputs are exclusive-create and do not overwrite prior evidence.
 
 ## Statistical gate
 
@@ -222,10 +238,10 @@ Stop the affected confirmatory block when a source pin drifts, preflight is cont
 
 ## Promotion gates
 
-After controlled-host data exists, compute the preregistered point estimates and 95% intervals, then evaluate:
+After all required controlled-host evidence exists, compute the preregistered point estimates and 95% intervals, then evaluate:
 
 - `G-TR`: ToolRush candidate
 - `G-OB`: Obscura candidate
 - `G-COMB`: combined candidate
 
-Until controlled-host performance evidence exists, all three remain `INCONCLUSIVE_NO_LIVE_DATA`.
+Until controlled-host performance evidence exists, all three remain `INCONCLUSIVE_NO_LIVE_DATA`. After Phase-1 trace evidence exists but later confirmatory evidence is still missing, all three remain `INCONCLUSIVE` rather than being promoted from trace data alone.
