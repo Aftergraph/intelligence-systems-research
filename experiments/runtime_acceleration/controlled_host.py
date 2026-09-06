@@ -132,10 +132,19 @@ def probe_host(
         except Exception as exc:
             reasons.append(f"Obscura version probe failed: {exc}")
 
-    limits = config.get("preflight_limits")
-    if not isinstance(limits, dict):
-        reasons.append("missing preflight_limits")
-        preflight = {"clean": False, "reasons": ["missing_preflight_limits"]}
+    protocol_limits = protocol.get("preflight")
+    if not isinstance(protocol_limits, dict):
+        reasons.append("protocol preflight limits missing")
+        limits = {}
+    else:
+        limits = dict(protocol_limits)
+
+    configured_limits = config.get("preflight_limits")
+    if configured_limits is not None and configured_limits != limits:
+        reasons.append("preflight_limits override differs from frozen protocol")
+
+    if not limits:
+        preflight = {"clean": False, "reasons": ["missing_protocol_preflight_limits"]}
         snapshot = {}
     else:
         try:
@@ -167,6 +176,7 @@ def probe_host(
         "state": state,
         "reasons": reasons,
         "pins": pins,
+        "preflight_limits": limits,
         "preflight": dict(preflight),
         "snapshot": snapshot,
         "toolrush_doctor": toolrush_doctor,
