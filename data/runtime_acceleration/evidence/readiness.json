@@ -2,16 +2,18 @@
   "experiment_id": "JAR-EXP-0013",
   "state": "PHASE2_TOOL_MICROBENCH_READY_FOR_CONTROLLED_HOST",
   "branch": "research/jar-exp-0013-phase2-tool-microbench",
-  "validated_code_head": "f930fd5e96825c83fa035dec3bffb0a5f6b74c63",
+  "validated_code_head": "93cd6523da8e6edfdfbe026f10263b17b7f455a2",
   "base_main": "f5de043c5053d737c04bfd07c909c92353ead03e",
   "hosted_validation": {
-    "workflow_run_id": 34038717183,
+    "workflow_run_id": 34039029900,
     "conclusion": "success",
-    "tests_passed": 147,
+    "tests_passed": 149,
     "tests_failed": 0,
     "ubuntu_functional": "success",
     "windows_functional": "success",
     "analysis_fixtures": "success",
+    "full_ci_workflow_run_id": 34039029895,
+    "full_ci": "success",
     "live_provider_calls": 0,
     "production_mutations": 0,
     "timing_authority": "NONE_HOSTED_RUNNER_TIMING_IS_FUNCTIONAL_ONLY"
@@ -34,7 +36,9 @@
     "memory_percent_max": 80.0,
     "require_ac_power": true,
     "before_every_paired_block": true,
-    "contaminated_block_executes_treatments": false
+    "contaminated_block_executes_treatments": false,
+    "installed_toolrush_plugin_must_match_pinned_checkout": true,
+    "installed_toolrush_doctor_must_match_pinned_checkout": true
   },
   "one_command_host_handoff": {
     "script": "experiments/runtime_acceleration/start-controlled-host.ps1",
@@ -49,7 +53,8 @@
       "REAL_HERMES_PYTHON_AND_ROOT"
     ],
     "local_probe": "AUTHORITATIVE_READINESS_GATE",
-    "local_probe_evidence": "C:/Aftergraph/JAR-EXP-0013/evidence/controlled-host-probe.json"
+    "local_probe_evidence": "C:/Aftergraph/JAR-EXP-0013/evidence/controlled-host-probe.json",
+    "handoff_document": "experiments/runtime_acceleration/PHASE2_WINDOWS_HANDOFF.md"
   },
   "phase1": {
     "conditions": ["A", "B", "C", "D"],
@@ -101,5 +106,5 @@
     "G-COMB": "INCONCLUSIVE_NO_LIVE_DATA"
   },
   "next_dependency": "Run start-controlled-host.ps1 -RunPhase2 on the real controlled Windows Hermes host after resolving the machine's actual Hermes/ToolRush/Obscura/Chromium paths. Preserve all evidence and do not relax pins or preflight thresholds.",
-  "note": "Phase-2 orchestration, real Hermes/ToolRush binding, generated RPC, analysis, and Windows handoff are implementation-ready. No live controlled-host Phase-2 performance observations exist in this repository state."
+  "note": "Phase-2 orchestration, real Hermes/ToolRush binding, generated RPC, analysis, installed-plugin parity checks, and Windows handoff are implementation-ready. No live controlled-host Phase-2 performance observations exist in this repository state."
 }
