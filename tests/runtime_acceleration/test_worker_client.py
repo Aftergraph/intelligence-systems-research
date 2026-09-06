@@ -71,6 +71,7 @@ def test_client_validates_handshake_sends_requests_and_exposes_equal_handlers(tm
         [
             {"type": "ready", "surface": _surface("stock")},
             {"id": "req-1", "ok": True, "result": {"content": "alpha"}},
+            {"type": "closed"},
         ]
     )
     captured = {}
@@ -102,12 +103,19 @@ def test_client_validates_handshake_sends_requests_and_exposes_equal_handlers(tm
     assert captured["kwargs"]["shell"] is False
     assert captured["kwargs"]["cwd"] == str(tmp_path.resolve())
     client.close()
-    assert process.terminated is True
+    sent_lines = [json.loads(line) for line in process.stdin.getvalue().splitlines()]
+    assert sent_lines[-1] == {"type": "close"}
+    assert process.returncode == 0
+    assert process.terminated is False
+    assert process.killed is False
 
 
 def test_client_treatment_argv_and_surface_are_toolrush_specific(tmp_path):
     bridge = _bridge()
-    process = _FakeProcess([{"type": "ready", "surface": _surface("toolrush")}])
+    process = _FakeProcess([
+        {"type": "ready", "surface": _surface("toolrush")},
+        {"type": "closed"},
+    ])
     captured = {}
 
     def popen_factory(argv, **kwargs):
@@ -136,6 +144,7 @@ def test_client_surfaces_worker_errors_without_fallback(tmp_path):
                 "ok": False,
                 "error": {"type": "ValueError", "message": "bad path"},
             },
+            {"type": "closed"},
         ]
     )
     client = bridge.HermesWorkerClient(
