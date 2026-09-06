@@ -1,1 +1,0 @@
-Hotfix branch is intentionally test-first. The failing contract requires the controlled-host workflow dispatch ref to default to canonical `main` after PR #5 merged.
