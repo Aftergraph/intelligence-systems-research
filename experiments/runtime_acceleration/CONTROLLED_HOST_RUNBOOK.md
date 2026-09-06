@@ -36,7 +36,7 @@ The controlled host is exposed to GitHub Actions only through a dedicated self-h
 
 The runner must be registered for `Aftergraph/intelligence-systems-research` or an Aftergraph runner group that grants this repository access. Do not reuse the label on an unrelated machine, because that would make host identity ambiguous.
 
-The repository now includes `experiments/runtime_acceleration/bootstrap-self-hosted-runner.ps1`. It pins GitHub Actions runner `2.337.0`, verifies the Windows x64 archive against SHA256 `1150692afa94e71f872017e254ea55b6eece1eece3fe7e3a6d4c93d0a1b85cfc`, registers the dedicated label, and installs the runner as a Windows service. The registration token is read as a secure string and is never stored in the repository.
+The repository includes `experiments/runtime_acceleration/bootstrap-self-hosted-runner.ps1`. It pins GitHub Actions runner `2.337.0`, verifies the Windows x64 archive against SHA256 `1150692afa94e71f872017e254ea55b6eece1eece3fe7e3a6d4c93d0a1b85cfc`, registers the dedicated label, and installs the runner as a Windows service. The registration token is read as a secure string and is never stored in the repository.
 
 Run the bootstrap from elevated PowerShell after obtaining a short-lived repository runner registration token from GitHub:
 
@@ -67,7 +67,7 @@ Obscura's pinned CDP interface is started as `obscura serve --port 9222 --host 1
 
 ## Preflight gate
 
-Protocol revision 2 freezes these values before live performance collection:
+Protocol revision 3 preserves the host limits frozen in revision 2:
 
 - CPU utilization: <=20.0%
 - memory utilization: <=80.0%
@@ -86,6 +86,19 @@ Before each timing block, collect a host snapshot containing at least:
 
 Classify it through `check_preflight`. A contaminated block remains in raw evidence and MUST NOT be silently deleted.
 
+## Statistical gate
+
+Protocol revision 3 freezes the confirmatory statistics before the first controlled-host performance observation:
+
+- 95% confidence level;
+- paired percentile bootstrap for paired timing/effect measurements;
+- 10,000 bootstrap resamples with seed `130013`;
+- Newcombe/Wilson treatment-minus-control interval for verified mission success;
+- promotion requires the lower 95% confidence bound to meet the frozen effect threshold;
+- mission-success non-inferiority requires the lower treatment-minus-control bound to be >= `-0.05`.
+
+The minimum 100 mission attempts per condition is an evidence floor, not an automatic statistical pass. If the point estimate clears a threshold but the lower confidence bound does not, the gate remains `INCONCLUSIVE`. If the point estimate itself is below a frozen effect threshold, the gate is `FAIL`.
+
 ## Probe execution
 
 Run the manual `JAR-EXP-0013 controlled host` workflow and provide the absolute machine-local config path in `host_config_path`. It must finish with a `READY` probe before confirmatory measurements begin. `BLOCKED` means a path, source pin, doctor/version check, or protocol contract failed. `CONTAMINATED` means the host is correctly configured but not clean enough for a confirmatory timing block.
@@ -96,7 +109,7 @@ The uploaded `controlled-host-probe.json` contains command metadata and host pre
 
 ### Phase 1: deterministic trace replay
 
-Run the frozen trace-replay workloads first. Use at least 20 measured repetitions per trace/condition pair. Counterbalance or randomize A/B/C/D order with the recorded seed.
+Run the frozen trace-replay workloads first. Use at least 20 measured repetitions per trace/condition pair. Counterbalance or randomize A/B/C/D order with the recorded seed. Preserve pair identity in raw data so the preregistered paired bootstrap can resample paired blocks rather than independent observations.
 
 ### Phase 2: tool microbenchmarks
 
@@ -108,7 +121,7 @@ Run Chromium and Obscura against the local controlled fixture server. Record sta
 
 ### Phase 4: real missions
 
-Run identical verifier-backed missions across A/B/C/D with the same model/provider configuration for each paired block. Confirmatory promotion requires at least 100 total verified mission attempts per condition, balanced across frozen mission classes.
+Run identical verifier-backed missions across A/B/C/D with the same model/provider configuration for each paired block. Confirmatory promotion requires at least 100 total verified mission attempts per condition, balanced across frozen mission classes. Continue beyond the floor when needed to establish the preregistered confidence/non-inferiority bounds; do not weaken the confidence gate to force a verdict.
 
 ## Evidence contract
 
@@ -121,7 +134,7 @@ Each completed run writes a unique run directory under `data/runtime_acceleratio
 - `verifier.json`
 - `artifacts.sha256`
 
-Raw evidence is append-only after the run is finalized. Aggregates MUST be reproducible from raw evidence.
+Raw evidence is append-only after the run is finalized. Aggregates MUST be reproducible from raw evidence. Pair/block identity required for statistical analysis must be retained in non-secret metadata.
 
 ## Stop conditions
 
@@ -133,11 +146,12 @@ Stop the confirmatory run and mark the affected block when:
 - a required correctness/safety contract fails;
 - the verifier is not identical across comparable conditions;
 - evidence cannot be persisted without secrets;
-- host instability prevents comparable timing.
+- host instability prevents comparable timing;
+- pair identity is lost or the statistical inputs cannot be reproduced.
 
 ## Analysis and gates
 
-After controlled-host data exists, run the registered analysis and promotion gate evaluator. The required gates remain:
+After controlled-host data exists, compute point estimates and the preregistered 95% intervals, then run the promotion gate evaluator. The required gates remain:
 
 - `G-TR`: ToolRush candidate
 - `G-OB`: Obscura candidate
@@ -147,4 +161,4 @@ Until controlled-host evidence exists, all three remain `INCONCLUSIVE_NO_LIVE_DA
 
 ## Current implementation evidence
 
-Runner-bootstrap and controlled-host dispatch behavior were validated on branch head `c32fa93b61ac35caebfbe6f08aa8882396c341f4` by GitHub Actions run `34016027454`: 53/53 runtime-acceleration tests passed on the Ubuntu functional job, with Windows functional and analysis-fixtures also successful. This validates repository-side bootstrap and bridge behavior only. It is not controlled-host performance evidence.
+Hosted CI validates harness behavior and portability only. The authoritative current hosted verification head and workflow run are recorded in `data/runtime_acceleration/evidence/readiness.json`. Neither hosted CI nor this runbook is controlled-host performance evidence.
