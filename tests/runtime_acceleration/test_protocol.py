@@ -16,6 +16,16 @@ def test_protocol_freezes_conditions_thresholds_and_source_pins():
     assert protocol["pins"]["obscura"] == "a1e09de68c7617b8079fbb1661b0548c501971c1"
 
 
+def test_protocol_freezes_controlled_host_preflight_before_live_data():
+    protocol = load_protocol(ROOT / "experiments/runtime_acceleration/protocol.yaml")
+    assert protocol["revision"] == 2
+    assert protocol["preflight"] == {
+        "cpu_percent_max": 20.0,
+        "memory_percent_max": 80.0,
+        "require_ac_power": True,
+    }
+
+
 def test_protocol_rejects_wrong_experiment_id(tmp_path):
     bad = tmp_path / "protocol.yaml"
     bad.write_text("experiment_id: WRONG\n", encoding="utf-8")
