@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import argparse
+import json
 from pathlib import Path
 from typing import Callable
 
@@ -7,6 +9,7 @@ from .browser_runtime import ChromiumBackendFactory, ObscuraBackendFactory
 from .controlled_host import capture_preflight_snapshot
 from .fixture_server import fixture_server
 from .phase1_executor import execute_phase1_plan
+from .protocol import load_protocol
 from .runtime_bridge import HermesWorkerClient, build_runtime_adapter_factory
 
 
@@ -21,6 +24,15 @@ _REQUIRED_RUNTIME_CONFIG = (
     "toolrush_plugin",
     "obscura_executable",
 )
+
+
+def _load_json(path: str | Path, label: str) -> dict:
+    source = Path(path)
+    with source.open("r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+    if not isinstance(payload, dict):
+        raise Phase1HostRunError(f"{label} must be a JSON object")
+    return payload
 
 
 def _require_controlled_contract(
@@ -135,3 +147,43 @@ def run_phase1_host(
             if toolrush_worker is not None:
                 toolrush_worker.close()
             stock_worker.close()
+
+
+def _parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Execute JAR-EXP-0013 deterministic Phase-1 on a READY controlled host."
+    )
+    parser.add_argument("--config", required=True, help="Controlled-host JSON config")
+    parser.add_argument("--plan", required=True, help="Frozen TRACE_REPLAY JSON plan")
+    parser.add_argument("--probe", required=True, help="READY controlled-host probe JSON")
+    parser.add_argument("--protocol", required=True, help="Frozen protocol.yaml")
+    parser.add_argument("--evidence-root", required=True, help="Append-only evidence root")
+    parser.add_argument("--execution-id", required=True, help="Unique immutable execution id")
+    return parser
+
+
+def main(
+    argv: list[str] | None = None,
+    *,
+    runner: Callable[..., dict] = run_phase1_host,
+) -> int:
+    args = _parser().parse_args(argv)
+    config = _load_json(args.config, "controlled-host config")
+    plan = _load_json(args.plan, "measurement plan")
+    probe = _load_json(args.probe, "controlled-host probe")
+    protocol = load_protocol(Path(args.protocol))
+
+    summary = runner(
+        config,
+        plan,
+        protocol,
+        probe,
+        evidence_root=Path(args.evidence_root),
+        execution_id=args.execution_id,
+    )
+    print(json.dumps(summary, indent=2, sort_keys=True))
+    return 0 if summary.get("state") == "COMPLETE" else 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
