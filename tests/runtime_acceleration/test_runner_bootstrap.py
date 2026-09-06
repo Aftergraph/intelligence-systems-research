@@ -141,3 +141,8 @@ def test_controlled_workflow_accepts_machine_local_path_without_repo_variable():
     assert "workflow_dispatch:" in text
     assert "inputs.host_config_path" in text
     assert "JAR_EXP_0013_HOST_CONFIG" not in text
+
+
+def test_controlled_workflow_does_not_checkout_retired_feature_branch():
+    text = CONTROLLED_WORKFLOW.read_text(encoding="utf-8")
+    assert "research/jar-exp-0013-runtime-acceleration" not in text
