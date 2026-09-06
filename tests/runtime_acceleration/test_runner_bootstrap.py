@@ -29,16 +29,25 @@ def test_runner_bootstrap_does_not_embed_registration_secret():
     assert "registrationtoken = \"" not in text
 
 
+def test_one_command_host_start_uses_local_probe_before_optional_dispatch():
+    text = START_CONTROLLED_HOST.read_text(encoding="utf-8")
+    assert "experiments.runtime_acceleration.controlled_host" in text
+    assert "controlled-host-probe.json" in text
+    assert "ConvertFrom-Json" in text
+    assert 'state -ne "READY"' in text
+    assert "[switch]$DispatchWorkflow" in text
+    assert "gh workflow run" in text
+    assert "jar-exp-0013-controlled-host.yml" in text
+    assert "research/jar-exp-0013-runtime-acceleration" in text
+
+
 def test_one_command_host_start_uses_authenticated_gh_and_short_lived_token():
     text = START_CONTROLLED_HOST.read_text(encoding="utf-8")
     assert "gh auth status" in text
     assert "actions/runners/registration-token" in text
     assert "ConvertTo-SecureString" in text
     assert "bootstrap-self-hosted-runner.ps1" in text
-    assert "jar-exp-0013-controlled-host.yml" in text
     assert "host_config_path" in text
-    assert "gh workflow run" in text
-    assert "research/jar-exp-0013-runtime-acceleration" in text
 
 
 def test_one_command_host_start_does_not_embed_long_lived_credentials():
