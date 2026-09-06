@@ -33,6 +33,16 @@ class BoundTraceAdapter:
             raise TypeError("bound treatment operation must return a mapping")
         return result
 
+    def close(self) -> dict:
+        """Close the browser treatment exactly once through its declared adapter surface."""
+        close = getattr(self.browser_layer, "close", None)
+        if not callable(close):
+            raise HostBindingError("bound browser layer does not expose close()")
+        result = close()
+        if not isinstance(result, dict):
+            raise TypeError("bound browser close must return a mapping")
+        return result
+
 
 def _materialize_browser_backend(candidate):
     """Resolve one browser backend per adapter while preserving legacy object inputs."""
