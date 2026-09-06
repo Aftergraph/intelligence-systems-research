@@ -1,11 +1,11 @@
 {
   "experiment_id": "JAR-EXP-0013",
-  "state": "ONE_COMMAND_HOST_HANDOFF_READY",
-  "validated_code_head": "cdb2c65bda978ccdc93f33b0847ef905910e5af5",
+  "state": "LOCAL_FIRST_HOST_PROBE_READY",
+  "validated_code_head": "ebc174916a04d12ac6c0f4b07b85c32647d12496",
   "hosted_validation": {
-    "workflow_run_id": 34018894359,
+    "workflow_run_id": 34019541442,
     "conclusion": "success",
-    "tests_passed": 62,
+    "tests_passed": 63,
     "tests_failed": 0,
     "ubuntu_functional": "success",
     "windows_functional": "success",
@@ -24,20 +24,26 @@
       "Windows",
       "X64",
       "aftergraph-jar-exp-0013"
-    ]
+    ],
+    "role": "OPTIONAL_REMOTE_REPRODUCTION"
   },
   "one_command_host_handoff": {
     "script": "experiments/runtime_acceleration/start-controlled-host.ps1",
+    "default_mode": "LOCAL_FIRST",
     "requires": [
       "ELEVATED_POWERSHELL",
-      "AUTHENTICATED_GITHUB_CLI",
+      "PYTHON_3_11",
       "PINNED_TOOLRUSH_CHECKOUT",
       "PINNED_OBSCURA_CHECKOUT",
       "HERMES_PYTHON"
     ],
-    "runner_token_acquisition": "GH_API_SHORT_LIVED_IN_MEMORY",
+    "github_cli_required_by_default": false,
+    "isolated_harness_venv": "C:/Aftergraph/JAR-EXP-0013/harness-venv",
     "host_config_generation": "MACHINE_LOCAL_NO_SECRETS",
-    "workflow_dispatch": "AUTOMATIC_AFTER_FAIL_CLOSED_PATH_CHECKS",
+    "local_probe": "AUTHORITATIVE_READINESS_GATE",
+    "local_probe_evidence": "C:/Aftergraph/JAR-EXP-0013/evidence/controlled-host-probe.json",
+    "workflow_dispatch": "OPTIONAL_WITH_DISPATCHWORKFLOW_SWITCH",
+    "workflow_default_branch_dependency": "EXPLICITLY_DOCUMENTED",
     "branch": "research/jar-exp-0013-runtime-acceleration"
   },
   "live_host_bridge": {
@@ -46,7 +52,7 @@
     "toolrush_doctor": "WIRED",
     "obscura_version_probe": "WIRED",
     "obscura_cdp_binding": "LOOPBACK_ONLY",
-    "controlled_host_workflow": "MANUAL_ONLY_DISPATCHED_BY_HOST_HANDOFF_SCRIPT",
+    "controlled_host_workflow": "OPTIONAL_REMOTE_REPRODUCTION",
     "host_config_source": "MACHINE_LOCAL_ABSOLUTE_PATH",
     "protocol_revision": 3,
     "preflight_limits": {
@@ -70,6 +76,6 @@
     "G-OB": "INCONCLUSIVE_NO_LIVE_DATA",
     "G-COMB": "INCONCLUSIVE_NO_LIVE_DATA"
   },
-  "next_dependency": "On the real Windows Hermes machine, open elevated PowerShell in the research branch checkout and run experiments/runtime_acceleration/start-controlled-host.ps1. The script obtains a short-lived runner token through authenticated gh, registers the dedicated runner if needed, writes the machine-local host config after fail-closed path checks, and dispatches the controlled-host probe.",
-  "note": "One-command host handoff readiness and hosted CI are not performance evidence."
+  "next_dependency": "On the real Windows Hermes machine, open elevated PowerShell in the research branch checkout and run experiments/runtime_acceleration/start-controlled-host.ps1. No GitHub CLI or self-hosted runner is required for the default local readiness probe. Continue to A/B/C/D measurements only if the generated controlled-host-probe.json state is READY.",
+  "note": "Local-first host readiness and hosted CI are not performance evidence."
 }
