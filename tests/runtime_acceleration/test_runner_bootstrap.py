@@ -38,7 +38,12 @@ def test_one_command_host_start_uses_local_probe_before_optional_dispatch():
     assert "[switch]$DispatchWorkflow" in text
     assert "gh workflow run" in text
     assert "jar-exp-0013-controlled-host.yml" in text
-    assert "research/jar-exp-0013-runtime-acceleration" in text
+
+
+def test_one_command_host_start_defaults_remote_dispatch_to_canonical_main():
+    text = START_CONTROLLED_HOST.read_text(encoding="utf-8")
+    assert '[string]$Branch = "main"' in text
+    assert 'research/jar-exp-0013-runtime-acceleration' not in text
 
 
 def test_ready_host_freezes_unique_trace_measurement_plan():

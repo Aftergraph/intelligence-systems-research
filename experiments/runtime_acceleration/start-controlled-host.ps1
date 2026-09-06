@@ -2,7 +2,7 @@
 param(
     [string]$Repository = "Aftergraph/intelligence-systems-research",
     [string]$RepositoryUrl = "https://github.com/Aftergraph/intelligence-systems-research",
-    [string]$Branch = "research/jar-exp-0013-runtime-acceleration",
+    [string]$Branch = "main",
     [string]$RunnerDir = "C:\Aftergraph\JAR-EXP-0013\actions-runner",
     [string]$HarnessVenv = "C:\Aftergraph\JAR-EXP-0013\harness-venv",
     [string]$EvidenceDir = "C:\Aftergraph\JAR-EXP-0013\evidence",
