@@ -155,7 +155,7 @@ python-multipart==0.0.32
 python-telegram-bot==22.8
 pytz==2025.2
 pywin32==311
-pywinpty==2.0.15
+pywinpty==3.0.5
 referencing==0.37.0
 requests-oauthlib==2.0.0
 requests-toolbelt==1.0.0
