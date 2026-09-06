@@ -79,6 +79,9 @@ class _Adapter:
             observable["result"] = "DIFFERENT"
         return observable
 
+    def close(self) -> dict:
+        return {"state": "closed"}
+
 
 def _clean_snapshot() -> dict:
     return {"cpu_percent": 3.0, "memory_percent": 21.0, "on_ac_power": True}
