@@ -18,6 +18,7 @@ param(
     [string]$ChromiumExecutable = "C:\Program Files\Google\Chrome\Application\chrome.exe",
     [int]$ObscuraPort = 9222,
     [switch]$RunPhase1,
+    [switch]$RunPhase2,
     [switch]$SkipRunnerRegistration,
     [switch]$DispatchWorkflow
 )
@@ -103,11 +104,18 @@ Assert-Path "Obscura executable" $ObscuraExecutable
 Assert-Path "Chromium executable" $ChromiumExecutable
 
 $resolvedWorkspace = [IO.Path]::GetFullPath($Workspace)
-$fixtureWorkspace = Join-Path $resolvedWorkspace "fixture"
-New-Item -ItemType Directory -Force -Path $fixtureWorkspace | Out-Null
-$sourceFixture = Join-Path $fixtureWorkspace "source_a.py"
-$fixtureText = "# deterministic-marker`ndef benchmark_value():`n    return `"alpha`"`n"
-[IO.File]::WriteAllText($sourceFixture, $fixtureText, [Text.UTF8Encoding]::new($false))
+New-Item -ItemType Directory -Force -Path $resolvedWorkspace | Out-Null
+Push-Location $repoRoot
+try {
+    Invoke-NativeChecked -Executable $harnessPython -Arguments @(
+        "-c",
+        "from experiments.runtime_acceleration.phase2_bindings import prepare_tool_microbench_workspace; import sys; prepare_tool_microbench_workspace(sys.argv[1])",
+        $resolvedWorkspace
+    ) -FailureMessage "Failed to prepare canonical JAR-EXP-0013 deterministic fixture"
+}
+finally {
+    Pop-Location
+}
 
 $configDirectory = Split-Path -Parent ([IO.Path]::GetFullPath($HostConfigPath))
 New-Item -ItemType Directory -Force -Path $configDirectory | Out-Null
@@ -125,7 +133,7 @@ $config = [ordered]@{
     chromium_executable = ([IO.Path]::GetFullPath($ChromiumExecutable))
     obscura_port = $ObscuraPort
 }
-$config | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath $HostConfigPath -Encoding UTF8
+[IO.File]::WriteAllText($HostConfigPath, ($config | ConvertTo-Json -Depth 4), [Text.UTF8Encoding]::new($false))
 $resolvedConfig = [IO.Path]::GetFullPath($HostConfigPath)
 Write-Host "Machine-local controlled-host config written: $resolvedConfig"
 
@@ -161,11 +169,11 @@ Write-Host "Controlled-host probe READY. The machine may enter the preregistered
 
 $plansDir = Join-Path $resolvedEvidenceDir "plans"
 New-Item -ItemType Directory -Force -Path $plansDir | Out-Null
+$protocolPath = Join-Path $repoRoot "experiments\runtime_acceleration\protocol.yaml"
+
 $planStamp = [DateTime]::UtcNow.ToString("yyyyMMddTHHmmssfffZ")
 $tracePlanPath = Join-Path $plansDir "trace-plan-$planStamp.json"
 $tracePath = Join-Path $repoRoot "experiments\runtime_acceleration\workloads\trace_replay.yaml"
-$protocolPath = Join-Path $repoRoot "experiments\runtime_acceleration\protocol.yaml"
-
 Push-Location $repoRoot
 try {
     Invoke-NativeChecked -Executable $harnessPython -Arguments @(
@@ -181,6 +189,25 @@ finally {
 }
 Write-Host "Phase-1 trace plan frozen: $tracePlanPath"
 Write-Host "Phase-1 schedule: 20 paired blocks x 4 conditions = 80 planned runs; plan creation is not performance evidence."
+
+$phase2PlanStamp = [DateTime]::UtcNow.ToString("yyyyMMddTHHmmssfffZ")
+$phase2PlanPath = Join-Path $plansDir "phase2-plan-$phase2PlanStamp.json"
+$toolMicrobenchPath = Join-Path $repoRoot "experiments\runtime_acceleration\workloads\tool_microbench.yaml"
+Push-Location $repoRoot
+try {
+    Invoke-NativeChecked -Executable $harnessPython -Arguments @(
+        "-m", "experiments.runtime_acceleration.phase2_tool_microbench",
+        "--workload", $toolMicrobenchPath,
+        "--protocol", $protocolPath,
+        "--output", $phase2PlanPath
+    ) -FailureMessage "Failed to freeze JAR-EXP-0013 Phase-2 tool microbenchmark plan"
+}
+finally {
+    Pop-Location
+}
+$phase2Plan = Get-Content -LiteralPath $phase2PlanPath -Raw -Encoding UTF8 | ConvertFrom-Json
+Write-Host "Phase-2 tool plan frozen: $phase2PlanPath"
+Write-Host "Phase-2 schedule: $($phase2Plan.paired_blocks) paired blocks x 2 conditions = $($phase2Plan.planned_runs) planned runs; plan creation is not performance evidence."
 
 if (-not $RunPhase1) {
     Write-Host "Phase-1 measurements were NOT started. Re-run with -RunPhase1 after reviewing READY probe and frozen plan."
@@ -235,6 +262,62 @@ else {
     if ($phase1RunExit -ne 0) {
         Write-Host "Diagnostic Phase-1 analysis was retained, but the controlled execution was non-clean (exit code $phase1RunExit)."
         exit $phase1RunExit
+    }
+}
+
+if (-not $RunPhase2) {
+    Write-Host "Phase-2 tool measurements were NOT started. Re-run with -RunPhase2 after reviewing READY probe and frozen plan."
+}
+else {
+    $phase2ExecutionId = "phase2-" + [DateTime]::UtcNow.ToString("yyyyMMddTHHmmssfffZ")
+    Write-Host "Starting controlled Phase-2 execution: $phase2ExecutionId"
+    $phase2Arguments = @(
+        "-m", "experiments.runtime_acceleration.phase2_host_run",
+        "--config", $resolvedConfig,
+        "--plan", $phase2PlanPath,
+        "--probe", $probePath,
+        "--protocol", $protocolPath,
+        "--evidence-root", $resolvedEvidenceDir,
+        "--execution-id", $phase2ExecutionId
+    )
+    Push-Location $repoRoot
+    try {
+        & $harnessPython @phase2Arguments
+        $phase2RunExit = $LASTEXITCODE
+    }
+    finally {
+        Pop-Location
+    }
+
+    $phase2SessionDir = Join-Path $resolvedEvidenceDir $phase2ExecutionId
+    $phase2SummaryPath = Join-Path $phase2SessionDir "summary.json"
+    $phase2AnalysisJson = Join-Path $phase2SessionDir "phase2-analysis.json"
+    $phase2AnalysisMarkdown = Join-Path $phase2SessionDir "phase2-analysis.md"
+    Assert-Path "Phase-2 summary" $phase2SummaryPath
+
+    Push-Location $repoRoot
+    try {
+        Invoke-NativeChecked -Executable $harnessPython -Arguments @(
+            "-m", "experiments.runtime_acceleration.phase2_analysis",
+            "--summary", $phase2SummaryPath,
+            "--protocol", $protocolPath,
+            "--json-output", $phase2AnalysisJson,
+            "--markdown-output", $phase2AnalysisMarkdown
+        ) -FailureMessage "JAR-EXP-0013 Phase-2 analysis did not complete cleanly"
+    }
+    finally {
+        Pop-Location
+    }
+
+    Write-Host "Controlled Phase-2 execution finished: $phase2ExecutionId"
+    Write-Host "Evidence root: $resolvedEvidenceDir"
+    Write-Host "Phase-2 analysis JSON: $phase2AnalysisJson"
+    Write-Host "Phase-2 analysis report: $phase2AnalysisMarkdown"
+    Write-Host "Promotion gates remain INCONCLUSIVE after Phase-2 tool analysis."
+
+    if ($phase2RunExit -ne 0) {
+        Write-Host "Diagnostic Phase-2 analysis was retained, but the controlled execution was non-clean (exit code $phase2RunExit)."
+        exit $phase2RunExit
     }
 }
 

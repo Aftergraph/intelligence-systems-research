@@ -23,7 +23,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: research/jar-exp-0013-runtime-acceleration
           fetch-depth: 1
 
       - uses: actions/setup-python@v5

@@ -1,4 +1,8 @@
+import os
 from pathlib import Path
+import subprocess
+
+import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 BOOTSTRAP = ROOT / "experiments/runtime_acceleration/bootstrap-self-hosted-runner.ps1"
@@ -78,6 +82,43 @@ def test_phase1_diagnostic_analysis_runs_before_nonclean_exit():
     assert "Diagnostic Phase-1 analysis was retained" in text
 
 
+def test_phase2_execution_freezes_plan_and_runs_analysis_before_nonclean_exit():
+    text = START_CONTROLLED_HOST.read_text(encoding="utf-8")
+    assert "[switch]$RunPhase2" in text
+    assert "experiments.runtime_acceleration.phase2_tool_microbench" in text
+    assert "tool_microbench.yaml" in text
+    assert "phase2-plan-$phase2PlanStamp.json" in text
+    assert "experiments.runtime_acceleration.phase2_host_run" in text
+    assert "experiments.runtime_acceleration.phase2_analysis" in text
+    assert "phase2-analysis.json" in text
+    assert "phase2-analysis.md" in text
+    assert "$phase2RunExit = $LASTEXITCODE" in text
+    run_index = text.index("experiments.runtime_acceleration.phase2_host_run")
+    analysis_index = text.index("experiments.runtime_acceleration.phase2_analysis")
+    exit_index = text.index("if ($phase2RunExit -ne 0)")
+    assert run_index < analysis_index < exit_index
+    assert "Promotion gates remain INCONCLUSIVE after Phase-2 tool analysis" in text
+
+
+@pytest.mark.skipif(os.name != "nt", reason="PowerShell parser verification runs on Windows CI")
+def test_start_controlled_host_powershell_syntax_is_valid():
+    command = (
+        "$errors=$null; "
+        "[System.Management.Automation.Language.Parser]::ParseFile($env:JAR_EXP_PS1,[ref]$null,[ref]$errors) | Out-Null; "
+        "if ($errors.Count -gt 0) { $errors | ForEach-Object { Write-Error $_ }; exit 1 }"
+    )
+    env = dict(os.environ)
+    env["JAR_EXP_PS1"] = str(START_CONTROLLED_HOST)
+    result = subprocess.run(
+        ["powershell", "-NoProfile", "-Command", command],
+        capture_output=True,
+        text=True,
+        check=False,
+        env=env,
+    )
+    assert result.returncode == 0, result.stderr or result.stdout
+
+
 def test_one_command_host_start_uses_authenticated_gh_and_short_lived_token():
     text = START_CONTROLLED_HOST.read_text(encoding="utf-8")
     assert "gh auth status" in text
@@ -100,3 +141,8 @@ def test_controlled_workflow_accepts_machine_local_path_without_repo_variable():
     assert "workflow_dispatch:" in text
     assert "inputs.host_config_path" in text
     assert "JAR_EXP_0013_HOST_CONFIG" not in text
+
+
+def test_controlled_workflow_does_not_checkout_retired_feature_branch():
+    text = CONTROLLED_WORKFLOW.read_text(encoding="utf-8")
+    assert "research/jar-exp-0013-runtime-acceleration" not in text

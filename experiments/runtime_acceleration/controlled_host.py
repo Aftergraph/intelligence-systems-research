@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 from typing import Callable
@@ -13,8 +14,10 @@ from .protocol import load_protocol
 DEFAULT_PROTOCOL = Path(__file__).with_name("protocol.yaml")
 _REQUIRED_PATHS = (
     "hermes_python",
+    "hermes_root",
     "toolrush_repo",
     "toolrush_doctor",
+    "toolrush_plugin",
     "obscura_repo",
     "obscura_executable",
 )
@@ -44,6 +47,60 @@ def _command_summary(result: CommandResult) -> dict:
         "returncode": int(result.returncode),
         "duration_ms": float(result.duration_ms),
     }
+
+
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _toolrush_installation_report(paths: dict[str, Path], reasons: list[str]) -> dict:
+    repo = paths.get("toolrush_repo")
+    installed_plugin = paths.get("toolrush_plugin")
+    installed_doctor = paths.get("toolrush_doctor")
+    report = {
+        "plugin_matches_pinned_checkout": False,
+        "doctor_matches_pinned_checkout": False,
+        "plugin_sha256": None,
+        "doctor_sha256": None,
+        "pinned_plugin_sha256": None,
+        "pinned_doctor_sha256": None,
+    }
+    if repo is None or not repo.exists():
+        return report
+
+    pinned_plugin = repo / "v2" / "plugin" / "__init__.py"
+    pinned_doctor = repo / "v2" / "plugin" / "doctor.py"
+    if not pinned_plugin.is_file():
+        reasons.append(f"pinned ToolRush plugin is missing: {pinned_plugin}")
+    if not pinned_doctor.is_file():
+        reasons.append(f"pinned ToolRush doctor is missing: {pinned_doctor}")
+
+    if installed_plugin is not None and installed_plugin.is_file():
+        report["plugin_sha256"] = _sha256(installed_plugin)
+    if installed_doctor is not None and installed_doctor.is_file():
+        report["doctor_sha256"] = _sha256(installed_doctor)
+    if pinned_plugin.is_file():
+        report["pinned_plugin_sha256"] = _sha256(pinned_plugin)
+    if pinned_doctor.is_file():
+        report["pinned_doctor_sha256"] = _sha256(pinned_doctor)
+
+    if report["plugin_sha256"] and report["pinned_plugin_sha256"]:
+        report["plugin_matches_pinned_checkout"] = (
+            report["plugin_sha256"] == report["pinned_plugin_sha256"]
+        )
+        if not report["plugin_matches_pinned_checkout"]:
+            reasons.append("installed ToolRush plugin differs from pinned checkout")
+    if report["doctor_sha256"] and report["pinned_doctor_sha256"]:
+        report["doctor_matches_pinned_checkout"] = (
+            report["doctor_sha256"] == report["pinned_doctor_sha256"]
+        )
+        if not report["doctor_matches_pinned_checkout"]:
+            reasons.append("installed ToolRush doctor differs from pinned checkout")
+    return report
 
 
 def _blocked(reasons: list[str], **extra) -> dict:
@@ -105,6 +162,8 @@ def probe_host(
             continue
         if actual != expected:
             reasons.append(f"{label} revision mismatch: expected {expected}, got {actual}")
+
+    toolrush_installation = _toolrush_installation_report(paths, reasons)
 
     toolrush_doctor: dict | None = None
     hermes_python = paths.get("hermes_python")
@@ -179,6 +238,7 @@ def probe_host(
         "preflight_limits": limits,
         "preflight": dict(preflight),
         "snapshot": snapshot,
+        "toolrush_installation": toolrush_installation,
         "toolrush_doctor": toolrush_doctor,
         "obscura_version": obscura_version,
         "obscura_serve_argv": obscura_serve_argv,

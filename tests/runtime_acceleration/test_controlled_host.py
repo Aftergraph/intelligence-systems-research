@@ -12,18 +12,33 @@ OBSCURA_PIN = "a1e09de68c7617b8079fbb1661b0548c501971c1"
 def _config(tmp_path: Path) -> dict:
     toolrush_repo = tmp_path / "toolrush"
     obscura_repo = tmp_path / "obscura"
-    toolrush_repo.mkdir()
+    hermes_root = tmp_path / "hermes"
+    installed_plugin_dir = tmp_path / "installed-toolrush"
+    (toolrush_repo / "v2" / "plugin").mkdir(parents=True)
     obscura_repo.mkdir()
+    hermes_root.mkdir()
+    installed_plugin_dir.mkdir()
+
+    plugin_text = "# pinned toolrush plugin fixture\n"
+    doctor_text = "# pinned toolrush doctor fixture\n"
+    (toolrush_repo / "v2" / "plugin" / "__init__.py").write_text(plugin_text, encoding="utf-8")
+    (toolrush_repo / "v2" / "plugin" / "doctor.py").write_text(doctor_text, encoding="utf-8")
+
     hermes_python = tmp_path / "python.exe"
-    doctor = tmp_path / "doctor.py"
+    doctor = installed_plugin_dir / "doctor.py"
+    plugin = installed_plugin_dir / "__init__.py"
     obscura_exe = tmp_path / "obscura.exe"
-    for path in (hermes_python, doctor, obscura_exe):
-        path.write_text("fixture", encoding="utf-8")
+    hermes_python.write_text("fixture", encoding="utf-8")
+    doctor.write_text(doctor_text, encoding="utf-8")
+    plugin.write_text(plugin_text, encoding="utf-8")
+    obscura_exe.write_text("fixture", encoding="utf-8")
     return {
         "experiment_id": "JAR-EXP-0013",
         "hermes_python": str(hermes_python),
+        "hermes_root": str(hermes_root),
         "toolrush_repo": str(toolrush_repo),
         "toolrush_doctor": str(doctor),
+        "toolrush_plugin": str(plugin),
         "obscura_repo": str(obscura_repo),
         "obscura_executable": str(obscura_exe),
         "obscura_port": 9222,
@@ -52,7 +67,7 @@ def _revisions(config: dict) -> dict:
     }
 
 
-def test_probe_host_ready_requires_exact_pins_and_protocol_preflight(tmp_path):
+def test_probe_host_ready_requires_exact_pins_protocol_preflight_and_installed_toolrush_parity(tmp_path):
     config = _config(tmp_path)
     revisions = _revisions(config)
     result = probe_host(
@@ -71,6 +86,10 @@ def test_probe_host_ready_requires_exact_pins_and_protocol_preflight(tmp_path):
     }
     assert result["preflight"]["clean"] is True
     assert result["toolrush_doctor"]["returncode"] == 0
+    assert result["toolrush_installation"]["plugin_matches_pinned_checkout"] is True
+    assert result["toolrush_installation"]["doctor_matches_pinned_checkout"] is True
+    assert len(result["toolrush_installation"]["plugin_sha256"]) == 64
+    assert len(result["toolrush_installation"]["doctor_sha256"]) == 64
     assert result["obscura_version"]["returncode"] == 0
     assert result["obscura_serve_argv"][-2:] == ["--host", "127.0.0.1"]
     assert result["live_provider_calls"] == 0
@@ -87,6 +106,36 @@ def test_probe_host_blocks_revision_drift(tmp_path):
     )
     assert result["state"] == "BLOCKED"
     assert any("revision mismatch" in reason for reason in result["reasons"])
+
+
+def test_probe_host_blocks_when_installed_toolrush_plugin_does_not_match_pinned_checkout(tmp_path):
+    config = _config(tmp_path)
+    Path(config["toolrush_plugin"]).write_text("# stale plugin\n", encoding="utf-8")
+    revisions = _revisions(config)
+    result = probe_host(
+        config,
+        runner=_runner,
+        revision_reader=lambda path: revisions[str(Path(path))],
+        snapshot_provider=_clean_snapshot,
+    )
+    assert result["state"] == "BLOCKED"
+    assert "installed ToolRush plugin differs from pinned checkout" in result["reasons"]
+    assert result["toolrush_installation"]["plugin_matches_pinned_checkout"] is False
+
+
+def test_probe_host_blocks_when_installed_toolrush_doctor_does_not_match_pinned_checkout(tmp_path):
+    config = _config(tmp_path)
+    Path(config["toolrush_doctor"]).write_text("# stale doctor\n", encoding="utf-8")
+    revisions = _revisions(config)
+    result = probe_host(
+        config,
+        runner=_runner,
+        revision_reader=lambda path: revisions[str(Path(path))],
+        snapshot_provider=_clean_snapshot,
+    )
+    assert result["state"] == "BLOCKED"
+    assert "installed ToolRush doctor differs from pinned checkout" in result["reasons"]
+    assert result["toolrush_installation"]["doctor_matches_pinned_checkout"] is False
 
 
 def test_probe_host_marks_dirty_machine_contaminated(tmp_path):
