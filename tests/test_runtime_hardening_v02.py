@@ -56,7 +56,7 @@ def test_01_multistep_agent_execution_cycle(tmp_path):
         return {"modified": "calc.py", "status": "written"}
     def run_unit_tests(p):
         import subprocess
-        res = subprocess.run([sys.executable, "-m", "pytest", str(test_file)], capture_output=True, text=True)
+        res = subprocess.run([sys.executable, "-m", "pytest", str(test_file)], cwd=str(tmp_path), capture_output=True, text=True)
         return {"exit_code": res.returncode, "stdout": res.stdout}
 
     registry.register(Capability(uri="tool://inspect", description="List files", handler=inspect_repo))

@@ -16,6 +16,9 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))  # tests/ for conftest import
+_aie_src = Path(__file__).resolve().parent.parent.parent / "aie" / "src"
+if _aie_src.exists():
+    sys.path.insert(0, str(_aie_src))
 
 from conftest import resolve_contract_path
 

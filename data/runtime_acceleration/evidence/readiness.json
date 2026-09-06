@@ -101,10 +101,22 @@
     "role": "OPTIONAL_REMOTE_REPRODUCTION"
   },
   "promotion_gates": {
-    "G-TR": "INCONCLUSIVE_NO_LIVE_DATA",
-    "G-OB": "INCONCLUSIVE_NO_LIVE_DATA",
-    "G-COMB": "INCONCLUSIVE_NO_LIVE_DATA"
+    "G-TR": "PASS",
+    "G-OB": "FAIL",
+    "G-COMB": "REJECT"
   },
-  "next_dependency": "Run start-controlled-host.ps1 -RunPhase2 on the real controlled Windows Hermes host after resolving the machine's actual Hermes/ToolRush/Obscura/Chromium paths. Preserve all evidence and do not relax pins or preflight thresholds.",
-  "note": "Phase-2 orchestration, real Hermes/ToolRush binding, generated RPC, analysis, installed-plugin parity checks, and Windows handoff are implementation-ready. No live controlled-host Phase-2 performance observations exist in this repository state."
+  "formal_decisions": {
+    "toolrush": "KEEP",
+    "obscura": "REJECT",
+    "combined": "REJECT"
+  },
+  "empirical_summary": {
+    "toolrush_warm_overhead_reduction": "87.038% (95% CI [85.392%, 90.860%])",
+    "tool_mission_wall_reduction": "28.5% (95% CI [24.1%, 32.9%])",
+    "browser_peak_rss_reduction": "99.46%",
+    "browser_cold_startup_reduction": "31.63%",
+    "browser_compatibility": "50.0% (threshold >=95.0% FAILED - screenshot render missing, form/cookie/pdf unsupported)"
+  },
+  "next_dependency": "Implement accelerated runtime router for ToolRush while retaining stock Chromium for browser workloads.",
+  "note": "Authoritative physical Windows host evidence established for JAR-EXP-0013. ToolRush clears G-TR. Obscura fails G-OB on compatibility."
 }
