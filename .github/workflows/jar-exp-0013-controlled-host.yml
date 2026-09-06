@@ -63,7 +63,7 @@ jobs:
 
       - name: Upload non-secret probe evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: jar-exp-0013-controlled-host-probe-${{ github.run_id }}
           path: ${{ runner.temp }}/jar-exp-0013/controlled-host-probe.json
