@@ -293,3 +293,12 @@ NOT rewritten; this amendment is appended per §11 of the prereg.
 **Status:** APPROVED by owner (Telegram, 2026-09-04 ~16:10 local). ACTIVE as of this commit.
 
 **Ceiling extension:** Global ceiling 619 → 931. OpenRouter per-cell cap 78 → 156 (accounts for the 60 burned 429-quota attempts per cell being environmental, not yield-based). Dialagram per-cell cap unchanged at 78. Per-cell cap × 8 cells = 931 ≤ new global ceiling. Stopping rule unchanged: stop when 58 LIVE_VALID or cap.
+
+## Amendment 012 - Dependency lock refresh (protocol-external)
+
+**Date:** 2026-09-07
+**Trigger:** Dependabot batch #17/#19/#21/#24/#25 merged 2026-09-06 23:31-23:32 UTC changed data/study011_dependency_lock.txt; no-silent-change gate refused to run (2 fingerprint tests + runner preflight correctly failing).
+
+**Change:** Fingerprint re-pinned to lock hash d176dcb2 (was 7c8c0922). Protocol-external infrastructure only (google-api-core, httpcore2, orjson, pypdf, ruamel.yaml); all nine other frozen artifacts verified byte-identical. Canonical dataset untouched per Amendment 011 freeze.
+
+**Evidence:** STUDY-011-AMENDMENT-012-DEPENDENCY-LOCK-REFRESH.md; CI run 34080112461 (2 failed / 691 passed) as the drift record.
