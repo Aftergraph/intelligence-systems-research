@@ -1,9 +1,9 @@
 {
- "amendment_note": "Regenerated per Amendment 013 (grouped dependency bump batch week-36 via grouped dependabot PR superseding #30-#34, declared change; protocol-external infra only)",
- "created_utc": "2026-09-07T04:40:15Z",
- "dependency_lock_hash": "c1e573868ee1106ed4163c6a1bc3640641a136a3dc36126737d81bdc999ac525",
+ "amendment_note": "Regenerated per Amendment 014 (grouped pip batch #41, 92 updates, rebased over Amendment 013; declared change; protocol-external infra only)",
+ "created_utc": "2026-09-07T05:08:20Z",
+ "dependency_lock_hash": "a4d2f962e18e6e27bbcb954e67263dd90063322fb66cdd106a307394b843ddff",
  "files": {
-  "data/study011_dependency_lock.txt": "c1e573868ee1106ed4163c6a1bc3640641a136a3dc36126737d81bdc999ac525",
+  "data/study011_dependency_lock.txt": "a4d2f962e18e6e27bbcb954e67263dd90063322fb66cdd106a307394b843ddff",
   "data/study011_preregistration_manifest.json": "087db1b3eb3a739c8a8a99d4bbfa72762b11ca6536edd1ab1bf1cd545e40290c",
   "data/study011_provider_model_matrix.json": "5a63bb9c466f6d1d9d2cc430c14e0aeedebb7609b9a3c97031e96d4667cf0f7c",
   "data/study011_run_math.json": "c98db681d8ca83dc28442a539795b20f463988d1d28bc8a2c0a3b72026b1260d",
