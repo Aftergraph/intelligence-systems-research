@@ -4,6 +4,16 @@ updates:
     directory: "/"
     schedule: {interval: "weekly", day: "monday", time: "06:00", timezone: "Europe/Copenhagen"}
     open-pull-requests-limit: 5
+    groups:
+      # ponytail: study011's no-silent-change gate freezes the dependency
+      # lock, so every individual bump forces an amendment + collides with
+      # the next PR on the same file. One grouped PR per week = one
+      # amendment instead of five. Ceiling: slower per-dep adoption;
+      # upgrade path is removing the group if the gate is ever retired.
+      pip-minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
@@ -11,6 +21,11 @@ updates:
     directory: "/"
     schedule: {interval: "weekly", day: "monday", time: "06:30", timezone: "Europe/Copenhagen"}
     open-pull-requests-limit: 5
+    groups:
+      github-actions-minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
