@@ -311,3 +311,12 @@ NOT rewritten; this amendment is appended per §11 of the prereg.
 **Change:** Fingerprint re-pinned to lock hash c1e57386 (was d176dcb2). Protocol-external infrastructure only; all nine other frozen artifacts verified byte-identical; canonical dataset untouched per Amendment 011 freeze.
 
 **Evidence:** STUDY-011-AMENDMENT-013-GROUPED-DEP-BATCH.md; PRs #30-#34 (superseded) as the drift records.
+
+## Amendment 014 - Grouped pip batch #41 (92 updates, protocol-external)
+
+**Date:** 2026-09-07
+**Trigger:** First weekly run under grouped config (#35): #41 batched 92 pip minor/patch updates in one PR and raced Amendment 013 on the same lock file (conflict; dependabot self-rebase did not land in window). Resolved manually: merge-forward main, take #41 lock (strict superset of A013 at identical target versions), re-pin fingerprint.
+
+**Change:** Fingerprint re-pinned to lock hash a4d2f962 (was c1e57386). Nine other frozen artifacts byte-identical; canonical dataset untouched per Amendment 011 freeze.
+
+**Evidence:** STUDY-011-AMENDMENT-014-GROUPED-BATCH-41.md; PR #41 head 35a6633 as the drift record.
