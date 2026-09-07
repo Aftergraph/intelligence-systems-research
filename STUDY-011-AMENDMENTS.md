@@ -302,3 +302,12 @@ NOT rewritten; this amendment is appended per §11 of the prereg.
 **Change:** Fingerprint re-pinned to lock hash d176dcb2 (was 7c8c0922). Protocol-external infrastructure only (google-api-core, httpcore2, orjson, pypdf, ruamel.yaml); all nine other frozen artifacts verified byte-identical. Canonical dataset untouched per Amendment 011 freeze.
 
 **Evidence:** STUDY-011-AMENDMENT-012-DEPENDENCY-LOCK-REFRESH.md; CI run 34080112461 (2 failed / 691 passed) as the drift record.
+
+## Amendment 013 - Grouped dependency bump batch (protocol-external)
+
+**Date:** 2026-09-07
+**Trigger:** Weekly dependabot run 2026-09-07 06:00 UTC opened 5 individual pip PRs (#30-#34) all touching data/study011_dependency_lock.txt - guaranteed mutual conflicts, one amendment each. Root fix: grouped dependabot updates (#35). This amendment re-pins the fingerprint for the combined batch (agent-client-protocol, fastapi, hf-xet, langchain, httpx2).
+
+**Change:** Fingerprint re-pinned to lock hash c1e57386 (was d176dcb2). Protocol-external infrastructure only; all nine other frozen artifacts verified byte-identical; canonical dataset untouched per Amendment 011 freeze.
+
+**Evidence:** STUDY-011-AMENDMENT-013-GROUPED-DEP-BATCH.md; PRs #30-#34 (superseded) as the drift records.
