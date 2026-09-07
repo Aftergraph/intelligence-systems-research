@@ -1,9 +1,9 @@
 {
- "amendment_note": "Regenerated per Amendment 011 (post-execution writer fix, declared change)",
- "created_utc": "2026-09-04T17:26:13Z",
- "dependency_lock_hash": "7c8c0922bbd516840bdc8493db08eb63b329c41c0d2422102aeaabeba59396ca",
+ "amendment_note": "Regenerated per Amendment 012 (dependency lock refresh via dependabot batch 2026-09-06, declared change; protocol-external infra only)",
+ "created_utc": "2026-09-07T03:56:05Z",
+ "dependency_lock_hash": "d176dcb20ddb2518248437fed06534efd87e2b87bca5cb277562721a491cf384",
  "files": {
-  "data/study011_dependency_lock.txt": "7c8c0922bbd516840bdc8493db08eb63b329c41c0d2422102aeaabeba59396ca",
+  "data/study011_dependency_lock.txt": "d176dcb20ddb2518248437fed06534efd87e2b87bca5cb277562721a491cf384",
   "data/study011_preregistration_manifest.json": "087db1b3eb3a739c8a8a99d4bbfa72762b11ca6536edd1ab1bf1cd545e40290c",
   "data/study011_provider_model_matrix.json": "5a63bb9c466f6d1d9d2cc430c14e0aeedebb7609b9a3c97031e96d4667cf0f7c",
   "data/study011_run_math.json": "c98db681d8ca83dc28442a539795b20f463988d1d28bc8a2c0a3b72026b1260d",
