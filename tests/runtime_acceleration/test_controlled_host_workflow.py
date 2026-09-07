@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 
 ROOT = Path(__file__).resolve().parents[2]
 WORKFLOW = ROOT / ".github/workflows/jar-exp-0013-controlled-host.yml"
@@ -13,7 +14,8 @@ def test_controlled_host_workflow_is_manual_and_dedicated_self_hosted_only():
     assert "pull_request:" not in text
     assert "runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]" in text
     assert "python -m experiments.runtime_acceleration.controlled_host" in text
-    assert "actions/upload-artifact@v4" in text
+    # ponytail: pinned SHAs keep the "# vX" comment, so accept tag or full-SHA form
+    assert re.search(r"actions/upload-artifact@(?:v4|[0-9a-f]{40})", text)
     assert "deploy" not in text.lower()
 
 
