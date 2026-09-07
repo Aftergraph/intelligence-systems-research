@@ -109,6 +109,7 @@ conformance % (C0/D1/T1/E1 profiles) · interoperability % (cross-implementation
 | STUDY-011 | Live cross-provider confirmatory | VALIDATED (closure §0 pending) |
 | STUDY-012 | Custom agent efficiency | VALIDATED (E0-E1 pilot, no claims) |
 | STUDY-013 | Independent implementation + interoperability | PROPOSED → preregister (§2 skeleton) |
+| STUDY-014 | Continuity/state-transfer (ACC) under program governance | PROPOSED → preregister (issue #28; number assigned 2026-09-07) |
 | Track A | MISSION-Bench Live | PROPOSED → preregister after G-S0 |
 | Track B | STUDY-006 live execution | PREREGISTERED + BLOCKED (recruitment) |
 
