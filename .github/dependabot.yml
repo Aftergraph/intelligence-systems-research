@@ -2,7 +2,7 @@ version: 2
 updates:
   - package-ecosystem: "pip"
     directory: "/"
-    schedule: {interval: "weekly", day: "monday", time: "06:00", timezone: "Europe/Copenhagen"}
+    schedule: {interval: "quarterly"}  # ponytail: study011 is closed/frozen — weekly bumps cost an amendment each with zero research value; security updates still open immediately
     open-pull-requests-limit: 5
     groups:
       # ponytail: study011's no-silent-change gate freezes the dependency
