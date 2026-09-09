@@ -23,6 +23,10 @@ At a preregistered interval (default: every 30 minutes during B0 runs):
 5. **Verify**: run full test/build/security/evidence checks on frozen candidate
 6. **Record stale-base invalidations**: any work based on superseded SHAs
 7. **Produce verdict**: SHIP or DO NOT SHIP with machine-readable reasons
+8. **Re-freeze if reconciliation changed the snapshot**: if reconciliation merged,
+   rebased, or discarded any constituent work, record the NEW candidate SHA and
+   re-run verification from step 5 against the updated snapshot. The verdict MUST
+   reference the final post-reconciliation SHA, not the original freeze SHA.
 
 ## 3. Independent Verifier Role
 
@@ -79,7 +83,9 @@ revocation freshness, release authority separation.
 ```json
 {
   "verdict": "SHIP | DO_NOT_SHIP",
-  "candidate_sha": "string",
+  "candidate_sha": "string (final post-reconciliation SHA)",
+  "original_freeze_sha": "string (initial freeze SHA before reconciliation)",
+  "repository_shas": {"repo_name": "sha", "...": "..."},
   "verified_at": "ISO8601",
   "verifier_id": "string",
   "gates_passed": ["string"],
@@ -87,10 +93,15 @@ revocation freshness, release authority separation.
   "stale_bases_detected": ["string"],
   "conflicts_reconciled": ["string"],
   "reconciliation_debt_delta": 0,
+  "refreeze_count": 0,
   "constituent_handoffs_verified": 0,
   "constituent_handoffs_total": 0
 }
 ```
+
+**Multi-repo SHA tracking:** When a run spans multiple repositories, `repository_shas`
+records the exact verified SHA for each. The top-level `candidate_sha` is the primary
+repo's SHA; all others are captured in the map for full provenance.
 
 ## 8. Metrics
 
