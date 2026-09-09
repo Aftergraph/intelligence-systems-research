@@ -9,6 +9,7 @@ from collections import defaultdict
 from math import sqrt
 from typing import Iterable, Mapping
 
+ANALYSIS_VERSION = "study012-analysis-v1"
 PRIMARY_A = "I6"
 PRIMARY_B = "I5"
 
@@ -60,3 +61,13 @@ def primary_comparison(summary: Mapping[str, Mapping[str, object]]) -> dict[str,
         "winner": None,
         "interpretation": "UNASSIGNED_UNTIL_PREREGISTERED_DECISION_RULES_ARE_FROZEN",
     }
+
+
+def prepare_paired_records(records: Iterable[Mapping[str, object]]) -> dict[str, object]:
+    """Validate paired confirmatory records before outcome analysis."""
+    raise NotImplementedError("STUDY-012 paired analysis integrity pass not implemented")
+
+
+def paired_primary_comparison(records: Iterable[Mapping[str, object]]) -> dict[str, object]:
+    """Run the preregistered I6-vs-I5 paired binary comparison."""
+    raise NotImplementedError("STUDY-012 paired primary analysis not implemented")
