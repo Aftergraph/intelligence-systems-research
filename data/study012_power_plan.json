@@ -1,9 +1,12 @@
 {
   "study_id": "STUDY-012",
   "experiment_id": "ICT-EXP-0001",
-  "status": "FROZEN_POWER_PLAN_V1",
+  "status": "INVALIDATED_POWER_PLAN_V1",
   "planning_method": "conservative_independent_two_proportion_upper_bound_v1",
   "outcome_blind": true,
+  "valid_for_current_harness": false,
+  "confirmatory_authorized": false,
+  "review_disposition": "INVALIDATED_FOR_CURRENT_DETERMINISTIC_HARNESS",
   "baseline_rate": 0.5,
   "minimum_detectable_difference": 0.1,
   "alpha": 0.01,
