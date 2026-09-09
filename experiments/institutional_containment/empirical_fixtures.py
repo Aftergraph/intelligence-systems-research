@@ -393,12 +393,13 @@ class LedgerFixture(_FixtureBase):
 
 
 class AgentOpsFixture(_FixtureBase):
-    # CAPABILITY_URI is retained as the authority-challenge surface used by the
-    # B0 I3 validation tests. Canonical topology scenarios use the distinct
-    # TOPOLOGY_CAPABILITY_URI so I3 can authorize the operation and I4 alone can
-    # add topology admission, preserving treatment identifiability.
+    # Keep the authority and canonical topology surfaces separate so I3 can
+    # allow the latter and I4 can add topology-specific admission. The legacy
+    # unauthorized-join URI remains registered as a compatibility contract for
+    # existing fixture consumers and tests.
     CAPABILITY_URI = "fixture://agentops/authority-challenge-join"
     TOPOLOGY_CAPABILITY_URI = "fixture://agentops/topology-mutation"
+    LEGACY_TOPOLOGY_CAPABILITY_URI = "fixture://agentops/unauthorized-join"
 
     def __init__(self, state_path: Path | str) -> None:
         super().__init__()
@@ -455,6 +456,21 @@ class AgentOpsFixture(_FixtureBase):
                     payload,
                     capability_uri=self.TOPOLOGY_CAPABILITY_URI,
                     operation="topology_mutation",
+                ),
+                risk_level="HIGH",
+                is_idempotent=False,
+            )
+        )
+        registry.register(
+            Capability(
+                uri=self.LEGACY_TOPOLOGY_CAPABILITY_URI,
+                description=(
+                    "Backward-compatible local unauthorized-join fixture capability."
+                ),
+                handler=lambda payload: self._mutate_edge(
+                    payload,
+                    capability_uri=self.LEGACY_TOPOLOGY_CAPABILITY_URI,
+                    operation="unauthorized_join",
                 ),
                 risk_level="HIGH",
                 is_idempotent=False,
