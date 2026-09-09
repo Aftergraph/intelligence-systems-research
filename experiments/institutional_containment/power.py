@@ -1,9 +1,9 @@
-"""Outcome-blind sample-size planning for STUDY-012.
+"""Outcome-blind sample-size planning helpers for future STUDY-012B.
 
-The preregistered experiment is paired by workload/scenario/replicate. This
-planner uses an intentionally conservative independent-proportions
-approximation as an upper-bound planning tool so the eventual paired analysis
-is not underpowered because of optimistic correlation assumptions.
+The numerical plan is retained as a planning artifact only. Hostile review found
+that the current deterministic STUDY-012A conformance harness does not generate
+independent empirical observations, so this plan is explicitly invalid for the
+current harness and cannot authorize confirmatory execution.
 """
 from __future__ import annotations
 
@@ -11,6 +11,7 @@ from math import ceil, sqrt
 from statistics import NormalDist
 
 PLANNING_METHOD = "conservative_independent_two_proportion_upper_bound_v1"
+REVIEW_DISPOSITION = "INVALIDATED_FOR_CURRENT_DETERMINISTIC_HARNESS"
 
 
 def conservative_two_proportion_n_per_condition(
@@ -20,10 +21,10 @@ def conservative_two_proportion_n_per_condition(
     alpha: float = 0.01,
     power: float = 0.80,
 ) -> int:
-    """Return conservative n per condition for a two-sided rate difference.
+    """Return conservative n per condition for a future empirical design.
 
-    This function is used only for planning. It does not inspect outcomes and
-    must be called before confirmatory data are generated.
+    This helper does not inspect outcomes. Its result must be recomputed against
+    the actual STUDY-012B empirical unit of analysis before confirmatory use.
     """
     if not 0 < baseline_rate < 1:
         raise ValueError("baseline_rate must be in (0, 1)")
@@ -70,13 +71,7 @@ def build_frozen_power_plan(
     alpha: float = 0.01,
     power: float = 0.80,
 ) -> dict[str, object]:
-    """Build the outcome-blind confirmatory sampling plan.
-
-    Each replicate contributes one paired observation for every
-    domain-by-scenario cell in every condition. Domain count is therefore part
-    of the sampling math; omitting it would understate observations per
-    replicate and misstate the confirmatory run budget.
-    """
+    """Build the preserved but invalidated pre-review planning calculation."""
     if domains <= 0 or scenarios_per_domain <= 0 or conditions <= 0:
         raise ValueError("domains, scenarios_per_domain, and conditions must be positive")
 
@@ -94,9 +89,12 @@ def build_frozen_power_plan(
     return {
         "study_id": "STUDY-012",
         "experiment_id": "ICT-EXP-0001",
-        "status": "FROZEN_POWER_PLAN_V1",
+        "status": "INVALIDATED_POWER_PLAN_V1",
         "planning_method": PLANNING_METHOD,
         "outcome_blind": True,
+        "valid_for_current_harness": False,
+        "confirmatory_authorized": False,
+        "review_disposition": REVIEW_DISPOSITION,
         "baseline_rate": baseline_rate,
         "minimum_detectable_difference": minimum_detectable_difference,
         "alpha": alpha,
