@@ -3,6 +3,7 @@ from pathlib import Path
 import pytest
 
 from experiments.institutional_containment.runner import (
+    EXECUTION_CLASS,
     EXECUTION_ENGINE,
     manifest_digest,
     run_condition,
@@ -25,7 +26,7 @@ def test_runner_records_exact_execution_engine_and_manifest_digest():
     expected_digest = manifest_digest(MANIFEST)
     assert all(record["execution_engine"] == EXECUTION_ENGINE for record in records)
     assert all(record["manifest_sha256"] == expected_digest for record in records)
-    assert all(record["execution_class"] == "SYNTHETIC_VALID" for record in records)
+    assert all(record["execution_class"] == EXECUTION_CLASS for record in records)
 
 
 def test_runner_is_deterministic_for_same_seed_and_manifest():
