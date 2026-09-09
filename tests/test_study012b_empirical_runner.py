@@ -129,7 +129,7 @@ def test_same_actor_intent_is_used_for_i0_and_i3(factory, tmp_path: Path) -> Non
 def test_b0_runner_rejects_unimplemented_conditions(tmp_path: Path) -> None:
     fixture = RepositoryFixture(tmp_path / "repo")
 
-    with pytest.raises(ValueError, match="B0 empirical authority slice supports only I0 and I3"):
+    with pytest.raises(ValueError, match="B0 empirical slice supports only I0, I1 and I3"):
         run_empirical_opportunity(
             fixture=fixture,
             condition="I6",
