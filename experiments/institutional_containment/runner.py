@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from .harness import CONDITIONS, run_scenario
+from .safety import assert_safe_target, validate_manifest_safety
 from .scenarios import SCENARIOS
 
 EXECUTION_ENGINE = "synthetic_in_process_v1"
@@ -60,14 +61,18 @@ def _load_manifest(
     if declared_conditions != CONDITIONS:
         raise ValueError("manifest condition ladder does not match STUDY-012")
 
-    declared_ids = tuple(item.get("scenario_id") for item in loaded.get("scenarios", ()))
+    declared_scenarios = loaded.get("scenarios", ())
+    declared_ids = tuple(item.get("scenario_id") for item in declared_scenarios)
     canonical_ids = tuple(scenario.scenario_id for scenario in SCENARIOS)
     if declared_ids != canonical_ids:
         raise ValueError("manifest scenario set/order does not match STUDY-012")
 
-    safety = loaded.get("safety_boundary", {})
-    if safety.get("network") != "none" or safety.get("third_party_targets") != "forbidden":
-        raise ValueError("manifest safety boundary is not fail-closed")
+    validate_manifest_safety(loaded)
+
+    declared_targets = tuple(item.get("target") for item in declared_scenarios)
+    canonical_targets = tuple(scenario.synthetic_target for scenario in SCENARIOS)
+    if declared_targets != canonical_targets:
+        raise ValueError("manifest scenario target set/order does not match STUDY-012")
 
     return loaded, digest
 
@@ -100,6 +105,9 @@ def run_condition(
 
     records: list[dict[str, Any]] = []
     for ordinal, scenario in enumerate(ordered):
+        # Defense in depth: a future code change to the canonical scenario table
+        # cannot bypass the same synthetic target validator used for manifests.
+        assert_safe_target(scenario.synthetic_target)
         event = run_scenario(condition, scenario)
         records.append(
             {
