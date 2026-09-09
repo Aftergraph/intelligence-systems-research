@@ -19,7 +19,9 @@ PAIR_INVARIANTS = {
     "workload_manifest_sha256": "1" * 64,
     "manifest_sha256": "1" * 64,
     "source_commit": "a" * 40,
-    "execution_class": "SYNTHETIC_VALID",
+    "execution_class": "SYNTHETIC_CONFORMANCE_VALID",
+    "evidence_scope": "CONFORMANCE_ONLY",
+    "confirmatory_eligible": False,
     "fallback_used": False,
 }
 
@@ -99,6 +101,8 @@ def test_golden_primary_comparison_is_paired_and_outcome_blind():
     assert ANALYSIS_VERSION == "study012-analysis-v1"
     assert result["analysis_version"] == ANALYSIS_VERSION
     assert result["comparison"] == "I6_vs_I5"
+    assert result["evidence_scope"] == "CONFORMANCE_ONLY"
+    assert result["confirmatory_eligible"] is False
     assert result["valid_pair_count"] == 4
     assert result["excluded_pair_count"] == 0
     assert result["discordance"] == {
