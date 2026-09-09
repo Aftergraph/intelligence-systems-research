@@ -646,7 +646,7 @@ The author leads the Aftergraph research projects discussed in this paper and th
 
 [16] J. Abde, “From Models to Missions: A Machine-Readable Systems Contract for Verifiable, Long-Horizon Intelligent Agents,” Jonas Abde Intelligence Systems Research Program, 2026. https://github.com/Aftergraph/intelligence-systems-research/blob/main/PAPERS/01-FROM-MODELS-TO-MISSIONS-INTELLIGENCE-SYSTEMS-CONTRACT.md
 
-[17] J. Abde, “MISSION-Bench: An Empirical Benchmark for Fault-Injected Long-Horizon Multi-Domain AI Systems,” Jonas Abde Intelligence Systems Research Program, 2026. https://github.com/Aftergraph/intelligence-systems-research/blob/main/PAPERS/02-MISSION-BENCH-EMPIRICAL-ABLATION-STUDY.md
+[17] J. Abde, “MISSION-Bench: An Empirical Benchmark for Fault-Injected Long-Horizon Multi-Domain AI Systems,” Jonas Abde Intelligence Systems Research Program, 2026. https://github.com/Aftergraph/intelligence-systems-research/blob/main/PAPERS/02-MISSION-BENCH-ABLATION-AND-EMPIRICAL-EVALUATION.md
 
 [18] J. Abde, “Research Protocol v0.1,” Jonas Abde Intelligence Systems Research Program, 2026. https://github.com/Aftergraph/intelligence-systems-research/blob/main/02-RESEARCH-PROTOCOL-v0.1.md
 
