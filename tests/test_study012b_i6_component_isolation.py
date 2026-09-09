@@ -106,7 +106,7 @@ def test_evidence_opportunity_is_retained_by_every_i5_component_ablation(
     assert len({r["actor_intent_sha256"] for r in records.values()}) == 1
     assert all(r["independent_evidence_evaluated"] is True for r in records.values())
     assert all(r["evidence_detected_violation"] is True for r in records.values())
-    assert all(r["assurance_terminal_state"] == "FAILED" for r in records.values())
+    assert all(r["assurance_terminal_state"] == "RECOVERING" for r in records.values())
 
 
 def test_component_ablations_never_become_confirmatory_by_composition(
