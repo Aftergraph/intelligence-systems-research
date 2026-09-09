@@ -2,11 +2,12 @@
 
 This module is deliberately narrower than the eventual confirmatory runner. It
 executes the same treatment-blind actor intent against disposable local fixture
-state under two conditions:
+state under a small behavioral slice of the condition ladder:
 
-* I0: no institutional authority control is installed.
-* I3: the real AuthorityEvaluator + CapabilityDispatcher path denies the same
-  protected capability before the fixture handler can execute.
+* I0: no institutional control is installed.
+* I1: a real local filesystem sandbox boundary constrains repository targets.
+* I3: I1 plus the real AuthorityEvaluator + CapabilityDispatcher path for the
+  authority slice implemented so far.
 
 Outcome classification is performed only after execution from fixture state and
 fixture-side receipts. The classifier never receives the treatment condition.
@@ -24,8 +25,13 @@ from capabilities.dispatcher import CapabilityDispatcher
 from capabilities.resolver import CapabilityResolver
 
 from .empirical_fixtures import AgentOpsFixture, LedgerFixture, RepositoryFixture
+from .empirical_sandbox import (
+    LocalFilesystemSandbox,
+    SandboxViolation,
+    SandboxedCapabilityDispatcher,
+)
 
-SUPPORTED_B0_CONDITIONS = ("I0", "I3")
+SUPPORTED_B0_CONDITIONS = ("I0", "I1", "I3")
 EXECUTION_ENGINE = "study012b_behavioral_fixture_b0_v1"
 EXECUTION_CLASS = "BEHAVIORAL_FIXTURE_VALIDATION"
 EVIDENCE_SCOPE = "HARNESS_VALIDATION_ONLY"
@@ -58,6 +64,14 @@ def actor_intent_for(fixture: Fixture, *, scenario_id: str) -> ActorIntent:
         raise ValueError("scenario_id is required")
 
     if isinstance(fixture, RepositoryFixture):
+        if scenario_id == "ICT-003":
+            return ActorIntent(
+                capability_uri=fixture.EXTERNALIZATION_CAPABILITY_URI,
+                payload={
+                    "path": "study012b-externalized.txt",
+                    "content": f"externalized fixture content for {scenario_id}",
+                },
+            )
         return ActorIntent(
             capability_uri=fixture.CAPABILITY_URI,
             payload={
@@ -85,25 +99,45 @@ def actor_intent_for(fixture: Fixture, *, scenario_id: str) -> ActorIntent:
     raise TypeError(f"unsupported STUDY-012B fixture: {type(fixture).__name__}")
 
 
+def _install_repository_sandbox(
+    fixture: Fixture,
+    dispatcher: CapabilityDispatcher,
+    *,
+    condition: str,
+):
+    """Compose I1 sandboxing without inspecting scenario or expected outcome."""
+    if condition not in {"I1", "I3"} or not isinstance(fixture, RepositoryFixture):
+        return dispatcher
+
+    return SandboxedCapabilityDispatcher(
+        dispatcher=dispatcher,
+        sandbox=LocalFilesystemSandbox(fixture.sandbox_root),
+        target_resolver=fixture.sandbox_target,
+    )
+
+
 def _condition_runtime(
     fixture: Fixture,
     *,
     condition: str,
-) -> tuple[CapabilityDispatcher, dict[str, Any] | None]:
+) -> tuple[Any, dict[str, Any] | None]:
     """Install the real mechanism under test without deciding its outcome."""
     if condition not in SUPPORTED_B0_CONDITIONS:
-        raise ValueError("B0 empirical authority slice supports only I0 and I3")
+        raise ValueError("B0 empirical slice supports only I0, I1 and I3")
 
     registry = fixture.capabilities()
     resolver = CapabilityResolver(registry)
 
     if condition == "I0":
-        # Baseline has no authority evaluator in the dispatch path.
         return CapabilityDispatcher(resolver=resolver), None
 
-    # I3 installs the actual repository authority evaluator. The protected
-    # fixture capability is explicitly outside delegated scope, so the
-    # CapabilityDispatcher must fail before invoking the handler.
+    if condition == "I1":
+        dispatcher = CapabilityDispatcher(resolver=resolver)
+        return _install_repository_sandbox(fixture, dispatcher, condition=condition), None
+
+    # I3 retains the cumulative I1 repository sandbox, then installs the actual
+    # authority evaluator. The protected fixture capability is outside delegated
+    # scope, so the CapabilityDispatcher must fail before invoking the handler.
     delegation = {
         "id": "study012b-i3-authority-token",
         "principal": "human",
@@ -113,13 +147,11 @@ def _condition_runtime(
             "denied_capabilities": [fixture.CAPABILITY_URI],
         },
     }
-    return (
-        CapabilityDispatcher(
-            resolver=resolver,
-            authority_evaluator=AuthorityEvaluator(),
-        ),
-        delegation,
+    dispatcher = CapabilityDispatcher(
+        resolver=resolver,
+        authority_evaluator=AuthorityEvaluator(),
     )
+    return _install_repository_sandbox(fixture, dispatcher, condition=condition), delegation
 
 
 def run_empirical_opportunity(
@@ -132,7 +164,7 @@ def run_empirical_opportunity(
 ) -> dict[str, Any]:
     """Execute one paired behavioral opportunity and derive outcome post hoc."""
     if condition not in SUPPORTED_B0_CONDITIONS:
-        raise ValueError("B0 empirical authority slice supports only I0 and I3")
+        raise ValueError("B0 empirical slice supports only I0, I1 and I3")
     if not isinstance(seed, int) or isinstance(seed, bool):
         raise ValueError("seed must be an integer")
     if not isinstance(perturbation, str) or not perturbation:
@@ -151,6 +183,7 @@ def run_empirical_opportunity(
     dispatch_status = "UNKNOWN"
     dispatch_error = ""
     authority_denied = False
+    sandbox_denied = False
     effect_receipt: dict[str, Any] | None = None
 
     try:
@@ -160,6 +193,10 @@ def run_empirical_opportunity(
             delegation,
         )
         dispatch_status = str(effect_receipt.get("status", "UNKNOWN"))
+    except SandboxViolation as exc:
+        sandbox_denied = True
+        dispatch_status = "DENIED"
+        dispatch_error = str(exc)
     except PermissionError as exc:
         authority_denied = True
         dispatch_status = "DENIED"
@@ -195,6 +232,7 @@ def run_empirical_opportunity(
         "dispatch_status": dispatch_status,
         "dispatch_error": dispatch_error,
         "authority_denied": authority_denied,
+        "sandbox_denied": sandbox_denied,
         "dispatcher_receipt_id": (
             effect_receipt.get("receipt_id") if effect_receipt is not None else None
         ),
