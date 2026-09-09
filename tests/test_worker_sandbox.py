@@ -5,9 +5,22 @@ Smoke run spec: docs/sdc/b0/2026-09-09-smoke-run-specification.md
 """
 from __future__ import annotations
 
+import subprocess
 from pathlib import Path
 
 import pytest
+
+
+def _init_git_repo(repo: Path) -> str:
+    """Initialize a minimal git repo and return HEAD SHA."""
+    subprocess.run(["git", "init", str(repo)], check=True, capture_output=True)
+    subprocess.run(["git", "-C", str(repo), "config", "user.email", "test@test.com"], check=True, capture_output=True)
+    subprocess.run(["git", "-C", str(repo), "config", "user.name", "Test"], check=True, capture_output=True)
+    subprocess.run(["git", "-C", str(repo), "commit", "--allow-empty", "-m", "init"], check=True, capture_output=True)
+    return subprocess.run(
+        ["git", "-C", str(repo), "rev-parse", "HEAD"],
+        check=True, capture_output=True, text=True,
+    ).stdout.strip()
 
 
 class TestHermesWorktreeSandboxGreen:
@@ -19,12 +32,7 @@ class TestHermesWorktreeSandboxGreen:
         repo = tmp_path / "repo"
         repo.mkdir()
         wt_root = tmp_path / "worktrees"
-
-        # Initialize a bare-minimum git repo for worktree creation
-        import subprocess
-        subprocess.run(["git", "init", str(repo)], check=True, capture_output=True)
-        subprocess.run(["git", "-C", str(repo), "commit", "--allow-empty", "-m", "init"], check=True, capture_output=True)
-        base_sha = subprocess.run(["git", "-C", str(repo), "rev-parse", "HEAD"], check=True, capture_output=True, text=True).stdout.strip()
+        base_sha = _init_git_repo(repo)
 
         sandbox = HermesWorktreeSandbox(repo, wt_root)
         wt_path = sandbox.create("task-001", base_sha)
@@ -40,11 +48,7 @@ class TestHermesWorktreeSandboxGreen:
         repo = tmp_path / "repo"
         repo.mkdir()
         wt_root = tmp_path / "worktrees"
-
-        import subprocess
-        subprocess.run(["git", "init", str(repo)], check=True, capture_output=True)
-        subprocess.run(["git", "-C", str(repo), "commit", "--allow-empty", "-m", "init"], check=True, capture_output=True)
-        base_sha = subprocess.run(["git", "-C", str(repo), "rev-parse", "HEAD"], check=True, capture_output=True, text=True).stdout.strip()
+        base_sha = _init_git_repo(repo)
 
         sandbox = HermesWorktreeSandbox(repo, wt_root)
         sandbox.create("task-002", base_sha)
@@ -63,11 +67,7 @@ class TestHermesWorktreeSandboxGreen:
         repo = tmp_path / "repo"
         repo.mkdir()
         wt_root = tmp_path / "worktrees"
-
-        import subprocess
-        subprocess.run(["git", "init", str(repo)], check=True, capture_output=True)
-        subprocess.run(["git", "-C", str(repo), "commit", "--allow-empty", "-m", "init"], check=True, capture_output=True)
-        base_sha = subprocess.run(["git", "-C", str(repo), "rev-parse", "HEAD"], check=True, capture_output=True, text=True).stdout.strip()
+        base_sha = _init_git_repo(repo)
 
         sandbox = HermesWorktreeSandbox(repo, wt_root)
         sandbox.create("task-003", base_sha)
@@ -84,11 +84,7 @@ class TestHermesWorktreeSandboxGreen:
         repo = tmp_path / "repo"
         repo.mkdir()
         wt_root = tmp_path / "worktrees"
-
-        import subprocess
-        subprocess.run(["git", "init", str(repo)], check=True, capture_output=True)
-        subprocess.run(["git", "-C", str(repo), "commit", "--allow-empty", "-m", "init"], check=True, capture_output=True)
-        base_sha = subprocess.run(["git", "-C", str(repo), "rev-parse", "HEAD"], check=True, capture_output=True, text=True).stdout.strip()
+        base_sha = _init_git_repo(repo)
 
         sandbox = HermesWorktreeSandbox(repo, wt_root)
         wt_path = sandbox.create("task-004", base_sha)
@@ -103,11 +99,7 @@ class TestHermesWorktreeSandboxGreen:
         repo = tmp_path / "repo"
         repo.mkdir()
         wt_root = tmp_path / "worktrees"
-
-        import subprocess
-        subprocess.run(["git", "init", str(repo)], check=True, capture_output=True)
-        subprocess.run(["git", "-C", str(repo), "commit", "--allow-empty", "-m", "init"], check=True, capture_output=True)
-        base_sha = subprocess.run(["git", "-C", str(repo), "rev-parse", "HEAD"], check=True, capture_output=True, text=True).stdout.strip()
+        base_sha = _init_git_repo(repo)
 
         sandbox = HermesWorktreeSandbox(repo, wt_root)
         sandbox.create("task-005", base_sha)
@@ -120,11 +112,7 @@ class TestHermesWorktreeSandboxGreen:
         repo = tmp_path / "repo"
         repo.mkdir()
         wt_root = tmp_path / "worktrees"
-
-        import subprocess
-        subprocess.run(["git", "init", str(repo)], check=True, capture_output=True)
-        subprocess.run(["git", "-C", str(repo), "commit", "--allow-empty", "-m", "init"], check=True, capture_output=True)
-        base_sha = subprocess.run(["git", "-C", str(repo), "rev-parse", "HEAD"], check=True, capture_output=True, text=True).stdout.strip()
+        base_sha = _init_git_repo(repo)
 
         sandbox = HermesWorktreeSandbox(repo, wt_root)
         assert sandbox.list_active() == []
