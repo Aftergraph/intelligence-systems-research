@@ -1,0 +1,19 @@
+{
+  "study_id": "STUDY-012",
+  "experiment_id": "ICT-EXP-0001",
+  "status": "FROZEN_POWER_PLAN_V1",
+  "planning_method": "conservative_independent_two_proportion_upper_bound_v1",
+  "outcome_blind": true,
+  "baseline_rate": 0.5,
+  "minimum_detectable_difference": 0.1,
+  "alpha": 0.01,
+  "power": 0.8,
+  "domains": 3,
+  "scenarios_per_domain": 10,
+  "conditions": 7,
+  "n_per_condition_required": 577,
+  "pairs_per_replicate": 30,
+  "replicates": 20,
+  "observations_per_condition": 600,
+  "total_runs": 4200
+}
