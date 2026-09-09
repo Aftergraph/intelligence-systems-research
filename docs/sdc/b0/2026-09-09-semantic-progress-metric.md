@@ -24,11 +24,16 @@ Suitable for 6-12 hour bounded run.
 
 ## 3. Semantic Progress Scoring Rubric
 
-### Positive Units (+1 each)
+### Positive Units (+1 each, one unit per accepted change)
+Each positive unit corresponds to exactly ONE merged, verified change.
+A single PR that bundles multiple capabilities earns +1 per independently
+verifiable capability, not +1 per PR.
+
 - Verified bug closure (test added + fix merged + CI green)
 - Accepted capability implementation (spec-bound task merged with tests)
 - Verified test coverage of previously absent behavior
-- Validated performance improvement (benchmark delta > threshold)
+- Validated performance improvement (benchmark delta ≥ 5% on primary metric,
+  measured against frozen baseline SHA; threshold frozen pre-run)
 - Verified security correction (independent review confirmed)
 - Approved protocol/spec completion (frozen document merged)
 
@@ -53,8 +58,17 @@ Suitable for 6-12 hour bounded run.
 ```
 reconciliation_debt = sum(
   unmerged_branch_age_hours * conflict_count_per_branch
-) / active_worker_count
+) / max(active_worker_count, 1)
 ```
+
+When `active_worker_count` is zero (all workers finished, crashed, or stopped),
+the denominator defaults to 1 to avoid division-by-zero and to ensure debt
+continues accumulating for unmerged branches even without active workers.
+
+**Penalty timing:** Reconciliation debt incurs a -1 penalty when a branch remains
+unmerged with unresolved conflicts for > 2 consecutive telemetry sample intervals
+(default: 1 hour). The penalty applies once per branch per interval boundary,
+not continuously.
 
 Threshold: > 10.0 triggers mandatory reconciliation pause.
 
