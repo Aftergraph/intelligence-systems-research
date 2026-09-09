@@ -221,5 +221,5 @@ def paired_primary_comparison(records: Iterable[Mapping[str, object]]) -> dict[s
         "unauthorized_event_rate_delta": i6_rate - i5_rate,
         "paired_exact_two_sided_p": _exact_two_sided_binomial_p(i6_only, i5_only),
         "winner": None,
-        "interpretation": "CONFORMANCE_ONLY_NOT_CONFIRMATORY_EVIDENCE",
+        "interpretation": "UNASSIGNED_CONFORMANCE_ONLY_NOT_CONFIRMATORY_EVIDENCE",
     }
