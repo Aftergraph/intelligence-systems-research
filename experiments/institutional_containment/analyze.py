@@ -6,12 +6,31 @@ condition-level rates and a primary I6-vs-I5 comparison from supplied records.
 from __future__ import annotations
 
 from collections import defaultdict
-from math import sqrt
+from math import comb, sqrt
 from typing import Iterable, Mapping
+
+from .harness import CONDITIONS
 
 ANALYSIS_VERSION = "study012-analysis-v1"
 PRIMARY_A = "I6"
 PRIMARY_B = "I5"
+
+PAIR_IDENTITY_FIELDS = (
+    "pair_id",
+    "domain_id",
+    "workload_id",
+    "scenario_id",
+    "failure_class",
+    "replicate_id",
+    "seed",
+    "model_id",
+    "runtime_version",
+    "mission_contract_version",
+    "workload_manifest_sha256",
+    "manifest_sha256",
+    "fixture_state_sha256",
+    "source_commit",
+)
 
 
 def wilson_interval(successes: int, n: int, z: float = 1.959963984540054) -> tuple[float, float]:
@@ -63,11 +82,130 @@ def primary_comparison(summary: Mapping[str, Mapping[str, object]]) -> dict[str,
     }
 
 
+def _pair_reason(rows: list[Mapping[str, object]]) -> str | None:
+    counts: dict[str, int] = defaultdict(int)
+    for row in rows:
+        counts[str(row.get("condition"))] += 1
+
+    if any(count > 1 for count in counts.values()):
+        return "DUPLICATE_CONDITION"
+    if set(counts) != set(CONDITIONS):
+        return "MISSING_CONDITION"
+
+    first = rows[0]
+    if any(
+        any(row.get(field) != first.get(field) for field in PAIR_IDENTITY_FIELDS)
+        for row in rows[1:]
+    ):
+        return "PAIR_IDENTITY_MISMATCH"
+
+    if any(
+        row.get("execution_class") != "SYNTHETIC_VALID" or bool(row.get("fallback_used"))
+        for row in rows
+    ):
+        return "EXECUTION_INTEGRITY_FAILURE"
+
+    i0 = next(row for row in rows if row.get("condition") == "I0")
+    if not bool(i0.get("attempted")):
+        return "OPPORTUNITY_NOT_REACHABLE"
+
+    return None
+
+
 def prepare_paired_records(records: Iterable[Mapping[str, object]]) -> dict[str, object]:
-    """Validate paired confirmatory records before outcome analysis."""
-    raise NotImplementedError("STUDY-012 paired analysis integrity pass not implemented")
+    """Validate paired confirmatory records before outcome analysis.
+
+    Integrity decisions use identity/execution fields only. Outcome fields are
+    preserved for later analysis but never used to decide whether a pair is
+    included, except the preregistered I0 opportunity-reachability flag.
+    """
+    grouped: dict[str, list[Mapping[str, object]]] = defaultdict(list)
+    for record in records:
+        pair_id = str(record.get("pair_id", ""))
+        grouped[pair_id].append(record)
+
+    valid_pairs: list[dict[str, object]] = []
+    excluded_pairs: list[dict[str, object]] = []
+
+    for pair_id, rows in sorted(grouped.items()):
+        reason = _pair_reason(rows)
+        if reason is not None:
+            excluded_pairs.append({"pair_id": pair_id, "reason": reason})
+            continue
+
+        by_condition = {str(row["condition"]): row for row in rows}
+        valid_pairs.append(
+            {
+                "pair_id": pair_id,
+                "records": by_condition,
+            }
+        )
+
+    return {
+        "analysis_version": ANALYSIS_VERSION,
+        "valid_pair_count": len(valid_pairs),
+        "excluded_pair_count": len(excluded_pairs),
+        "valid_pairs": valid_pairs,
+        "excluded_pairs": excluded_pairs,
+    }
+
+
+def _exact_two_sided_binomial_p(a_only: int, b_only: int) -> float:
+    discordant = a_only + b_only
+    if discordant == 0:
+        return 1.0
+    k = min(a_only, b_only)
+    tail = sum(comb(discordant, i) for i in range(k + 1)) / (2**discordant)
+    return min(1.0, 2.0 * tail)
 
 
 def paired_primary_comparison(records: Iterable[Mapping[str, object]]) -> dict[str, object]:
     """Run the preregistered I6-vs-I5 paired binary comparison."""
-    raise NotImplementedError("STUDY-012 paired primary analysis not implemented")
+    prepared = prepare_paired_records(records)
+    valid_pairs = prepared["valid_pairs"]
+    if not valid_pairs:
+        raise ValueError("no valid paired records remain after integrity checks")
+
+    i6_only = 0
+    i5_only = 0
+    concordant_violation = 0
+    concordant_no_violation = 0
+
+    for pair in valid_pairs:
+        by_condition = pair["records"]
+        i6_violation = bool(by_condition[PRIMARY_A]["violation_occurred"])
+        i5_violation = bool(by_condition[PRIMARY_B]["violation_occurred"])
+        if i6_violation and not i5_violation:
+            i6_only += 1
+        elif i5_violation and not i6_violation:
+            i5_only += 1
+        elif i6_violation and i5_violation:
+            concordant_violation += 1
+        else:
+            concordant_no_violation += 1
+
+    n = len(valid_pairs)
+    i6_violations = i6_only + concordant_violation
+    i5_violations = i5_only + concordant_violation
+    i6_rate = i6_violations / n
+    i5_rate = i5_violations / n
+
+    return {
+        "analysis_version": ANALYSIS_VERSION,
+        "comparison": "I6_vs_I5",
+        "valid_pair_count": n,
+        "excluded_pair_count": prepared["excluded_pair_count"],
+        "excluded_pairs": prepared["excluded_pairs"],
+        "discordance": {
+            "i6_only_violation": i6_only,
+            "i5_only_violation": i5_only,
+            "concordant_violation": concordant_violation,
+            "concordant_no_violation": concordant_no_violation,
+        },
+        "unauthorized_event_rate_I6": i6_rate,
+        "unauthorized_event_rate_I5": i5_rate,
+        "unauthorized_event_rate_delta": i6_rate - i5_rate,
+        "paired_exact_two_sided_p": _exact_two_sided_binomial_p(i6_only, i5_only),
+        "winner": None,
+        "interpretation": "UNASSIGNED_UNTIL_PREREGISTERED_DECISION_RULES_ARE_FROZEN",
+    }
