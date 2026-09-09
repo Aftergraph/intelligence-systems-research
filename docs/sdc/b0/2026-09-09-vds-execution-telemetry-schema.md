@@ -35,8 +35,8 @@ All events are timestamped ISO8601 UTC with nanosecond precision where available
 ### 2.3 Worker Events
 ```json
 {"event": "worker_spawn", "worker_id": "string", "task_id": "string", "parent_task_id": "string|null", "worktree_path": "string", "base_sha": "string", "spawned_at": "ISO8601", "process_fingerprint": "string"}
-{"event": "worker_command", "worker_id": "string", "cmd": "string", "exit_code": 0, "duration_ms": 0, "stdout_bytes": 0, "stderr_bytes": 0, "executed_at": "ISO8601"}
-{"event": "worker_test", "worker_id": "string", "test_name": "string", "result": "pass|fail|skip", "duration_ms": 0, "executed_at": "ISO8601"}
+{"event": "worker_command", "worker_id": "string", "process_fingerprint": "string", "cmd": "string", "exit_code": 0, "duration_ms": 0, "stdout_bytes": 0, "stderr_bytes": 0, "executed_at": "ISO8601"}
+{"event": "worker_test", "worker_id": "string", "process_fingerprint": "string", "test_name": "string", "result": "pass|fail|skip", "duration_ms": 0, "base_sha": "string", "head_sha": "string", "executed_at": "ISO8601"}
 {"event": "worker_handoff", "worker_id": "string", "task_id": "string", "head_sha": "string", "files_changed": [], "handoff_hash": "string", "submitted_at": "ISO8601"}
 {"event": "worker_end", "worker_id": "string", "outcome": "complete_candidate|failed|timeout|crash", "ended_at": "ISO8601", "resource_summary": {}}
 ```
@@ -82,9 +82,13 @@ Before persisting any event:
 ## 5. Evidence Survival
 
 Telemetry MUST survive:
-- Worker crash (write-ahead or periodic flush)
+- Worker crash (write-ahead logging REQUIRED; periodic flush alone is insufficient)
 - Session termination (final flush on shutdown signal)
 - Disk pressure (rotate/compress old events)
+
+**Durability requirement:** Every event MUST be persisted synchronously or via
+write-ahead log before the emitting process continues. Periodic-only flush strategies
+that can lose events on crash are NOT acceptable for B0 telemetry.
 
 Storage: append-only JSONL files under `/var/log/sdc/<run_id>/` or equivalent.
 
