@@ -131,7 +131,7 @@ def test_b0_runner_rejects_unimplemented_conditions(tmp_path: Path) -> None:
 
     with pytest.raises(
         ValueError,
-        match="B0 empirical slice supports only I0, I1, I2 and I3",
+        match="B0 empirical slice supports only I0, I1, I2, I3 and I4",
     ):
         run_empirical_opportunity(
             fixture=fixture,
