@@ -1,7 +1,8 @@
-"""Outcome-blind analysis helpers for STUDY-012.
+"""Outcome-blind analysis helpers for STUDY-012A conformance records.
 
-This module intentionally contains no hard-coded expected winner. It computes
-condition-level rates and a primary I6-vs-I5 comparison from supplied records.
+This module intentionally contains no hard-coded expected winner. Current
+records are deterministic conformance evidence only and are not eligible for a
+confirmatory empirical conclusion.
 """
 from __future__ import annotations
 
@@ -14,6 +15,8 @@ from .harness import CONDITIONS
 ANALYSIS_VERSION = "study012-analysis-v1"
 PRIMARY_A = "I6"
 PRIMARY_B = "I5"
+CONFORMANCE_EXECUTION_CLASS = "SYNTHETIC_CONFORMANCE_VALID"
+CONFORMANCE_EVIDENCE_SCOPE = "CONFORMANCE_ONLY"
 
 PAIR_IDENTITY_FIELDS = (
     "pair_id",
@@ -100,7 +103,10 @@ def _pair_reason(rows: list[Mapping[str, object]]) -> str | None:
         return "PAIR_IDENTITY_MISMATCH"
 
     if any(
-        row.get("execution_class") != "SYNTHETIC_VALID" or bool(row.get("fallback_used"))
+        row.get("execution_class") != CONFORMANCE_EXECUTION_CLASS
+        or row.get("evidence_scope", CONFORMANCE_EVIDENCE_SCOPE) != CONFORMANCE_EVIDENCE_SCOPE
+        or bool(row.get("confirmatory_eligible", False))
+        or bool(row.get("fallback_used"))
         for row in rows
     ):
         return "EXECUTION_INTEGRITY_FAILURE"
@@ -113,11 +119,10 @@ def _pair_reason(rows: list[Mapping[str, object]]) -> str | None:
 
 
 def prepare_paired_records(records: Iterable[Mapping[str, object]]) -> dict[str, object]:
-    """Validate paired confirmatory records before outcome analysis.
+    """Validate paired conformance records before outcome summarization.
 
-    Integrity decisions use identity/execution fields only. Outcome fields are
-    preserved for later analysis but never used to decide whether a pair is
-    included, except the preregistered I0 opportunity-reachability flag.
+    Integrity decisions use identity/execution fields only. Current records are
+    explicitly conformance-only and cannot authorize a confirmatory conclusion.
     """
     grouped: dict[str, list[Mapping[str, object]]] = defaultdict(list)
     for record in records:
@@ -143,6 +148,8 @@ def prepare_paired_records(records: Iterable[Mapping[str, object]]) -> dict[str,
 
     return {
         "analysis_version": ANALYSIS_VERSION,
+        "evidence_scope": CONFORMANCE_EVIDENCE_SCOPE,
+        "confirmatory_eligible": False,
         "valid_pair_count": len(valid_pairs),
         "excluded_pair_count": len(excluded_pairs),
         "valid_pairs": valid_pairs,
@@ -160,7 +167,12 @@ def _exact_two_sided_binomial_p(a_only: int, b_only: int) -> float:
 
 
 def paired_primary_comparison(records: Iterable[Mapping[str, object]]) -> dict[str, object]:
-    """Run the preregistered I6-vs-I5 paired binary comparison."""
+    """Summarize the I6-vs-I5 deterministic conformance contrast.
+
+    The returned p-value is retained only for golden analysis-code testing. It
+    MUST NOT be interpreted as inferential evidence from the deterministic
+    conformance harness.
+    """
     prepared = prepare_paired_records(records)
     valid_pairs = prepared["valid_pairs"]
     if not valid_pairs:
@@ -193,6 +205,8 @@ def paired_primary_comparison(records: Iterable[Mapping[str, object]]) -> dict[s
     return {
         "analysis_version": ANALYSIS_VERSION,
         "comparison": "I6_vs_I5",
+        "evidence_scope": CONFORMANCE_EVIDENCE_SCOPE,
+        "confirmatory_eligible": False,
         "valid_pair_count": n,
         "excluded_pair_count": prepared["excluded_pair_count"],
         "excluded_pairs": prepared["excluded_pairs"],
@@ -207,5 +221,5 @@ def paired_primary_comparison(records: Iterable[Mapping[str, object]]) -> dict[s
         "unauthorized_event_rate_delta": i6_rate - i5_rate,
         "paired_exact_two_sided_p": _exact_two_sided_binomial_p(i6_only, i5_only),
         "winner": None,
-        "interpretation": "UNASSIGNED_UNTIL_PREREGISTERED_DECISION_RULES_ARE_FROZEN",
+        "interpretation": "CONFORMANCE_ONLY_NOT_CONFIRMATORY_EVIDENCE",
     }
