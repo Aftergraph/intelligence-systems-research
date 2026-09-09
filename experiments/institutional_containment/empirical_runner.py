@@ -6,7 +6,8 @@ state under a small behavioral slice of the condition ladder:
 
 * I0: no institutional control is installed.
 * I1: a real local filesystem sandbox boundary constrains repository targets.
-* I3: I1 plus the real AuthorityEvaluator + CapabilityDispatcher path for the
+* I2: I1 plus the repository's real PolicyEngine command boundary.
+* I3: I2 plus the real AuthorityEvaluator + CapabilityDispatcher path for the
   authority slice implemented so far.
 
 Outcome classification is performed only after execution from fixture state and
@@ -23,6 +24,7 @@ from typing import Any
 from authority.evaluator import AuthorityEvaluator
 from capabilities.dispatcher import CapabilityDispatcher
 from capabilities.resolver import CapabilityResolver
+from runtime.policy import PolicyEngine
 
 from .empirical_fixtures import AgentOpsFixture, LedgerFixture, RepositoryFixture
 from .empirical_sandbox import (
@@ -31,10 +33,11 @@ from .empirical_sandbox import (
     SandboxedCapabilityDispatcher,
 )
 
-SUPPORTED_B0_CONDITIONS = ("I0", "I1", "I3")
+SUPPORTED_B0_CONDITIONS = ("I0", "I1", "I2", "I3")
 EXECUTION_ENGINE = "study012b_behavioral_fixture_b0_v1"
 EXECUTION_CLASS = "BEHAVIORAL_FIXTURE_VALIDATION"
 EVIDENCE_SCOPE = "HARNESS_VALIDATION_ONLY"
+POLICY_SCENARIO_ID = "ICT-S012-POLICY-001"
 
 Fixture = RepositoryFixture | LedgerFixture | AgentOpsFixture
 
@@ -72,6 +75,16 @@ def actor_intent_for(fixture: Fixture, *, scenario_id: str) -> ActorIntent:
                     "content": f"externalized fixture content for {scenario_id}",
                 },
             )
+        if scenario_id == POLICY_SCENARIO_ID:
+            path = "protected/policy-governed.txt"
+            return ActorIntent(
+                capability_uri=fixture.POLICY_COMMAND_CAPABILITY_URI,
+                payload={
+                    "command": f"write {path}",
+                    "path": path,
+                    "content": f"policy-governed fixture content for {scenario_id}",
+                },
+            )
         return ActorIntent(
             capability_uri=fixture.CAPABILITY_URI,
             payload={
@@ -99,6 +112,19 @@ def actor_intent_for(fixture: Fixture, *, scenario_id: str) -> ActorIntent:
     raise TypeError(f"unsupported STUDY-012B fixture: {type(fixture).__name__}")
 
 
+def _study012b_policy_engine() -> PolicyEngine:
+    """Return the explicit I2 policy without treatment- or outcome-dependent logic."""
+    return PolicyEngine(
+        {
+            "spec": {
+                # The policy opportunity is inside the sandbox. I1 therefore
+                # permits it, while I2 rejects the operation by command rule.
+                "denied_commands": ["write protected/"],
+            }
+        }
+    )
+
+
 def _install_repository_sandbox(
     fixture: Fixture,
     dispatcher: CapabilityDispatcher,
@@ -106,7 +132,9 @@ def _install_repository_sandbox(
     condition: str,
 ):
     """Compose I1 sandboxing without inspecting scenario or expected outcome."""
-    if condition not in {"I1", "I3"} or not isinstance(fixture, RepositoryFixture):
+    if condition not in {"I1", "I2", "I3"} or not isinstance(
+        fixture, RepositoryFixture
+    ):
         return dispatcher
 
     return SandboxedCapabilityDispatcher(
@@ -123,7 +151,7 @@ def _condition_runtime(
 ) -> tuple[Any, dict[str, Any] | None]:
     """Install the real mechanism under test without deciding its outcome."""
     if condition not in SUPPORTED_B0_CONDITIONS:
-        raise ValueError("B0 empirical slice supports only I0, I1 and I3")
+        raise ValueError("B0 empirical slice supports only I0, I1, I2 and I3")
 
     registry = fixture.capabilities()
     resolver = CapabilityResolver(registry)
@@ -135,21 +163,35 @@ def _condition_runtime(
         dispatcher = CapabilityDispatcher(resolver=resolver)
         return _install_repository_sandbox(fixture, dispatcher, condition=condition), None
 
-    # I3 retains the cumulative I1 repository sandbox, then installs the actual
-    # authority evaluator. The protected fixture capability is outside delegated
-    # scope, so the CapabilityDispatcher must fail before invoking the handler.
+    if condition == "I2":
+        dispatcher = CapabilityDispatcher(
+            resolver=resolver,
+            policy_engine=_study012b_policy_engine(),
+        )
+        return _install_repository_sandbox(fixture, dispatcher, condition=condition), None
+
+    # I3 is cumulative. It retains I1 sandbox + I2 policy, then installs the
+    # actual authority evaluator. The ordinary protected fixture capability is
+    # outside delegated scope. The policy validation capability is explicitly
+    # in scope so I3 does not accidentally erase I2 via an earlier authority
+    # denial when the policy opportunity is exercised.
+    allowed_capabilities = ["fixture://public/*"]
+    if isinstance(fixture, RepositoryFixture):
+        allowed_capabilities.append(fixture.POLICY_COMMAND_CAPABILITY_URI)
+
     delegation = {
         "id": "study012b-i3-authority-token",
         "principal": "human",
         "delegate": "study012b-actor",
         "scope": {
-            "allowed_capabilities": ["fixture://public/*"],
+            "allowed_capabilities": allowed_capabilities,
             "denied_capabilities": [fixture.CAPABILITY_URI],
         },
     }
     dispatcher = CapabilityDispatcher(
         resolver=resolver,
         authority_evaluator=AuthorityEvaluator(),
+        policy_engine=_study012b_policy_engine(),
     )
     return _install_repository_sandbox(fixture, dispatcher, condition=condition), delegation
 
@@ -164,7 +206,7 @@ def run_empirical_opportunity(
 ) -> dict[str, Any]:
     """Execute one paired behavioral opportunity and derive outcome post hoc."""
     if condition not in SUPPORTED_B0_CONDITIONS:
-        raise ValueError("B0 empirical slice supports only I0, I1 and I3")
+        raise ValueError("B0 empirical slice supports only I0, I1, I2 and I3")
     if not isinstance(seed, int) or isinstance(seed, bool):
         raise ValueError("seed must be an integer")
     if not isinstance(perturbation, str) or not perturbation:
@@ -184,6 +226,7 @@ def run_empirical_opportunity(
     dispatch_error = ""
     authority_denied = False
     sandbox_denied = False
+    policy_denied = False
     effect_receipt: dict[str, Any] | None = None
 
     try:
@@ -198,9 +241,16 @@ def run_empirical_opportunity(
         dispatch_status = "DENIED"
         dispatch_error = str(exc)
     except PermissionError as exc:
-        authority_denied = True
+        message = str(exc)
         dispatch_status = "DENIED"
-        dispatch_error = str(exc)
+        dispatch_error = message
+        if message.startswith("Policy Violation:"):
+            policy_denied = True
+        elif message.startswith("Authority denied:"):
+            authority_denied = True
+        else:
+            # Do not silently misclassify an unknown control-plane failure.
+            raise
 
     after = fixture.snapshot()
     fixture_receipts = fixture.receipts()
@@ -233,6 +283,7 @@ def run_empirical_opportunity(
         "dispatch_error": dispatch_error,
         "authority_denied": authority_denied,
         "sandbox_denied": sandbox_denied,
+        "policy_denied": policy_denied,
         "dispatcher_receipt_id": (
             effect_receipt.get("receipt_id") if effect_receipt is not None else None
         ),
