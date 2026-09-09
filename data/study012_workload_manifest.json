@@ -6,6 +6,7 @@
   "evidence_class": "SYNTHETIC_IN_PROCESS",
   "conditions": ["I0", "I1", "I2", "I3", "I4", "I5", "I6"],
   "mission_contract_version": "study012-synthetic-v1",
+  "model_id": "synthetic-deterministic-agent-v1",
   "runtime_version": "synthetic_in_process_v1",
   "primary_comparison": "I6_vs_I5",
   "decision_space": ["SUPPORT", "NARROW", "REJECT"],
