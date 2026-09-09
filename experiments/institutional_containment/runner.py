@@ -1,8 +1,9 @@
-"""Deterministic execution boundary for STUDY-012.
+"""Deterministic execution boundary for STUDY-012A conformance evidence.
 
-The runner is intentionally synthetic and in-process. It fails closed on any
-request to substitute or fall back to another execution mode so confirmatory
-records cannot be silently replaced by simulation or another backend.
+The runner is intentionally synthetic and in-process. It exists to test declared
+institutional semantics and MUST NOT be treated as confirmatory empirical
+evidence for containment effectiveness. It fails closed on fallback/substitution
+and on any attempt to switch the deterministic harness into confirmatory mode.
 """
 from __future__ import annotations
 
@@ -18,7 +19,8 @@ from .safety import assert_safe_target, validate_manifest_safety
 from .scenarios import SCENARIOS
 
 EXECUTION_ENGINE = "synthetic_in_process_v1"
-EXECUTION_CLASS = "SYNTHETIC_VALID"
+EXECUTION_CLASS = "SYNTHETIC_CONFORMANCE_VALID"
+EVIDENCE_SCOPE = "CONFORMANCE_ONLY"
 DEFAULT_MANIFEST = Path("data/study012_scenario_manifest.json")
 _FULL_SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 _REPLICATE_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
@@ -143,6 +145,14 @@ def _fixture_state_digest(
     )
 
 
+def _conformance_metadata() -> dict[str, object]:
+    return {
+        "execution_class": EXECUTION_CLASS,
+        "evidence_scope": EVIDENCE_SCOPE,
+        "confirmatory_eligible": False,
+    }
+
+
 def run_condition(
     condition: str,
     *,
@@ -151,7 +161,7 @@ def run_condition(
     seed: int,
     fallback_mode: str | None = None,
 ) -> list[dict[str, Any]]:
-    """Execute one STUDY-012 condition and return deterministic raw records.
+    """Execute one STUDY-012A condition and return conformance-only records.
 
     ``fallback_mode`` exists only to make the no-substitution invariant explicit:
     any non-null value is rejected rather than interpreted.
@@ -171,8 +181,6 @@ def run_condition(
 
     records: list[dict[str, Any]] = []
     for ordinal, scenario in enumerate(ordered):
-        # Defense in depth: a future code change to the canonical scenario table
-        # cannot bypass the same synthetic target validator used for manifests.
         assert_safe_target(scenario.synthetic_target)
         event = run_scenario(condition, scenario)
         records.append(
@@ -186,7 +194,7 @@ def run_condition(
                 "failure_class": scenario.failure_class,
                 "synthetic_target": scenario.synthetic_target,
                 "execution_engine": EXECUTION_ENGINE,
-                "execution_class": EXECUTION_CLASS,
+                **_conformance_metadata(),
                 "fallback_used": False,
                 "manifest_sha256": digest,
                 "attempted": event.attempted,
@@ -206,14 +214,17 @@ def run_workload_matrix(
     replicate_id: str,
     seed: int,
     source_commit: str,
+    confirmatory: bool = False,
 ) -> list[dict[str, Any]]:
-    """Execute one frozen, paired three-domain STUDY-012 replicate.
+    """Execute one paired three-domain STUDY-012A conformance replicate.
 
-    Condition order is independently randomized within each workload/scenario
-    pair. The pairing identity is invariant across I0-I6 and bound to the exact
-    frozen workload manifest, fixture state, runtime/model identity and source
-    commit.
+    The deterministic harness is never confirmatory eligible. ``confirmatory``
+    exists solely as a fail-closed guard against accidental misuse.
     """
+    if confirmatory:
+        raise ValueError(
+            "confirmatory execution is forbidden for the deterministic STUDY-012A conformance harness"
+        )
     if not isinstance(replicate_id, str) or not _REPLICATE_ID_RE.fullmatch(replicate_id):
         raise ValueError("replicate_id must be a non-empty path-opaque identifier")
     if not isinstance(seed, int) or isinstance(seed, bool):
@@ -279,7 +290,7 @@ def run_workload_matrix(
                     "model_id": manifest["model_id"],
                     "runtime_version": manifest["runtime_version"],
                     "execution_engine": EXECUTION_ENGINE,
-                    "execution_class": EXECUTION_CLASS,
+                    **_conformance_metadata(),
                     "fallback_used": False,
                     "mission_contract_version": manifest["mission_contract_version"],
                     "fixture_state_sha256": fixture_digest,
