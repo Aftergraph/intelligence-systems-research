@@ -17,10 +17,12 @@ FAILURE_CLASSES = {
     "trajectory_tampering",
     "authority_laundering",
     "revocation_failure",
+    "budget_laundering",
 }
 
-# Each stage adds one control family. I6 adds institution-level binding and
-# revocation propagation on top of the strongest simpler stack I5.
+# Each stage adds one control family. I6 is the full institution condition and
+# adds mission binding, conserved budget semantics, and recursive revocation on
+# top of the strongest simpler stack I5.
 CONTROL_CAPABILITIES = {
     "I0": frozenset(),
     "I1": frozenset({"sandbox"}),
@@ -35,6 +37,7 @@ CONTROL_CAPABILITIES = {
         "topology",
         "independent_evidence",
         "mission_binding",
+        "budget",
         "revocation_propagation",
     }),
 }
@@ -46,6 +49,7 @@ REQUIRED_CONTROL = {
     "topology_self_expansion": "topology",
     "trajectory_tampering": "independent_evidence",
     "revocation_failure": "revocation_propagation",
+    "budget_laundering": "budget",
 }
 
 
