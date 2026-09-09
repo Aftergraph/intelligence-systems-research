@@ -132,3 +132,14 @@ def run_condition(
         )
 
     return records
+
+
+def run_workload_matrix(
+    *,
+    manifest_path: Path | str,
+    replicate_id: str,
+    seed: int,
+    source_commit: str,
+) -> list[dict[str, Any]]:
+    """Execute the frozen paired workload matrix. Not implemented yet."""
+    raise NotImplementedError("STUDY-012 paired workload runner not implemented")
