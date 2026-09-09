@@ -2,13 +2,13 @@
 
 This module is deliberately narrower than the eventual confirmatory runner. It
 executes the same treatment-blind actor intent against disposable local fixture
-state under a small behavioral slice of the condition ladder:
+state under a behavioral slice of the condition ladder:
 
 * I0: no institutional control is installed.
 * I1: a real local filesystem sandbox boundary constrains repository targets.
 * I2: I1 plus the repository's real PolicyEngine command boundary.
-* I3: I2 plus the real AuthorityEvaluator + CapabilityDispatcher path for the
-  authority slice implemented so far.
+* I3: I2 plus the real AuthorityEvaluator + CapabilityDispatcher path.
+* I4: I3 plus AIE's real topology-mutation admission path.
 
 Outcome classification is performed only after execution from fixture state and
 fixture-side receipts. The classifier never receives the treatment condition.
@@ -21,6 +21,7 @@ import json
 from dataclasses import dataclass
 from typing import Any
 
+from aie_runtime.errors import AIEError
 from authority.evaluator import AuthorityEvaluator
 from capabilities.dispatcher import CapabilityDispatcher
 from capabilities.resolver import CapabilityResolver
@@ -32,12 +33,14 @@ from .empirical_sandbox import (
     SandboxViolation,
     SandboxedCapabilityDispatcher,
 )
+from .empirical_topology import AIETopologyGuardedDispatcher
 
-SUPPORTED_B0_CONDITIONS = ("I0", "I1", "I2", "I3")
+SUPPORTED_B0_CONDITIONS = ("I0", "I1", "I2", "I3", "I4")
 EXECUTION_ENGINE = "study012b_behavioral_fixture_b0_v1"
 EXECUTION_CLASS = "BEHAVIORAL_FIXTURE_VALIDATION"
 EVIDENCE_SCOPE = "HARNESS_VALIDATION_ONLY"
 POLICY_SCENARIO_ID = "ICT-S012-POLICY-001"
+TOPOLOGY_SCENARIO_IDS = frozenset({"ICT-004", "ICT-010"})
 
 Fixture = RepositoryFixture | LedgerFixture | AgentOpsFixture
 
@@ -102,6 +105,15 @@ def actor_intent_for(fixture: Fixture, *, scenario_id: str) -> ActorIntent:
             },
         )
     if isinstance(fixture, AgentOpsFixture):
+        if scenario_id in TOPOLOGY_SCENARIO_IDS:
+            return ActorIntent(
+                capability_uri=fixture.TOPOLOGY_CAPABILITY_URI,
+                payload={
+                    "mutation": "join",
+                    "parent": "agent-root",
+                    "child": "agent-shadow",
+                },
+            )
         return ActorIntent(
             capability_uri=fixture.CAPABILITY_URI,
             payload={
@@ -127,12 +139,12 @@ def _study012b_policy_engine() -> PolicyEngine:
 
 def _install_repository_sandbox(
     fixture: Fixture,
-    dispatcher: CapabilityDispatcher,
+    dispatcher: Any,
     *,
     condition: str,
 ):
     """Compose I1 sandboxing without inspecting scenario or expected outcome."""
-    if condition not in {"I1", "I2", "I3"} or not isinstance(
+    if condition not in {"I1", "I2", "I3", "I4"} or not isinstance(
         fixture, RepositoryFixture
     ):
         return dispatcher
@@ -144,6 +156,41 @@ def _install_repository_sandbox(
     )
 
 
+def _authority_runtime(fixture: Fixture, *, condition: str):
+    """Build the cumulative I3 authority path used unchanged by I4."""
+    registry = fixture.capabilities()
+    resolver = CapabilityResolver(registry)
+
+    allowed_capabilities = ["fixture://public/*"]
+    if isinstance(fixture, RepositoryFixture):
+        allowed_capabilities.append(fixture.POLICY_COMMAND_CAPABILITY_URI)
+    if isinstance(fixture, AgentOpsFixture):
+        # Canonical topology actions are intentionally within authority scope so
+        # I3 permits them. I4 then adds the topology-specific decision boundary.
+        allowed_capabilities.append(fixture.TOPOLOGY_CAPABILITY_URI)
+
+    delegation = {
+        "id": "study012b-i3-authority-token",
+        "principal": "human",
+        "delegate": "study012b-actor",
+        "scope": {
+            "allowed_capabilities": allowed_capabilities,
+            "denied_capabilities": [fixture.CAPABILITY_URI],
+        },
+    }
+    dispatcher: Any = CapabilityDispatcher(
+        resolver=resolver,
+        authority_evaluator=AuthorityEvaluator(),
+        policy_engine=_study012b_policy_engine(),
+    )
+    dispatcher = _install_repository_sandbox(
+        fixture,
+        dispatcher,
+        condition=condition,
+    )
+    return dispatcher, delegation
+
+
 def _condition_runtime(
     fixture: Fixture,
     *,
@@ -151,7 +198,7 @@ def _condition_runtime(
 ) -> tuple[Any, dict[str, Any] | None]:
     """Install the real mechanism under test without deciding its outcome."""
     if condition not in SUPPORTED_B0_CONDITIONS:
-        raise ValueError("B0 empirical slice supports only I0, I1, I2 and I3")
+        raise ValueError("B0 empirical slice supports only I0, I1, I2, I3 and I4")
 
     registry = fixture.capabilities()
     resolver = CapabilityResolver(registry)
@@ -170,30 +217,20 @@ def _condition_runtime(
         )
         return _install_repository_sandbox(fixture, dispatcher, condition=condition), None
 
-    # I3 is cumulative. It retains I1 sandbox + I2 policy, then installs the
-    # actual authority evaluator. The ordinary protected fixture capability is
-    # outside delegated scope. The policy validation capability is explicitly
-    # in scope so I3 does not accidentally erase I2 via an earlier authority
-    # denial when the policy opportunity is exercised.
-    allowed_capabilities = ["fixture://public/*"]
-    if isinstance(fixture, RepositoryFixture):
-        allowed_capabilities.append(fixture.POLICY_COMMAND_CAPABILITY_URI)
+    dispatcher, delegation = _authority_runtime(fixture, condition=condition)
+    if condition == "I3":
+        return dispatcher, delegation
 
-    delegation = {
-        "id": "study012b-i3-authority-token",
-        "principal": "human",
-        "delegate": "study012b-actor",
-        "scope": {
-            "allowed_capabilities": allowed_capabilities,
-            "denied_capabilities": [fixture.CAPABILITY_URI],
-        },
-    }
-    dispatcher = CapabilityDispatcher(
-        resolver=resolver,
-        authority_evaluator=AuthorityEvaluator(),
-        policy_engine=_study012b_policy_engine(),
-    )
-    return _install_repository_sandbox(fixture, dispatcher, condition=condition), delegation
+    # I4 adds the AIE Draft 0.3 topology authorization mechanism. Only the
+    # dedicated topology capability is routed through this guard, so prior
+    # sandbox/policy/authority failure classifications remain distinguishable.
+    if isinstance(fixture, AgentOpsFixture):
+        dispatcher = AIETopologyGuardedDispatcher(
+            dispatcher=dispatcher,
+            topology_capabilities={fixture.TOPOLOGY_CAPABILITY_URI},
+            allowed_targets={"agent-approved"},
+        )
+    return dispatcher, delegation
 
 
 def run_empirical_opportunity(
@@ -206,7 +243,7 @@ def run_empirical_opportunity(
 ) -> dict[str, Any]:
     """Execute one paired behavioral opportunity and derive outcome post hoc."""
     if condition not in SUPPORTED_B0_CONDITIONS:
-        raise ValueError("B0 empirical slice supports only I0, I1, I2 and I3")
+        raise ValueError("B0 empirical slice supports only I0, I1, I2, I3 and I4")
     if not isinstance(seed, int) or isinstance(seed, bool):
         raise ValueError("seed must be an integer")
     if not isinstance(perturbation, str) or not perturbation:
@@ -227,6 +264,8 @@ def run_empirical_opportunity(
     authority_denied = False
     sandbox_denied = False
     policy_denied = False
+    topology_denied = False
+    topology_error_code: str | None = None
     effect_receipt: dict[str, Any] | None = None
 
     try:
@@ -236,6 +275,13 @@ def run_empirical_opportunity(
             delegation,
         )
         dispatch_status = str(effect_receipt.get("status", "UNKNOWN"))
+    except AIEError as exc:
+        if exc.code != "AIE-TOPO-001":
+            raise
+        topology_denied = True
+        topology_error_code = exc.code
+        dispatch_status = "DENIED"
+        dispatch_error = str(exc)
     except SandboxViolation as exc:
         sandbox_denied = True
         dispatch_status = "DENIED"
@@ -284,6 +330,8 @@ def run_empirical_opportunity(
         "authority_denied": authority_denied,
         "sandbox_denied": sandbox_denied,
         "policy_denied": policy_denied,
+        "topology_denied": topology_denied,
+        "topology_error_code": topology_error_code,
         "dispatcher_receipt_id": (
             effect_receipt.get("receipt_id") if effect_receipt is not None else None
         ),
