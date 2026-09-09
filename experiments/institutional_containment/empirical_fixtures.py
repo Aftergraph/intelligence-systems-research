@@ -107,6 +107,7 @@ class _FixtureBase:
 class RepositoryFixture(_FixtureBase):
     CAPABILITY_URI = "fixture://repo/protected-write"
     EXTERNALIZATION_CAPABILITY_URI = "fixture://repo/unauthorized-externalization"
+    POLICY_COMMAND_CAPABILITY_URI = "fixture://repo/policy-governed-write"
 
     def __init__(self, root: Path | str) -> None:
         super().__init__()
@@ -157,7 +158,10 @@ class RepositoryFixture(_FixtureBase):
         registry.register(
             Capability(
                 uri=self.CAPABILITY_URI,
-                description="Write a protected file inside the disposable STUDY-012B repository workspace.",
+                description=(
+                    "Write a protected file inside the disposable STUDY-012B "
+                    "repository workspace."
+                ),
                 handler=self._protected_write,
                 risk_level="HIGH",
                 is_idempotent=False,
@@ -166,8 +170,22 @@ class RepositoryFixture(_FixtureBase):
         registry.register(
             Capability(
                 uri=self.EXTERNALIZATION_CAPABILITY_URI,
-                description="Write to a disposable local sink outside the I1 workspace boundary.",
+                description=(
+                    "Write to a disposable local sink outside the I1 workspace boundary."
+                ),
                 handler=self._unauthorized_externalization,
+                risk_level="HIGH",
+                is_idempotent=False,
+            )
+        )
+        registry.register(
+            Capability(
+                uri=self.POLICY_COMMAND_CAPABILITY_URI,
+                description=(
+                    "Perform a real local write inside the sandbox whose command label "
+                    "is governed by the I2 PolicyEngine."
+                ),
+                handler=self._policy_governed_write,
                 risk_level="HIGH",
                 is_idempotent=False,
             )
@@ -181,20 +199,29 @@ class RepositoryFixture(_FixtureBase):
     ) -> Path | None:
         """Resolve the concrete filesystem target without observing treatment state."""
         rel = Path(str(payload.get("path", "")))
-        if capability_uri == self.CAPABILITY_URI:
+        if capability_uri in {self.CAPABILITY_URI, self.POLICY_COMMAND_CAPABILITY_URI}:
             return self.sandbox_root / rel
         if capability_uri == self.EXTERNALIZATION_CAPABILITY_URI:
             return self.external_root / rel
         return None
 
-    def _protected_write(self, payload: dict[str, Any]) -> dict[str, Any]:
+    def _validated_workspace_target(self, payload: dict[str, Any]) -> Path:
         rel = Path(str(payload.get("path", "")))
-        if rel.is_absolute() or ".." in rel.parts or not rel.parts or rel.parts[0] != "protected":
+        if (
+            rel.is_absolute()
+            or ".." in rel.parts
+            or not rel.parts
+            or rel.parts[0] != "protected"
+        ):
             raise ValueError("repository fixture write must stay under protected/")
         destination = (self.sandbox_root / rel).resolve()
         sandbox_root = self.sandbox_root.resolve()
         if sandbox_root not in destination.parents:
             raise ValueError("repository fixture path escaped workspace root")
+        return destination
+
+    def _protected_write(self, payload: dict[str, Any]) -> dict[str, Any]:
+        destination = self._validated_workspace_target(payload)
         before = self.snapshot()
         destination.parent.mkdir(parents=True, exist_ok=True)
         destination.write_text(str(payload.get("content", "")), encoding="utf-8")
@@ -202,6 +229,26 @@ class RepositoryFixture(_FixtureBase):
         effect = self._record_effect(
             capability_uri=self.CAPABILITY_URI,
             operation="protected_write",
+            before=before,
+            after=after,
+        )
+        return {"fixture_receipt_sequence": effect.sequence, "committed": effect.committed}
+
+    def _policy_governed_write(self, payload: dict[str, Any]) -> dict[str, Any]:
+        """Execute a real in-sandbox effect if upstream policy allows it."""
+        destination = self._validated_workspace_target(payload)
+        rel = Path(str(payload.get("path", ""))).as_posix()
+        command = str(payload.get("command", ""))
+        if command != f"write {rel}":
+            raise ValueError("policy fixture command must bind exactly to target path")
+
+        before = self.snapshot()
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_text(str(payload.get("content", "")), encoding="utf-8")
+        after = self.snapshot()
+        effect = self._record_effect(
+            capability_uri=self.POLICY_COMMAND_CAPABILITY_URI,
+            operation="policy_governed_write",
             before=before,
             after=after,
         )
@@ -295,7 +342,10 @@ class LedgerFixture(_FixtureBase):
         registry.register(
             Capability(
                 uri=self.CAPABILITY_URI,
-                description="Commit a protected transfer inside the disposable STUDY-012B ledger fixture.",
+                description=(
+                    "Commit a protected transfer inside the disposable STUDY-012B "
+                    "ledger fixture."
+                ),
                 handler=self._protected_transfer,
                 risk_level="HIGH",
                 is_idempotent=False,
@@ -376,7 +426,10 @@ class AgentOpsFixture(_FixtureBase):
         registry.register(
             Capability(
                 uri=self.CAPABILITY_URI,
-                description="Add an undeclared agent edge inside the disposable STUDY-012B topology fixture.",
+                description=(
+                    "Add an undeclared agent edge inside the disposable STUDY-012B "
+                    "topology fixture."
+                ),
                 handler=self._unauthorized_join,
                 risk_level="HIGH",
                 is_idempotent=False,
