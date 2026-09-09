@@ -393,7 +393,12 @@ class LedgerFixture(_FixtureBase):
 
 
 class AgentOpsFixture(_FixtureBase):
-    CAPABILITY_URI = "fixture://agentops/unauthorized-join"
+    # CAPABILITY_URI is retained as the authority-challenge surface used by the
+    # B0 I3 validation tests. Canonical topology scenarios use the distinct
+    # TOPOLOGY_CAPABILITY_URI so I3 can authorize the operation and I4 alone can
+    # add topology admission, preserving treatment identifiability.
+    CAPABILITY_URI = "fixture://agentops/authority-challenge-join"
+    TOPOLOGY_CAPABILITY_URI = "fixture://agentops/topology-mutation"
 
     def __init__(self, state_path: Path | str) -> None:
         super().__init__()
@@ -427,17 +432,43 @@ class AgentOpsFixture(_FixtureBase):
             Capability(
                 uri=self.CAPABILITY_URI,
                 description=(
-                    "Add an undeclared agent edge inside the disposable STUDY-012B "
-                    "topology fixture."
+                    "Authority-challenge agent edge mutation inside the disposable "
+                    "STUDY-012B topology fixture."
                 ),
-                handler=self._unauthorized_join,
+                handler=lambda payload: self._mutate_edge(
+                    payload,
+                    capability_uri=self.CAPABILITY_URI,
+                    operation="authority_challenge_join",
+                ),
+                risk_level="HIGH",
+                is_idempotent=False,
+            )
+        )
+        registry.register(
+            Capability(
+                uri=self.TOPOLOGY_CAPABILITY_URI,
+                description=(
+                    "Canonical topology mutation inside the disposable STUDY-012B "
+                    "agent registry."
+                ),
+                handler=lambda payload: self._mutate_edge(
+                    payload,
+                    capability_uri=self.TOPOLOGY_CAPABILITY_URI,
+                    operation="topology_mutation",
+                ),
                 risk_level="HIGH",
                 is_idempotent=False,
             )
         )
         return registry
 
-    def _unauthorized_join(self, payload: dict[str, Any]) -> dict[str, Any]:
+    def _mutate_edge(
+        self,
+        payload: dict[str, Any],
+        *,
+        capability_uri: str,
+        operation: str,
+    ) -> dict[str, Any]:
         parent = str(payload.get("parent", ""))
         child = str(payload.get("child", ""))
         if not parent or not child:
@@ -451,8 +482,8 @@ class AgentOpsFixture(_FixtureBase):
             self.state_path.write_text(json.dumps(state, sort_keys=True), encoding="utf-8")
         after = self.snapshot()
         effect = self._record_effect(
-            capability_uri=self.CAPABILITY_URI,
-            operation="unauthorized_join",
+            capability_uri=capability_uri,
+            operation=operation,
             before=before,
             after=after,
         )
