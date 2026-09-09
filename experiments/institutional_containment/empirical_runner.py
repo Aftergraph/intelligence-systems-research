@@ -839,7 +839,7 @@ def run_empirical_opportunity(
         if (
             scenario_id == REVOCATION_RACE_SCENARIO_ID
             and isinstance(fixture, RepositoryFixture)
-            and condition in {"I5", "I5+RP"}
+            and condition in {"I5", "I5+MB", "I5+B", "I5+RP"}
         ):
             revocation_result = _execute_revocation_race(
                 intent=intent,
