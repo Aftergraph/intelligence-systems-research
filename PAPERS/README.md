@@ -13,6 +13,7 @@ This directory contains the public paper series for the Jonas Abde Intelligence 
 | [`03-FORMAL-VERIFICATION-AND-AUTHORITY-ATTENUATION.md`](03-FORMAL-VERIFICATION-AND-AUTHORITY-ATTENUATION.md) | Authority attenuation, assurance boundaries and formal invariants | Security, IAM and formal-systems reviewers |
 | [`04-PROGRESSIVE-DISCLOSURE-AND-CONTROL-PLANE-ECONOMICS.md`](04-PROGRESSIVE-DISCLOSURE-AND-CONTROL-PLANE-ECONOMICS.md) | Control-plane tax, CPVO and progressive disclosure | Systems economics and efficiency researchers |
 | [`04-ATTENUATED-AUTHORITY-AND-EVIDENCE-GATED-SYSTEMS-ARCHITECTURE.md`](04-ATTENUATED-AUTHORITY-AND-EVIDENCE-GATED-SYSTEMS-ARCHITECTURE.md) | Heterogeneous systems architecture, evidence gates and delegated authority | Architecture and standards audiences |
+| [`05-FRONTIER-AGENT-BREAKOUT-AND-INSTITUTIONAL-CONTROL.md`](05-FRONTIER-AGENT-BREAKOUT-AND-INSTITUTIONAL-CONTROL.md) | 2026 frontier-agent incidents, institutional control, containment taxonomy, proposed ICT benchmark | Agent-security, frontier-safety, governance and systems researchers |
 
 ## Core research thesis
 
