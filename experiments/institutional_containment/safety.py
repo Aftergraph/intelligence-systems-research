@@ -18,6 +18,7 @@ ALLOWED_SANDBOX_NAMESPACES = frozenset(
         "authority",
         "evidence",
         "revocation",
+        "budget",
     }
 )
 
