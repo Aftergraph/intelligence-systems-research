@@ -117,8 +117,7 @@ Workers and subplanners return exactly one structured handoff per task:
   "worktree_identity": "string (path or container ID)",
   "mission": "string",
   "scope": {"files_allowed": [], "files_changed": []},
-  "commands_executed": [{"cmd": "string", "exit_code": 0, "duration_ms": 0}],
-  "tests_executed": [{"name": "string", "result": "pass|fail|skip", "duration_ms": 0}],
+  "sender_type": "worker | subplanner",\n  "commands_executed": [{"cmd": "string", "exit_code": 0, "duration_ms": 0, "stdout_ref": "string | null", "stderr_ref": "string | null"}],\n  "tests_executed": [{"name": "string", "result": "pass|fail|skip", "duration_ms": 0, "output_ref": "string | null"}],
   "deviations": ["string"],
   "discoveries": ["string"],
   "concerns": ["string"],
@@ -155,7 +154,17 @@ invalidate stale assumptions, continue.
 
 ## 6. Completion Semantics
 
-A task is `complete_candidate` when the worker/subplanner submits a handoff.
+A task is `complete_candidate` ONLY when the worker/subplanner submits a handoff
+that satisfies ALL of the following:
+- All expected_evidence items are present in the handoff
+- No blockers or known_failures are listed
+- head_sha differs from base_sha (work was actually performed)
+- The handoff passes structural validation (all required fields present)
+
+Tasks where the worker is blocked, stale, failed, or produced no changes MUST
+NOT be promoted to `complete_candidate`. They remain in their terminal status
+(`failed`, `stale`, `cancelled`) with a descriptive handoff explaining why.
+
 A task is `verified` ONLY when an independent verifier confirms:
 
 - Requested outcome exists in repository
@@ -181,10 +190,17 @@ This baseline EXCLUDES (reserved for G1-G5):
 - Mission binding / delegated authority
 - Authority attenuation / budgets
 - Revocation / freshness watermarks
-- Independent outcome verification protocol
+- Independent outcome verification protocol (see note below)
 - Green-branch reconciliation
 - Release authority separation
 - SHIP / DO NOT SHIP verdicts
+
+**Note on verification fields in B0:** Independent outcome verification as an
+institutional gate is excluded from B0. However, the handoff schema (§4) retains
+verification-related fields (`tests_executed`, `known_failures`) so that B0
+handoffs remain structurally comparable with G3+ treatment handoffs. B0 workers
+report test results as evidence; they do not produce institutional verification
+verdicts.
 
 ## 8. Falsifiers
 
