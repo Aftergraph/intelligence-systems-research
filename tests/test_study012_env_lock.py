@@ -20,6 +20,15 @@ workspace = os.path.abspath(os.path.join(base_dir, ".."))
 LOCK = Path(workspace) / "data" / "study012_confirmatory_env_lock.json"
 LOCK_SHA = Path(workspace) / "data" / "study012_confirmatory_env_lock.json.sha256"
 
+# Generic CI validates the frozen artifact but is not the confirmatory host.
+# Exact runtime-version checks run only when explicitly enabled on the
+# controlled confirmatory environment (currently the Aftergraph VDS).
+RUNTIME_MATCH_ENABLED = os.environ.get("STUDY012_CONFIRMATORY_ENV_CHECK") == "1"
+requires_confirmatory_env = pytest.mark.skipif(
+    not RUNTIME_MATCH_ENABLED,
+    reason="exact runtime lock is verified only on the controlled confirmatory host",
+)
+
 
 @pytest.fixture
 def lock():
@@ -45,6 +54,7 @@ def test_lock_policy_requires_refreeze_on_drift(lock):
     assert "version bump" in policy and "sha256" in policy
 
 
+@requires_confirmatory_env
 def test_runtime_python_matches_lock(lock):
     current = f"{platform.python_version_tuple()[0]}.{platform.python_version_tuple()[1]}.{platform.python_version_tuple()[2]}"
     assert platform.python_version() == lock["environment"]["python"], (
@@ -52,10 +62,12 @@ def test_runtime_python_matches_lock(lock):
     )
 
 
+@requires_confirmatory_env
 def test_runtime_pytest_matches_lock(lock):
     assert version("pytest") == lock["environment"]["pytest"]
 
 
+@requires_confirmatory_env
 def test_runtime_openai_agents_matches_lock(lock):
     assert version("openai-agents") == lock["environment"]["openai_agents"]
 

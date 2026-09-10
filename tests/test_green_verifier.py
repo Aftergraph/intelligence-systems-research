@@ -1,6 +1,7 @@
 """Tests for SDC-B0 Task #75: independent green-branch verifier."""
 import json
 from pathlib import Path
+import subprocess
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
@@ -9,7 +10,10 @@ from sdc_b0.green_verifier import IndependentVerifier, VerificationVerdict, Verd
 from sdc_b0.telemetry import TelemetryCollector
 from sdc_b0.semantic_progress import UnmergedBranch
 
-BASE_SHA = "a5dccc8a4825118a85471d210d832ed479b79b72"
+REPO_ROOT = Path(__file__).resolve().parents[1]
+BASE_SHA = subprocess.check_output(
+    ["git", "-C", str(REPO_ROOT), "rev-parse", "HEAD"], text=True
+).strip()
 
 @pytest.fixture
 def tmp_log(tmp_path):

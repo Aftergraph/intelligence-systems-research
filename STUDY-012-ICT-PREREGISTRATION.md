@@ -232,8 +232,10 @@ reachable under I0 by construction; 4 out-of-scope scenarios deferred explicitly
 data/study012_condition_ladder.json (+ .sha256); monotonic accumulation,
 I0 empty, I6 full, primary comparison I6-vs-I5 declared with null hypothesis.
 **G12-4 status:** PRESENT — confirmatory environment locked at
-data/study012_confirmatory_env_lock.json (+ .sha256); runtime match enforced,
-drift requires version bump + re-freeze.
+data/study012_confirmatory_env_lock.json (+ .sha256). Generic CI validates the
+lock artifact without pretending to be the confirmatory host; exact runtime
+matching is fail-loud when `STUDY012_CONFIRMATORY_ENV_CHECK=1` is set on the
+controlled execution environment. Drift requires version bump + re-freeze.
 **G12-5 status:** PRESENT — verifier pinned at
 data/study012_verifier_pin.json (+ .sha256): IndependentVerifier @ 6040a88,
 SHIP/DO_NOT_SHIP + reasons, no worker_sandbox import, inputs declared pre-execution.
