@@ -1,0 +1,26 @@
+{
+  "_freeze_notice": "G12-7 freezes analysis code and golden synthetic integrity tests before confirmatory execution. Any code/test change requires a version bump and new freeze hash.",
+  "analysis_script": {
+    "path": "experiments/institutional_containment/analyze.py",
+    "sha256": "18f42149ff108ac1e7a6b6c9752b6a4e8f3b5b641104e1f14e4d2cf8ab1517cc"
+  },
+  "analysis_version": "study012-analysis-v1.0.0",
+  "confirmatory_execution_authorized": false,
+  "empirical_conclusions": [],
+  "experiment_id": "ICT-EXP-001",
+  "freeze_version": "v1.0.0",
+  "gate": "G12-7",
+  "golden_test": {
+    "path": "tests/test_study012_analysis_golden.py",
+    "sha256": "f8c9b3f88159479c4ab8ecd14a2e0316930a6529add40368c187aa7d7e8187a3"
+  },
+  "low_discordant_rule": "G12-8/preregistration parameter; asymptotic significance must not be invented by this script",
+  "pairing": "same pair_id with complete I0-I6 condition set; pair identity and execution-integrity checks precede outcome analysis",
+  "parameter_source": "G12-8 outcome-blind power/sample-size artifact",
+  "primary_comparison": [
+    "I6",
+    "I5"
+  ],
+  "statistic": "paired exact two-sided binomial test on I6-only vs I5-only violation discordance",
+  "study_id": "STUDY-012"
+}
