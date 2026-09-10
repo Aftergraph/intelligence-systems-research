@@ -221,39 +221,39 @@ forced to lose against the strongest simpler alternatives.
 | H-ICT-5 (IC-5: Authority Laundering) | **DRAFT — PENDING** |
 | H-ICT-6 (IC-6: Revocation Failure) | **DRAFT — PENDING** |
 
-**G12-1 status:** PRESENT — this DRAFT pre-registration document exists and
-records the intended design, hypotheses, metrics, and falsification criteria for
-ICT-EXP-001. No execution has occurred. No empirical conclusions are asserted.
+### Canonical G12 acceptance gates
 
-**G12-2 status:** PRESENT — I0 opportunity-reachability matrix frozen at
-data/study012_i0_opportunity_matrix.json (+ .sha256). All 6 in-scope scenarios
-reachable under I0 by construction; 4 out-of-scope scenarios deferred explicitly.
-**G12-3 status:** PRESENT — I0–I6 condition ladder frozen at
-data/study012_condition_ladder.json (+ .sha256); monotonic accumulation,
-I0 empty, I6 full, primary comparison I6-vs-I5 declared with null hypothesis.
-**G12-4 status:** PRESENT — confirmatory environment locked at
-data/study012_confirmatory_env_lock.json (+ .sha256). Generic CI validates the
-lock artifact without pretending to be the confirmatory host; exact runtime
-matching is fail-loud when `STUDY012_CONFIRMATORY_ENV_CHECK=1` is set on the
-controlled execution environment. Drift requires version bump + re-freeze.
-**G12-5 status:** PRESENT — verifier pinned at
-data/study012_verifier_pin.json (+ .sha256): IndependentVerifier @ 6040a88,
-SHIP/DO_NOT_SHIP + reasons, no worker_sandbox import, inputs declared pre-execution.
-**G12-6 status:** PRESENT — workload manifest finalized at v1.0.0:
-12 synthetic fixtures under data/study012_fixtures/, real SHA-256 throughout,
-root hash recomputed, zero PLACEHOLDERs.
-**G12-7 status:** PRESENT — pilot dry-run plan at
-data/study012_pilot_dryrun_report.json (+ .sha256): 12 fixtures validated,
-6 pairs PLANNED-NOT-EXECUTED, zero live APIs, zero conclusions.
-**G12-8 status:** PRESENT — destructive-test clearance checklist at
-data/study012_destructive_test_clearance.json (+ .sha256); verdict NOT_GRANTED
-(human approval outstanding), instantiation FORBIDDEN, fail-closed.
-**G12-9 status:** PENDING — final freeze approval and first-look embargo set.
-**G12-10 status:** PENDING — first execution window opens; no empirical look
-until all prior gates are closed.
+The gate identifiers below are bound to GitHub issue #52. They may not be
+renumbered or redefined by later implementation slices. `PRESENT` means the
+canonical acceptance criterion itself is satisfied on `main`; a supporting
+readiness artifact alone does not satisfy a differently named gate.
 
-**G12-2 PRESENT, G12-3 PRESENT, G12-4 PRESENT, G12-5 PRESENT, G12-6 PRESENT, G12-7 PRESENT, G12-8 PRESENT, G12-9 through G12-10 status:** **PENDING** — these gates are placeholders for
-future pre-registration milestones. None are complete. All are PENDING.
+| Gate | Canonical acceptance criterion | Status on this revision |
+|---|---|---|
+| G12-1 | frozen workload/scenario manifest | **PRESENT** |
+| G12-2 | adversarial opportunity reachability under I0 | **PRESENT** |
+| G12-3 | I0-I6 condition-conformance tests | **PRESENT** |
+| G12-4 | no silent simulation/fallback substitution | **PENDING** |
+| G12-5 | independent evidence/verification authority | **PENDING** |
+| G12-6 | synthetic-only safety boundary with no real third-party target | **PRESENT** |
+| G12-7 | frozen analysis script + golden synthetic tests | **PENDING** |
+| G12-8 | outcome-blind power/sample-size procedure | **PENDING** |
+| G12-9 | research registries aligned | **PRESENT** |
+| G12-10 | hostile technical review before first confirmatory look | **PRESENT** |
+
+**Supplemental readiness artifacts (do not renumber or satisfy G12 gates by themselves):**
+
+- `data/study012_confirmatory_env_lock.json` (+ `.sha256`), landed in PR #83.
+- `data/study012_verifier_pin.json` (+ `.sha256`), landed in PR #84.
+- `data/study012_workload_manifest.json` v1.0.0 and fixture hashes, landed in PR #85; this strengthens G12-1.
+- `data/study012_pilot_dryrun_report.json` (+ `.sha256`), landed in PR #88.
+- `data/study012_destructive_test_clearance.json` (+ `.sha256`), landed in PR #89; current verdict remains `NOT_GRANTED`.
+
+No confirmatory execution is authorized by any supplemental artifact. G12-4,
+G12-5, G12-7, and G12-8 remain pending until their issue-#52 acceptance
+criteria are implemented and independently reviewed. G12-6 (synthetic-only
+safety boundary, #92), G12-9 (registry alignment, #95), and G12-10 (hostile
+technical review, #97) are PRESENT via their merged canonical artifacts.
 
 ---
 

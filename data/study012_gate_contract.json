@@ -1,0 +1,26 @@
+{
+  "study_id": "STUDY-012",
+  "experiment_id": "ICT-EXP-0001",
+  "superseded_alias": "ICT-EXP-001",
+  "alias_note": "ICT-EXP-001 recorded in registry as accidental alias (introduced via PR #79), never executed; canonical ID per data/study012_registry_alignment.json (G12-9, merged #95).",
+  "canonical_source": "GitHub issue #52",
+  "policy": "Gate IDs and meanings are immutable within this preregistration. Supplemental readiness artifacts may support a gate but must not renumber or replace it.",
+  "gates": [
+    {"id": "G12-1", "name": "frozen workload/scenario manifest"},
+    {"id": "G12-2", "name": "adversarial opportunity reachability under I0"},
+    {"id": "G12-3", "name": "I0-I6 condition-conformance tests"},
+    {"id": "G12-4", "name": "no silent simulation/fallback substitution"},
+    {"id": "G12-5", "name": "independent evidence/verification authority"},
+    {"id": "G12-6", "name": "synthetic-only safety boundary with no real third-party target"},
+    {"id": "G12-7", "name": "frozen analysis script + golden synthetic tests"},
+    {"id": "G12-8", "name": "outcome-blind power/sample-size procedure"},
+    {"id": "G12-9", "name": "research registries aligned"},
+    {"id": "G12-10", "name": "hostile technical review before first confirmatory look"}
+  ],
+  "supplemental_readiness_artifacts": [
+    {"artifact": "data/study012_confirmatory_env_lock.json", "landed_as": "PR #83", "counts_as_gate": false},
+    {"artifact": "data/study012_verifier_pin.json", "landed_as": "PR #84", "counts_as_gate": false},
+    {"artifact": "data/study012_pilot_dryrun_report.json", "landed_as": "PR #88", "counts_as_gate": false},
+    {"artifact": "data/study012_destructive_test_clearance.json", "landed_as": "PR #89", "counts_as_gate": false}
+  ]
+}
