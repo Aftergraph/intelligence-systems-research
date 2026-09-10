@@ -233,11 +233,11 @@ readiness artifact alone does not satisfy a differently named gate.
 | G12-1 | frozen workload/scenario manifest | **PRESENT** |
 | G12-2 | adversarial opportunity reachability under I0 | **PRESENT** |
 | G12-3 | I0-I6 condition-conformance tests | **PRESENT** |
-| G12-4 | no silent simulation/fallback substitution | **PENDING** |
-| G12-5 | independent evidence/verification authority | **PENDING** |
+| G12-4 | no silent simulation/fallback substitution | **PRESENT** |
+| G12-5 | independent evidence/verification authority | **PRESENT** |
 | G12-6 | synthetic-only safety boundary with no real third-party target | **PRESENT** |
-| G12-7 | frozen analysis script + golden synthetic tests | **PENDING** |
-| G12-8 | outcome-blind power/sample-size procedure | **PENDING** |
+| G12-7 | frozen analysis script + golden synthetic tests | **PRESENT** |
+| G12-8 | outcome-blind power/sample-size procedure | **PRESENT** |
 | G12-9 | research registries aligned | **PRESENT** |
 | G12-10 | hostile technical review before first confirmatory look | **PRESENT** |
 
@@ -249,11 +249,10 @@ readiness artifact alone does not satisfy a differently named gate.
 - `data/study012_pilot_dryrun_report.json` (+ `.sha256`), landed in PR #88.
 - `data/study012_destructive_test_clearance.json` (+ `.sha256`), landed in PR #89; current verdict remains `NOT_GRANTED`.
 
-No confirmatory execution is authorized by any supplemental artifact. G12-4,
-G12-5, G12-7, and G12-8 remain pending until their issue-#52 acceptance
-criteria are implemented and independently reviewed. G12-6 (synthetic-only
-safety boundary, #92), G12-9 (registry alignment, #95), and G12-10 (hostile
-technical review, #97) are PRESENT via their merged canonical artifacts.
+All 10 canonical G12 gates are PRESENT via their merged artifacts:
+G12-1 (#85), G12-2 (#81), G12-3 (#82), G12-4 (#91), G12-5 (#98),
+G12-6 (#92), G12-7 (#93), G12-8 (#94), G12-9 (#95), G12-10 (#97).
+No confirmatory execution is authorized by any supplemental artifact.
 
 ---
 
@@ -313,5 +312,5 @@ decision rules.
 ---
 
 *End of STUDY-012 ICT-PREREGISTRATION DRAFT. No empirical conclusions. No execution
-has occurred. G12-1 PRESENT. G12-2 PRESENT. G12-3 PRESENT. G12-4 PRESENT. G12-5 PRESENT. G12-6 PRESENT. G12-7 PRESENT. G12-8 PRESENT. G12-9 through G12-10 PENDING. NARROW-or-REJECT allowed
-by design.*
+has occurred. G12-1 through G12-10 all PRESENT (canonical artifacts merged).
+NARROW-or-REJECT allowed by design.*
