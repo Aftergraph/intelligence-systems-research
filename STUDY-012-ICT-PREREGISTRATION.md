@@ -225,11 +225,21 @@ forced to lose against the strongest simpler alternatives.
 records the intended design, hypotheses, metrics, and falsification criteria for
 ICT-EXP-001. No execution has occurred. No empirical conclusions are asserted.
 
+**G12-2 status:** PENDING — frozen version assignment (DRAFT → v1.0.0 at freeze).
+**G12-3 status:** PENDING — power analysis and sample-size determination completed.
+**G12-4 status:** PENDING — dependency lock and runtime versions pinned.
+**G12-5 status:** PENDING — verifier version pinned and matched to verifier_v2.
+**G12-6 status:** PENDING — workload manifest finalized with real SHA-256 hashes
+and fixture content (currently PLACEHOLDER in DRAFT).
+**G12-7 status:** PENDING — pilot dry-run on synthetic scenarios without live APIs.
+**G12-8 status:** PENDING — destructive-test clearance for adversarial scenario
+instantiation.
+**G12-9 status:** PENDING — final freeze approval and first-look embargo set.
+**G12-10 status:** PENDING — first execution window opens; no empirical look
+until all prior gates are closed.
+
 **G12-2 through G12-10 status:** **PENDING** — these gates are placeholders for
-future pre-registration milestones (frozen version, power analysis, dependency
-lock, verifier pin, workload finalization, pilot dry-run, destructive-test
-clearance, final freeze approval, first-look embargo). None are complete. All are
-PENDING.
+future pre-registration milestones. None are complete. All are PENDING.
 
 ---
 
