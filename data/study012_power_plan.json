@@ -1,0 +1,32 @@
+{
+  "_freeze_notice": "Outcome-blind G12-8 planning artifact. Parameters were fixed without STUDY-012 confirmatory outcomes. Any change requires version bump and new SHA-256 sidecar.",
+  "achieved_observations_per_condition": 582,
+  "adaptive_resizing_after_first_look": false,
+  "analysis_script": {
+    "path": "scripts/study012_power_analysis.py",
+    "sha256": "c3ea15e76d25fe337f22f11695f1cea2a9a7c3af11078007cf717a639f749149"
+  },
+  "confirmatory_execution_authorized": false,
+  "design": "PAIRED_I6_VS_I5",
+  "empirical_conclusions": [],
+  "experiment_id": "ICT-EXP-001",
+  "freeze_version": "v1.0.0",
+  "full_i0_i6_ladder_runs": 4074,
+  "gate": "G12-8",
+  "manifest_root_hash": "e5e0116105162471599707baf52d6dd5fc3b1fd39ad8265f57a71e947dc5392c",
+  "observed_outcomes_used": false,
+  "outcome_blind": true,
+  "paired_design_note": "Primary analysis is paired, but pre-data discordance is unknown. The independent two-proportion formula is used as a conservative upper-bound planning approximation; paired discordance will not be estimated from confirmatory outcomes to resize the study after first look.",
+  "planning_method": "CONSERVATIVE_INDEPENDENT_TWO_PROPORTION_UPPER_BOUND",
+  "planning_parameters": {
+    "alpha_two_sided": 0.01,
+    "baseline_rate": 0.5,
+    "minimum_material_difference": 0.1,
+    "power": 0.8
+  },
+  "primary_i5_i6_runs": 1164,
+  "primary_pair_count": 6,
+  "replicates_required": 97,
+  "required_observations_per_condition": 577,
+  "study_id": "STUDY-012"
+}
