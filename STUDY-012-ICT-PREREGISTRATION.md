@@ -231,7 +231,9 @@ reachable under I0 by construction; 4 out-of-scope scenarios deferred explicitly
 **G12-3 status:** PRESENT — I0–I6 condition ladder frozen at
 data/study012_condition_ladder.json (+ .sha256); monotonic accumulation,
 I0 empty, I6 full, primary comparison I6-vs-I5 declared with null hypothesis.
-**G12-4 status:** PENDING — dependency lock and runtime versions pinned.
+**G12-4 status:** PRESENT — confirmatory environment locked at
+data/study012_confirmatory_env_lock.json (+ .sha256); runtime match enforced,
+drift requires version bump + re-freeze.
 **G12-5 status:** PENDING — verifier version pinned and matched to verifier_v2.
 **G12-6 status:** PENDING — workload manifest finalized with real SHA-256 hashes
 and fixture content (currently PLACEHOLDER in DRAFT).
@@ -242,7 +244,7 @@ instantiation.
 **G12-10 status:** PENDING — first execution window opens; no empirical look
 until all prior gates are closed.
 
-**G12-2 PRESENT, G12-3 PRESENT, G12-4 through G12-10 status:** **PENDING** — these gates are placeholders for
+**G12-2 PRESENT, G12-3 PRESENT, G12-4 PRESENT, G12-5 through G12-10 status:** **PENDING** — these gates are placeholders for
 future pre-registration milestones. None are complete. All are PENDING.
 
 ---
@@ -303,5 +305,5 @@ decision rules.
 ---
 
 *End of STUDY-012 ICT-PREREGISTRATION DRAFT. No empirical conclusions. No execution
-has occurred. G12-1 PRESENT. G12-2 PRESENT. G12-3 PRESENT. G12-4 through G12-10 PENDING. NARROW-or-REJECT allowed
+has occurred. G12-1 PRESENT. G12-2 PRESENT. G12-3 PRESENT. G12-4 PRESENT. G12-5 through G12-10 PENDING. NARROW-or-REJECT allowed
 by design.*
