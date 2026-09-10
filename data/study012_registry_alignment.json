@@ -1,1 +1,43 @@
-{"canonical_experiment_id":"ICT-EXP-0001","confirmatory_execution_occurred":false,"effective_freeze_notice":"FROZEN STUDY-012 ICT-PREREGISTRATION v1.0.0 (G12-6), amended to v1.0.1 pre-confirmatory (G12-9). v1.0.0 manifest retained byte-identical (sha256 dab942d177847705385fcd18a27fec00091abfb89efdacbe8307680e39f1d218). Canonical experiment ICT-EXP-0001; ICT-EXP-001 recorded as accidental alias (introduced via PR #79), never executed under either ID. After freeze, NO silent edits: any further change requires a new PROTOCOL_AMENDMENT entry + version bump + recomputed hashes.","non_canonical_aliases":[{"experiment_id":"ICT-EXP-001","introduced_via":"PR #79 (accidental; intended canonical ID was ICT-EXP-0001)","status":"superseded-alias-never-executed"}],"protocol_amendments":[{"amendment_version":"v1.0.1","base_freeze_version":"v1.0.0","base_manifest":"data/study012_workload_manifest.json","base_manifest_sha256":"dab942d177847705385fcd18a27fec00091abfb89efdacbe8307680e39f1d218","base_root_hash":"e5e0116105162471599707baf52d6dd5fc3b1fd39ad8265f57a71e947dc5392c","change":"declare canonical experiment_id ICT-EXP-0001; record ICT-EXP-001 as accidental alias","created_utc":"2026-09-10T12:00:00Z","reason":"registry alignment: canonical ID was ICT-EXP-0001 from preregistration intent; ICT-EXP-001 entered via PR #79 without amendment","stage":"pre-confirmatory"}],"registry_schema":"study012-registry-alignment/0.1","study_id":"STUDY-012"}
+{
+  "canonical_experiment_id": "ICT-EXP-0001",
+  "confirmatory_execution_occurred": false,
+  "effective_freeze_notice": "FROZEN STUDY-012 ICT-PREREGISTRATION v1.0.0 (G12-6), amended to v1.0.1 pre-confirmatory (G12-9). v1.0.0 manifest retained byte-identical (sha256 dab942d177847705385fcd18a27fec00091abfb89efdacbe8307680e39f1d218). Canonical experiment ICT-EXP-0001; ICT-EXP-001 recorded as accidental alias (introduced via PR #79), never executed under either ID. After freeze, NO silent edits: any further change requires a new PROTOCOL_AMENDMENT entry + version bump + recomputed hashes.",
+  "historical_scope": {
+    "note": "Files below retain ICT-EXP-001 as pinned pre-ruling history. They are NOT canonical claims. Rewriting them would break sidecar pins (= silent edits by another name). The registry governs; history stays.",
+    "retained_001": [
+      "data/study012_workload_manifest.json (frozen v1.0.0; base of v1.0.1 amendment)",
+      "STUDY-012-ICT-PREREGISTRATION.md (frozen v1.0.0 document)",
+      "data/study012_analysis_freeze.json (frozen v1.0.0)",
+      "data/study012_power_plan.json (frozen v1.0.0)",
+      "data/study012_condition_ladder.json (DRAFT snapshot + sidecar)",
+      "data/study012_confirmatory_env_lock.json (DRAFT snapshot + sidecar)",
+      "data/study012_destructive_test_clearance.json (DRAFT snapshot + sidecar)",
+      "data/study012_i0_opportunity_matrix.json (DRAFT snapshot + sidecar)",
+      "data/study012_pilot_dryrun_report.json (DRAFT snapshot + sidecar)",
+      "data/study012_verifier_pin.json (DRAFT snapshot + sidecar)",
+      "tests/test_study012_clearance.py (pins DRAFT clearance content, incl. experiment_id)"
+    ]
+  },
+  "non_canonical_aliases": [
+    {
+      "experiment_id": "ICT-EXP-001",
+      "introduced_via": "PR #79 (accidental; intended canonical ID was ICT-EXP-0001)",
+      "status": "superseded-alias-never-executed"
+    }
+  ],
+  "protocol_amendments": [
+    {
+      "amendment_version": "v1.0.1",
+      "base_freeze_version": "v1.0.0",
+      "base_manifest": "data/study012_workload_manifest.json",
+      "base_manifest_sha256": "dab942d177847705385fcd18a27fec00091abfb89efdacbe8307680e39f1d218",
+      "base_root_hash": "e5e0116105162471599707baf52d6dd5fc3b1fd39ad8265f57a71e947dc5392c",
+      "change": "declare canonical experiment_id ICT-EXP-0001; record ICT-EXP-001 as accidental alias",
+      "created_utc": "2026-09-10T12:00:00Z",
+      "reason": "registry alignment: canonical ID was ICT-EXP-0001 from preregistration intent; ICT-EXP-001 entered via PR #79 without amendment",
+      "stage": "pre-confirmatory"
+    }
+  ],
+  "registry_schema": "study012-registry-alignment/0.1",
+  "study_id": "STUDY-012"
+}
