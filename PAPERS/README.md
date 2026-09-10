@@ -14,6 +14,18 @@ This directory contains the public paper series for the Jonas Abde Intelligence 
 | [`04-ATTENUATED-AUTHORITY-AND-EVIDENCE-GATED-SYSTEMS-ARCHITECTURE.md`](04-ATTENUATED-AUTHORITY-AND-EVIDENCE-GATED-SYSTEMS-ARCHITECTURE.md) | Heterogeneous systems architecture, causal trajectories, evidence gates and delegated authority | Publication-ready architectural specification; not external validation | Architecture, security and standards audiences |
 | [`05-FRONTIER-AGENT-BREAKOUT-AND-INSTITUTIONAL-CONTROL.md`](05-FRONTIER-AGENT-BREAKOUT-AND-INSTITUTIONAL-CONTROL.md) | 2026 frontier-agent incidents, institutional control, containment taxonomy, proposed ICT benchmark | Public working paper; STUDY-012 is the active empirical follow-on | Agent-security, frontier-safety, governance and systems researchers |
 
+
+## Publication exports
+
+Reader-ready PDF and editable DOCX builds for Papers 01–05 are published under [`exports/`](exports/). These are convenience renderings; the numbered Markdown manuscripts above remain the canonical text sources.
+
+## Additional working papers
+
+Research manuscripts that are part of the broader Aftergraph program but are **not** numbered members of the 01–05 series live under [`additional/`](additional/):
+
+- [`Autonomous Work Detection`](additional/awd/AUTONOMOUS-WORK-DETECTION.md) — working paper / product research protocol; proposal and hypothesis-generating status.
+- [`After Graph / The Institution Layer`](additional/institution-layer/README.md) — current v4 research/standards manuscript, retained as a supplemental research track rather than silently promoted into the numbered series.
+
 ## Core research thesis
 
 The program investigates whether long-horizon autonomous systems need a vendor-neutral systems contract that connects:
