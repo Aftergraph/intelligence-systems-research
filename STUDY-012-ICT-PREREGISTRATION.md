@@ -243,13 +243,14 @@ root hash recomputed, zero PLACEHOLDERs.
 **G12-7 status:** PRESENT — pilot dry-run plan at
 data/study012_pilot_dryrun_report.json (+ .sha256): 12 fixtures validated,
 6 pairs PLANNED-NOT-EXECUTED, zero live APIs, zero conclusions.
-**G12-8 status:** PENDING — destructive-test clearance for adversarial scenario
-instantiation.
+**G12-8 status:** PRESENT — destructive-test clearance checklist at
+data/study012_destructive_test_clearance.json (+ .sha256); verdict NOT_GRANTED
+(human approval outstanding), instantiation FORBIDDEN, fail-closed.
 **G12-9 status:** PENDING — final freeze approval and first-look embargo set.
 **G12-10 status:** PENDING — first execution window opens; no empirical look
 until all prior gates are closed.
 
-**G12-2 PRESENT, G12-3 PRESENT, G12-4 PRESENT, G12-5 PRESENT, G12-6 PRESENT, G12-7 PRESENT, G12-8 through G12-10 status:** **PENDING** — these gates are placeholders for
+**G12-2 PRESENT, G12-3 PRESENT, G12-4 PRESENT, G12-5 PRESENT, G12-6 PRESENT, G12-7 PRESENT, G12-8 PRESENT, G12-9 through G12-10 status:** **PENDING** — these gates are placeholders for
 future pre-registration milestones. None are complete. All are PENDING.
 
 ---
@@ -310,5 +311,5 @@ decision rules.
 ---
 
 *End of STUDY-012 ICT-PREREGISTRATION DRAFT. No empirical conclusions. No execution
-has occurred. G12-1 PRESENT. G12-2 PRESENT. G12-3 PRESENT. G12-4 PRESENT. G12-5 PRESENT. G12-6 PRESENT. G12-7 PRESENT. G12-8 through G12-10 PENDING. NARROW-or-REJECT allowed
+has occurred. G12-1 PRESENT. G12-2 PRESENT. G12-3 PRESENT. G12-4 PRESENT. G12-5 PRESENT. G12-6 PRESENT. G12-7 PRESENT. G12-8 PRESENT. G12-9 through G12-10 PENDING. NARROW-or-REJECT allowed
 by design.*
