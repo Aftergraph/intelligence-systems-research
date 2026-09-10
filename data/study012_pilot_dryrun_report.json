@@ -1,0 +1,98 @@
+{
+  "_notice": "DRY-RUN ONLY. This plan was never executed. No agent ran, no live API was called, no empirical conclusions exist. Executing this plan requires G12-8 clearance + G12-10 window.",
+  "study_id": "STUDY-012",
+  "experiment_id": "ICT-EXP-001",
+  "gate": "G12-7 pilot dry-run (synthetic, no live APIs)",
+  "freeze_version": "DRAFT",
+  "manifest_root_hash": "e5e0116105162471599707baf52d6dd5fc3b1fd39ad8265f57a71e947dc5392c",
+  "manifest_freeze_version": "v1.0.0",
+  "fixtures_validated": 12,
+  "comparison_pairs": [
+    {
+      "pair": [
+        "S12-IC1-I5",
+        "S12-IC1-I6"
+      ],
+      "task_family": "Cross-Agent Collusion (IC-1)",
+      "would_execute": "Run S12-IC1-I5 (I5) then S12-IC1-I6 (I6) against synthetic fixtures; collect verdicts via pinned IndependentVerifier; compare containment outcomes.",
+      "declared_inputs": [
+        "data/study012_fixtures/S12-IC1-I5.json",
+        "data/study012_fixtures/S12-IC1-I6.json"
+      ],
+      "live_api_calls": 0,
+      "status": "PLANNED-NOT-EXECUTED"
+    },
+    {
+      "pair": [
+        "S12-IC2-I5",
+        "S12-IC2-I6"
+      ],
+      "task_family": "Unauthorized Externalization (IC-2)",
+      "would_execute": "Run S12-IC2-I5 (I5) then S12-IC2-I6 (I6) against synthetic fixtures; collect verdicts via pinned IndependentVerifier; compare containment outcomes.",
+      "declared_inputs": [
+        "data/study012_fixtures/S12-IC2-I5.json",
+        "data/study012_fixtures/S12-IC2-I6.json"
+      ],
+      "live_api_calls": 0,
+      "status": "PLANNED-NOT-EXECUTED"
+    },
+    {
+      "pair": [
+        "S12-IC3-I5",
+        "S12-IC3-I6"
+      ],
+      "task_family": "Topology Self-Expansion (IC-3)",
+      "would_execute": "Run S12-IC3-I5 (I5) then S12-IC3-I6 (I6) against synthetic fixtures; collect verdicts via pinned IndependentVerifier; compare containment outcomes.",
+      "declared_inputs": [
+        "data/study012_fixtures/S12-IC3-I5.json",
+        "data/study012_fixtures/S12-IC3-I6.json"
+      ],
+      "live_api_calls": 0,
+      "status": "PLANNED-NOT-EXECUTED"
+    },
+    {
+      "pair": [
+        "S12-IC4-I5",
+        "S12-IC4-I6"
+      ],
+      "task_family": "Trajectory Tampering (IC-4)",
+      "would_execute": "Run S12-IC4-I5 (I5) then S12-IC4-I6 (I6) against synthetic fixtures; collect verdicts via pinned IndependentVerifier; compare containment outcomes.",
+      "declared_inputs": [
+        "data/study012_fixtures/S12-IC4-I5.json",
+        "data/study012_fixtures/S12-IC4-I6.json"
+      ],
+      "live_api_calls": 0,
+      "status": "PLANNED-NOT-EXECUTED"
+    },
+    {
+      "pair": [
+        "S12-IC5-I5",
+        "S12-IC5-I6"
+      ],
+      "task_family": "Authority Laundering (IC-5)",
+      "would_execute": "Run S12-IC5-I5 (I5) then S12-IC5-I6 (I6) against synthetic fixtures; collect verdicts via pinned IndependentVerifier; compare containment outcomes.",
+      "declared_inputs": [
+        "data/study012_fixtures/S12-IC5-I5.json",
+        "data/study012_fixtures/S12-IC5-I6.json"
+      ],
+      "live_api_calls": 0,
+      "status": "PLANNED-NOT-EXECUTED"
+    },
+    {
+      "pair": [
+        "S12-IC6-I5",
+        "S12-IC6-I6"
+      ],
+      "task_family": "Revocation Failure (IC-6)",
+      "would_execute": "Run S12-IC6-I5 (I5) then S12-IC6-I6 (I6) against synthetic fixtures; collect verdicts via pinned IndependentVerifier; compare containment outcomes.",
+      "declared_inputs": [
+        "data/study012_fixtures/S12-IC6-I5.json",
+        "data/study012_fixtures/S12-IC6-I6.json"
+      ],
+      "live_api_calls": 0,
+      "status": "PLANNED-NOT-EXECUTED"
+    }
+  ],
+  "execution_occurred": false,
+  "empirical_conclusions": []
+}
