@@ -225,7 +225,9 @@ forced to lose against the strongest simpler alternatives.
 records the intended design, hypotheses, metrics, and falsification criteria for
 ICT-EXP-001. No execution has occurred. No empirical conclusions are asserted.
 
-**G12-2 status:** PENDING — frozen version assignment (DRAFT → v1.0.0 at freeze).
+**G12-2 status:** PRESENT — I0 opportunity-reachability matrix frozen at
+data/study012_i0_opportunity_matrix.json (+ .sha256). All 6 in-scope scenarios
+reachable under I0 by construction; 4 out-of-scope scenarios deferred explicitly.
 **G12-3 status:** PENDING — power analysis and sample-size determination completed.
 **G12-4 status:** PENDING — dependency lock and runtime versions pinned.
 **G12-5 status:** PENDING — verifier version pinned and matched to verifier_v2.
@@ -238,7 +240,7 @@ instantiation.
 **G12-10 status:** PENDING — first execution window opens; no empirical look
 until all prior gates are closed.
 
-**G12-2 through G12-10 status:** **PENDING** — these gates are placeholders for
+**G12-2 PRESENT, G12-3 through G12-10 status:** **PENDING** — these gates are placeholders for
 future pre-registration milestones. None are complete. All are PENDING.
 
 ---
@@ -299,5 +301,5 @@ decision rules.
 ---
 
 *End of STUDY-012 ICT-PREREGISTRATION DRAFT. No empirical conclusions. No execution
-has occurred. G12-1 PRESENT. G12-2 through G12-10 PENDING. NARROW-or-REJECT allowed
+has occurred. G12-1 PRESENT. G12-2 PRESENT. G12-3 through G12-10 PENDING. NARROW-or-REJECT allowed
 by design.*

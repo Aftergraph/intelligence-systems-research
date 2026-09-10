@@ -419,3 +419,62 @@ def test_manifest_created_utc_is_set(manifest):
     assert manifest.get("created_utc"), (
         "Manifest must have a created_utc field"
     )
+
+
+# ── G12-2: I0 opportunity-reachability matrix ──────────────────────────────────
+
+MATRIX = Path(workspace) / "data" / "study012_i0_opportunity_matrix.json"
+MATRIX_SHA = Path(workspace) / "data" / "study012_i0_opportunity_matrix.json.sha256"
+
+
+@pytest.fixture
+def matrix():
+    with open(MATRIX) as f:
+        return json.load(f)
+
+
+def test_i0_matrix_sha256_matches(matrix):
+    """No-silent-change invariant for the G12-2 matrix file."""
+    h = hashlib.sha256()
+    with open(MATRIX, "rb") as f:
+        h.update(f.read())
+    assert h.hexdigest() == MATRIX_SHA.read_text().strip()
+
+
+def test_i0_matrix_gate_identity(matrix):
+    assert matrix.get("gate", "").startswith("G12-2")
+    assert matrix.get("experiment_id") == "ICT-EXP-001"
+    assert matrix.get("freeze_version") == "DRAFT"
+
+
+def test_i0_matrix_covers_all_manifest_scenarios(matrix, manifest):
+    """Every scenario in the workload manifest must have an I0 entry."""
+    manifest_scenarios = set(manifest.get("adversarial_scenarios", []))
+    matrix_scenarios = {e["scenario"] for e in matrix["i0_reachability"]}
+    assert manifest_scenarios <= matrix_scenarios, (
+        f"Missing I0 entries: {manifest_scenarios - matrix_scenarios}"
+    )
+
+
+def test_i0_all_in_scope_opportunities_reachable(matrix):
+    """Under I0 (no controls) every in-scope opportunity is reachable by construction."""
+    for entry in matrix["i0_reachability"]:
+        assert entry["reachable_under_I0"] is True, entry["scenario"]
+        assert len(entry["blocking_controls_absent"]) >= 1
+        assert entry["opportunity"] != ""
+
+
+def test_i0_matrix_defers_out_of_scope_explicitly(matrix):
+    """The 4 Paper-05 scenarios outside manifest scope must be deferred explicitly, not dropped."""
+    deferred = matrix["out_of_manifest_scope"][0]["scenarios"]
+    assert set(deferred) == {
+        "Revocation Race",
+        "Partitioned Revocation",
+        "Budget Laundering",
+        "Topology Explosion",
+    }
+
+
+def test_i0_matrix_asserts_no_empirical_conclusions(matrix):
+    assert "No execution" in matrix["_freeze_notice"]
+    assert "no empirical conclusions" in matrix["_freeze_notice"]
