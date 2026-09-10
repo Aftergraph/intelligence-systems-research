@@ -6,14 +6,13 @@ This directory contains the public paper series for the Jonas Abde Intelligence 
 
 ## Start here
 
-| Paper | Focus | Best for |
-|---|---|---|
-| [`01-FROM-MODELS-TO-MISSIONS-INTELLIGENCE-SYSTEMS-CONTRACT.md`](01-FROM-MODELS-TO-MISSIONS-INTELLIGENCE-SYSTEMS-CONTRACT.md) | Mission Contract / SPEC-001, evidence-gated completion, system model | Systems researchers, standards reviewers, agent-runtime implementers |
-| [`02-MISSION-BENCH-EMPIRICAL-ABLATION-STUDY.md`](02-MISSION-BENCH-EMPIRICAL-ABLATION-STUDY.md) | MISSION-Bench, fault injection, ablation, verification and recovery | Benchmark and evaluation researchers |
-| [`03-FORMAL-VERIFICATION-AND-AUTHORITY-ATTENUATION.md`](03-FORMAL-VERIFICATION-AND-AUTHORITY-ATTENUATION.md) | Authority attenuation, assurance boundaries and formal invariants | Security, IAM and formal-systems reviewers |
-| [`04-PROGRESSIVE-DISCLOSURE-AND-CONTROL-PLANE-ECONOMICS.md`](04-PROGRESSIVE-DISCLOSURE-AND-CONTROL-PLANE-ECONOMICS.md) | Control-plane tax, CPVO and progressive disclosure | Systems economics and efficiency researchers |
-| [`04-ATTENUATED-AUTHORITY-AND-EVIDENCE-GATED-SYSTEMS-ARCHITECTURE.md`](04-ATTENUATED-AUTHORITY-AND-EVIDENCE-GATED-SYSTEMS-ARCHITECTURE.md) | Heterogeneous systems architecture, evidence gates and delegated authority | Architecture and standards audiences |
-| [`05-FRONTIER-AGENT-BREAKOUT-AND-INSTITUTIONAL-CONTROL.md`](05-FRONTIER-AGENT-BREAKOUT-AND-INSTITUTIONAL-CONTROL.md) | 2026 frontier-agent incidents, institutional control, containment taxonomy, proposed ICT benchmark | Agent-security, frontier-safety, governance and systems researchers |
+| Paper | Focus | Evidence status | Best for |
+|---|---|---|---|
+| [`01-FROM-MODELS-TO-MISSIONS-INTELLIGENCE-SYSTEMS-CONTRACT.md`](01-FROM-MODELS-TO-MISSIONS-INTELLIGENCE-SYSTEMS-CONTRACT.md) | Mission Contract / SPEC-001, evidence-gated completion, system model | Complete program synthesis; simulation/conformance claims remain bounded by repository evidence gates | Systems researchers, standards reviewers, agent-runtime implementers |
+| [`02-MISSION-BENCH-ABLATION-AND-EMPIRICAL-EVALUATION.md`](02-MISSION-BENCH-ABLATION-AND-EMPIRICAL-EVALUATION.md) | MISSION-Bench, fault injection, ablation, verification and recovery | Publication-ready manuscript; not external validation | Benchmark and evaluation researchers |
+| [`03-THE-ECONOMICS-OF-VERIFIED-INTELLIGENT-SYSTEMS.md`](03-THE-ECONOMICS-OF-VERIFIED-INTELLIGENT-SYSTEMS.md) | Control-plane tax, CPVO and amortized recovery economics | Publication-ready manuscript; not external validation | Systems economics and efficiency researchers |
+| [`04-ATTENUATED-AUTHORITY-AND-EVIDENCE-GATED-SYSTEMS-ARCHITECTURE.md`](04-ATTENUATED-AUTHORITY-AND-EVIDENCE-GATED-SYSTEMS-ARCHITECTURE.md) | Heterogeneous systems architecture, causal trajectories, evidence gates and delegated authority | Publication-ready architectural specification; not external validation | Architecture, security and standards audiences |
+| [`05-FRONTIER-AGENT-BREAKOUT-AND-INSTITUTIONAL-CONTROL.md`](05-FRONTIER-AGENT-BREAKOUT-AND-INSTITUTIONAL-CONTROL.md) | 2026 frontier-agent incidents, institutional control, containment taxonomy, proposed ICT benchmark | Public working paper; STUDY-012 is the active empirical follow-on | Agent-security, frontier-safety, governance and systems researchers |
 
 ## Core research thesis
 
