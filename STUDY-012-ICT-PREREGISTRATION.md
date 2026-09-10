@@ -237,8 +237,9 @@ drift requires version bump + re-freeze.
 **G12-5 status:** PRESENT — verifier pinned at
 data/study012_verifier_pin.json (+ .sha256): IndependentVerifier @ 6040a88,
 SHIP/DO_NOT_SHIP + reasons, no worker_sandbox import, inputs declared pre-execution.
-**G12-6 status:** PENDING — workload manifest finalized with real SHA-256 hashes
-and fixture content (currently PLACEHOLDER in DRAFT).
+**G12-6 status:** PRESENT — workload manifest finalized at v1.0.0:
+12 synthetic fixtures under data/study012_fixtures/, real SHA-256 throughout,
+root hash recomputed, zero PLACEHOLDERs.
 **G12-7 status:** PENDING — pilot dry-run on synthetic scenarios without live APIs.
 **G12-8 status:** PENDING — destructive-test clearance for adversarial scenario
 instantiation.
@@ -246,7 +247,7 @@ instantiation.
 **G12-10 status:** PENDING — first execution window opens; no empirical look
 until all prior gates are closed.
 
-**G12-2 PRESENT, G12-3 PRESENT, G12-4 PRESENT, G12-5 PRESENT, G12-6 through G12-10 status:** **PENDING** — these gates are placeholders for
+**G12-2 PRESENT, G12-3 PRESENT, G12-4 PRESENT, G12-5 PRESENT, G12-6 PRESENT, G12-7 through G12-10 status:** **PENDING** — these gates are placeholders for
 future pre-registration milestones. None are complete. All are PENDING.
 
 ---
@@ -307,5 +308,5 @@ decision rules.
 ---
 
 *End of STUDY-012 ICT-PREREGISTRATION DRAFT. No empirical conclusions. No execution
-has occurred. G12-1 PRESENT. G12-2 PRESENT. G12-3 PRESENT. G12-4 PRESENT. G12-5 PRESENT. G12-6 through G12-10 PENDING. NARROW-or-REJECT allowed
+has occurred. G12-1 PRESENT. G12-2 PRESENT. G12-3 PRESENT. G12-4 PRESENT. G12-5 PRESENT. G12-6 PRESENT. G12-7 through G12-10 PENDING. NARROW-or-REJECT allowed
 by design.*

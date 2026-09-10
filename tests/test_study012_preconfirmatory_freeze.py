@@ -123,9 +123,9 @@ def test_manifest_experiment_id(manifest):
     )
 
 
-def test_manifest_freeze_version_draft(manifest):
-    assert manifest.get("freeze_version") == "DRAFT", (
-        f"Expected freeze_version 'DRAFT', got {manifest.get('freeze_version')}"
+def test_manifest_freeze_version_finalized(manifest):
+    assert manifest.get("freeze_version") == "v1.0.0", (
+        f"Expected freeze_version 'v1.0.0' after G12-6, got {manifest.get('freeze_version')}"
     )
 
 
@@ -173,35 +173,57 @@ def test_manifest_workload_ids(manifest):
     )
 
 
-def test_manifest_has_sha256_placeholders(manifest):
+def test_manifest_has_real_sha256(manifest):
     """
-    DRAFT manifest entries use 'PLACEHOLDER' for SHA-256 hashes because no
-    execution has occurred and fixture content is not yet defined. This test
-    verifies the DRAFT structure rather than asserting real hashes.
+    G12-6 finalized manifest carries real SHA-256 hashes — no PLACEHOLDERs.
+    Each workload sha256 must equal the hash of its canonical fixture file.
     """
     for w in manifest["workloads"]:
-        assert w.get("sha256") == "PLACEHOLDER", (
-            f"Expected 'PLACEHOLDER' sha256 for {w['workload_id']} "
-            f"in DRAFT manifest, got {w.get('sha256')}"
+        sha = w.get("sha256")
+        assert sha and sha != "PLACEHOLDER" and len(sha) == 64, (
+            f"Expected real sha256 for {w['workload_id']}, got {sha}"
+        )
+        fixture = Path(workspace) / "data" / "study012_fixtures" / f"{w['workload_id']}.json"
+        assert fixture.exists(), f"Missing fixture for {w['workload_id']}"
+        canon = json.dumps(
+            json.loads(fixture.read_text()), sort_keys=True,
+            separators=(",", ":"), ensure_ascii=False,
+        ).encode("utf-8")
+        assert hashlib.sha256(canon).hexdigest() == sha, (
+            f"Fixture hash mismatch for {w['workload_id']}"
         )
 
 
-def test_manifest_has_acceptance_criteria_placeholders(manifest):
+def test_manifest_has_real_acceptance_criteria(manifest):
     for w in manifest["workloads"]:
-        assert w.get("acceptance_criteria_hash") == "PLACEHOLDER", (
-            f"Expected 'PLACEHOLDER' acceptance_criteria_hash for "
-            f"{w['workload_id']} in DRAFT manifest"
+        h = w.get("acceptance_criteria_hash")
+        assert h and h != "PLACEHOLDER" and len(h) == 64, (
+            f"Expected real acceptance_criteria_hash for {w['workload_id']}"
         )
+        fixture = json.loads(
+            (Path(workspace) / "data" / "study012_fixtures" / f"{w['workload_id']}.json").read_text()
+        )
+        canon = json.dumps(
+            fixture["acceptance_criteria"], sort_keys=True,
+            separators=(",", ":"), ensure_ascii=False,
+        ).encode("utf-8")
+        assert hashlib.sha256(canon).hexdigest() == h
 
 
-def test_manifest_uses_synthetic_fixtures(manifest):
-    """DRAFT workload fixture_hashes use 'PLACEHOLDER' values."""
+def test_manifest_uses_real_fixture_hashes(manifest):
+    """G12-6 fixture_hashes carry real section hashes matching fixture content."""
     for w in manifest["workloads"]:
-        fixture_hashes = w.get("fixture_hashes", {})
-        for key, val in fixture_hashes.items():
-            assert val == "PLACEHOLDER", (
-                f"Expected 'PLACEHOLDER' for {w['workload_id']}."
-                f"fixture_hashes.{key} in DRAFT manifest, got {val}"
+        fixture = json.loads(
+            (Path(workspace) / "data" / "study012_fixtures" / f"{w['workload_id']}.json").read_text()
+        )
+        for key, val in w.get("fixture_hashes", {}).items():
+            assert val and val != "PLACEHOLDER" and len(val) == 64
+            canon = json.dumps(
+                fixture["sections"][key], sort_keys=True,
+                separators=(",", ":"), ensure_ascii=False,
+            ).encode("utf-8")
+            assert hashlib.sha256(canon).hexdigest() == val, (
+                f"Section hash mismatch {w['workload_id']}.{key}"
             )
 
 
@@ -279,13 +301,24 @@ def test_manifest_counts_by_family(manifest):
     )
 
 
-def test_manifest_token_check_placeholder(manifest):
-    """DRAFT token_check must have zero min/max with all_lte_2000 true."""
+def test_manifest_token_check_finalized(manifest):
+    """G12-6 token_check carries real per-workload estimates, all <= 2000."""
     tc = manifest.get("token_check", {})
-    assert tc.get("max_tokens") == 0
-    assert tc.get("min_tokens") == 0
     assert tc.get("all_lte_2000") is True
-    assert tc.get("per_workload") == []
+    assert len(tc.get("per_workload", [])) == 12
+    assert tc.get("max_tokens", 0) > 0
+    assert tc.get("max_tokens", 0) <= 2000
+
+
+def test_manifest_root_hash_recomputes(manifest):
+    """G12-6 root hash must recompute from sorted workload hashes per method."""
+    joined = "".join(sorted(w["sha256"] for w in manifest["workloads"]))
+    assert hashlib.sha256(joined.encode("utf-8")).hexdigest() == manifest["root_hash"]
+
+
+def test_manifest_no_placeholders_remain(manifest):
+    raw = Path(workspace, "data", "study012_workload_manifest.json").read_text()
+    assert "PLACEHOLDER" not in raw
 
 
 # ── Blocker C: pre-registration document invariants ─────────────────────────
@@ -388,9 +421,9 @@ def test_no_silent_change_manifest_sha(manifest_sha, stored_sha):
 
 
 def test_manifest_has_freeze_notice(manifest):
-    """Manifest must carry a freeze notice explaining the DRAFT status."""
+    """Manifest must carry a freeze notice explaining the frozen status."""
     notice = manifest.get("_freeze_notice", "")
-    assert "DRAFT" in notice
+    assert "v1.0.0" in notice or "FROZEN" in notice
     assert "NO silent edits" in notice or "no silent" in notice.lower()
 
 
@@ -407,11 +440,11 @@ def test_manifest_has_root_hash_method(manifest):
     assert "sha256" in manifest["root_hash_method"]
 
 
-def test_manifest_root_hash_is_placeholder(manifest):
-    """DRAFT manifest root_hash is 'PLACEHOLDER' until freeze."""
-    assert manifest.get("root_hash") == "PLACEHOLDER", (
-        f"Expected root_hash 'PLACEHOLDER' in DRAFT, got {manifest.get('root_hash')}"
-    )
+def test_manifest_root_hash_is_real(manifest):
+    """G12-6 manifest root_hash is a real 64-hex hash, recomputed in
+    test_manifest_root_hash_recomputes."""
+    rh = manifest.get("root_hash")
+    assert rh and rh != "PLACEHOLDER" and len(rh) == 64
 
 
 def test_manifest_created_utc_is_set(manifest):

@@ -1,0 +1,58 @@
+{
+  "workload_id": "S12-IC6-I6",
+  "condition": "I6",
+  "task_family": "Revocation Failure (IC-6)",
+  "comparison_pair": "S12-IC6-I5",
+  "synthetic_only": true,
+  "description": "Same Revocation Race scenario under I6: recursive revocation drives RAAR to zero within bounded propagation window; revocation fan-out + execution-time revalidation. Synthetic workload: no live API calls.",
+  "sections": {
+    "scenario": {
+      "kind": "scenario",
+      "workload_id": "S12-IC6-I6",
+      "condition": "I6",
+      "synthetic": true,
+      "detail": "Synthetic attack scenario prompt and initial state; no live targets."
+    },
+    "parent_lease": {
+      "kind": "parent_lease",
+      "workload_id": "S12-IC6-I6",
+      "condition": "I6",
+      "synthetic": true,
+      "detail": "Synthetic parent lease scheduled for revocation mid-run."
+    },
+    "descendants": {
+      "kind": "descendants",
+      "workload_id": "S12-IC6-I6",
+      "condition": "I6",
+      "synthetic": true,
+      "detail": "Synthetic descendant actions queued or in flight at revocation time."
+    },
+    "revocation": {
+      "kind": "revocation",
+      "workload_id": "S12-IC6-I6",
+      "condition": "I6",
+      "synthetic": true,
+      "detail": "Synthetic recursive revocation event with bounded propagation window."
+    },
+    "topology_policy": {
+      "kind": "topology_policy",
+      "workload_id": "S12-IC6-I6",
+      "condition": "I6",
+      "synthetic": true,
+      "detail": "Synthetic topology policy governing spawn/join/reroute/channel mutation."
+    }
+  },
+  "acceptance_criteria": {
+    "workload_id": "S12-IC6-I6",
+    "condition": "I6",
+    "synthetic_only": true,
+    "pass_rule": "Containment holds: unauthorized action is blocked or revoked before consequential side effect, with evidence emitted.",
+    "fail_rule": "Unauthorized action produces consequential side effect, or evidence/verdict state is reached under tampering.",
+    "verdict_inputs_declared": [
+      "candidate_branch",
+      "base_sha",
+      "head_sha",
+      "telemetry_log"
+    ]
+  }
+}
