@@ -1,67 +1,99 @@
-# STUDY-011 Readiness Report v3.0 — Pre-Confirmatory Gate CLOSED
+# STUDY-011 Readiness Report v4.0 — Confirmatory Execution Complete
 
-**Version:** 3.0 (supersedes v2.0, which is preserved below)
-**Date:** 2026-09-04
-**Status:** `RUNNING` — confirmatory matrix execution in progress; Amendment 010 active
-**Audit verdict:** HEALTHY & VERIFIED
-
----
-
-## 0. Status
-
-`RUNNING`
-
-Every technical/research blocker from the FINAL PRE-RUN GATE is green.
-The confirmatory matrix (464 LIVE_VALID floor, 619-attempt ceiling) has
-been executed.
+**Version:** 4.0
+**Date:** 2026-09-11
+**Status:** `FINAL_FROZEN` — confirmatory execution and analysis complete
+**Program maturity:** Level C+ / Provisional-D; blind external reproduction remains pending
+**Supersedes:** v3.0 `RUNNING`, v2.0 `READY_FOR_OWNER_APPROVAL`
 
 ---
 
-## v2.0 historical content below
+## 0. Canonical Status
 
-```
-# STUDY-011 Readiness Report v2.0
-## Protocol Integrity Gate — Pre-Execution Assessment
+STUDY-011 is no longer a readiness-only or running study.
 
-**Prepared:** 2026-09-04 (v2.0 supersedes v1.0; refreshed 2026-09-04 with v0.3.2 binding tests)
-**Program:** Jonas Abde Intelligence Systems Research Program Q3 2026
-**Version:** 2.0
-**Program Maturity:** Level C+ (Validated Research Result) / Provisional-D
+The preregistered cross-provider confirmatory run has been executed, reconciled and frozen under the post-execution protocol amendments. The canonical evidence cut is:
 
-> **v2.0 summary:** All five technical blockers from v1.0 are closed.
-> STUDY-011 is at `READY_FOR_OWNER_APPROVAL` for the **zero-cost Phase 1**
-> matrix (Dialagram + OpenRouter free tier). Phase 2 (paid providers)
-> remains `BLOCKED_PENDING_OWNER`. No live confirmatory matrix has
-> been executed. The IP/legal-hold question on the chosen free-tier
-> providers is the only remaining owner gate.
+- dataset: `data/study011_runs/confirmatory/canonical-run-002/`
+- analysis: `data/study011_runs/confirmatory/canonical-run-002-analysis/`
+- final summary: `data/study011_runs/confirmatory/canonical-run-002-analysis/FINAL-CONFIRMATORY-SUMMARY.md`
+- post-execution freeze: `STUDY-011-AMENDMENT-011-POST-EXECUTION-FREEZE.md`
+- valid sample: **470 `LIVE_VALID` records**
+- coverage: **8/8 cells with at least 58 observations**
+
+This report describes readiness/execution state only. The frozen analysis artifacts remain authoritative for statistical detail.
+
+
+### Historical preregistration bounds
+
+For lineage, the original Phase 1 preregistration distinguished two planning
+numbers that must not be conflated with the final observed sample:
+
+- **464** was the preregistered **minimum `LIVE_VALID`** sample required across the original 8-cell confirmatory matrix.
+- **619** was the original **attempt ceiling / maximum**, not a target sample size. Later protocol amendments increased the attempt ceiling to accommodate provider failures and lineage-preserving re-attempts.
+
+The final frozen result of **470 `LIVE_VALID`** therefore clears the original minimum; neither 464 nor 619 replaces the observed 470-record canonical sample.
 
 ---
 
-## 1. Final Status
+## 1. Frozen Confirmatory Verdicts
 
-| Field | Value |
+| Hypothesis | Final verdict | Frozen interpretation |
+|---|---|---|
+| **H1 — assurance lowers FCR** | **REVERSED** | A/C models frequently abstained, causing baseline FCR to floor at/near zero; G could not improve a zero floor |
+| **H2 — authority+budget adds effect over F** | **SUPPORTED** | Both provider strata satisfy the preregistered direction with `p < 0.001` and effect size `h ≈ 2.5` |
+| **H3 — retry alone adds effect** | **REVERSED** | C abstained similarly to A; retry without assurance did not produce the predicted effect |
+
+The correct mechanistic reading is deliberately narrow: Condition F (assurance invocation) produces the main abstention→action transition; Condition G adds the separately measured authority+budget effect over F. Do not rewrite this as a blanket claim that the full governance stack universally “unlocks” models.
+
+---
+
+## 2. Integrity / Freeze State
+
+| Gate | Current state |
 |---|---|
-| Status | **READY_FOR_OWNER_APPROVAL** (Phase 1, zero-cost) |
-| Program maturity | Level C+ / Provisional-D (no change) |
-| Live confirmatory matrix | **NOT YET EXECUTED** |
-| Pre-registration | **FROZEN** v1.0.0 with 3 amendments (current v1.0.3, LF canonicalization) |
-| `LIVE_ONLY` invariant | **ENFORCED** in `experiments/live_benchmark/run_study_011.py:enforce_live_only_invariant` |
-| Condition A/C/F/G isolation | **VERIFIED** by 11 conformance tests |
-| Harness self-test (incl. STUDY-008 regression) | **PASSING** in 28 tests |
-| Rate-limit / circuit-breaker / checkpoint | **IMPLEMENTED** in `study011_rate_limit.py` |
-| Registry integrity | **PASSING** in 14 tests + `verify()` entry point |
-| External-implementer pack drift | **ZERO** (6 tests passing) |
-| Claim-evidence binding (audit reality) | **PINNED** in 72 tests (forbidden tokens, sidecar/manifest hash, frozen root_hash, registry walk-back, JAR-EXP-0008 reverting) |
-| Cell-structure math (464/619) | **PINNED** in 9 tests (study011_analyze.PHASE1_MIN_LIVE_VALID = 464, PLANNED_MAX_ATTEMPTS_P1 = 619) |
-| GOMS pilot output | **PINNED** in 7 tests (256 trials, HEVO 6.6 → 2.0) |
-| Threat-model ↔ security-suite | **PINNED** in 11 tests (TH-01..TH-10 + MITRE ATLAS) |
-| Mission-bench FCR pattern | **PINNED** in 7 tests (stages 5+ show 0% FCR; stages 1-4 show 36-61%) |
-| Durability (STUDY-009) | **PINNED** in 7 tests (7 kill points, 100% recovery, 0 dups, 0 divergence) |
-| Assurance adversarial (STUDY-010) | **PINNED** in 5 tests (9 vectors, 0% compromise, 100% safe handling) |
-| Confounder (STUDY-005) | **PINNED** in 8 tests (4 conditions × 100 tasks, FCR 0% in C/D) |
-| Router evaluation | **PINNED** in 8 tests (4 policies × 25 tasks, scored = frontier VSR, -22% cost, -17% latency) |
-| Sycophancy prevention (Q-005) | **PINNED** in 5 tests (LAB name-check; documented ceiling) |
-| Master verification | **274/274 pytest tests passing** (was 129 at v0.3.1); `cli/mission_cli.py audit` reports `HEALTHY & VERIFIED` |
+| Pre-registration | Frozen before confirmatory look, with amendments preserved |
+| `LIVE_ONLY` execution boundary | Enforced for confirmatory evidence |
+| Canonical data reconciliation | Complete; Amendment-010 lineage/fingerprint preference governs duplicates |
+| Canonical sample | 470 `LIVE_VALID`; 8/8 cells ≥58 |
+| Final analysis | Complete and frozen |
+| H1 | `REVERSED` |
+| H2 | `SUPPORTED` |
+| H3 | `REVERSED` |
+| Post-execution freeze | Amendment 011 |
+| Statistical-review disposition | `SOUND_WITH_HEDGES_REQUIRED` |
+| Human-subject validation | Still open; `N=0` live humans |
+| Blind external reproduction | Still open |
+
+The raw records contain 243 duplicate `run_id` lines from checkpoint/resume rewrites. The frozen analysis resolves them according to G7 semantics and Amendment-010 lineage preference. This is documented evidence handling, not silent row deletion.
+
+---
+
+## 3. What Changed From v3.0
+
+v3.0 correctly recorded that the pre-confirmatory engineering/research blockers were green and that execution had begun, but its `RUNNING` status became stale once the canonical run and final analysis were frozen.
+
+The following v3/v2 statements are therefore **historical only** and must not be surfaced as current state:
+
+- `RUNNING`;
+- `READY_FOR_OWNER_APPROVAL`;
+- `Live confirmatory matrix: NOT YET EXECUTED`;
+- `awaiting owner approval` as the next action.
+
+Historical versions remain recoverable through Git history. They are intentionally not duplicated verbatim here because embedding obsolete current-state tables inside the active report caused automated and human consumers to recover conflicting statuses.
+
+---
+
+## 4. Remaining Research Gates
+
+Completion of STUDY-011 does **not** imply overall program completion or external validation. The following remain separate gates:
+
+1. reconcile claim/hypothesis registries and publications to the frozen result;
+2. preserve H1/H3 reversals as valid preregistered outcomes;
+3. run live human-subject work before human-efficiency/preference claims;
+4. obtain blind independent external reproduction before external-replication maturity claims;
+5. continue STEAD/prior-art overlap analysis and narrow novelty where external formal work already covers the same property;
+6. keep simulation, live-pilot, live-confirmatory, human, formal and external-replication evidence classes distinct.
 
 ---
 
@@ -69,11 +101,10 @@ been executed.
 
 | Field | Value |
 |---|---|
-| Version | 3.0 |
-| Created | 2026-09-04 |
-| Status | RUNNING |
-| Supersedes | v2.0 (2026-09-04, READY_FOR_OWNER_APPROVAL) |
-| Next action | Track live progress; update audit registry post-run |
-| Related files | `STUDY-011-LIVE-CROSS-PROVIDER-PREREGISTRATION.md`, `STUDY-011-AMENDMENTS.md`, `data/study011_preregistration_manifest.json`, `STUDY-011-COST-FORECAST.md`, `EXTERNAL-IMPLEMENTER-OUTREACH.md` |
-
-```
+| Version | 4.0 |
+| Status | `FINAL_FROZEN` |
+| Current as of | 2026-09-11 |
+| Canonical result | H1 `REVERSED`; H2 `SUPPORTED`; H3 `REVERSED` |
+| Canonical sample | 470 `LIVE_VALID`, 8/8 cells ≥58 |
+| Supersedes | v3.0 (`RUNNING`) and v2.0 (`READY_FOR_OWNER_APPROVAL`) |
+| Next action | Reconcile current-facing claims/publications; do not re-run or reinterpret frozen confirmatory evidence without a new preregistered study |

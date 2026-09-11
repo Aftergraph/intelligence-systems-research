@@ -1,74 +1,101 @@
 # Executive Summary — Jonas Abde Intelligence Systems Research Program
 **Principal Researcher:** Jonas Abde
-**Program State:** RESEARCH & ENGINEERING LIFECYCLE PHASES 1–10 COMPLETED; PHASE G (LIVE) AT PRE-EXECUTION GATE
+**Program State:** RESEARCH & ENGINEERING LIFECYCLE PHASES 1–10 COMPLETED; STUDY-011 LIVE CONFIRMATORY RUN EXECUTED AND FROZEN
 **Defensible Outcome:** **Level C+ (Validated Research Result with In-Tree Alternative Implementation) / Provisional-D (Candidate Specification pending Blind External Reproduction)**
-**Gate Evaluation:** **No defensible gate percentages are available until STUDY-011 LIVE_ONLY evidence is collected. Earlier "D2 65% / D3 25% / D1 10%" figures are not supported by audited evidence.**
-**Audit Status:** AUDIT-EVID-001 — front-door docs (README, CHANGELOG, this summary) aligned to audit on 2026-09-04
-**Snapshot Date:** 4 September 2026
+**Gate Evaluation:** **No defensible D1/D2/D3 percentages are supported by the audited record. Final preregistered STUDY-011 verdicts are H1 REVERSED / H2 SUPPORTED / H3 REVERSED.**
+**Audit Status:** AUDIT-EVID-001 + STUDY-011 post-execution reconciliation — current through 11 September 2026
+**Snapshot Date:** 11 September 2026
 
 > [!IMPORTANT]
-> **Front-door alignment with the evidence audit:** this executive
-> summary was rewritten 2026-09-04 to match the audited reality. The
-> "1,000 live runs / FCR ELIMINATED / HEVO −68% / D2 INTEGRATE 65%"
-> narrative that earlier revisions carried has been replaced with the
-> numbers actually supported by raw evidence (deterministic testbeds,
-> GOMS persona simulation, and STUDY-008's 2/275 `LIVE_VALID` count).
-> STUDY-011 is at the pre-execution gate; the LIVE_ONLY matrix has
-> not been executed.
+> **Current evidence boundary:** earlier revisions of this program overstated
+> simulation, pilot and readiness evidence. STUDY-008 remains a methodological
+> pilot with 2/275 `LIVE_VALID` runs. STUDY-011 has now supplied the first frozen
+> preregistered cross-provider confirmatory dataset: 470 `LIVE_VALID` records,
+> 8/8 cells with at least 58 observations. The frozen outcomes are not a blanket
+> validation of the original thesis: H1 and H3 were **REVERSED**; H2 was
+> **SUPPORTED** in both provider strata. Historical contrary language remains
+> provenance, not current program truth.
 
 ---
 
 ## 1. The Core Research Finding
 
-Modern artificial intelligence engineering is transitioning from stateless conversational inference to long-horizon, autonomous, multi-agent systems. Through systematic reconnaissance across 15 engineering disciplines, 14 emerging standards, and empirical evaluation against deterministic multi-domain testbeds, this program demonstrates that:
+Modern artificial intelligence engineering is transitioning from stateless conversational inference to long-horizon, autonomous, multi-agent systems. The program now has three distinct evidence layers that must not be collapsed into one claim: deterministic/simulated benchmark evidence, live confirmatory provider evidence, and still-unexecuted human/external-replication evidence.
 
-1. **A Reliability Gap Exists (in deterministic testbed):** Conventional agents exhibit an **84.7% False Completion Rate (FCR)** on the JAR-EXP-0001 SWE benchmark (N=200, in-tree, deterministic). Prompt engineering only reduces this to 31.7%; LLM-as-a-judge misclassifies 19.4% of failures due to sycophancy.
-2. **Deterministic Evidence Gating Bounds False Completions (in deterministic testbed):** Enforcing Invariant 1 (Complete ⇏ Verified) and Invariant 2 (evidence-gated completion via independent verifiers) drives observed FCR to **0.0%** in the MISSION-Bench sample (N=800, deterministic, in-tree). Zero population failure is not claimed — verifiers themselves may have coverage gaps, and no live confirmation has been collected.
-3. **Control Plane Tax Inversion (deterministic testbed):** Despite orchestrating multi-tier state and verification containers, the **Cost Per Verified Outcome (CPVO)** drops by **81.3%** in calibrated simulation ($0.1081 vs $0.5791) because eliminating false completions stops downstream waste and enables automated recovery loops (boosting Verified Success Rate from 11% to 74%). The CPT (control-plane tax) is 1.6%.
-4. **Standards Proliferation is Unnecessary (D2 Integration Position):** Inventing a wholly disconnected discipline or monolithic protocol is rejected. The optimal technical path is an open, vendor-neutral **Mission Contract (SPEC-001)** that composes MCP (tools), `SKILL.md` (capabilities), OpenTelemetry (telemetry), SPIFFE (workload identity), and RFC 8693 (authority attenuation). This position is a working hypothesis; the program has not produced a quantitative gate decision defensible from audited evidence.
-5. **Audited Maturity & Qualifications:** All benchmark runs represent deterministic sandbox executions with calibrated synthetic error distributions, **not live billed frontier cloud tokens**. Human preference claims (HEVO) are **untested** with humans (N=0); the 6.6 → 2.0 turns figure is from a GOMS persona simulation (`experiments/hci_cognitive_model.py`, N=32 simulated subjects per arm × 4 tasks = 256 trials). External submissions (USPTO, IEEE, NIST) are held for legal and independent validation. **No "D2 65%" gate percentage is supported by the audited record.**
+1. **Deterministic reliability evidence remains useful but scoped.** MISSION-Bench and related in-tree testbeds show large false-completion, recovery, authority and cost effects under controlled failure injection. Those figures are reproducible engineering/benchmark evidence; they are not population-level live-provider estimates.
+2. **STUDY-011 changed the live interpretation.** The frozen `canonical-run-002` dataset contains 470 `LIVE_VALID` records across 8/8 adequately populated cells. H1 (assurance lowers FCR) was **REVERSED** because models in A/C frequently abstained, driving baseline FCR to a floor near zero. H3 (retry alone adds effect) was also **REVERSED**: retry without assurance did not overcome abstention.
+3. **The strongest live confirmatory result is the marginal authority+budget effect.** H2 was **SUPPORTED** in both provider strata (`p < 0.001`, effect size `h ≈ 2.5`). Condition F already converts much of the abstention into successful action through assurance invocation; Condition G adds a separately measured authority+budget effect over F. The defensible claim is that the full governance stack adds measurable value over assurance alone in this frozen study, not that governance generally “unlocks” models.
+4. **The architecture remains compositional, not a claim of a wholly new discipline.** SPEC-001/AIE work composes existing transport, telemetry, identity and policy substrates rather than replacing them. External work such as STEAD narrows the novelty surface further and is explicitly part of the current overlap/delta program.
+5. **Human and external replication gates remain open.** Human preference/HEVO claims are untested with live humans (`N=0`); the 6.6 → 2.0 turn result is GOMS/persona simulation. The alternate runtime implementations are in-tree/same-program evidence, not blind independent reproduction. External standards/publication maturity must therefore remain below those unresolved gates.
 
 ---
 
-## 2. Program Artifacts & Final Deliverables
+## 2. Program Artifacts & Current Status
 
-| Deliverable Area | Concrete Completed Artifacts | Status / Verification |
+| Deliverable Area | Concrete Artifacts | Current Evidence Status |
 | :--- | :--- | :--- |
-| **Foundational Gap Study** | [`STUDY-001-ENGINEERING-STANDARDS-GAP.md`](STUDY-001-ENGINEERING-STANDARDS-GAP.md) | 15 disciplines × 21 dimensions, Gap confirmed |
-| **Normative Specification** | [`SPEC-001-MISSION-CONTRACT-v0.1.md`](SPEC-001-MISSION-CONTRACT-v0.1.md), 4 JSON Schemas in `schemas/` | Draft 2020-12, ≤ 227 token budget verified |
-| **Human-First Experience** | `prototype/` (`compiler.py`, `dashboard.py`, `progressive.py`) | Exception-first "Needs You" UX; HEVO claim is GOMS-simulated (N=0 humans) |
-| **Reference Implementation** | `runtime/` (`engine.py`, `verifier.py`, `policy.py`, `storage.py`) | Thread-safe, Invariants 1–5, mid-flight revocation |
-| **Clean-Room Implementation**| `validation/` (`independent_runtime.py`, `cross_domain_validation.py`) | 3/3 domains passed (SWE, Robotics, Finance) |
-| **Multi-Runtime Adapters** | `adapters/` (`native_adapter.py`, `langgraph_adapter.py`, `autogen_adapter.py`) | 0% semantic deviation across 3 runtimes |
-| **Deterministic Benchmarks** | [`STUDY-002`](STUDY-002-JAR-EXP-0001-EMPIRICAL-EVALUATION.md), [`STUDY-003`](STUDY-003-MISSION-BENCH-ABLATION-REPORT.md), [`STUDY-004`](STUDY-004-MODEL-COMPATIBILITY-REPORT.md) | 1,900 deterministic testbed runs; not "live" |
-| **Live Pilot (Reclassified)** | [`STUDY-008`](STUDY-008-LIVE-MISSION-BENCH-RESULTS.md) | 2 `LIVE_VALID` / 275 attempts; **METHODOLOGICAL_PILOT** in registry |
-| **Live Confirmatory (Pre-Execution)** | [`STUDY-011-LIVE-CROSS-PROVIDER-PREREGISTRATION.md`](STUDY-011-LIVE-CROSS-PROVIDER-PREREGISTRATION.md) | Pre-registered, harness + 129 tests passing, awaiting owner approval |
-| **Security & Threat Model** | `security/` (`THREAT-MODEL-AND-SECURITY-ANALYSIS.md`, `test_security_suite.py`) | 13 automated security tests passed |
-| **IP & Patent Strategy** | `ip/INVENTION-DISCLOSURE-AND-CLAIMS-ANALYSIS.md` | Prior art mapped vs US12556493B2 / US20260017525A1 |
-| **Normative Conformance** | `conformance/` (`test_cases.json`, `runner.py`) | 14/14 normative test cases passed (100.0%) |
-| **Developer CLI Tooling** | `cli/mission_cli.py`, `tests/test_cli.py` | Full CLI (lint, run, status, package, audit) passing |
-| **Scientific Publications** | `PAPERS/` (Papers 01, 02, 03, 04) | 4 academic papers (in-tree) |
-| **SDO Contributions** | `standards/` (`RFC-0001-INTELLIGENCE-SYSTEM-CONTRACT.md`, Charter) | On hold pending STUDY-011 LIVE evidence |
+| **Foundational Gap Study** | [`STUDY-001-ENGINEERING-STANDARDS-GAP.md`](STUDY-001-ENGINEERING-STANDARDS-GAP.md) | Prior-art/gap analysis; novelty is being narrowed against newer formal work |
+| **Normative Specification** | [`SPEC-001-MISSION-CONTRACT-v0.1.md`](SPEC-001-MISSION-CONTRACT-v0.1.md), schemas | Deterministic/formalization evidence; candidate specification |
+| **Human-First Experience** | `prototype/`, [`STUDY-006-HCI-PREREGISTRATION.md`](STUDY-006-HCI-PREREGISTRATION.md) | GOMS/persona simulation only; **N=0 live humans** |
+| **Reference Implementation** | `runtime/`, `assurance/`, `delegation/` | In-tree implementation and adversarial tests |
+| **Alternative Implementations / Adapters** | `validation/`, `external_validation_pack/`, `adapters/` | In-tree conformance; blind external reproduction still pending |
+| **Deterministic Benchmarks** | STUDY-002/003/004 and MISSION-Bench data | Simulation/deterministic evidence; do not label as live provider efficacy |
+| **Live Pilot** | [`STUDY-008`](STUDY-008-LIVE-MISSION-BENCH-RESULTS.md) | 2 `LIVE_VALID` / 275 attempts; **METHODOLOGICAL_PILOT** |
+| **Live Confirmatory** | STUDY-011 preregistration + `canonical-run-002` + frozen analysis | **470 LIVE_VALID; H1 REVERSED / H2 SUPPORTED / H3 REVERSED** |
+| **Security & Threat Model** | `security/`, threat-model and adversarial suites | Deterministic/adversarial fixture evidence; not a universal security guarantee |
+| **Normative Conformance** | `conformance/` | 14/14 in the current normative suite; implementation conformance, not external adoption |
+| **Research Registries** | `data/claim_registry.csv`, `data/claim_evidence_audit.csv`, `data/hypothesis_registry.csv` | Being reconciled to evidence-scoped status; historical rows retained |
+| **Scientific Publications** | `PAPERS/` Papers 01–05 | Paper 01 superseded pending reconciliation; Papers 02–04 re-audit hold; Paper 05 working manuscript with disclosures |
+| **SDO / External Contribution Track** | `standards/`, publication/export artifacts | Candidate work only; blind external reproduction and other maturity gates remain open |
 
 ---
 
-## 3. Audited Metrics Summary (Raw-Evidence-Backed)
+## 3. Frozen STUDY-011 Confirmatory Result
 
-```
-========================================================================================
- METRIC                           BASELINE AGENT     FULL SPEC-001 SYSTEM     EVIDENCE BASIS
-========================================================================================
- Verified Success Rate (VSR)      TBD (in-tree)      TBD (in-tree)             Pending STUDY-011 LIVE_ONLY
- False Completion Rate (FCR)      84.7% (N=200)      0.0% in MISSION-Bench     Deterministic testbed, simulated
- Unauthorized Action Rate (UAR)   100% (injection)   0.0% in MISSION-Bench     Deterministic testbed, simulated
- Constraint Retention Rate (CRR)  75% (sandbox)      100% (sandbox)            Deterministic testbed, simulated
- Cost Per Verified Outcome (CPVO) $0.5791 (sandbox)  $0.1081 (sandbox)         Deterministic testbed, simulated
- Control Plane Tax (CPT)          0.0%               1.6%                      In-tree benchmark
- Human Effort Per Outcome (HEVO)  6.6 turns          2.0 turns                  GOMS persona simulation (N=0 humans)
- Conformance Pass Rate            N/A                100.0% (14/14)            SPEC-001 normative suite
- Pytest Suite                     --                 129/129 passing           `pytest -q` 2026-09-04
- Live Multi-Model (STUDY-008)     2 LIVE_VALID / 275 attempts          Audit-classified METHODOLOGICAL_PILOT
-========================================================================================
+Canonical evidence:
+
+- Dataset: `data/study011_runs/confirmatory/canonical-run-002/`
+- Analysis: `data/study011_runs/confirmatory/canonical-run-002-analysis/`
+- Freeze: `STUDY-011-AMENDMENT-011-POST-EXECUTION-FREEZE.md`
+- Valid sample: **470 `LIVE_VALID` records; 8/8 cells ≥58**
+
+| Hypothesis | Frozen verdict | Interpretation |
+|---|---|---|
+| **H1 — assurance lowers FCR** | **REVERSED** | Baseline A/C models often abstained, so FCR(A) was already at/near zero; G cannot improve a zero floor |
+| **H2 — authority+budget adds effect over F** | **SUPPORTED** | Both provider strata show the preregistered direction with `p < 0.001` and `h ≈ 2.5` |
+| **H3 — retry alone adds effect** | **REVERSED** | C behaves like A; retry without assurance does not overcome abstention |
+
+The independent statistical review disposition is **SOUND_WITH_HEDGES_REQUIRED**. The mechanism should therefore be described as: assurance invocation (F) drives the main abstention→action transition; authority+budget (G) adds a measurable marginal effect over F. This is deliberately narrower than earlier “full stack universally wins” language.
+
+---
+
+## 4. Audited Metrics and Evidence Classes
+
+```text
+============================================================================================
+ RESULT / METRIC                         VALUE / VERDICT              EVIDENCE CLASS
+============================================================================================
+ MISSION-Bench observed FCR              0.0% in evaluated sample     DETERMINISTIC / SIMULATED
+ MISSION-Bench CPVO change               -81.3% in tested cost model  SIMULATION_SUPPORTED
+ Human HEVO                              6.6 -> 2.0 turns             GOMS SIMULATION; N=0 HUMANS
+ SPEC-001 conformance                     14/14                        DETERMINISTIC IN-TREE
+ STUDY-008                                2 / 275 LIVE_VALID           METHODOLOGICAL PILOT
+ STUDY-011 canonical sample               470 LIVE_VALID               LIVE CONFIRMATORY
+ STUDY-011 H1                             REVERSED                     LIVE CONFIRMATORY
+ STUDY-011 H2                             SUPPORTED                    LIVE CONFIRMATORY
+ STUDY-011 H3                             REVERSED                     LIVE CONFIRMATORY
+ Blind external reproduction              PENDING                      NOT YET SATISFIED
+ Live human UX validation                 PENDING                      N=0 HUMANS
+============================================================================================
 ```
 
-The system is mathematically formal, has working in-tree implementations, an independent clean-room port, a 100% passing normative conformance suite, and a frozen pre-registration for the live confirmatory matrix. It is **not** "ready to file" for external standards submission until STUDY-011 `LIVE_VALID` evidence is collected.
+## 5. Current Research Rule
+
+No current-facing paper, README, registry, generated export or public documentation may claim a maturity level stronger than the exact evidence it cites. In particular:
+
+- simulation must not silently become live evidence;
+- in-tree alternative implementations must not be described as blind external reproduction;
+- `N=0` human studies must not become human-validation claims;
+- a preregistered reversed hypothesis remains visibly **REVERSED**;
+- `PUBLICATION_READY` is an evidence gate, not a formatting/completeness label;
+- historical claims remain addressable for provenance but cannot masquerade as current truth.
