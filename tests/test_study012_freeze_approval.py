@@ -1,4 +1,4 @@
-"""G12-9: freeze approval + first-look embargo tests for ICT-EXP-001 (Issue #52).
+"""G12-9: freeze approval + first-look embargo tests for ICT-EXP-0001 (Issue #52).
 
 Asserts the freeze approval artifact is intact, records all prior gates as
 present, keeps embargo locked (no first-look date), and does NOT grant
@@ -34,7 +34,7 @@ def test_approval_sha256_matches():
 
 def test_approval_gate_identity(approval):
     assert approval["gate"].startswith("G12-9")
-    assert approval["experiment_id"] == "ICT-EXP-001"
+    assert approval["experiment_id"] == "ICT-EXP-0001"
     assert approval["freeze_version"] == "DRAFT"
 
 
