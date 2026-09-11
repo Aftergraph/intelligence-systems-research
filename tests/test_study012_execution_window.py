@@ -1,4 +1,4 @@
-"""G12-10: execution window definition tests for ICT-EXP-001 (Issue #52).
+"""G12-10: execution window definition tests for ICT-EXP-0001 (Issue #52).
 
 Asserts the execution window artifact is intact, references all prior gates,
 remains unauthorized (clearance + freeze approval still pending), and defines
@@ -33,7 +33,7 @@ def test_window_sha256_matches():
 
 def test_window_gate_identity(window):
     assert window["gate"].startswith("G12-10")
-    assert window["experiment_id"] == "ICT-EXP-001"
+    assert window["experiment_id"] == "ICT-EXP-0001"
     assert window["window_version"] == "v1.0.0"
 
 
