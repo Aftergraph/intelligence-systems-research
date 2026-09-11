@@ -12,11 +12,11 @@
 # ABDE Research
 ## Jonas Abde Intelligence Systems Research Program — Q3 2026
 
-**Principal Researcher:** Jonas Abde  
-**Program State:** research/engineering phases 1–10 complete; STUDY-011 live confirmatory run executed, analyzed and frozen  
-**Defensible Maturity:** **Level C+ / Provisional-D**; blind external reproduction and live human validation remain open  
-**Evidence Audit:** `AUDIT-EVID-001` plus frozen STUDY-011 post-execution evidence  
-**Snapshot Date:** 11 September 2026  
+**Principal Researcher:** Jonas Abde
+**Program State:** research/engineering phases 1–10 complete; STUDY-011 live confirmatory run executed, analyzed and frozen
+**Defensible Maturity:** **Level C+ / Provisional-D**; blind external reproduction and live human validation remain open
+**Evidence Audit:** `AUDIT-EVID-001` plus frozen STUDY-011 post-execution evidence
+**Snapshot Date:** 11 September 2026
 **License:** Apache 2.0 (Open Specification, Software & Data)
 
 > [!IMPORTANT]

@@ -1,9 +1,9 @@
 # STUDY-011 Readiness Report v4.0 — Confirmatory Execution Complete
 
-**Version:** 4.0  
-**Date:** 2026-09-11  
-**Status:** `FINAL_FROZEN` — confirmatory execution and analysis complete  
-**Program maturity:** Level C+ / Provisional-D; blind external reproduction remains pending  
+**Version:** 4.0
+**Date:** 2026-09-11
+**Status:** `FINAL_FROZEN` — confirmatory execution and analysis complete
+**Program maturity:** Level C+ / Provisional-D; blind external reproduction remains pending
 **Supersedes:** v3.0 `RUNNING`, v2.0 `READY_FOR_OWNER_APPROVAL`
 
 ---
