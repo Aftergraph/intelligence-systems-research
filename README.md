@@ -12,187 +12,153 @@
 # ABDE Research
 ## Jonas Abde Intelligence Systems Research Program — Q3 2026
 
-**Principal Researcher:** Jonas Abde
-
-> ABDE Research is the provisional research-facing identity associated with
-> the ABDE Intelligence working brand. Scientific claims remain governed
-> solely by this repository's own evidence, study protocols, preregistrations,
-> replication status, and publication lineage. No platform claim automatically
-> inherits research evidence.
-
-**Program State:** RESEARCH & ENGINEERING LIFECYCLE PHASES 1–10 COMPLETED; PHASE G (STUDY-011 LIVE CROSS-PROVIDER REPLICATION) EXECUTING — Amendment 010 ACTIVE
-**Defensible Outcome:** **Level C+ (Validated Research Result) / Provisional-D (Candidate Specification pending Blind External Reproduction)**
-**Evidence Audit:** AUDIT-EVID-001 (see `EVIDENCE-AUDIT-AND-CLAIM-REGISTRY.md`); submission hold active
-**Snapshot Date:** 4 September 2026
+**Principal Researcher:** Jonas Abde  
+**Program State:** research/engineering phases 1–10 complete; STUDY-011 live confirmatory run executed, analyzed and frozen  
+**Defensible Maturity:** **Level C+ / Provisional-D**; blind external reproduction and live human validation remain open  
+**Evidence Audit:** `AUDIT-EVID-001` plus frozen STUDY-011 post-execution evidence  
+**Snapshot Date:** 11 September 2026  
 **License:** Apache 2.0 (Open Specification, Software & Data)
 
 > [!IMPORTANT]
-> **Front-door alignment with the evidence audit:** this README was
-> rewritten 2026-09-04 to match the audited reality. Earlier revisions
-> of this document (and of `CHANGELOG.md`, the executive summary, and
-> the front-door metrics table) carried unverified "1,000 live runs",
-> "FCR ELIMINATED", "HEVO −68%", "D2 INTEGRATE 65%" claims that the
-> evidence audit has walked back. The numbers in the "Audited Empirical
-> Findings" section below are the **only** numbers defensible from raw
-> evidence. STUDY-011 is **executing**: canonical-run-002 reached
-> ~97% of dialagram valids; Amendment 010 (owner-approved) replaced the
-> non-viable openrouter :free stratum with paid models, global ceiling
-> 619→931, per-cell 78→156 (openrouter); live confirmatory results enter
-> the table only through the confirmatory integrity gate.
+> This repository distinguishes **deterministic/simulated**, **live pilot**,
+> **live confirmatory**, **human**, **formal**, and **external-replication**
+> evidence. A result in one class is never silently promoted into another.
+> STUDY-008 remains a methodological pilot with 2/275 `LIVE_VALID` runs.
+> STUDY-011 is now complete and frozen with 470 `LIVE_VALID` records:
+> **H1 REVERSED / H2 SUPPORTED / H3 REVERSED**. Earlier “D2 65% / D3 25%
+> / D1 10%”, blanket “FCR eliminated”, and human-validation language is not
+> current program truth.
 
 ---
 
-## Overview
+## Current Research Result
 
-The **Jonas Abde Intelligence Systems Research Program** was commissioned in Q3 2026 to investigate a fundamental systems-level question:
+The program investigates the systems boundary between:
 
-> Does a documented systems-level gap exist between current AI/agent standards, frameworks, and engineering disciplines, and the necessity of transforming **human intent → persistent mission → state → capability composition → delegated authority → resource constraints → execution → assurance → evidence → verified outcome** across heterogeneous models, agents, tools, runtimes, and organizations?
+> human intent → persistent mission → state → capability composition → delegated authority → resource constraints → execution → assurance → evidence → verified outcome
 
-The program operated under strict falsification discipline (Occam's razor / parsimony) and reached the following audited state:
+The current evidence supports a narrower thesis than early program drafts:
 
-- **Phases 1–10** (discovery, gap decision, formal model, contract spec, reference runtime, multi-runtime interop, MISSION-Bench ablation, model compatibility, security, IP/patent, clean-room validation, publications, SDK, standardization dossier): completed.
-- **Phase G (Live cross-provider replication, STUDY-011)**: pre-registration frozen (Amendment 010 ACTIVE — owner-approved), harness hardened (Amendments 007–009: checkpoint ordering, per-record fingerprint provenance, breaker-path duplicate prevention), canonical-run-002 executing with per-record provenance stamped.
-- **Submission hold**: active. The legal and owner-approval gates for the public-claims package remain open; no IEEE / NIST / USPTO submission until STUDY-011 LIVE_VALID evidence is in hand.
+- deterministic MISSION-Bench work shows large reliability, authority, recovery and cost effects under controlled fault injection, but those results are **not live-provider population estimates**;
+- the frozen live confirmatory STUDY-011 result shows that **assurance invocation (F)** drives the main abstention→action transition;
+- **authority + budget tracking (G)** adds a statistically strong marginal effect over F in both provider strata (`p < 0.001`, `h ≈ 2.5`), so **H2 is SUPPORTED**;
+- **H1 is REVERSED** because baseline A/C frequently abstained and therefore had FCR near zero;
+- **H3 is REVERSED** because retry alone did not overcome abstention;
+- live human UX evidence is still **N=0**; GOMS/persona simulation is pipeline/calibration evidence only;
+- alternative implementations are currently same-program/in-tree evidence, **not blind external reproduction**;
+- external formal/prior-art work, including STEAD, can narrow the novelty claim and is treated as a falsification/overlap input rather than ignored.
 
----
-
-## Audited Empirical Findings (Defensible from Raw Evidence)
-
-```
-========================================================================================
- METRIC                           BASELINE AGENT     FULL SPEC-001 SYSTEM     EVIDENCE BASIS
-========================================================================================
- Verified Success Rate (VSR)      TBD (in-tree)      TBD (in-tree)             Pending STUDY-011 LIVE_ONLY
- False Completion Rate (FCR)      84.7% (N=200)      0.0% in MISSION-Bench     Deterministic testbed, simulated
- Unauthorized Action Rate (UAR)   100% (injection)   0.0% in MISSION-Bench     Deterministic testbed, simulated
- Constraint Retention Rate (CRR)  75% (sandbox)      100% (sandbox)            Deterministic testbed, simulated
- Cost Per Verified Outcome (CPVO) $0.5791 (sandbox)  $0.1081 (sandbox)         Deterministic testbed, simulated
- Control Plane Tax (CPT)          0.0%               1.6%                      In-tree benchmark
- Human Effort Per Outcome (HEVO)  6.6 turns          2.0 turns                  GOMS persona simulation (N=0 humans)
- Conformance Pass Rate            N/A                100.0% (14/14)            SPEC-001 normative suite
- | Pytest Suite                     --                 508/508 passing           `pytest -q` 2026-09-04
- Live Multi-Model (STUDY-008)     2 LIVE_VALID / 275 attempts          Audit-classified METHODOLOGICAL_PILOT
-========================================================================================
-```
-
-> **Read this carefully:** the FCR, UAR, CRR, and CPVO numbers above are
-> from **deterministic, in-process, simulated** runs. The HEVO number
-> is from **GOMS persona simulation** (`experiments/hci_cognitive_model.py`)
-> with **N=0 humans**. STUDY-008's 275-attempt live run is correctly
-> classified as a methodological pilot: 2 `LIVE_VALID` runs out of
-> 275 attempts, with the remaining 264 silently substituted by a
-> harness bug (`is_live_call = (idx == 0)`). The audit correctly
-> detected this. The fix is in STUDY-011, which is **executing** (Amendment 010 active,
-> gate.
+The frozen statistical-review disposition is **`SOUND_WITH_HEDGES_REQUIRED`**.
 
 ---
 
-## Quickstart & Verification
+## Frozen STUDY-011 Evidence
 
-```powershell
-| run full automated test suite (508 tests after STUDY-011 hardening)
-pytest -v
+| Item | Canonical state |
+|---|---|
+| Dataset | `data/study011_runs/confirmatory/canonical-run-002/` |
+| Analysis | `data/study011_runs/confirmatory/canonical-run-002-analysis/` |
+| Final summary | `data/study011_runs/confirmatory/canonical-run-002-analysis/FINAL-CONFIRMATORY-SUMMARY.md` |
+| Freeze | `STUDY-011-AMENDMENT-011-POST-EXECUTION-FREEZE.md` |
+| Valid sample | **470 `LIVE_VALID`** |
+| Cell coverage | **8/8 cells ≥58** |
+| H1 | **REVERSED** |
+| H2 | **SUPPORTED** in both provider strata |
+| H3 | **REVERSED** |
 
-# Run 14-point normative conformance suite
-python conformance/runner.py
+The raw log contains checkpoint/resume duplicate `run_id` records. Frozen G7 semantics plus Amendment-010 lineage/fingerprint preference determine the one-observation-per-run analysis set; this is documented reconciliation, not silent deletion.
 
-# Run cross-domain independent validation (SWE, Robotics, Finance)
-python validation/cross_domain_validation.py
+---
 
-# Run the full program audit (registries, conformance, pilots, fuzzing)
-python cli/mission_cli.py audit
+## Evidence-Class Summary
 
-# Inspect live mission dashboard via developer CLI
-python cli/mission_cli.py status examples/mission.release.yaml
-
-# STUDY-011 preflight (historical — pre-execution DRY_RUN, no network)
-python experiments/live_benchmark/run_study_011.py --mode DRY_RUN --phase 1 --preflight-only
+```text
+============================================================================================
+ RESULT / METRIC                         VALUE / VERDICT              EVIDENCE CLASS
+============================================================================================
+ MISSION-Bench observed FCR              0.0% in evaluated sample     DETERMINISTIC / SIMULATED
+ MISSION-Bench CPVO change               -81.3% in tested cost model  SIMULATION_SUPPORTED
+ Human HEVO                              6.6 -> 2.0 turns             GOMS SIMULATION; N=0 HUMANS
+ SPEC-001 conformance                     14/14                        DETERMINISTIC IN-TREE
+ STUDY-008                                2 / 275 LIVE_VALID           METHODOLOGICAL PILOT
+ STUDY-011 canonical sample               470 LIVE_VALID               LIVE CONFIRMATORY
+ STUDY-011 H1                             REVERSED                     LIVE CONFIRMATORY
+ STUDY-011 H2                             SUPPORTED                    LIVE CONFIRMATORY
+ STUDY-011 H3                             REVERSED                     LIVE CONFIRMATORY
+ Blind external reproduction              PENDING                      NOT YET SATISFIED
+ Live human UX validation                 PENDING                      N=0 HUMANS
+============================================================================================
 ```
 
 ---
-
-## System visuals
-
-Real architecture diagrams (repo-specific, source in `.github/assets/architecture/`):
-
-<p align="center">
-  <img src=".github/assets/architecture/system-context.svg" alt="Intelligence Systems Research in the Aftergraph ecosystem context" width="90%">
-  <br><em>System context</em>
-</p>
-
-<p align="center">
-  <img src=".github/assets/architecture/architecture.svg" alt="Intelligence Systems Research system architecture" width="90%">
-  <br><em>Architecture</em>
-</p>
-
-<p align="center">
-  <img src=".github/assets/architecture/workflow.svg" alt="Intelligence Systems Research primary workflow" width="90%">
-  <br><em>Primary workflow</em>
-</p>
 
 ## Repository Map
 
-### 1. Normative Specification & Schemas
-- [`SPEC-001-MISSION-CONTRACT-v0.1.md`](SPEC-001-MISSION-CONTRACT-v0.1.md) — Normative system specification: IS = ⟨M, S, C, A, B, T, E, V⟩, 5 invariants, state machine.
-- `schemas/intelligence-system.v0alpha1.json`, `schemas/mission.v0alpha1.json`, `schemas/delegation.v0alpha1.json`, `schemas/evidence.v0alpha1.json` — Draft 2020-12.
+### Specification and implementation
 
-### 2. Reference Implementation & Adapters
-- `runtime/engine.py` — Thread-safe Reference Runtime enforcing lifecycle, authority, budget, and metrics.
-- `runtime/verifier.py` — `DeterministicTestVerifier` generating NIST AI 200-2 evidence items.
-- `validation/independent_runtime.py` — Independent clean-room implementation (3/3 domains passed).
-- `adapters/` — Cross-runtime adapters for Reference Runtime, LangGraph, AutoGen (0% semantic deviation).
-- `cli/mission_cli.py` — Production CLI (`lint`, `run`, `status`, `package`, `audit`).
+- [`SPEC-001-MISSION-CONTRACT-v0.1.md`](SPEC-001-MISSION-CONTRACT-v0.1.md) — candidate mission/system contract.
+- `schemas/` — Draft 2020-12 machine-readable schemas.
+- `runtime/` — reference runtime and deterministic verification boundaries.
+- `assurance/`, `delegation/` — assurance and delegated-authority mechanisms.
+- `adapters/` — runtime adapters.
+- `validation/`, `external_validation_pack/` — alternate in-tree/same-program implementations and conformance material.
+- `conformance/` — normative conformance suite.
 
-### 3. Empirical Studies (Audited Status)
-- [`STUDY-001-ENGINEERING-STANDARDS-GAP.md`](STUDY-001-ENGINEERING-STANDARDS-GAP.md) — Foundational gap study.
-- [`STUDY-002-JAR-EXP-0001-EMPIRICAL-EVALUATION.md`](STUDY-002-JAR-EXP-0001-EMPIRICAL-EVALUATION.md) — 200 SWE benchmark workloads, 4 verification levels (deterministic testbed).
-- [`STUDY-003-MISSION-BENCH-ABLATION-AND-ECONOMICS.md`](STUDY-003-MISSION-BENCH-ABLATION-AND-ECONOMICS.md) — 800 MISSION-Bench runs, 8 ablation stages, 10 failure modes (deterministic testbed).
-- [`STUDY-004-MODEL-COMPATIBILITY-REPORT.md`](STUDY-004-MODEL-COMPATIBILITY-REPORT.md) — 900 model-comprehension test vectors.
-- [`STUDY-008-LIVE-MISSION-BENCH-RESULTS.md`](STUDY-008-LIVE-MISSION-BENCH-RESULTS.md) — 275 attempted live runs; 2 LIVE_VALID; 9 LIVE_PROVIDER_FAILURE; 264 SIMULATED. Reclassified as **METHODOLOGICAL_PILOT** in `data/experiment_registry.csv` (was COMPLETED).
-- [`STUDY-011-LIVE-CROSS-PROVIDER-PREREGISTRATION.md`](STUDY-011-LIVE-CROSS-PROVIDER-PREREGISTRATION.md) — Pre-registration v1.0.0 + 2 amendments (see `STUDY-011-AMENDMENTS.md`).
-- [`STUDY-011-READINESS-REPORT.md`](STUDY-011-READINESS-REPORT.md) — Current STUDY-011 status (RUNNING; Amendment 010 active).
+### Research studies
 
-### 4. STUDY-011 Frozen Artifacts (ORIGINAL FREEZE — historical)
-- `data/study011_workload_manifest.json` (ORIGINAL FREEZE v1.0.0, root hash `e823102a4ff09bfca560c95e341aa3eaf7a4003215abd3900749afc64d3e4e06`)
-- `data/study011_workloads_frozen.json` (ORIGINAL FREEZE v1.0.0)
-- `data/study011_provider_model_matrix.json` (ORIGINAL FREEZE v1.0.0: 3 Dialagram + 2 OpenRouter :free models → **Amendment 010**: OpenRouter models upgraded to paid `gemma-4-31b-it` + `glm-5.2`)
-- `data/study011_preregistration_manifest.json` (v1.0.0 base + Amendments 001–010 ACTIVE)
-- `data/study011_preregistration_manifest.sha256` (sidecar)
-- `experiments/live_benchmark/run_study_011.py` (harness, 770 lines, LIVE_ONLY invariant enforced)
-- `experiments/live_benchmark/study011_analyze.py` (pre-data offline analysis, 1,253 lines)
-- `experiments/live_benchmark/study011_rate_limit.py` (NEW — circuit breaker, rate limiter, checkpoint journal)
-- `tests/test_study011_analyze.py` (12 tests)
-- `tests/test_study011_condition_conformance.py` (NEW — 11 tests; caught no-silent-disable bug in Condition G)
-- `tests/test_study011_harness_self_test.py` (NEW — 28 tests; caught matrix-vs-harness drift; STUDY-008 `idx==0` regression)
-- `tests/test_registries.py` (14 tests + `verify()` entry point for the audit CLI)
+- [`STUDY-001-ENGINEERING-STANDARDS-GAP.md`](STUDY-001-ENGINEERING-STANDARDS-GAP.md) — foundational standards/gap analysis.
+- [`STUDY-002-JAR-EXP-0001-EMPIRICAL-EVALUATION.md`](STUDY-002-JAR-EXP-0001-EMPIRICAL-EVALUATION.md) — deterministic SWE workload evaluation.
+- [`STUDY-003-MISSION-BENCH-ABLATION-AND-ECONOMICS.md`](STUDY-003-MISSION-BENCH-ABLATION-AND-ECONOMICS.md) — MISSION-Bench deterministic/simulated ablation and economics.
+- [`STUDY-004-MODEL-COMPATIBILITY-REPORT.md`](STUDY-004-MODEL-COMPATIBILITY-REPORT.md) — model-tier compatibility simulation.
+- [`STUDY-006-HCI-PREREGISTRATION.md`](STUDY-006-HCI-PREREGISTRATION.md) — human-study protocol; live humans not yet run.
+- [`STUDY-008-LIVE-MISSION-BENCH-RESULTS.md`](STUDY-008-LIVE-MISSION-BENCH-RESULTS.md) — methodological live pilot, 2/275 `LIVE_VALID`.
+- [`STUDY-011-LIVE-CROSS-PROVIDER-PREREGISTRATION.md`](STUDY-011-LIVE-CROSS-PROVIDER-PREREGISTRATION.md) — preregistered confirmatory protocol.
+- [`STUDY-011-READINESS-REPORT.md`](STUDY-011-READINESS-REPORT.md) — current status: `FINAL_FROZEN`.
+- [`STUDY-011-AMENDMENT-011-POST-EXECUTION-FREEZE.md`](STUDY-011-AMENDMENT-011-POST-EXECUTION-FREEZE.md) — frozen post-execution evidence cut.
 
-### 5. Security, IP & Governance
-- `security/THREAT-MODEL-AND-SECURITY-ANALYSIS.md` — 11 threat vectors; 13 automated security tests.
-- `ip/INVENTION-DISCLOSURE-AND-CLAIMS-ANALYSIS.md` — Prior art vs US12556493B2 and US20260017525A1.
-- `standards/RFC-0001-INTELLIGENCE-SYSTEM-CONTRACT.md` — IETF-style RFC.
-- `standards/STANDARDS-CROSSWALK-AND-SUBMISSION-CHARTER.md` — IEEE P3709/P3777 and NIST AI 200-2 crosswalk.
+### Research registries
 
-### 6. Scientific Paper Series (`PAPERS/`)
-- `01-FROM-MODELS-TO-MISSIONS-INTELLIGENCE-SYSTEMS-CONTRACT.md`
-- `02-MISSION-BENCH-EMPIRICAL-ABLATION-STUDY.md`
-- `03-FORMAL-VERIFICATION-AND-AUTHORITY-ATTENUATION.md`
-- `04-PROGRESSIVE-DISCLOSURE-AND-CONTROL-PLANE-ECONOMICS.md`
+- `data/claim_registry.csv` — current claim state with evidence scope, sources and `last_verified`.
+- `data/claim_evidence_audit.csv` — historical/evidence-level claim audit; preserved rather than rewritten away.
+- `data/hypothesis_registry.csv` — current hypothesis state with evidence scope.
+- `data/experiment_registry.csv` — study/experiment state; STUDY-008/JAR-EXP-0008 remains `METHODOLOGICAL_PILOT`.
+- `data/source_registry.csv`, `data/objection_registry.csv`, `data/decision_log.csv`, `data/open_questions.csv` — provenance and research-control registries.
+- `data/publication_artifact_registry.csv` — publication/export status and exact source binding when the registry PR is merged.
+
+### Scientific paper series
+
+Current source papers under `PAPERS/`:
+
+1. `01-FROM-MODELS-TO-MISSIONS-INTELLIGENCE-SYSTEMS-CONTRACT.md`
+2. `02-MISSION-BENCH-ABLATION-AND-EMPIRICAL-EVALUATION.md`
+3. `03-THE-ECONOMICS-OF-VERIFIED-INTELLIGENT-SYSTEMS.md`
+4. `04-ATTENUATED-AUTHORITY-AND-EVIDENCE-GATED-SYSTEMS-ARCHITECTURE.md`
+5. `05-FRONTIER-AGENT-BREAKOUT-AND-INSTITUTIONAL-CONTROL.md`
+
+Publication readiness is **not inferred from a filename or old front-matter label**. Use the publication artifact registry/current audit before citing or exporting. Paper 01 requires reconciliation; Papers 02–04 require re-audit; Paper 05 is a disclosed working manuscript, not peer-reviewed external validation.
 
 ---
 
-## Registries & Provenance (`data/`)
+## Verification
 
-- `data/claim_registry.csv` — Claims C-001 through C-018.
-- `data/claim_evidence_audit.csv` — Per-claim evidence audit (this is the source of truth for the front-door alignment).
-- `data/source_registry.csv` — 18 prior-art sources (E0–E6 evidence tiers).
-- `data/hypothesis_registry.csv` — H-001 through H-007.
-- `data/objection_registry.csv` — OBJ-001 through OBJ-007.
-- `data/decision_log.csv` — DEC-001 through DEC-018.
-- `data/experiment_registry.csv` — JAR-EXP-0001..0011. **Note:** JAR-EXP-0008 is `METHODOLOGICAL_PILOT` (was incorrectly `COMPLETED` pre-audit).
-- `data/open_questions.csv` — Q-001..Q-012. Q-010 and Q-011 updated to reflect STUDY-011 executing state (Amendment 010).
-- `data/standards_gap_matrix.csv` — 14 industry standards.
-- `data/conformance_report.json` — 14/14 Passed.
-- `data/results_jar_exp_0001.csv` — 200 SWE benchmark runs (deterministic testbed).
-- `data/results_mission_bench.csv` — 800 MISSION-Bench ablation runs (deterministic testbed).
-- `data/results_model_compatibility.csv` — 900 model-comprehension test vectors.
-- `data/live_run_manifest.json` — 275 STUD
+```bash
+# Full repository tests
+pytest -q
+
+# Normative conformance suite
+python conformance/runner.py
+
+# Program audit / registry integrity
+python cli/mission_cli.py audit
+
+# Inspect the frozen confirmatory summary
+cat data/study011_runs/confirmatory/canonical-run-002-analysis/FINAL-CONFIRMATORY-SUMMARY.md
+```
+
+Do not re-run the frozen confirmatory protocol and merge the result into STUDY-011 as though it were the same experiment. A new confirmatory question requires a new preregistered evidence cut.
+
+---
+
+## Research Rule
+
+A checked box, merged PR, passing test, model output, paper export or issue closure is not scientific truth by itself. Current claims must remain traceable to their evidence class and exact source. Historical findings remain addressable for provenance, but they cannot silently masquerade as current state.
