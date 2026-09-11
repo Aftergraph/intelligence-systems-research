@@ -62,3 +62,17 @@ def test_executive_summary_names_frozen_study011_verdicts() -> None:
     assert "STUDY-011 LIVE CONFIRMATORY RUN EXECUTED AND FROZEN" in summary
     assert "LIVE CONFIRMATORY" in summary
     assert "N=0 HUMANS" in summary
+
+def test_claim_evidence_audit_records_frozen_study011_result() -> None:
+    with (DATA / "claim_evidence_audit.csv").open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    row = next(
+        r for r in rows
+        if r["CLAIM"].startswith("STUDY-011 frozen cross-provider confirmatory result")
+    )
+    assert row["SAMPLE SIZE"].startswith("470 LIVE_VALID")
+    assert "H1 REVERSED" in row["STATISTICAL RESULT"]
+    assert "H2 SUPPORTED" in row["STATISTICAL RESULT"]
+    assert "H3 REVERSED" in row["STATISTICAL RESULT"]
+    assert row["SIMULATED OR LIVE?"] == "LIVE_CONFIRMATORY"
+    assert row["STATUS"] == "LIVE_CONFIRMATORY_FROZEN"

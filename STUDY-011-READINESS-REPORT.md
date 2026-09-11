@@ -23,6 +23,17 @@ The preregistered cross-provider confirmatory run has been executed, reconciled 
 
 This report describes readiness/execution state only. The frozen analysis artifacts remain authoritative for statistical detail.
 
+
+### Historical preregistration bounds
+
+For lineage, the original Phase 1 preregistration distinguished two planning
+numbers that must not be conflated with the final observed sample:
+
+- **464** was the preregistered **minimum `LIVE_VALID`** sample required across the original 8-cell confirmatory matrix.
+- **619** was the original **attempt ceiling / maximum**, not a target sample size. Later protocol amendments increased the attempt ceiling to accommodate provider failures and lineage-preserving re-attempts.
+
+The final frozen result of **470 `LIVE_VALID`** therefore clears the original minimum; neither 464 nor 619 replaces the observed 470-record canonical sample.
+
 ---
 
 ## 1. Frozen Confirmatory Verdicts
