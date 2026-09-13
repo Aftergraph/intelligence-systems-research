@@ -3,7 +3,7 @@
   "confirmatory_execution_occurred": false,
   "effective_freeze_notice": "FROZEN STUDY-012 ICT-PREREGISTRATION v1.0.0 (G12-6), amended to v1.0.1 pre-confirmatory (G12-9). v1.0.0 manifest retained byte-identical (sha256 dab942d177847705385fcd18a27fec00091abfb89efdacbe8307680e39f1d218). Canonical experiment ICT-EXP-0001; ICT-EXP-001 recorded as accidental alias (introduced via PR #79), never executed under either ID. After freeze, NO silent edits: any further change requires a new PROTOCOL_AMENDMENT entry + version bump + recomputed hashes.",
   "historical_scope": {
-    "note": "Files below retain ICT-EXP-001 as pinned pre-ruling history. They are NOT canonical claims. Rewriting them would break sidecar pins (= silent edits by another name). The registry governs; history stays.",
+    "note": "Files below retain ICT-EXP-001 as pinned pre-ruling history. They are NOT canonical claims. Rewriting them would break sidecar pins (= silent edits by another name). The registry governs; history stays. G12-9 and G12-10 gate artifacts are included explicitly because their immutable checkpoint records retain the same historical alias.",
     "retained_001": [
       "data/study012_workload_manifest.json (frozen v1.0.0; base of v1.0.1 amendment)",
       "STUDY-012-ICT-PREREGISTRATION.md (frozen v1.0.0 document)",
@@ -15,7 +15,9 @@
       "data/study012_i0_opportunity_matrix.json (DRAFT snapshot + sidecar)",
       "data/study012_pilot_dryrun_report.json (DRAFT snapshot + sidecar)",
       "data/study012_verifier_pin.json (DRAFT snapshot + sidecar)",
-      "tests/test_study012_clearance.py (pins DRAFT clearance content, incl. experiment_id)"
+      "tests/test_study012_clearance.py (pins DRAFT clearance content, incl. experiment_id)",
+      "data/study012_freeze_approval.json (G12-9 freeze checkpoint; historical alias retained)",
+      "data/study012_execution_window.json (G12-10 window definition; historical alias retained)"
     ]
   },
   "non_canonical_aliases": [
