@@ -1,0 +1,35 @@
+{
+  "schema_version": "aftergraph.study012.provider-readiness.v0.1",
+  "study_id": "STUDY-012",
+  "checked_at": "2026-09-18",
+  "method": "credential presence + metadata catalog GET only; no inference requests",
+  "providers": [
+    {
+      "provider": "openrouter",
+      "credential_present": true,
+      "http_status": 200,
+      "catalog_count": 445,
+      "requested_models": {
+        "google/gemma-4-31b-it": true,
+        "z-ai/glm-5.2": true
+      },
+      "verdict": "READY"
+    },
+    {
+      "provider": "dialagram",
+      "credential_present": true,
+      "http_status": 402,
+      "requested_models": {
+        "qwen-3.8-max": "UNVERIFIED",
+        "deepseek-v4": "UNVERIFIED",
+        "xiaomi-mimo-2.5": "UNVERIFIED"
+      },
+      "verdict": "BLOCKED"
+    }
+  ],
+  "overall": "NO_GO",
+  "blockers": [
+    "dialagram_catalog_http_402",
+    "owner_approval_not_granted"
+  ]
+}
