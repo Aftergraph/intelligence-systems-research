@@ -166,6 +166,8 @@ def preflight(sentinel_dir:Path)->dict[str,Any]:
     if not ok: reasons.append(reason)
     if approval.get("approval_ref")!=APPROVAL_REF or approval.get("scope")!="FULL_FROZEN_MATRIX_ONLY": reasons.append("owner_approval_invalid")
     if approval.get("hard_cost_stop_usd")!=HARD_COST_USD: reasons.append("cost_cap_approval_mismatch")
+    if not os.environ.get("OPENROUTER_API_KEY"): reasons.append("openrouter_credential_missing")
+    if not (os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")): reasons.append("google_credential_missing")
     return {"decision":"READY_TO_EXECUTE" if not reasons else "BLOCKED","reasons":reasons,"network_calls_performed":0}
 
 def run(out_dir:Path,sentinel_dir:Path,workers:int=12)->dict[str,Any]:
@@ -199,6 +201,7 @@ def run(out_dir:Path,sentinel_dir:Path,workers:int=12)->dict[str,Any]:
     return result
 
 if __name__=="__main__":
-    ap=argparse.ArgumentParser(); ap.add_argument("--out-dir",required=True); ap.add_argument("--sentinel-dir",required=True); ap.add_argument("--workers",type=int,default=12)
+    ap=argparse.ArgumentParser(); ap.add_argument("--out-dir",required=True); ap.add_argument("--sentinel-dir",required=True); ap.add_argument("--workers",type=int,default=12); ap.add_argument("--preflight-only",action="store_true")
     args=ap.parse_args()
-    print(json.dumps(run(Path(args.out_dir),Path(args.sentinel_dir),args.workers),indent=2))
+    result=preflight(Path(args.sentinel_dir)) if args.preflight_only else run(Path(args.out_dir),Path(args.sentinel_dir),args.workers)
+    print(json.dumps(result,indent=2))
