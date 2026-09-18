@@ -27,7 +27,7 @@ class NvidiaProvider(ModelProvider):
   if system_prompt: messages.append({"role":"system","content":system_prompt})
   messages.append({"role":"user","content":prompt})
   payload={"model":model_id,"messages":messages,"max_tokens":max_tokens,"temperature":temperature,"stream":False}
-  if model_id=="nvidia/nemotron-3-ultra-550b-a55b":
+  if model_id in {"nvidia/nemotron-3-ultra-550b-a55b","nvidia/nemotron-3-super-120b-a12b"}:
    payload["reasoning_effort"]="none"
   if tools: payload["tools"]=tools
   req=request.Request(f"{self.base_url}/chat/completions",data=json.dumps(payload).encode(),headers={"Authorization":f"Bearer {self.api_key}","Content-Type":"application/json","User-Agent":"Aftergraph-Provider/1.0"},method="POST")
