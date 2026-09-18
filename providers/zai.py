@@ -10,10 +10,10 @@ ZAI_MODELS={
  "glm-5.3-flash":ModelMetadata(provider="zai",model_id="glm-5.3-flash",context_window=262144,supports_tools=True,supports_reasoning=True,availability="ACTIVE",operational_status="LIVE_CAPABLE_UNVERIFIED",source="zai_general_catalog"),
 }
 class ZaiProvider(ModelProvider):
- def __init__(self,api_key:Optional[str]=None,base_url:str=ZAI_BASE_URL):
+ def __init__(self,api_key:Optional[str]=None,base_url:Optional[str]=None):
   super().__init__("zai","glm-5.3-flash")
   self.api_key=api_key or os.environ.get("GLM_API_KEY")
-  self.base_url=base_url.rstrip("/")
+  self.base_url=(base_url or os.environ.get("GLM_BASE_URL") or ZAI_BASE_URL).rstrip("/")
  def get_supported_models(self)->Dict[str,ModelMetadata]: return ZAI_MODELS
  def generate(self,prompt:str,system_prompt:str="",model:Optional[str]=None,tools:Optional[List[Dict[str,Any]]]=None,max_tokens:int=2048,temperature:float=0.2,dry_run:bool=False)->ProviderResponse:
   model_id=model or self.default_model;t0=time.time()
