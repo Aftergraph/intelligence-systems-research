@@ -45,7 +45,7 @@ def build():
   "study_id":"STUDY-012",
   "execution_id":"study012-recovery-v4-20260918",
   "pooling_with_prior_runs":False,
-  "status":"FROZEN_PENDING_EXPLICIT_OWNER_GRANT",
+  "status":"FROZEN_AUTHORIZED_FOR_EXACT_V4_EXECUTION" if approval.get("status")=="GRANTED" and approval.get("network_calls_authorized") is True else "FROZEN_PENDING_EXPLICIT_OWNER_GRANT",
   "files":{p:sha(ROOT/p) for p in FILES},
   "execution_gate":{
    "readiness_decision":readiness.get("decision"),
