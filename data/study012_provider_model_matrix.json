@@ -1,0 +1,25 @@
+{
+  "schema_version": "aftergraph.study012.matrix.v0.1",
+  "study_id": "STUDY-012",
+  "status": "FROZEN_FOR_REVIEW",
+  "model_strata": [
+    {
+      "id": "M1",
+      "provider": "TBD_DIRECT_OR_APPROVED_GATEWAY",
+      "model": "TBD_FROZEN_BEFORE_EXECUTION"
+    },
+    {
+      "id": "M2",
+      "provider": "TBD_INDEPENDENT_STRATUM",
+      "model": "TBD_FROZEN_BEFORE_EXECUTION"
+    }
+  ],
+  "conditions": [
+    "J",
+    "D",
+    "JD",
+    "DI"
+  ],
+  "execution_gate": "BLOCKED_UNTIL_PROVIDER_MODEL_IDS_AND_CREDENTIAL_READINESS_ARE_FROZEN",
+  "note": "No silent substitution; provider/model results remain stratified."
+}
