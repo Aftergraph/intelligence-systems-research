@@ -1,0 +1,42 @@
+{
+  "endpoint": "https://opencode.ai/zen/go/v1/chat/completions",
+  "model_id": "glm-5.3-flash",
+  "rows": [
+    {
+      "body": "{\"type\":\"error\",\"error\":{\"type\":\"MissingSessionID\",\"message\":\"Request is missing x-opencode-session and cannot be routed efficiently. Please see https://opencode.ai/docs/go/#where-can-i-use-it\"}}",
+      "error": "HTTPError",
+      "http_status": 400,
+      "index": 1,
+      "is_live": false,
+      "model_id": "glm-5.3-flash",
+      "semantic_match": false
+    },
+    {
+      "body": "{\"type\":\"error\",\"error\":{\"type\":\"MissingSessionID\",\"message\":\"Request is missing x-opencode-session and cannot be routed efficiently. Please see https://opencode.ai/docs/go/#where-can-i-use-it\"}}",
+      "error": "HTTPError",
+      "http_status": 400,
+      "index": 2,
+      "is_live": false,
+      "model_id": "glm-5.3-flash",
+      "semantic_match": false
+    },
+    {
+      "body": "{\"type\":\"error\",\"error\":{\"type\":\"MissingSessionID\",\"message\":\"Request is missing x-opencode-session and cannot be routed efficiently. Please see https://opencode.ai/docs/go/#where-can-i-use-it\"}}",
+      "error": "HTTPError",
+      "http_status": 400,
+      "index": 3,
+      "is_live": false,
+      "model_id": "glm-5.3-flash",
+      "semantic_match": false
+    }
+  ],
+  "schema_version": "aftergraph.study012.opencode-go-probe.v0.1",
+  "summary": {
+    "calls": 3,
+    "http_statuses": {
+      "400": 3
+    },
+    "live": 0,
+    "semantic_match": 0
+  }
+}

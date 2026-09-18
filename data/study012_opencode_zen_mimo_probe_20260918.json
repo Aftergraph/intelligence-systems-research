@@ -1,0 +1,117 @@
+{
+  "model_id": "mimo-v2.5-free",
+  "rows": [
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 403,
+        "provider_message": "OpenCode's free tier can only be used from within OpenCode",
+        "reason": "Forbidden"
+      },
+      "index": 1,
+      "is_live": false,
+      "latency_ms": 543.7717437744141,
+      "phase": "sequential",
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 403,
+        "provider_message": "OpenCode's free tier can only be used from within OpenCode",
+        "reason": "Forbidden"
+      },
+      "index": 1,
+      "is_live": false,
+      "latency_ms": 531.4481258392334,
+      "phase": "burst3",
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 403,
+        "provider_message": "OpenCode's free tier can only be used from within OpenCode",
+        "reason": "Forbidden"
+      },
+      "index": 2,
+      "is_live": false,
+      "latency_ms": 564.2318725585938,
+      "phase": "burst3",
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 403,
+        "provider_message": "OpenCode's free tier can only be used from within OpenCode",
+        "reason": "Forbidden"
+      },
+      "index": 3,
+      "is_live": false,
+      "latency_ms": 511.04187965393066,
+      "phase": "burst3",
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    }
+  ],
+  "schema_version": "aftergraph.study012.opencode-zen-mimo-probe.v0.1",
+  "summary": {
+    "calls": 4,
+    "failures": [
+      {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 403,
+        "provider_message": "OpenCode's free tier can only be used from within OpenCode",
+        "reason": "Forbidden"
+      },
+      {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 403,
+        "provider_message": "OpenCode's free tier can only be used from within OpenCode",
+        "reason": "Forbidden"
+      },
+      {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 403,
+        "provider_message": "OpenCode's free tier can only be used from within OpenCode",
+        "reason": "Forbidden"
+      },
+      {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 403,
+        "provider_message": "OpenCode's free tier can only be used from within OpenCode",
+        "reason": "Forbidden"
+      }
+    ],
+    "live": 0,
+    "semantic_match": 0
+  }
+}
