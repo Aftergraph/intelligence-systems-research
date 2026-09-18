@@ -6,6 +6,7 @@ from providers.http_failure import provider_error_snapshot
 
 BYTEPLUS_BASE_URL="https://ark.ap-southeast.bytepluses.com/api/v3"
 BYTEPLUS_MODELS={
+ "glm-5-2-260617":ModelMetadata(provider="byteplus",model_id="glm-5-2-260617",context_window=256000,supports_tools=True,supports_reasoning=True,availability="ACTIVE",operational_status="LIVE_CAPABLE_UNVERIFIED",source="hermes_canonical_byteplus_config"),
  "seed-2-0-lite-260428":ModelMetadata(provider="byteplus",model_id="seed-2-0-lite-260428",context_window=256000,supports_tools=True,supports_reasoning=True,availability="ACTIVE",operational_status="LIVE_CAPABLE_UNVERIFIED",source="byteplus_live_catalog"),
  "seed-2-0-mini-260428":ModelMetadata(provider="byteplus",model_id="seed-2-0-mini-260428",context_window=256000,supports_tools=True,supports_reasoning=True,availability="ACTIVE",operational_status="LIVE_CAPABLE_UNVERIFIED",source="byteplus_live_catalog"),
 }
