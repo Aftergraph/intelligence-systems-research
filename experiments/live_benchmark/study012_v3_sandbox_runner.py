@@ -22,6 +22,7 @@ NVIDIA_URL="https://integrate.api.nvidia.com/v1/chat/completions"
 
 WORKER=r'''
 import argparse,json,os,time,urllib.request,urllib.error
+from concurrent.futures import ThreadPoolExecutor,as_completed
 from pathlib import Path
 NVIDIA_URL="https://integrate.api.nvidia.com/v1/chat/completions"
 JUDGE_MODEL="nvidia/nemotron-3-super-120b-a12b"
@@ -68,16 +69,21 @@ if cp.exists():
     for line in cp.read_text().splitlines():
         if line.strip():done.add(json.loads(line)["trace_id"])
 pending=[r for r in plan["rows"] if r["trace_id"] not in done][:args.limit]
-out=[]
-for row in pending:
+def process_row(row):
     w=workloads[row["r2_class"]]
     task=call(row["model_id"],w["prompt"],256)
     judge=None
     if row["condition"] in {"J","JD"} and task and task["is_live"]:
         judge=call(JUDGE_MODEL,judge_prompt(w["response_contract"]["expected"],task["content"]),32)
-    rec={"row":row,"workload_id":w["id"],"task":task,"judge":judge}
-    out.append(rec)
-    with cp.open("a",encoding="utf-8") as fh:fh.write(json.dumps({"trace_id":row["trace_id"]},sort_keys=True,separators=(",",":"))+"\n")
+    return {"row":row,"workload_id":w["id"],"task":task,"judge":judge}
+
+out=[]
+with ThreadPoolExecutor(max_workers=2) as pool:
+    futures={pool.submit(process_row,row):row for row in pending}
+    for future in as_completed(futures):
+        rec=future.result()
+        out.append(rec)
+        with cp.open("a",encoding="utf-8") as fh:fh.write(json.dumps({"trace_id":rec["row"]["trace_id"]},sort_keys=True,separators=(",",":"))+"\n")
 Path(args.out).write_text(json.dumps(out,sort_keys=True,separators=(",",":")))
 print(json.dumps({"processed":len(out),"checkpoint_rows":len(done)+len(out)}))
 '''
@@ -121,29 +127,39 @@ def run(out_dir:Path,sentinel_dir:Path,novita_key:str,nvidia_key:str):
   for line in obs.read_text(encoding="utf-8").splitlines():
    if line.strip():done.add(json.loads(line)["trace_id"])
  checkpoint_text=""
- workloads=load_workloads();sandbox_count=0
+ workloads=load_workloads();sandbox_count=0;sb=None
  def rebuild_checkpoint():
   ordered=[r["trace_id"] for r in plan["rows"] if r["trace_id"] in done]
   return "".join(json.dumps({"trace_id":t},sort_keys=True,separators=(",",":"))+"\n" for t in ordered)
- while len(done)<960:
-  checkpoint_text=rebuild_checkpoint()
-  sb=Sandbox.create(timeout=1800,metadata={"study_id":"STUDY-012","execution_id":EXECUTION_ID,"purpose":"v3-live-batch"},envs={"NVIDIA_API_KEY":nvidia_key},auto_pause=True)
-  sandbox_count+=1
-  try:
-   wd="/workspace/study012";sb.files.make_dir(wd);sb.files.write(wd+"/worker.py",WORKER);sb.files.write(wd+"/plan.json",json.dumps(plan,separators=(",",":")));sb.files.write(wd+"/workloads.json",json.dumps(workloads_doc,separators=(",",":")))
+ try:
+  while len(done)<960:
+   checkpoint_text=rebuild_checkpoint()
+   if sb is None:
+    sb=Sandbox.create(timeout=3600,metadata={"study_id":"STUDY-012","execution_id":EXECUTION_ID,"purpose":"v3-live-runner"},envs={"NVIDIA_API_KEY":nvidia_key},auto_pause=True)
+    sandbox_count+=1
+    wd="/workspace/study012";sb.files.make_dir(wd);sb.files.write(wd+"/worker.py",WORKER);sb.files.write(wd+"/plan.json",json.dumps(plan,separators=(",",":")));sb.files.write(wd+"/workloads.json",json.dumps(workloads_doc,separators=(",",":")))
    if checkpoint_text:sb.files.write(wd+"/checkpoint.jsonl",checkpoint_text)
-   sb.commands.run(f"python {wd}/worker.py --plan {wd}/plan.json --workloads {wd}/workloads.json --checkpoint {wd}/checkpoint.jsonl --out {wd}/batch.json --limit {BATCH_SIZE}",timeout=900)
-   raw=json.loads(sb.files.read(wd+"/batch.json"))
-  finally:
-   sb.kill()
-  for rr in raw:
-   tr=rr["row"]["trace_id"]
-   if tr in done:continue
-   final=finalize(rr,workloads[rr["row"]["r2_class"]],sentinel_dir)
-   with obs.open("a",encoding="utf-8",newline="\n") as fh:fh.write(json.dumps(final,sort_keys=True,separators=(",",":"),ensure_ascii=False)+"\n")
-   done.add(tr)
-  checkpoint_text=rebuild_checkpoint()
-  cp_local.write_text(checkpoint_text,encoding="utf-8")
+   elif sb.files.exists(wd+"/checkpoint.jsonl"):sb.files.remove(wd+"/checkpoint.jsonl")
+   try:
+    sb.commands.run(f"python {wd}/worker.py --plan {wd}/plan.json --workloads {wd}/workloads.json --checkpoint {wd}/checkpoint.jsonl --out {wd}/batch.json --limit {BATCH_SIZE}",timeout=900)
+    raw=json.loads(sb.files.read(wd+"/batch.json"))
+   except Exception:
+    try: sb.kill()
+    except Exception: pass
+    sb=None
+    continue
+   for rr in raw:
+    tr=rr["row"]["trace_id"]
+    if tr in done:continue
+    final=finalize(rr,workloads[rr["row"]["r2_class"]],sentinel_dir)
+    with obs.open("a",encoding="utf-8",newline="\n") as fh:fh.write(json.dumps(final,sort_keys=True,separators=(",",":"),ensure_ascii=False)+"\n")
+    done.add(tr)
+   checkpoint_text=rebuild_checkpoint()
+   cp_local.write_text(checkpoint_text,encoding="utf-8")
+ finally:
+  if sb is not None:
+   try:sb.kill()
+   except Exception:pass
  summary={"decision":"COMPLETED" if len(done)==960 else "PARTIAL","observations":len(done),"unique_traces":len(done),"sandboxes_created":sandbox_count}
  (out_dir/"RUN-SUMMARY.json").write_text(json.dumps(summary,indent=2,sort_keys=True)+"\n",encoding="utf-8")
  return summary
