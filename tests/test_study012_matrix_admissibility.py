@@ -12,11 +12,11 @@ def test_matrix_plan_is_exact_balanced_and_deterministic():
     assert len({x["trace_id"] for x in a})==960
     assert all(x["result_partition"].startswith("full-matrix/") for x in a)
 
-def test_full_matrix_fails_closed_until_science_contracts_complete():
+def test_admissibility_has_only_real_external_verifier_transport_blocker():
     r=evaluate()
     assert r["decision"]=="NOT_ADMISSIBLE"
     assert r["network_calls_performed"]==0
-    assert "r2_extension_workloads_not_execution_complete" in r["reasons"]
-    assert "condition_evaluator_bindings_incomplete" in r["reasons"]
-    assert "attempt_ceiling_not_frozen" in r["reasons"]
-    assert "cost_cap_not_frozen" in r["reasons"]
+    assert r["reasons"]==["sentinel_transport_not_bound"]
+    assert r["incomplete_extension_workloads"]==[]
+    assert r["retry_policy"]["max_total_api_calls"]==2880
+    assert r["hard_cost_stop_usd"]==4.0
