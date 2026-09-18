@@ -40,9 +40,14 @@ def evaluate():
     if not isinstance(cap,(int,float)) or cap<=0:
         reasons.append("cost_cap_not_frozen")
 
-    # Remaining implementation boundary: actual Sentinel transport/receipt ingestion
-    # must be bound before DI can run live. A string identifier alone is not enough.
-    reasons.append("sentinel_transport_not_bound")
+    sentinel=json.loads((ROOT/"data/study012_sentinel_binding_v01.json").read_text(encoding="utf-8"))
+    works=json.loads((ROOT/"data/study012_works_verification_binding_v01.json").read_text(encoding="utf-8"))
+    if sentinel.get("exact_commit")!="f9a0f85a50cd4a74400b8b267c29a943da5af68b":
+        reasons.append("sentinel_commit_not_pinned")
+    if sentinel.get("fallback_allowed") is not False:
+        reasons.append("sentinel_fallback_not_fail_closed")
+    if works.get("route")!="POST /v1/works/{id}/verification":
+        reasons.append("works_verification_route_not_bound")
 
     return {
       "decision":"READY_FOR_OWNER_APPROVAL" if not reasons else "NOT_ADMISSIBLE",
