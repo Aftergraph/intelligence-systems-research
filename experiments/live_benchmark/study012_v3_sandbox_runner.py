@@ -108,6 +108,8 @@ def finalize(raw,w,sentinel_dir):
  return {**row,"study_id":"STUDY-012","execution_id":EXECUTION_ID,"pooling_with_prior_runs":False,"source_workload_id":w["id"],"workload_hash":canonical_hash(w),"execution_class":"LIVE_VALID" if task and task.get("is_live") else "LIVE_PROVIDER_FAILURE","response_text":txt,"response_hash":sha_text(txt),"task":task,"deterministic":det,"judge":judge,"sentinel":sentinel,"independent_receipt":ind,"canonical":canonical}
 
 def run(out_dir:Path,sentinel_dir:Path,novita_key:str,nvidia_key:str):
+ if novita_key:
+  os.environ["NOVITA_API_KEY"]=novita_key
  from novita_sandbox.code_interpreter import Sandbox
  ok,reason=verify_checkout(sentinel_dir)
  if not ok:return {"decision":"BLOCKED","reason":reason}
@@ -118,16 +120,20 @@ def run(out_dir:Path,sentinel_dir:Path,novita_key:str,nvidia_key:str):
  if obs.exists():
   for line in obs.read_text(encoding="utf-8").splitlines():
    if line.strip():done.add(json.loads(line)["trace_id"])
- checkpoint_text=cp_local.read_text(encoding="utf-8") if cp_local.exists() else ""
+ checkpoint_text=""
  workloads=load_workloads();sandbox_count=0
+ def rebuild_checkpoint():
+  ordered=[r["trace_id"] for r in plan["rows"] if r["trace_id"] in done]
+  return "".join(json.dumps({"trace_id":t},sort_keys=True,separators=(",",":"))+"\n" for t in ordered)
  while len(done)<960:
+  checkpoint_text=rebuild_checkpoint()
   sb=Sandbox.create(timeout=1800,metadata={"study_id":"STUDY-012","execution_id":EXECUTION_ID,"purpose":"v3-live-batch"},envs={"NVIDIA_API_KEY":nvidia_key},auto_pause=True)
   sandbox_count+=1
   try:
    wd="/workspace/study012";sb.files.make_dir(wd);sb.files.write(wd+"/worker.py",WORKER);sb.files.write(wd+"/plan.json",json.dumps(plan,separators=(",",":")));sb.files.write(wd+"/workloads.json",json.dumps(workloads_doc,separators=(",",":")))
    if checkpoint_text:sb.files.write(wd+"/checkpoint.jsonl",checkpoint_text)
    sb.commands.run(f"python {wd}/worker.py --plan {wd}/plan.json --workloads {wd}/workloads.json --checkpoint {wd}/checkpoint.jsonl --out {wd}/batch.json --limit {BATCH_SIZE}",timeout=900)
-   raw=json.loads(sb.files.read(wd+"/batch.json"));checkpoint_text=sb.files.read(wd+"/checkpoint.jsonl")
+   raw=json.loads(sb.files.read(wd+"/batch.json"))
   finally:
    sb.kill()
   for rr in raw:
@@ -136,6 +142,7 @@ def run(out_dir:Path,sentinel_dir:Path,novita_key:str,nvidia_key:str):
    final=finalize(rr,workloads[rr["row"]["r2_class"]],sentinel_dir)
    with obs.open("a",encoding="utf-8",newline="\n") as fh:fh.write(json.dumps(final,sort_keys=True,separators=(",",":"),ensure_ascii=False)+"\n")
    done.add(tr)
+  checkpoint_text=rebuild_checkpoint()
   cp_local.write_text(checkpoint_text,encoding="utf-8")
  summary={"decision":"COMPLETED" if len(done)==960 else "PARTIAL","observations":len(done),"unique_traces":len(done),"sandboxes_created":sandbox_count}
  (out_dir/"RUN-SUMMARY.json").write_text(json.dumps(summary,indent=2,sort_keys=True)+"\n",encoding="utf-8")
