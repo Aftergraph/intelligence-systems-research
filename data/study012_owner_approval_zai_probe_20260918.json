@@ -1,0 +1,21 @@
+{
+  "schema_version": "aftergraph.study012.owner-approval.v0.1",
+  "study_id": "STUDY-012",
+  "approved_at": "2026-09-18",
+  "approval_ref": "OWNER-ZAI-DIRECT-RECOVERY-PROBE-20260918-CHAT-RESUME",
+  "scope": "ZAI_DIRECT_RECOVERY_PROBE_ONLY",
+  "authorized_actions": [
+    "4 bounded Z.ai Direct canaries on glm-5.3-flash",
+    "capture sanitized failure provenance",
+    "no full matrix execution"
+  ],
+  "explicitly_not_authorized": [
+    "full matrix rerun",
+    "PR merge",
+    "pooling with prior runs",
+    "provider substitution beyond this probe"
+  ],
+  "max_probe_calls": 4,
+  "hard_probe_cost_usd": 0.1,
+  "network_calls_authorized": true
+}
