@@ -1,0 +1,37 @@
+{
+  "schema_version": "aftergraph.study012.provider-matrix.v2.0",
+  "study_id": "STUDY-012",
+  "execution_id": "study012-recovery-v2-20260918",
+  "status": "FROZEN_FOR_READINESS",
+  "task_strata": [
+    {
+      "id": "M1",
+      "provider": "google",
+      "endpoint": "https://generativelanguage.googleapis.com/v1beta",
+      "model_id": "gemini-2.5-flash",
+      "credential_env": "GOOGLE_API_KEY",
+      "max_concurrency": 2,
+      "readiness_basis": "4/4 prior bounded probes live+semantic-match"
+    },
+    {
+      "id": "M2",
+      "provider": "nvidia",
+      "endpoint": "https://integrate.api.nvidia.com/v1",
+      "model_id": "nvidia/nemotron-3-ultra-550b-a55b",
+      "credential_env": "NVIDIA_API_KEY",
+      "max_concurrency": 2,
+      "readiness_basis": "3/4 prior bounded probes live+semantic-match; one retryable HTTP 503"
+    }
+  ],
+  "judge": {
+    "provider": "nvidia",
+    "endpoint": "https://integrate.api.nvidia.com/v1",
+    "model_id": "nvidia/nemotron-3-super-120b-a12b",
+    "credential_env": "NVIDIA_API_KEY",
+    "max_concurrency_shared_with_task": 2,
+    "canonical_verified_allowed": false,
+    "readiness_basis": "4/4 prior bounded probes live+semantic-match"
+  },
+  "final_readiness_probe_required": true,
+  "substitution_allowed": false
+}
