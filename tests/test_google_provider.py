@@ -20,3 +20,43 @@ def test_google_network_failure_never_claims_live(monkeypatch):
     r=p.generate("hello")
     assert r.is_live is False
     assert "secret" not in str(r.raw_response)
+
+def test_google_25_flash_disables_thinking_for_bounded_canary(monkeypatch):
+    import json
+    import providers.google as g
+    captured={}
+    class Resp:
+        def __enter__(self): return self
+        def __exit__(self,*a): pass
+        def read(self):
+            return json.dumps({
+              "candidates":[{"content":{"parts":[{"text":"AFTERGRAPH_CANARY_OK"}]}}],
+              "usageMetadata":{"promptTokenCount":1,"candidatesTokenCount":1,"totalTokenCount":2}
+            }).encode()
+    def fake(req,timeout=0):
+        captured["payload"]=json.loads(req.data.decode())
+        return Resp()
+    monkeypatch.setattr(g.request,"urlopen",fake)
+    p=GoogleProvider(api_key="secret")
+    r=p.generate("hello",model="gemini-2.5-flash",max_tokens=32,temperature=0.0)
+    assert captured["payload"]["generationConfig"]["thinkingConfig"]["thinkingBudget"]==0
+    assert r.content=="AFTERGRAPH_CANARY_OK"
+    assert r.is_live is True
+
+def test_google_parser_excludes_thought_parts(monkeypatch):
+    import json
+    import providers.google as g
+    class Resp:
+        def __enter__(self): return self
+        def __exit__(self,*a): pass
+        def read(self):
+            return json.dumps({
+              "candidates":[{"content":{"parts":[
+                {"text":"internal summary","thought":True},
+                {"text":"AFTERGRAPH_CANARY_OK"}
+              ]}}],
+              "usageMetadata":{"promptTokenCount":1,"thoughtsTokenCount":4,"candidatesTokenCount":1,"totalTokenCount":6}
+            }).encode()
+    monkeypatch.setattr(g.request,"urlopen",lambda *a,**k:Resp())
+    r=GoogleProvider(api_key="secret").generate("hello",model="gemini-2.5-flash")
+    assert r.content=="AFTERGRAPH_CANARY_OK"
