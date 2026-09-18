@@ -1,0 +1,42 @@
+{
+  "counters": {
+    "applicable_adversarial_classes": 8,
+    "covered_adversarial_classes": 8,
+    "deterministically_verified_claims": 720,
+    "falsification_attempts": 0,
+    "independently_verified_claims": 240,
+    "judge_only_verified_claims": 0,
+    "replication_attempts": 0,
+    "replication_successes": 0,
+    "reproducible_counterexamples": 0,
+    "research_progress_events": 0,
+    "verifiable_claims": 720,
+    "verified_claims": 720
+  },
+  "population": "960 frozen recovery-v4 observations; J comparator excluded from verifiable_claims denominator",
+  "provenance": {
+    "evidence_refs": [
+      "sha256:7530a46da7faa935448f207dd3a276e751a4cc8b38d48585d29764b184fe71bd",
+      "sha256:f1e4ff0a92333072ad958b564ea112e7b3d140fee71049a1869e0209e96011bc"
+    ],
+    "generated_at": "2026-09-18T20:35:25.688285Z",
+    "source_commit": "0ce31cb4c9b9ad125db9e3ddfd314618aa930bee",
+    "verifier_refs": [
+      "sentinel:domain-verifier"
+    ]
+  },
+  "receipt_id": "rmr_study012_v4_7530a46da7faa935",
+  "resources": {
+    "cost_usd": 0.0,
+    "human_interventions": 0,
+    "tokens": null,
+    "wall_clock_seconds": 1379.88
+  },
+  "run_set_ref": "study012-recovery-v4-20260918",
+  "schema_version": "aftergraph.research.metrics.v0.1",
+  "study_id": "STUDY-012",
+  "window": {
+    "end": "2026-09-18T20:35:25.688285Z",
+    "start": "2026-09-18T20:12:29.833195Z"
+  }
+}
