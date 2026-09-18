@@ -10,6 +10,7 @@ FILES=[
 "data/study012_workload_manifest.json",
 "data/study012_r2_extension_v01.json",
 "data/study012_provider_model_matrix.json",
+"data/study012_provider_readiness_20260918.json",
 "src/study012_oracles.py",
 "experiments/live_benchmark/run_study_012.py",
 "experiments/live_benchmark/study012_analyze.py",
@@ -33,8 +34,7 @@ def build():
  }
 def verify(manifest):
  expected=build()
- if manifest["files"]!=expected["files"]: return False
- return manifest["execution_gate"]["network_calls_authorized"] is False
+ return manifest.get("files")==expected["files"] and manifest.get("execution_gate",{}).get("network_calls_authorized") is False
 if __name__=="__main__":
  out=ROOT/"data/study012_freeze_manifest_v02.json"
  out.write_text(json.dumps(build(),indent=2,sort_keys=True)+"\n",encoding="utf-8")
