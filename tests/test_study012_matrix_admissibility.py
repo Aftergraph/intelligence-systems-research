@@ -12,11 +12,11 @@ def test_matrix_plan_is_exact_balanced_and_deterministic():
     assert len({x["trace_id"] for x in a})==960
     assert all(x["result_partition"].startswith("full-matrix/") for x in a)
 
-def test_admissibility_has_only_real_external_verifier_transport_blocker():
+def test_full_matrix_is_technically_admissible_before_owner_gate():
     r=evaluate()
-    assert r["decision"]=="NOT_ADMISSIBLE"
+    assert r["decision"]=="READY_FOR_OWNER_APPROVAL"
     assert r["network_calls_performed"]==0
-    assert r["reasons"]==["sentinel_transport_not_bound"]
+    assert r["reasons"]==[]
     assert r["incomplete_extension_workloads"]==[]
     assert r["retry_policy"]["max_total_api_calls"]==2880
     assert r["hard_cost_stop_usd"]==4.0
