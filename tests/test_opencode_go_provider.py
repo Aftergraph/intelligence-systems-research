@@ -13,3 +13,20 @@ def test_opencode_go_truthful_success(monkeypatch):
  monkeypatch.setattr(m.request,"urlopen",lambda *a,**k:Resp())
  r=OpenCodeGoProvider(api_key="x").generate("p",model="deepseek-v4-flash")
  assert r.is_live and r.content=="OPENCODE_GO_READY_OK" and r.total_tokens==2
+
+def test_opencode_go_sends_stable_session_header(monkeypatch):
+ import providers.opencode_go as m
+ captured={}
+ class Resp:
+  def __enter__(self): return self
+  def __exit__(self,*a): pass
+  def read(self): return json.dumps({"choices":[{"message":{"content":"OK"}}],"usage":{"prompt_tokens":1,"completion_tokens":1,"total_tokens":2}}).encode()
+ def fake(req,timeout=0):
+  captured["session"]=req.get_header("X-opencode-session")
+  captured["ua"]=req.get_header("User-agent")
+  return Resp()
+ monkeypatch.setattr(m.request,"urlopen",fake)
+ r=OpenCodeGoProvider(api_key="x",session_id="study012-session").generate("p")
+ assert r.is_live is True
+ assert captured["session"]=="study012-session"
+ assert captured["ua"]=="aftergraph-study012-agent/1.0"
