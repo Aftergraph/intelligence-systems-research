@@ -18,8 +18,14 @@ def provider_error_snapshot(exc:Exception, secret:str|None=None)->dict[str,Any]:
         out["http_status"]=int(exc.code)
         out["reason"]=_clean_text(exc.reason,secret)
         headers={}
+        available={}
+        if exc.headers:
+            try:
+                available={str(k).lower():v for k,v in exc.headers.items()}
+            except Exception:
+                available={}
         for name in SAFE_HEADERS:
-            v=exc.headers.get(name) if exc.headers else None
+            v=available.get(name)
             if v is not None: headers[name]=_clean_text(v,secret,200)
         if headers: out["headers"]=headers
         try:
