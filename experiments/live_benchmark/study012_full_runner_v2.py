@@ -15,6 +15,7 @@ from experiments.live_benchmark.study012_evaluators import deterministic_exact,p
 from experiments.live_benchmark.study012_sentinel_adapter import verify_checkout,verify_research_envelope
 from providers.google import GoogleProvider
 from providers.nvidia import NvidiaProvider
+from scripts.study012_recovery_freeze import verify as verify_recovery_freeze
 
 ROOT=Path(__file__).resolve().parents[2]
 EXECUTION_ID="study012-recovery-v2-20260918"
@@ -159,6 +160,15 @@ def read_rows(path):
 
 def preflight(sentinel_dir:Path):
  reasons=[]
+ freeze_path=ROOT/"data/study012_recovery_freeze_manifest_v1.json"
+ if not freeze_path.exists():
+  reasons.append("recovery_freeze_missing")
+ else:
+  try:
+   freeze=json.loads(freeze_path.read_text(encoding="utf-8"))
+   if not verify_recovery_freeze(freeze):reasons.append("recovery_freeze_drift")
+  except Exception:
+   reasons.append("recovery_freeze_invalid")
  readiness=json.loads((ROOT/"data/study012_recovery_v2_readiness_20260918.json").read_text(encoding="utf-8"))
  approval=json.loads((ROOT/"data/study012_owner_approval_recovery_v2_full_20260918.json").read_text(encoding="utf-8"))
  matrix=json.loads((ROOT/"data/study012_provider_model_matrix_v2.json").read_text(encoding="utf-8"))
