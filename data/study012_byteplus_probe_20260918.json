@@ -1,0 +1,149 @@
+{
+  "model_id": "seed-2-0-lite-260428",
+  "rows": [
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "02178975698918139debe34dc0faea573b1e9db2da7e27b10b720"
+        },
+        "http_status": 404,
+        "provider_code": "ModelNotOpen",
+        "provider_message": "Your account 3003861605 has not activated the model seed-2-0-lite-260428. Please activate the model service in the Ark Console. Request id: 02178975698918139debe34dc0faea573b1e9db2da7e27b10b720",
+        "reason": "Not Found"
+      },
+      "index": 1,
+      "is_live": false,
+      "latency_ms": 1413.5401248931885,
+      "phase": "sequential",
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "0217897569898400c64a0471125ddcff16fb536859661783d45c7"
+        },
+        "http_status": 404,
+        "provider_code": "ModelNotOpen",
+        "provider_message": "Your account 3003861605 has not activated the model seed-2-0-lite-260428. Please activate the model service in the Ark Console. Request id: 0217897569898400c64a0471125ddcff16fb536859661783d45c7",
+        "reason": "Not Found"
+      },
+      "index": 1,
+      "is_live": false,
+      "latency_ms": 668.7009334564209,
+      "phase": "burst3",
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "0217897569898504e5823ec317b6ea9d3f5e181cf6332a5afeb11"
+        },
+        "http_status": 404,
+        "provider_code": "ModelNotOpen",
+        "provider_message": "Your account 3003861605 has not activated the model seed-2-0-lite-260428. Please activate the model service in the Ark Console. Request id: 0217897569898504e5823ec317b6ea9d3f5e181cf6332a5afeb11",
+        "reason": "Not Found"
+      },
+      "index": 2,
+      "is_live": false,
+      "latency_ms": 667.6955223083496,
+      "phase": "burst3",
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "0217897569898268eaaf0e0958579087d97c57451756d0079285f"
+        },
+        "http_status": 404,
+        "provider_code": "ModelNotOpen",
+        "provider_message": "Your account 3003861605 has not activated the model seed-2-0-lite-260428. Please activate the model service in the Ark Console. Request id: 0217897569898268eaaf0e0958579087d97c57451756d0079285f",
+        "reason": "Not Found"
+      },
+      "index": 3,
+      "is_live": false,
+      "latency_ms": 635.2183818817139,
+      "phase": "burst3",
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    }
+  ],
+  "schema_version": "aftergraph.study012.byteplus-probe.v0.1",
+  "summary": {
+    "calls": 4,
+    "failures": [
+      {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "02178975698918139debe34dc0faea573b1e9db2da7e27b10b720"
+        },
+        "http_status": 404,
+        "provider_code": "ModelNotOpen",
+        "provider_message": "Your account 3003861605 has not activated the model seed-2-0-lite-260428. Please activate the model service in the Ark Console. Request id: 02178975698918139debe34dc0faea573b1e9db2da7e27b10b720",
+        "reason": "Not Found"
+      },
+      {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "0217897569898400c64a0471125ddcff16fb536859661783d45c7"
+        },
+        "http_status": 404,
+        "provider_code": "ModelNotOpen",
+        "provider_message": "Your account 3003861605 has not activated the model seed-2-0-lite-260428. Please activate the model service in the Ark Console. Request id: 0217897569898400c64a0471125ddcff16fb536859661783d45c7",
+        "reason": "Not Found"
+      },
+      {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "0217897569898504e5823ec317b6ea9d3f5e181cf6332a5afeb11"
+        },
+        "http_status": 404,
+        "provider_code": "ModelNotOpen",
+        "provider_message": "Your account 3003861605 has not activated the model seed-2-0-lite-260428. Please activate the model service in the Ark Console. Request id: 0217897569898504e5823ec317b6ea9d3f5e181cf6332a5afeb11",
+        "reason": "Not Found"
+      },
+      {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "0217897569898268eaaf0e0958579087d97c57451756d0079285f"
+        },
+        "http_status": 404,
+        "provider_code": "ModelNotOpen",
+        "provider_message": "Your account 3003861605 has not activated the model seed-2-0-lite-260428. Please activate the model service in the Ark Console. Request id: 0217897569898268eaaf0e0958579087d97c57451756d0079285f",
+        "reason": "Not Found"
+      }
+    ],
+    "live": 0,
+    "semantic_match": 0
+  }
+}
