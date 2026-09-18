@@ -2,8 +2,8 @@
   "execution_gate": {
     "hard_cost_stop_usd": 4,
     "max_total_model_calls": 2880,
-    "network_calls_authorized": false,
-    "owner_status": "NOT_GRANTED",
+    "network_calls_authorized": true,
+    "owner_status": "GRANTED",
     "provider_substitution_allowed": false,
     "readiness_calls": 9,
     "readiness_decision": "READY"
@@ -14,7 +14,7 @@
     "data/study012_novita_sandbox_fabric_v01.json": "2d5909c440eeda3e04b04adb3156a6635527c09ee6f88f10dd65d1e73872be0f",
     "data/study012_novita_sandbox_resume_proof_20260918.json": "9d3352ce7a91e839adc45f0cfd839123ca9dfc618f3f7f7405f9259748ccfcab",
     "data/study012_ollama_local_binding_v01.json": "df5b80ea967fb1d302298b89802c3e9bf87b2c5e6ccabe84ebc115260ef24800",
-    "data/study012_owner_approval_recovery_v4_full_20260918.json": "c07ce8be8866aa3cf53d828ad1b45302565c364a2a96891276c55c68b0d6f25f",
+    "data/study012_owner_approval_recovery_v4_full_20260918.json": "cf02fc90a84bb0a8cf1dc0c564ad1dd0f8ca060ac26218815d81dba48c1a51f3",
     "data/study012_owner_approval_recovery_v4_readiness_20260918.json": "0a2cdc8f105e2e986dbcd8f91182aebfc72d11670bf7db4951cc0c04cf12475e",
     "data/study012_provider_model_matrix_v4.json": "a806977b6f3b46866bd1222c69e1321969649b8cdd6aee856dde5470d1afe043",
     "data/study012_r2_extension_v03.json": "b063e568baceefef2f87100c3856a7d9a769b3f6fcfe049c9df023137790936b",
