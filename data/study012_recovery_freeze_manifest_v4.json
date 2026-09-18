@@ -33,13 +33,13 @@
     "tests/test_direct_recovery_providers.py": "faf7218870532619e1ef4253b519c1d04f942a1285c07bcdc01dfd1ad3bd9743",
     "tests/test_ollama_local_provider.py": "222230fb0b6aa10bf728909f55ebffb3330570b1ee8a52e6f0b2533e8eb7635e",
     "tests/test_study012_evaluators.py": "43bac4786e17490dfdb20d289a9328954af610e71f6c3385739d39dcf027c0f4",
-    "tests/test_study012_full_runner_v4.py": "ce4eb3bbaa2df45a62efc7fbd3c02bd360bf787022d3b4b408ba13d60bfafe2e",
+    "tests/test_study012_full_runner_v4.py": "bc709ee75c227acb9165261428e94c1c7f2e73b2ad9b0e4282e7140fe784d158",
     "tests/test_study012_matrix_plan_v4.py": "bd1b2aaa1a5a987284e8ce8b1ba863b6491f47f463eb920d9f998690db2b34f3",
     "tests/test_study012_recovery_v4.py": "dff390411cddb257e23211a873af19190195be9c1bcc2609f3a21d67e76b6af9",
     "tests/test_study012_sentinel_adapter.py": "5e84e84d938d837082491b09803e50473593ca553f0c8221507b154dc6d8f379"
   },
   "pooling_with_prior_runs": false,
   "schema_version": "aftergraph.study012.recovery-freeze.v4",
-  "status": "FROZEN_PENDING_EXPLICIT_OWNER_GRANT",
+  "status": "FROZEN_AUTHORIZED_FOR_EXACT_V4_EXECUTION",
   "study_id": "STUDY-012"
 }
