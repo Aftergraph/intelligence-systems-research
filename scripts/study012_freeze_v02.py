@@ -36,6 +36,10 @@ FILES=[
 "data/study012_runs/canary-20260918/openrouter/receipts.jsonl",
 "data/study012_runs/canary-20260918/google/receipts.jsonl",
 "data/study012_owner_approval_20260918.json",
+"tests/test_study012_google_retry_audit.py",
+"data/study012_runs/canary-google-retry-20260918/GOOGLE-RETRY-AUDIT.json",
+"data/study012_runs/canary-google-retry-20260918/receipts.jsonl",
+"data/study012_owner_approval_google_retry_20260918.json",
 ]
 def sha256(path: Path)->str: return hashlib.sha256(path.read_bytes()).hexdigest()
 def build():
