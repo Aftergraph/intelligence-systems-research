@@ -1,0 +1,42 @@
+{
+  "schema_version": "aftergraph.study012.provider-matrix.v4.0",
+  "study_id": "STUDY-012",
+  "execution_id": "study012-recovery-v4-20260918",
+  "status": "FROZEN_FOR_READINESS",
+  "task_strata": [
+    {
+      "id": "M1",
+      "provider": "ollama-local",
+      "endpoint": "http://127.0.0.1:11434/api/chat",
+      "model_id": "qwen3.6:latest",
+      "think": false,
+      "temperature": 0,
+      "max_concurrency": 2,
+      "external_billing": false
+    },
+    {
+      "id": "M2",
+      "provider": "nvidia",
+      "endpoint": "https://integrate.api.nvidia.com/v1",
+      "model_id": "nvidia/nemotron-3-ultra-550b-a55b",
+      "temperature": 0,
+      "max_concurrency": 2
+    }
+  ],
+  "judge": {
+    "provider": "nvidia",
+    "model_id": "nvidia/nemotron-3-super-120b-a12b",
+    "role": "observational_judge",
+    "canonical_verified_allowed": false
+  },
+  "checkpoint_fabric": {
+    "provider": "novita-sandbox",
+    "sdk_version": "2.1.1",
+    "resume_proof": "data/study012_novita_sandbox_resume_proof_20260918.json"
+  },
+  "provider_independence_basis": [
+    "local Lenovo Ollama runtime/model",
+    "NVIDIA hosted direct API"
+  ],
+  "substitution_allowed": false
+}
