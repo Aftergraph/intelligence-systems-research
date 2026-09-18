@@ -1,17 +1,55 @@
 {
-  "schema_version": "aftergraph.study012.matrix.v0.1",
+  "schema_version": "aftergraph.study012.matrix.v0.2",
   "study_id": "STUDY-012",
-  "status": "FROZEN_FOR_REVIEW",
+  "status": "PARTIALLY_FROZEN_EXECUTION_BLOCKED",
+  "checked_at": "2026-09-18",
   "model_strata": [
     {
       "id": "M1",
-      "provider": "TBD_DIRECT_OR_APPROVED_GATEWAY",
-      "model": "TBD_FROZEN_BEFORE_EXECUTION"
+      "provider": "openrouter",
+      "endpoint": "https://openrouter.ai/api/v1",
+      "auth_env_var": "OPENROUTER_API_KEY",
+      "credential_present": true,
+      "catalog_http_status": 200,
+      "catalog_count_observed": 445,
+      "models": [
+        {
+          "exact_model_id": "google/gemma-4-31b-it",
+          "catalog_present": true
+        },
+        {
+          "exact_model_id": "z-ai/glm-5.2",
+          "catalog_present": true
+        }
+      ],
+      "readiness": "READY_FOR_FREEZE"
     },
     {
       "id": "M2",
-      "provider": "TBD_INDEPENDENT_STRATUM",
-      "model": "TBD_FROZEN_BEFORE_EXECUTION"
+      "provider": "dialagram",
+      "endpoint": "https://dialagram.me/router/v1",
+      "auth_env_vars": [
+        "DIALAGRAM_API_KEY",
+        "HERMES_CUSTOM_DIALAGRAM_ME_API_KEY",
+        "NEXUM_API_KEY"
+      ],
+      "credential_present": true,
+      "catalog_http_status": 402,
+      "models": [
+        {
+          "exact_model_id": "qwen-3.8-max",
+          "catalog_present": "UNVERIFIED_CURRENTLY"
+        },
+        {
+          "exact_model_id": "deepseek-v4",
+          "catalog_present": "UNVERIFIED_CURRENTLY"
+        },
+        {
+          "exact_model_id": "xiaomi-mimo-2.5",
+          "catalog_present": "UNVERIFIED_CURRENTLY"
+        }
+      ],
+      "readiness": "BLOCKED_PROVIDER_402"
     }
   ],
   "conditions": [
@@ -20,6 +58,6 @@
     "JD",
     "DI"
   ],
-  "execution_gate": "BLOCKED_UNTIL_PROVIDER_MODEL_IDS_AND_CREDENTIAL_READINESS_ARE_FROZEN",
-  "note": "No silent substitution; provider/model results remain stratified."
+  "execution_gate": "BLOCKED_UNTIL_ALL_PROVIDER_STRATA_READY_AND_OWNER_APPROVAL_GRANTED",
+  "note": "No secrets stored. Catalog checks are metadata-only and did not execute study/model inference."
 }
