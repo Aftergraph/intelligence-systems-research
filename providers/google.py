@@ -5,6 +5,7 @@ from urllib import request, error
 from typing import Any, Dict, List, Optional
 
 from providers.base import ModelProvider, ModelMetadata, ProviderResponse
+from providers.http_failure import provider_error_snapshot
 
 GOOGLE_BASE_URL = "https://generativelanguage.googleapis.com/v1beta"
 GOOGLE_MODELS = {
@@ -133,9 +134,7 @@ class GoogleProvider(ModelProvider):
                 raw_response=data,
             )
         except Exception as exc:
-            clean = str(exc)
-            if self.api_key and self.api_key in clean:
-                clean = clean.replace(self.api_key, "[REDACTED_API_KEY]")
+            failure = provider_error_snapshot(exc, self.api_key)
             return ProviderResponse(
                 content="",
                 prompt_tokens=0,
@@ -146,5 +145,5 @@ class GoogleProvider(ModelProvider):
                 provider="google",
                 model_id=model_id,
                 is_live=False,
-                raw_response={"error": clean},
+                raw_response={"failure": failure},
             )
