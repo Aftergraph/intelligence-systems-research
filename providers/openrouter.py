@@ -4,6 +4,7 @@ import time
 from urllib import request
 from typing import Any, Dict, List, Optional
 from providers.base import ModelProvider, ModelMetadata, ProviderResponse
+from providers.http_failure import provider_error_snapshot
 
 OPENROUTER_BASE_URL="https://openrouter.ai/api/v1"
 OPENROUTER_MODELS={
@@ -53,9 +54,8 @@ class OpenRouterProvider(ModelProvider):
             self.operational_status="LIVE_VERIFIED"
             return ProviderResponse(content=content,tool_calls=msg.get("tool_calls") or [],prompt_tokens=pt,completion_tokens=ct,total_tokens=int(usage.get("total_tokens") or pt+ct),cost_usd=float(usage.get("cost") or 0.0),latency_ms=(time.time()-t0)*1000,provider="openrouter",model_id=model_id,is_live=True,raw_response=data)
         except Exception as exc:
-            clean=str(exc)
-            if self.api_key and self.api_key in clean: clean=clean.replace(self.api_key,"[REDACTED_API_KEY]")
-            return ProviderResponse(content="",prompt_tokens=0,completion_tokens=0,total_tokens=0,cost_usd=0.0,latency_ms=(time.time()-t0)*1000,provider="openrouter",model_id=model_id,is_live=False,raw_response={"error":clean})
+            failure=provider_error_snapshot(exc,self.api_key)
+            return ProviderResponse(content="",prompt_tokens=0,completion_tokens=0,total_tokens=0,cost_usd=0.0,latency_ms=(time.time()-t0)*1000,provider="openrouter",model_id=model_id,is_live=False,raw_response={"failure":failure})
 
 class LocalProvider(ModelProvider):
     def __init__(self,endpoint:str="http://localhost:11434"):
