@@ -26,6 +26,7 @@ FILES=[
 "tests/test_study012_full_runner.py",
 "experiments/live_benchmark/study012_full_runner.py",
 "data/study012_owner_approval_full_matrix_20260918.json",
+"data/study012_execution_incident_001.json",
 "data/study012_r2_extension_v03.json",
 "STUDY-012-AMENDMENT-004-EIGHT-CLASS-FIXTURES.md",
 "data/study012_workload_manifest.json",
