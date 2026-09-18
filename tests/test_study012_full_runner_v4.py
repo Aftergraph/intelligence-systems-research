@@ -16,10 +16,11 @@ def test_v4_resume_accounting_counts_prior_attempts_and_costs():
  assert calls==4
  assert cost==0.0
 
-def test_v4_preflight_is_blocked_before_explicit_owner_grant(tmp_path):
+def test_v4_preflight_still_fails_closed_on_invalid_sentinel_or_missing_credential(tmp_path):
  (tmp_path/"bin").mkdir()
  (tmp_path/"bin"/"sentinel-research-verify.js").write_text("")
  r=preflight(tmp_path)
  assert r["decision"]=="BLOCKED"
  assert r["network_calls_performed"]==0
- assert "owner_approval_not_granted" in r["reasons"]
+ assert "sentinel_git_head_unavailable" in r["reasons"]
+ assert "owner_approval_not_granted" not in r["reasons"]
