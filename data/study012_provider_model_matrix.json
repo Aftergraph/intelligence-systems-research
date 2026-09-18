@@ -1,8 +1,12 @@
 {
-  "schema_version": "aftergraph.study012.matrix.v0.2",
+  "schema_version": "aftergraph.study012.matrix.v0.3",
   "study_id": "STUDY-012",
-  "status": "PARTIALLY_FROZEN_EXECUTION_BLOCKED",
+  "status": "PROVIDER_STRATA_FROZEN_FOR_REVIEW_EXECUTION_BLOCKED",
   "checked_at": "2026-09-18",
+  "amendments": [
+    "001",
+    "002"
+  ],
   "model_strata": [
     {
       "id": "M1",
@@ -22,34 +26,43 @@
           "catalog_present": true
         }
       ],
-      "readiness": "READY_FOR_FREEZE"
+      "readiness": "READY"
     },
     {
       "id": "M2",
-      "provider": "dialagram",
-      "endpoint": "https://dialagram.me/router/v1",
-      "auth_env_vars": [
-        "DIALAGRAM_API_KEY",
-        "HERMES_CUSTOM_DIALAGRAM_ME_API_KEY",
-        "NEXUM_API_KEY"
-      ],
+      "provider": "google",
+      "endpoint": "https://generativelanguage.googleapis.com/v1beta",
+      "auth_env_var": "GOOGLE_API_KEY",
       "credential_present": true,
-      "catalog_http_status": 402,
+      "catalog_http_status": 200,
+      "catalog_count_observed": 50,
       "models": [
         {
-          "exact_model_id": "qwen-3.8-max",
-          "catalog_present": "UNVERIFIED_CURRENTLY"
-        },
-        {
-          "exact_model_id": "deepseek-v4",
-          "catalog_present": "UNVERIFIED_CURRENTLY"
-        },
-        {
-          "exact_model_id": "xiaomi-mimo-2.5",
-          "catalog_present": "UNVERIFIED_CURRENTLY"
+          "exact_model_id": "gemini-2.5-flash",
+          "catalog_present": true
         }
       ],
-      "readiness": "BLOCKED_PROVIDER_402"
+      "readiness": "READY"
+    }
+  ],
+  "rejected_or_deferred_strata": [
+    {
+      "provider": "dialagram",
+      "credential_present": true,
+      "catalog_http_status": 402,
+      "reason": "provider catalog/account readiness blocked"
+    },
+    {
+      "provider": "openai",
+      "credential_present": true,
+      "catalog_http_status": 401,
+      "reason": "credential rejected at metadata endpoint"
+    },
+    {
+      "provider": "anthropic",
+      "credential_present": true,
+      "catalog_http_status": 401,
+      "reason": "credential rejected at metadata endpoint"
     }
   ],
   "conditions": [
@@ -58,6 +71,6 @@
     "JD",
     "DI"
   ],
-  "execution_gate": "BLOCKED_UNTIL_ALL_PROVIDER_STRATA_READY_AND_OWNER_APPROVAL_GRANTED",
-  "note": "No secrets stored. Catalog checks are metadata-only and did not execute study/model inference."
+  "execution_gate": "BLOCKED_UNTIL_OWNER_APPROVAL_GRANTED_AND_FREEZE_REPIN_VERIFIED",
+  "note": "No secrets stored. Metadata checks only; no study inference. No silent substitution."
 }
