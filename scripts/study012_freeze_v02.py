@@ -7,28 +7,32 @@ FILES=[
 "STUDY-012-GROUNDED-VERIFICATION-TRACE-PREREGISTRATION.md",
 "STUDY-012-SAMPLE-POWER-FREEZE.md",
 "STUDY-012-AMENDMENT-001-R2-TRACE-EXTENSION.md",
+"STUDY-012-AMENDMENT-002-PROVIDER-STRATUM.md",
 "data/study012_workload_manifest.json",
 "data/study012_r2_extension_v01.json",
 "data/study012_provider_model_matrix.json",
 "data/study012_provider_readiness_20260918.json",
+"providers/google.py",
+"providers/stratum_resolver.py",
 "src/study012_oracles.py",
 "experiments/live_benchmark/run_study_012.py",
 "experiments/live_benchmark/study012_analyze.py",
 "tests/test_study012_preregistration.py",
 "tests/test_study012_oracles.py",
 "tests/test_study012_harness.py",
+"tests/test_study012_provider_strata.py",
+"tests/test_google_provider.py",
 ]
-def sha256(path: Path)->str:
- return hashlib.sha256(path.read_bytes()).hexdigest()
+def sha256(path: Path)->str: return hashlib.sha256(path.read_bytes()).hexdigest()
 def build():
  return {
-  "schema_version":"aftergraph.study012.freeze.v0.2",
+  "schema_version":"aftergraph.study012.freeze.v0.3",
   "study_id":"STUDY-012",
-  "status":"REVIEW_FROZEN_EXECUTION_BLOCKED",
+  "status":"PROVIDER_FROZEN_EXECUTION_BLOCKED_OWNER_GATE",
   "files":{p:sha256(ROOT/p) for p in FILES},
   "execution_gate":{
     "network_calls_authorized":False,
-    "provider_model_matrix_ready":False,
+    "provider_model_matrix_ready":True,
     "owner_approval_required":True
   }
  }
