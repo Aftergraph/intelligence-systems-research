@@ -1,0 +1,50 @@
+{
+  "schema_version": "aftergraph.study012.execution-manifest.v1",
+  "study_id": "STUDY-012",
+  "execution_id": "study012-live-v1-pending-owner",
+  "status": "FROZEN_EXECUTION_PACKAGE_OWNER_BLOCKED",
+  "source_commit": "fbb754af1f1212508897b508e62ce8acea9ef2c3",
+  "owner_approval_ref": null,
+  "conditions": [
+    "J",
+    "D",
+    "JD",
+    "DI"
+  ],
+  "provider_strata": [
+    "openrouter",
+    "google"
+  ],
+  "artifacts": {
+    "experiments/live_benchmark/study012_execution.py": "4b24e52de41e195353c1c825032846c55df80396ab892f72e57d95aede962185",
+    "experiments/live_benchmark/study012_preflight.py": "8618a2a56776c9ab92398b9c9e04634a220233abfe579069caa4d0571992d967",
+    "experiments/live_benchmark/run_study_012.py": "42a132b8ffdf76e5fb8fd55ee51609506bc349c9bb7f7b59b3eac65ea0053a92",
+    "experiments/live_benchmark/study012_analyze.py": "94f8f329a8322c622ffb0109d4961d805ce35ed406ce145a4d2234c81a6f7ecd",
+    "providers/stratum_resolver.py": "ec40f6b702148307f86fb10d814f3b85cdff4eaceb29d90e92181a308a974d4c",
+    "providers/google.py": "b8d771bfd78873981c019504b2982d02139f1f7273a25b0dedba034702262735",
+    "data/study012_provider_model_matrix.json": "46dbe31273b9a4a413bb0e470dbcb724be77847c0d6826c42da1dd0d291fe746",
+    "data/study012_freeze_manifest_v02.json": "f7cbb7cf2e0f2935b8162865fa487aa527aec09861643c1238e4c9bff4c0c479"
+  },
+  "receipt_journal": {
+    "format": "JSONL",
+    "append_only": true,
+    "required_fields": [
+      "run_id",
+      "trace_id",
+      "condition",
+      "provider",
+      "model_id",
+      "execution_class",
+      "request_hash",
+      "response_hash",
+      "is_live"
+    ],
+    "hash": "sha256(canonical receipt JSON before receipt_hash)"
+  },
+  "checkpoint": {
+    "format": "JSONL",
+    "resume_key": "trace_id",
+    "binds_receipt_hash": true
+  },
+  "network_calls_authorized": false
+}
