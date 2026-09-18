@@ -1,0 +1,23 @@
+{
+  "schema_version": "aftergraph.study012.owner-approval.v0.1",
+  "study_id": "STUDY-012",
+  "approved_at": "2026-09-18",
+  "approval_ref": "OWNER-RECOVERY-V2-READINESS-20260918-CHAT-RUN",
+  "scope": "RECOVERY_V2_READINESS_ONLY",
+  "authorized_actions": [
+    "3 bounded Google Direct gemini-2.5-flash readiness calls",
+    "3 bounded NVIDIA Direct nvidia/nemotron-3-ultra-550b-a55b readiness calls",
+    "3 bounded NVIDIA Direct nvidia/nemotron-3-super-120b-a12b judge readiness calls",
+    "capture sanitized failure provenance"
+  ],
+  "explicitly_not_authorized": [
+    "full recovery-v2 matrix execution before readiness passes",
+    "PR merge",
+    "provider/model substitution",
+    "pooling v1 and v2"
+  ],
+  "max_probe_calls": 9,
+  "hard_probe_cost_usd": 0.1,
+  "network_calls_authorized": true,
+  "revocation": "expires after exactly 9 readiness calls"
+}
