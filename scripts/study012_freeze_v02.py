@@ -32,6 +32,7 @@ FILES=[
 "data/study012_execution_manifest_v1.json",
 "tests/test_study012_canary_audit.py",
 "data/study012_runs/canary-20260918/CANARY-AUDIT.json",
+"data/study012_runs/canary-20260918/GOOGLE-DIAGNOSIS.json",
 "data/study012_runs/canary-20260918/openrouter/receipts.jsonl",
 "data/study012_runs/canary-20260918/google/receipts.jsonl",
 "data/study012_owner_approval_20260918.json",
