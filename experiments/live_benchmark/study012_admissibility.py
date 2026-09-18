@@ -7,50 +7,51 @@ ROOT=Path(__file__).resolve().parents[2]
 
 def evaluate():
     reasons=[]
-    parent=json.loads((ROOT/"data/study012_workload_manifest.json").read_text(encoding="utf-8"))
-    ext=json.loads((ROOT/"data/study012_r2_extension_v01.json").read_text(encoding="utf-8"))
-    matrix=json.loads((ROOT/"data/study012_provider_model_matrix.json").read_text(encoding="utf-8"))
+    ext=json.loads((ROOT/"data/study012_r2_extension_v02.json").read_text(encoding="utf-8"))
+    bindings=json.loads((ROOT/"data/study012_evaluator_bindings_v01.json").read_text(encoding="utf-8"))
+    budget=json.loads((ROOT/"data/study012_execution_budget_v01.json").read_text(encoding="utf-8"))
 
-    # Parent frozen workloads are evidence-rich; amendment workloads must reach same bar.
-    required_ext={"id","r2_class","oracle","prompt","fixture_hashes","acceptance_criteria_hash"}
+    required_ext={"id","r2_class","oracle","prompt","fixture_hashes","acceptance_criteria_hash","response_contract"}
     incomplete=[]
     for w in ext.get("workloads",[]):
         missing=sorted(required_ext-set(w))
         if missing: incomplete.append({"id":w.get("id"),"missing":missing})
     if incomplete: reasons.append("r2_extension_workloads_not_execution_complete")
 
-    # Provider allocation is deterministic and balanced.
-    plan=allocation()
-    s=summary(plan)
+    plan=allocation(); s=summary(plan)
     if s["observations"] != 960: reasons.append("matrix_size_not_960")
     if s["by_provider"] != {"openrouter":480,"google":480}: reasons.append("provider_allocation_not_balanced")
+    if len({x["trace_id"] for x in plan}) != 960: reasons.append("trace_ids_not_unique")
 
-    # Conditions need executable bindings, not names alone.
-    condition_bindings={
-      "J": None,
-      "D": "src.study012_oracles",
-      "JD": None,
-      "DI": None,
-    }
-    if any(v is None for v in condition_bindings.values()):
-        reasons.append("condition_evaluator_bindings_incomplete")
+    cond=bindings.get("conditions",{})
+    for name in ("J","D","JD","DI"):
+        if name not in cond: reasons.append(f"condition_binding_missing:{name}")
+    if cond.get("J",{}).get("canonical_verified_allowed") is not False:
+        reasons.append("judge_only_not_fail_closed")
+    if cond.get("JD",{}).get("canonical_authority")!="deterministic_oracle":
+        reasons.append("jd_canonical_authority_not_deterministic")
+    if cond.get("DI",{}).get("independent_receipt_required") is not True:
+        reasons.append("di_independent_receipt_not_required")
 
-    # Retry/attempt ceiling must be preregistered before paid/live matrix execution.
-    attempt_ceiling=None
-    if attempt_ceiling is None: reasons.append("attempt_ceiling_not_frozen")
+    retry=budget.get("retry_policy",{})
+    if retry.get("max_attempts_per_api_call") != 2 or retry.get("max_total_api_calls") != 2880:
+        reasons.append("attempt_ceiling_not_frozen")
+    cap=budget.get("hard_cost_stop_usd")
+    if not isinstance(cap,(int,float)) or cap<=0:
+        reasons.append("cost_cap_not_frozen")
 
-    # Cost cap must be an explicit owner-controlled execution bound.
-    cost_cap_usd=None
-    if cost_cap_usd is None: reasons.append("cost_cap_not_frozen")
+    # Remaining implementation boundary: actual Sentinel transport/receipt ingestion
+    # must be bound before DI can run live. A string identifier alone is not enough.
+    reasons.append("sentinel_transport_not_bound")
 
     return {
       "decision":"READY_FOR_OWNER_APPROVAL" if not reasons else "NOT_ADMISSIBLE",
       "reasons":reasons,
       "matrix":s,
       "incomplete_extension_workloads":incomplete,
-      "condition_bindings":condition_bindings,
-      "attempt_ceiling":attempt_ceiling,
-      "cost_cap_usd":cost_cap_usd,
+      "condition_bindings":cond,
+      "retry_policy":retry,
+      "hard_cost_stop_usd":cap,
       "network_calls_performed":0,
     }
 
