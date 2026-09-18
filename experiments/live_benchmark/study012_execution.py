@@ -46,8 +46,10 @@ class ReceiptJournal:
         missing=sorted(required-set(receipt))
         if missing:
             raise ValueError(f"receipt_missing_fields:{','.join(missing)}")
-        if receipt["execution_class"] != "LIVE_VALID" and receipt["is_live"] is True:
+        if receipt["execution_class"] in {"DRY_RUN","SIMULATED","LIVE_PROVIDER_FAILURE"} and receipt["is_live"] is True:
             raise ValueError("non_live_execution_cannot_claim_is_live")
+        if receipt["execution_class"] in {"LIVE_VALID","LIVE_SEMANTIC_FAILURE"} and receipt["is_live"] is not True:
+            raise ValueError("live_execution_class_requires_is_live")
         payload=dict(receipt)
         payload["receipt_hash"]=sha256_obj(receipt)
         self.path.parent.mkdir(parents=True, exist_ok=True)
