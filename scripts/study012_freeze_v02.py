@@ -30,6 +30,11 @@ FILES=[
 "experiments/live_benchmark/study012_preflight.py",
 "tests/test_study012_execution_package.py",
 "data/study012_execution_manifest_v1.json",
+"tests/test_study012_canary_audit.py",
+"data/study012_runs/canary-20260918/CANARY-AUDIT.json",
+"data/study012_runs/canary-20260918/openrouter/receipts.jsonl",
+"data/study012_runs/canary-20260918/google/receipts.jsonl",
+"data/study012_owner_approval_20260918.json",
 ]
 def sha256(path: Path)->str: return hashlib.sha256(path.read_bytes()).hexdigest()
 def build():
