@@ -1,0 +1,24 @@
+{
+  "execution_gate": {
+    "network_calls_authorized": false,
+    "owner_approval_required": true,
+    "provider_model_matrix_ready": false
+  },
+  "files": {
+    "STUDY-012-AMENDMENT-001-R2-TRACE-EXTENSION.md": "d5d0fa4832127ea54ce28f5e98643d4d6fc7f5cf341b19b3c801dd07a17da15c",
+    "STUDY-012-GROUNDED-VERIFICATION-TRACE-PREREGISTRATION.md": "8a28b9649da78ca2c89635f5110f0260eeb3c88bf3f1d3a0429c0ee8c6940ae9",
+    "STUDY-012-SAMPLE-POWER-FREEZE.md": "e2453c1994b90871c8c053e2764e622f95507c20ee1fd95a142bfae0b4f6ca68",
+    "data/study012_provider_model_matrix.json": "1746cc9b31b917d94bd84269077cb689a1ef8a6ee2119d2544e98346b670baa0",
+    "data/study012_r2_extension_v01.json": "6f5c340dbfbdb5b38f75b90b984778dc0f9150705444c64c32313215ecc8179c",
+    "data/study012_workload_manifest.json": "dab942d177847705385fcd18a27fec00091abfb89efdacbe8307680e39f1d218",
+    "experiments/live_benchmark/run_study_012.py": "42a132b8ffdf76e5fb8fd55ee51609506bc349c9bb7f7b59b3eac65ea0053a92",
+    "experiments/live_benchmark/study012_analyze.py": "94f8f329a8322c622ffb0109d4961d805ce35ed406ce145a4d2234c81a6f7ecd",
+    "src/study012_oracles.py": "8233fab3cf20b557d2bb3c2c8f34e05f06a8edd70f60a98f2162ca1ed39968a0",
+    "tests/test_study012_harness.py": "978aacf1da620567bd8bcc1e6cd3e94d81d8cbb19077a74eed137595a136e649",
+    "tests/test_study012_oracles.py": "3bde2892eebda0728eade70d36e77cb5b232281af27102786e3b21f51a6294a3",
+    "tests/test_study012_preregistration.py": "b685f86ee95a25c92210e539bac02af0d329ba73bcbe502de8af82d389dbd22e"
+  },
+  "schema_version": "aftergraph.study012.freeze.v0.2",
+  "status": "REVIEW_FROZEN_EXECUTION_BLOCKED",
+  "study_id": "STUDY-012"
+}
