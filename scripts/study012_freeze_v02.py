@@ -22,6 +22,10 @@ FILES=[
 "tests/test_study012_harness.py",
 "tests/test_study012_provider_strata.py",
 "tests/test_google_provider.py",
+"experiments/live_benchmark/study012_execution.py",
+"experiments/live_benchmark/study012_preflight.py",
+"tests/test_study012_execution_package.py",
+"data/study012_execution_manifest_v1.json",
 ]
 def sha256(path: Path)->str: return hashlib.sha256(path.read_bytes()).hexdigest()
 def build():
