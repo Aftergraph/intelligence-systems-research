@@ -12,6 +12,8 @@ NVIDIA_MODELS={
  "nvidia/nemotron-3-ultra-550b-a55b":ModelMetadata(provider="nvidia",model_id="nvidia/nemotron-3-ultra-550b-a55b",context_window=1_000_000,supports_tools=True,supports_reasoning=True,availability="ACTIVE",operational_status="LIVE_CAPABLE_UNVERIFIED",source="nvidia_live_catalog"),
  "nvidia/nemotron-3-super-120b-a12b":ModelMetadata(provider="nvidia",model_id="nvidia/nemotron-3-super-120b-a12b",context_window=1_000_000,supports_tools=True,supports_reasoning=True,availability="ACTIVE",operational_status="LIVE_CAPABLE_UNVERIFIED",source="nvidia_live_catalog"),
  "z-ai/glm-5.3":ModelMetadata(provider="nvidia",model_id="z-ai/glm-5.3",context_window=262144,supports_tools=True,supports_reasoning=True,availability="ACTIVE",operational_status="LIVE_CAPABLE_UNVERIFIED",source="nvidia_live_catalog"),
+ "mistralai/mistral-7b-instruct-v0.3":ModelMetadata(provider="nvidia",model_id="mistralai/mistral-7b-instruct-v0.3",context_window=32768,supports_tools=False,supports_reasoning=False,availability="ACTIVE",operational_status="LIVE_CAPABLE_UNVERIFIED",source="nvidia_live_catalog"),
+ "google/gemma-3-4b-it":ModelMetadata(provider="nvidia",model_id="google/gemma-3-4b-it",context_window=128000,supports_tools=False,supports_reasoning=False,availability="ACTIVE",operational_status="LIVE_CAPABLE_UNVERIFIED",source="nvidia_live_catalog"),
 }
 class NvidiaProvider(ModelProvider):
  def __init__(self,api_key:Optional[str]=None,base_url:str=NVIDIA_BASE_URL):
