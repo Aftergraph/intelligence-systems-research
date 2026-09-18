@@ -92,6 +92,9 @@ class GoogleProvider(ModelProvider):
             "generationConfig": {
                 "temperature": temperature,
                 "maxOutputTokens": max_tokens,
+                "thinkingConfig": {
+                    "thinkingBudget": 0 if model_id == "gemini-2.5-flash" else -1
+                },
             },
         }
         if system_prompt:
@@ -108,7 +111,11 @@ class GoogleProvider(ModelProvider):
                 data = json.loads(resp.read().decode("utf-8"))
             candidates = data.get("candidates", [])
             parts = candidates[0].get("content", {}).get("parts", []) if candidates else []
-            content = "".join(p.get("text", "") for p in parts if isinstance(p, dict))
+            content = "".join(
+                p.get("text", "")
+                for p in parts
+                if isinstance(p, dict) and not p.get("thought", False)
+            )
             usage = data.get("usageMetadata", {})
             prompt_tokens = int(usage.get("promptTokenCount", 0) or 0)
             completion_tokens = int(usage.get("candidatesTokenCount", 0) or 0)
