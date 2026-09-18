@@ -5,6 +5,7 @@ and a pinned Sentinel checkout. No provider/model substitution is permitted.
 """
 from __future__ import annotations
 import argparse, hashlib, json, os, threading, time
+from datetime import datetime, timezone
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any
@@ -99,7 +100,7 @@ def sentinel_envelope(row:dict[str,Any],workload:dict[str,Any],response_text:str
         "traceId":row["trace_id"],"workloadId":workload["id"],"condition":row["condition"],
         "executorRef":"runtime:study012-full-runner","missionId":"research:"+row["trace_id"],
       },
-      "evidence":{"body":body,"digestSha256":canonical_hash(body),"observedAt":"2026-09-18T18:00:00Z"},
+      "evidence":{"body":body,"digestSha256":canonical_hash(body),"observedAt":datetime.now(timezone.utc).isoformat().replace("+00:00","Z")},
       "criterion":{**criterion,"acceptanceCriteriaHash":canonical_hash(criterion)},
     }
 
