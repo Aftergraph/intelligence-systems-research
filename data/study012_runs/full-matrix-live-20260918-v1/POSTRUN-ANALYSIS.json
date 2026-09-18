@@ -1,0 +1,29 @@
+{
+  "classes_with_zero_live_valid": [
+    "adversarial_evidence",
+    "crash_recovery",
+    "replay"
+  ],
+  "d_live_n": 52,
+  "d_verified_n": 52,
+  "di_live_n": 47,
+  "di_receipt_present_n": 47,
+  "di_sentinel_verified_n": 47,
+  "jd_both_live_n": 48,
+  "jd_disagreement_n": 40,
+  "jd_pairs": {
+    "ABSTAIN|VERIFIED": 40,
+    "VERIFIED|VERIFIED": 8
+  },
+  "judge_only_live_evaluable_n": 53,
+  "judge_only_verdicts": {
+    "ABSTAIN": 48,
+    "VERIFIED": 5
+  },
+  "live_valid_rate": 0.23125,
+  "n_live_valid": 222,
+  "n_provider_failure": 738,
+  "n_total": 960,
+  "raw_sha256": "9e712249555180fcc32fb22c0a0b99298d09e7dda114f92b97d2e6de3ce08411",
+  "status": "EMPIRICAL_RUN_COMPLETED_BUT_CONFIRMATORY_INFERENCE_BLOCKED_BY_PROVIDER_FAILURES"
+}
