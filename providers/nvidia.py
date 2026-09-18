@@ -11,6 +11,7 @@ NVIDIA_BASE_URL="https://integrate.api.nvidia.com/v1"
 NVIDIA_MODELS={
  "nvidia/nemotron-3-ultra-550b-a55b":ModelMetadata(provider="nvidia",model_id="nvidia/nemotron-3-ultra-550b-a55b",context_window=1_000_000,supports_tools=True,supports_reasoning=True,availability="ACTIVE",operational_status="LIVE_CAPABLE_UNVERIFIED",source="nvidia_live_catalog"),
  "nvidia/nemotron-3-super-120b-a12b":ModelMetadata(provider="nvidia",model_id="nvidia/nemotron-3-super-120b-a12b",context_window=1_000_000,supports_tools=True,supports_reasoning=True,availability="ACTIVE",operational_status="LIVE_CAPABLE_UNVERIFIED",source="nvidia_live_catalog"),
+ "z-ai/glm-5.3":ModelMetadata(provider="nvidia",model_id="z-ai/glm-5.3",context_window=262144,supports_tools=True,supports_reasoning=True,availability="ACTIVE",operational_status="LIVE_CAPABLE_UNVERIFIED",source="nvidia_live_catalog"),
 }
 class NvidiaProvider(ModelProvider):
  def __init__(self,api_key:Optional[str]=None,base_url:str=NVIDIA_BASE_URL):
@@ -25,7 +26,9 @@ class NvidiaProvider(ModelProvider):
   messages=[]
   if system_prompt: messages.append({"role":"system","content":system_prompt})
   messages.append({"role":"user","content":prompt})
-  payload={"model":model_id,"messages":messages,"max_tokens":max_tokens,"temperature":temperature,"extra_body":{"chat_template_kwargs":{"enable_thinking":False}}}
+  payload={"model":model_id,"messages":messages,"max_tokens":max_tokens,"temperature":temperature,"stream":False}
+  if model_id=="nvidia/nemotron-3-ultra-550b-a55b":
+   payload["reasoning_effort"]="none"
   if tools: payload["tools"]=tools
   req=request.Request(f"{self.base_url}/chat/completions",data=json.dumps(payload).encode(),headers={"Authorization":f"Bearer {self.api_key}","Content-Type":"application/json","User-Agent":"Aftergraph-Provider/1.0"},method="POST")
   try:
