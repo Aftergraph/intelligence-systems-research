@@ -1,0 +1,24 @@
+{
+  "schema_version": "aftergraph.study012.owner-approval.v0.1",
+  "study_id": "STUDY-012",
+  "approved_at": "2026-09-18",
+  "approval_ref": "OWNER-PROVIDER-FORENSICS-20260918-CHAT-RUN",
+  "scope": "PROVIDER_FAILURE_FORENSICS_ONLY",
+  "authorized_actions": [
+    "up to 12 bounded inference-readiness probe calls total",
+    "Google Direct gemini-2.5-flash probe",
+    "OpenRouter google/gemma-4-31b-it probe",
+    "OpenRouter z-ai/glm-5.2 judge probe",
+    "capture sanitized HTTP status and retry/rate-limit metadata"
+  ],
+  "explicitly_not_authorized": [
+    "960-observation rerun",
+    "PR merge",
+    "provider substitution",
+    "fixture or hypothesis mutation"
+  ],
+  "max_probe_calls": 12,
+  "hard_probe_cost_usd": 0.1,
+  "network_calls_authorized": true,
+  "revocation": "expires after 12 probe calls or forensic conclusion"
+}

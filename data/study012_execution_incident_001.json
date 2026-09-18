@@ -1,0 +1,28 @@
+{
+  "schema_version": "aftergraph.study012.execution-incident.v0.1",
+  "study_id": "STUDY-012",
+  "incident_id": "S12-INC-001",
+  "date": "2026-09-18",
+  "classification": "PRE_EXECUTION_HARNESS_FALSIFICATION",
+  "summary": "The first full-runner preflight invocation omitted a preflight-only mode and entered the 960-row loop while provider credentials were absent from the process environment.",
+  "observed": {
+    "rows_written": 960,
+    "runner_api_call_counter": 1920,
+    "live_provider_failures": 960,
+    "canonical_unestablished": 240,
+    "canonical_blocked": 720,
+    "reported_cost_usd": 0
+  },
+  "evidence_interpretation": {
+    "actual_live_inference_established": false,
+    "reason": "Provider adapters return is_live=false without credentials; no successful live response was recorded.",
+    "scientific_admissibility": "INVALID_NOT_AN_OBSERVATION_SET"
+  },
+  "corrective_actions": [
+    "add --preflight-only mode",
+    "require OPENROUTER_API_KEY and GOOGLE_API_KEY/GEMINI_API_KEY in preflight",
+    "do not reuse invalid rows for resume",
+    "use a fresh execution directory for the authorized live matrix"
+  ],
+  "historical_rows_must_not_be_pooled": true
+}

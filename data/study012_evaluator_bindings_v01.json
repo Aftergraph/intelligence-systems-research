@@ -1,0 +1,33 @@
+{
+  "schema_version": "aftergraph.study012.evaluator-bindings.v0.1",
+  "study_id": "STUDY-012",
+  "status": "FROZEN_FOR_REVIEW",
+  "conditions": {
+    "J": {
+      "task_evaluation": "llm_judge_only_comparator",
+      "judge_provider": "openrouter",
+      "judge_model": "z-ai/glm-5.2",
+      "canonical_verified_allowed": false
+    },
+    "D": {
+      "task_evaluation": "deterministic_oracle",
+      "oracle_module": "src.study012_oracles",
+      "canonical_verified_allowed": true
+    },
+    "JD": {
+      "task_evaluation": "judge_plus_deterministic_oracle",
+      "judge_provider": "openrouter",
+      "judge_model": "z-ai/glm-5.2",
+      "canonical_authority": "deterministic_oracle",
+      "canonical_verified_allowed": true
+    },
+    "DI": {
+      "task_evaluation": "deterministic_oracle_plus_independent_verifier",
+      "oracle_module": "src.study012_oracles",
+      "independent_verifier": "sentinel:domain-verifier",
+      "independent_receipt_required": true,
+      "canonical_verified_allowed": true
+    }
+  },
+  "invariant": "J judge verdict is observational only; it can never solely produce canonical VERIFIED."
+}

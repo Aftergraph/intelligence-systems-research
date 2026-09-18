@@ -1,0 +1,108 @@
+{
+  "backend": "groq",
+  "gateway": "huggingface",
+  "model_id": "openai/gpt-oss-120b:groq",
+  "rows": [
+    {
+      "backend": "groq",
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "Root=1-6aad8b49-2a07e0b5168da8a9542d88b4"
+        },
+        "http_status": 401,
+        "reason": "Unauthorized"
+      },
+      "gateway": "huggingface",
+      "index": 1,
+      "is_live": false,
+      "latency_ms": 276.22461318969727,
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "backend": "groq",
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "Root=1-6aad8b49-49c85ae86be3259f760370ee"
+        },
+        "http_status": 401,
+        "reason": "Unauthorized"
+      },
+      "gateway": "huggingface",
+      "index": 2,
+      "is_live": false,
+      "latency_ms": 175.5385398864746,
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "backend": "groq",
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "Root=1-6aad8b49-34d927b26f0678723d8db718"
+        },
+        "http_status": 401,
+        "reason": "Unauthorized"
+      },
+      "gateway": "huggingface",
+      "index": 3,
+      "is_live": false,
+      "latency_ms": 175.40764808654785,
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    }
+  ],
+  "schema_version": "aftergraph.study012.hf-groq-probe.v0.1",
+  "summary": {
+    "calls": 3,
+    "failures": [
+      {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "Root=1-6aad8b49-2a07e0b5168da8a9542d88b4"
+        },
+        "http_status": 401,
+        "reason": "Unauthorized"
+      },
+      {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "Root=1-6aad8b49-49c85ae86be3259f760370ee"
+        },
+        "http_status": 401,
+        "reason": "Unauthorized"
+      },
+      {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "Root=1-6aad8b49-34d927b26f0678723d8db718"
+        },
+        "http_status": 401,
+        "reason": "Unauthorized"
+      }
+    ],
+    "live": 0,
+    "semantic_match": 0
+  }
+}

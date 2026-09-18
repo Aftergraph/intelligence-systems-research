@@ -1,0 +1,56 @@
+{
+  "schema_version": "aftergraph.study012.provider-readiness.v0.2",
+  "study_id": "STUDY-012",
+  "checked_at": "2026-09-18",
+  "method": "credential presence + metadata catalog GET only; no inference requests",
+  "providers": [
+    {
+      "provider": "openrouter",
+      "credential_present": true,
+      "http_status": 200,
+      "catalog_count": 445,
+      "requested_models": {
+        "google/gemma-4-31b-it": true,
+        "z-ai/glm-5.2": true
+      },
+      "verdict": "READY"
+    },
+    {
+      "provider": "google",
+      "credential_present": true,
+      "http_status": 200,
+      "catalog_count": 50,
+      "requested_models": {
+        "gemini-2.5-flash": true
+      },
+      "verdict": "READY"
+    },
+    {
+      "provider": "dialagram",
+      "credential_present": true,
+      "http_status": 402,
+      "verdict": "BLOCKED"
+    },
+    {
+      "provider": "openai",
+      "credential_present": true,
+      "http_status": 401,
+      "verdict": "BLOCKED"
+    },
+    {
+      "provider": "anthropic",
+      "credential_present": true,
+      "http_status": 401,
+      "verdict": "BLOCKED"
+    }
+  ],
+  "selected_strata": [
+    "openrouter",
+    "google"
+  ],
+  "provider_independence_basis": "distinct provider identities and distinct API endpoints; Google stratum uses direct Gemini API rather than OpenRouter gateway",
+  "overall": "READY_FOR_OWNER_GATE",
+  "blockers": [
+    "owner_approval_not_granted"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "additional_calls_after_stop": 0,
+  "by_provider": {
+    "google": {
+      "failure_signatures": {
+        "HTTP_ERROR:429:429": 31
+      },
+      "live_valid": 6,
+      "n": 37,
+      "provider_failures": 31
+    },
+    "nvidia": {
+      "failure_signatures": {},
+      "live_valid": 33,
+      "n": 33,
+      "provider_failures": 0
+    }
+  },
+  "classification": "RECOVERY_V2_PROVIDER_QUOTA_STOP",
+  "date": "2026-09-18",
+  "execution_id": "study012-recovery-v2-20260918",
+  "incident_id": "S12-INC-002",
+  "pooling_with_v1": false,
+  "raw_observations_sha256": "6bbbc310db6b4e7b35c2a55fcca1d96c1511e87439e365d671c92e930596f6d4",
+  "resume_rule": "May resume only with identical frozen v2 provider/model/contracts and restored quota. Any provider substitution requires a new execution_id and amendment.",
+  "rows_written": 70,
+  "schema_version": "aftergraph.study012.execution-incident.v0.1",
+  "scientific_admissibility": "PARTIAL_EXECUTION_NOT_CONFIRMATORY",
+  "stop_reason": "Google Gemini Developer API free-tier generate_content request quota exhausted (HTTP 429); run stopped fail-closed before further invalid rows accumulated.",
+  "study_id": "STUDY-012",
+  "unique_trace_ids": 70
+}

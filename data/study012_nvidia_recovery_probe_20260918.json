@@ -1,0 +1,188 @@
+{
+  "rows": [
+    {
+      "completion_tokens": 5,
+      "content_sha256": "223653b6dcfd9ed31cf15a6941c8b146a0adebf991bf2bd1a3a79021e4e3ed25",
+      "cost_usd": 0.0,
+      "failure": null,
+      "index": 1,
+      "is_live": true,
+      "latency_ms": 1926.6085624694824,
+      "model_id": "nvidia/nemotron-3-ultra-550b-a55b",
+      "phase": "sequential",
+      "prompt_tokens": 27,
+      "semantic_match": true,
+      "total_tokens": 32
+    },
+    {
+      "completion_tokens": 5,
+      "content_sha256": "223653b6dcfd9ed31cf15a6941c8b146a0adebf991bf2bd1a3a79021e4e3ed25",
+      "cost_usd": 0.0,
+      "failure": null,
+      "index": 1,
+      "is_live": true,
+      "latency_ms": 16972.05638885498,
+      "model_id": "nvidia/nemotron-3-ultra-550b-a55b",
+      "phase": "burst3",
+      "prompt_tokens": 27,
+      "semantic_match": true,
+      "total_tokens": 32
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 503,
+        "provider_code": 503,
+        "provider_message": "Service temporarily overloaded",
+        "reason": "Service Unavailable"
+      },
+      "index": 2,
+      "is_live": false,
+      "latency_ms": 419.5222854614258,
+      "model_id": "nvidia/nemotron-3-ultra-550b-a55b",
+      "phase": "burst3",
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "completion_tokens": 5,
+      "content_sha256": "223653b6dcfd9ed31cf15a6941c8b146a0adebf991bf2bd1a3a79021e4e3ed25",
+      "cost_usd": 0.0,
+      "failure": null,
+      "index": 3,
+      "is_live": true,
+      "latency_ms": 1611.1254692077637,
+      "model_id": "nvidia/nemotron-3-ultra-550b-a55b",
+      "phase": "burst3",
+      "prompt_tokens": 27,
+      "semantic_match": true,
+      "total_tokens": 32
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "TIMEOUT",
+        "exception_type": "TimeoutError",
+        "reason": "timeout"
+      },
+      "index": 1,
+      "is_live": false,
+      "latency_ms": 60100.97694396973,
+      "model_id": "z-ai/glm-5.3",
+      "phase": "sequential",
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "TIMEOUT",
+        "exception_type": "TimeoutError",
+        "reason": "timeout"
+      },
+      "index": 1,
+      "is_live": false,
+      "latency_ms": 60112.781047821045,
+      "model_id": "z-ai/glm-5.3",
+      "phase": "burst3",
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "TIMEOUT",
+        "exception_type": "TimeoutError",
+        "reason": "timeout"
+      },
+      "index": 2,
+      "is_live": false,
+      "latency_ms": 60111.24801635742,
+      "model_id": "z-ai/glm-5.3",
+      "phase": "burst3",
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "TIMEOUT",
+        "exception_type": "TimeoutError",
+        "reason": "timeout"
+      },
+      "index": 3,
+      "is_live": false,
+      "latency_ms": 60094.84076499939,
+      "model_id": "z-ai/glm-5.3",
+      "phase": "burst3",
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    }
+  ],
+  "schema_version": "aftergraph.study012.nvidia-recovery-probe.v0.1",
+  "summary": {
+    "nvidia/nemotron-3-ultra-550b-a55b": {
+      "burst_live": 2,
+      "calls": 4,
+      "failures": [
+        {
+          "category": "HTTP_ERROR",
+          "exception_type": "HTTPError",
+          "http_status": 503,
+          "provider_code": 503,
+          "provider_message": "Service temporarily overloaded",
+          "reason": "Service Unavailable"
+        }
+      ],
+      "live": 3,
+      "semantic_match": 3,
+      "sequential_live": 1
+    },
+    "z-ai/glm-5.3": {
+      "burst_live": 0,
+      "calls": 4,
+      "failures": [
+        {
+          "category": "TIMEOUT",
+          "exception_type": "TimeoutError",
+          "reason": "timeout"
+        },
+        {
+          "category": "TIMEOUT",
+          "exception_type": "TimeoutError",
+          "reason": "timeout"
+        },
+        {
+          "category": "TIMEOUT",
+          "exception_type": "TimeoutError",
+          "reason": "timeout"
+        },
+        {
+          "category": "TIMEOUT",
+          "exception_type": "TimeoutError",
+          "reason": "timeout"
+        }
+      ],
+      "live": 0,
+      "semantic_match": 0,
+      "sequential_live": 0
+    }
+  }
+}

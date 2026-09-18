@@ -1,0 +1,25 @@
+{
+  "schema_version": "aftergraph.study012.owner-approval.v0.1",
+  "study_id": "STUDY-012",
+  "approved_at": "2026-09-18",
+  "approval_ref": "OWNER-FULL-MATRIX-20260918-CHAT-CONTINUE",
+  "scope": "FULL_FROZEN_MATRIX_ONLY",
+  "authorized_actions": [
+    "execute exactly the frozen 960-observation STUDY-012 matrix",
+    "use frozen OpenRouter and Google Direct strata only",
+    "perform frozen J/D/JD/DI evaluation including pinned Sentinel subprocess verifier",
+    "retry failed API calls within max 2 attempts per API call",
+    "stop before cumulative estimated/provider-reported cost exceeds USD 4.00"
+  ],
+  "explicitly_not_authorized": [
+    "PR merge",
+    "provider/model substitution",
+    "hypothesis mutation",
+    "fixture mutation after first observation",
+    "cost cap increase"
+  ],
+  "hard_cost_stop_usd": 4,
+  "max_total_api_calls": 2880,
+  "network_calls_authorized": true,
+  "revocation": "expires when matrix completes, hard-stop triggers, or execution contract is violated"
+}

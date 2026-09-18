@@ -1,0 +1,33 @@
+{
+  "schema_version": "aftergraph.study012.claim-disposition.v0.1",
+  "study_id": "STUDY-012",
+  "execution_id": "study012-full-matrix-20260918",
+  "raw_observations_sha256": "9e712249555180fcc32fb22c0a0b99298d09e7dda114f92b97d2e6de3ce08411",
+  "confirmatory_status": "NOT_ESTABLISHED_PROVIDER_AVAILABILITY_CONFOUND",
+  "hypotheses": {
+    "H1_grounding": {
+      "status": "UNKNOWN",
+      "reason": "confirmatory matrix coverage incomplete due non-uniform provider failures"
+    },
+    "H2_judge_disagreement": {
+      "status": "DESCRIPTIVE_ONLY",
+      "evidence": "40/48 live JD pairs were ABSTAIN|VERIFIED; no confirmatory promotion"
+    },
+    "H3_trace_robustness": {
+      "status": "UNKNOWN",
+      "reason": "3/8 R2 classes had zero LIVE_VALID observations"
+    },
+    "H4_independence": {
+      "status": "DESCRIPTIVE_ONLY",
+      "evidence": "47/47 live DI observations carried Sentinel VERIFIED receipts"
+    }
+  },
+  "prohibited_interpretations": [
+    "treat provider failures as task failures",
+    "impute missing R2 cells",
+    "pool S12-INC-001 invalid rows",
+    "claim 960 live-valid observations",
+    "promote descriptive subset findings to confirmatory support"
+  ],
+  "next_execution_requires_new_owner_approval": true
+}

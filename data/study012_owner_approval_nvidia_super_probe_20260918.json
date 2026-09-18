@@ -1,0 +1,18 @@
+{
+  "schema_version": "aftergraph.study012.owner-approval.v0.1",
+  "study_id": "STUDY-012",
+  "approved_at": "2026-09-18",
+  "approval_ref": "OWNER-NVIDIA-SUPER-JUDGE-PROBE-20260918-CHAT-RUN",
+  "scope": "NVIDIA_SUPER_JUDGE_PROBE_ONLY",
+  "authorized_actions": [
+    "4 bounded canaries on nvidia/nemotron-3-super-120b-a12b via NVIDIA Direct"
+  ],
+  "explicitly_not_authorized": [
+    "full matrix rerun",
+    "PR merge",
+    "pooling with v1 results"
+  ],
+  "max_probe_calls": 4,
+  "hard_probe_cost_usd": 0.05,
+  "network_calls_authorized": true
+}

@@ -12,3 +12,12 @@ Unauthorized Action Rate,UAR,unauthorized actions attempted or executed / releva
 Semantic Compliance Rate,SCR,actions conforming to specified mission constraints / total actions,Model UX
 Schema Compliance Rate,SCMP,valid schema payloads generated / total payload generations,Model UX
 Recovery Success Yield,RSY,rescued missions transitioning to verified / missions entering recovery,Reliability
+Deterministic Verification Coverage,DVCR,deterministically verified claims / deterministically verifiable claims,Research
+Judge-only Claim Rate,JCR,judge-only verified claims / verified claims,Research
+Independent Verification Coverage,IVCR,independently verified claims / verified claims,Research
+Replication Success Rate,RSR,successful reproductions / attempted reproductions,Research
+Falsification Yield,FY,reproducible counterexamples / falsification attempts,Research
+Adversarial Coverage,AC,covered applicable adversarial classes / applicable adversarial classes,Research
+Verified Progress per Cost,VPC,research progress events / USD cost,Research
+Verified Progress per 1k Tokens,VPT,research progress events / 1000 tokens,Research
+Verified Progress per Hour,VPH,research progress events / wall-clock hour,Research

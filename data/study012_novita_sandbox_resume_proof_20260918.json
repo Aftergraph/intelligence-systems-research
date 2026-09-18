@@ -1,0 +1,11 @@
+{
+  "complete": true,
+  "different_sandboxes": true,
+  "phase1_checkpoint_rows": 5,
+  "phase1_sandbox_id": "ikpobf08w0hik1459s7og",
+  "phase2_checkpoint_rows": 12,
+  "phase2_sandbox_id": "ix7veywthltbhto8p93qt",
+  "plan_rows": 12,
+  "schema_version": "aftergraph.study012.sandbox-resume-proof.v0.1",
+  "unique_trace_ids": 12
+}

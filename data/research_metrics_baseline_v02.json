@@ -1,0 +1,29 @@
+{
+  "schema_version": "aftergraph.research.metrics.v0.1",
+  "receipt_id": "baseline-protocol-v02-20260918",
+  "study_id": "PROTOCOL-V0.2-ENGINEERING-BASELINE",
+  "run_set_ref": "tests/test_research_protocol_v02.py@4f380b0e091dd6e02217a8c029bd9ca8e2fb1a94",
+  "population": "Protocol v0.2 contract tests on exact branch head; engineering baseline only, not an empirical research claim.",
+  "window": {"start":"2026-09-18T10:00:00Z","end":"2026-09-18T10:30:00Z"},
+  "counters": {
+    "verifiable_claims": 0,
+    "deterministically_verified_claims": 0,
+    "verified_claims": 0,
+    "judge_only_verified_claims": 0,
+    "independently_verified_claims": 0,
+    "replication_attempts": 0,
+    "replication_successes": 0,
+    "falsification_attempts": 0,
+    "reproducible_counterexamples": 0,
+    "applicable_adversarial_classes": 0,
+    "covered_adversarial_classes": 0,
+    "research_progress_events": 0
+  },
+  "resources": {"tokens":null,"wall_clock_seconds":0.16,"cost_usd":null,"human_interventions":null},
+  "provenance": {
+    "source_commit":"4f380b0e091dd6e02217a8c029bd9ca8e2fb1a94",
+    "evidence_refs":["focused-suite:5-passed-0-failed","full-suite:958-passed-10-skipped-2-preexisting-failures"],
+    "verifier_refs":["pytest"],
+    "generated_at":"2026-09-18T10:30:00Z"
+  }
+}

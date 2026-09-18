@@ -1,0 +1,35 @@
+{
+  "schema_version": "aftergraph.study012.execution-budget.v0.1",
+  "study_id": "STUDY-012",
+  "status": "FROZEN_FOR_REVIEW_NOT_SPEND_AUTHORIZATION",
+  "nominal_observations": 960,
+  "nominal_task_api_calls": 960,
+  "nominal_judge_api_calls": 480,
+  "retry_policy": {
+    "max_attempts_per_api_call": 2,
+    "max_total_api_calls": 2880,
+    "retries_do_not_create_new_observations": true
+  },
+  "token_ceiling_per_call": {
+    "input_tokens": 2000,
+    "output_tokens": 256
+  },
+  "pricing_snapshot_2026_09_18": {
+    "openrouter_gemma_4_31b": {
+      "input_usd_per_million": 0.09,
+      "output_usd_per_million": 0.34
+    },
+    "google_gemini_2_5_flash_paid": {
+      "input_usd_per_million": 0.3,
+      "output_usd_per_million": 2.5
+    },
+    "openrouter_glm_5_2_judge": {
+      "input_usd_per_million": 0.4875,
+      "output_usd_per_million": 1.56
+    }
+  },
+  "nominal_worst_case_estimate_usd": 1.39,
+  "retry_ceiling_estimate_usd": 2.78,
+  "hard_cost_stop_usd": 4,
+  "note": "Hard stop is a safety bound, not owner authorization to spend. Free-tier billing may reduce actual cost; analysis must record provider-reported cost."
+}

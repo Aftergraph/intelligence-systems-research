@@ -1,0 +1,36 @@
+{
+  "execution_id": "study012-recovery-v4-20260918",
+  "execution_source_commit": "0ce31cb4c9b9ad125db9e3ddfd314618aa930bee",
+  "files": {
+    "STUDY-012-RECOVERY-V4-POSTRUN-REPORT.md": "2ec0a54f64b63f21aae0403952c7b2c928e9426c46335648282c990fa282eb1a",
+    "data/study012_recovery_freeze_manifest_v4.json": "ae54b782cb13bf5f9335c6f498619d88718dadeeb09a21a3b9cba7a4b83283c4",
+    "data/study012_runs/recovery-v4-live-20260918/FROZEN-ANALYZER-CROSSCHECK.json": "eb35e101cce38d5e277f3cac1b6c5b49e969d1efacc1f5408e5f5859a1d42e33",
+    "data/study012_runs/recovery-v4-live-20260918/POSTRUN-ANALYSIS.json": "f84f111685d27d63127333668b469ea700a2835b727ce006a5f6d12dcb23a754",
+    "data/study012_runs/recovery-v4-live-20260918/RESEARCH-METRICS-RECEIPT.json": "145793685713f7077df3642326db3b541b1ac95ef712f952c5e723a253306060",
+    "data/study012_runs/recovery-v4-live-20260918/RUN-SUMMARY.json": "f1e4ff0a92333072ad958b564ea112e7b3d140fee71049a1869e0209e96011bc",
+    "data/study012_runs/recovery-v4-live-20260918/observations.jsonl": "7530a46da7faa935448f207dd3a276e751a4cc8b38d48585d29764b184fe71bd",
+    "experiments/live_benchmark/study012_analyze.py": "94f8f329a8322c622ffb0109d4961d805ce35ed406ce145a4d2234c81a6f7ecd",
+    "experiments/live_benchmark/study012_full_runner_v4.py": "079fb58d821253ab3a06e3e478eeaf56571ff114f38600e097f504ed15728d08",
+    "scripts/study012_postrun_v4.py": "2f01b127ebea560d0b7fb9b0142ed2bae9bb0ae9e1ec2ee7ca4518e34b3b606d",
+    "tests/test_study012_postrun_v4.py": "d3dc13a0819690c842377ad91d0d6e311b3b10c777c66c9c340b97802fd7faa4"
+  },
+  "frozen_analyzer_sha256": "94f8f329a8322c622ffb0109d4961d805ce35ed406ce145a4d2234c81a6f7ecd",
+  "raw_observations_sha256": "7530a46da7faa935448f207dd3a276e751a4cc8b38d48585d29764b184fe71bd",
+  "schema_version": "aftergraph.study012.postrun-freeze.v4",
+  "status": "CLOSED_EVIDENCE_FROZEN",
+  "study_id": "STUDY-012",
+  "summary": {
+    "confirmatory_admissibility": "PASS",
+    "hypothesis_dispositions": {
+      "H1": "SUPPORTED",
+      "H2": "WALKED_BACK",
+      "H3": "SUPPORTED",
+      "H4": "SUPPORTED"
+    },
+    "jd_disagreements": 0,
+    "observations": 960,
+    "sentinel_unique_receipts": 240,
+    "task_provider_failures": 0,
+    "unique_trace_ids": 960
+  }
+}

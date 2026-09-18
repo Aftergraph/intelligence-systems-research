@@ -1,0 +1,18 @@
+{
+  "schema_version": "aftergraph.study012.owner-approval.v0.1",
+  "study_id": "STUDY-012",
+  "approved_at": "2026-09-18",
+  "approval_ref": "OWNER-BYTEPLUS-CANARY-20260918-CHAT-NEXT",
+  "scope": "BYTEPLUS_CANARY_ONLY",
+  "authorized_actions": [
+    "4 bounded BytePlus ModelArk canaries on seed-2-0-lite-260428"
+  ],
+  "explicitly_not_authorized": [
+    "full matrix rerun",
+    "PR merge",
+    "pooling"
+  ],
+  "max_probe_calls": 4,
+  "hard_probe_cost_usd": 0.05,
+  "network_calls_authorized": true
+}

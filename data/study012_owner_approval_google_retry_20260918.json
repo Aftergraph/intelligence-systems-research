@@ -1,0 +1,19 @@
+{
+  "schema_version": "aftergraph.study012.owner-approval.v0.1",
+  "study_id": "STUDY-012",
+  "approved_at": "2026-09-18",
+  "approval_ref": "OWNER-GOOGLE-RETRY-20260918-CHAT-CONTINUE",
+  "scope": "GOOGLE_RETRY_CANARY_ONLY",
+  "authorized_actions": [
+    "one Google Direct canary inference on frozen model gemini-2.5-flash using thinkingBudget=0"
+  ],
+  "explicitly_not_authorized": [
+    "OpenRouter retry",
+    "full STUDY-012 matrix execution",
+    "PR merge",
+    "provider/model substitution",
+    "changes to frozen hypotheses or analysis"
+  ],
+  "network_calls_authorized": true,
+  "revocation": "approval expires after the single Google retry canary attempt completes"
+}
