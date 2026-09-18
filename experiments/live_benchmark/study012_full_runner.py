@@ -23,6 +23,7 @@ MAX_API_CALLS=2880
 HARD_COST_USD=4.0
 MAX_ATTEMPTS=2
 JUDGE_MODEL="z-ai/glm-5.2"
+PROVIDER_GATES={"google":threading.BoundedSemaphore(3),"openrouter":threading.BoundedSemaphore(3)}
 
 PRICE={
  ("openrouter","google/gemma-4-31b-it"):(0.09,0.34),
@@ -68,18 +69,44 @@ class Budget:
     def snapshot(self):
         with self.lock:return {"api_calls":self.api_calls,"cost_usd":round(self.cost,8)}
 
+def failure_provenance(response)->dict[str,Any]|None:
+    if not response or response.is_live: return None
+    raw=response.raw_response or {}
+    failure=raw.get("failure")
+    return failure if isinstance(failure,dict) else {"category":"UNKNOWN"}
+
+def retryable_failure(response)->bool:
+    f=failure_provenance(response) or {}
+    if f.get("category") in {"URL_ERROR","TIMEOUT"}: return True
+    return f.get("http_status") in {408,429,500,502,503,504}
+
+def retry_delay_seconds(response,attempt:int)->float:
+    f=failure_provenance(response) or {}
+    h=f.get("headers") or {}
+    try:
+        v=float(h.get("retry-after"))
+        if 0<=v<=30: return v
+    except Exception:
+        pass
+    return float(attempt)
+
 def call_model(budget:Budget,provider_name:str,model_id:str,prompt:str,max_tokens:int)->tuple[Any,float,int]:
-    last=None
+    last=None; last_cost=0.0
     for attempt in range(1,MAX_ATTEMPTS+1):
         budget.before_call()
         p=provider(provider_name)
-        r=p.generate(prompt,model=model_id,max_tokens=max_tokens,temperature=0.0,dry_run=False)
+        with PROVIDER_GATES[provider_name]:
+            r=p.generate(prompt,model=model_id,max_tokens=max_tokens,temperature=0.0,dry_run=False)
         cost=estimate_cost(provider_name,model_id,r.prompt_tokens,r.completion_tokens,r.cost_usd)
         budget.add_cost(cost)
-        last=r
+        last=r; last_cost=cost
         if r.is_live:
             return r,cost,attempt
-    return last,cost,MAX_ATTEMPTS
+        if not retryable_failure(r):
+            break
+        if attempt<MAX_ATTEMPTS:
+            time.sleep(retry_delay_seconds(r,attempt))
+    return last,last_cost,attempt
 
 def judge_prompt(workload:dict[str,Any],response_text:str)->str:
     expected=workload["response_contract"]["expected"]
@@ -119,6 +146,7 @@ def execute_one(row:dict[str,Any],workload:dict[str,Any],budget:Budget,sentinel_
         judge=parse_judge_observation(jr.content if jr and jr.is_live else "ABSTAIN")
         judge["is_live"]=bool(jr and jr.is_live)
         judge["response_hash"]=text_hash(jr.content if jr else "")
+        judge["failure_provenance"]=failure_provenance(jr)
     independent_receipt=None
     if row["condition"]=="DI" and response and response.is_live:
         sentinel=verify_research_envelope(sentinel_dir,sentinel_envelope(row,workload,response_text))
@@ -139,6 +167,7 @@ def execute_one(row:dict[str,Any],workload:dict[str,Any],budget:Budget,sentinel_
       "response_hash":text_hash(response_text),"response_text":response_text,
       "task_prompt_tokens":getattr(response,"prompt_tokens",0),"task_completion_tokens":getattr(response,"completion_tokens",0),
       "task_attempts":task_attempts,"task_cost_usd":task_cost,
+      "task_failure_provenance":failure_provenance(response),
       "deterministic":det,"judge":judge,"judge_attempts":judge_attempts,"judge_cost_usd":judge_cost,
       "sentinel":sentinel,"independent_receipt":independent_receipt,
       "canonical":canonical,"elapsed_ms":round((time.time()-started)*1000,3),
