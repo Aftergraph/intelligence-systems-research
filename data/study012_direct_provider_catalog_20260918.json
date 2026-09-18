@@ -1,0 +1,30 @@
+{
+  "schema_version": "aftergraph.study012.direct-provider-catalog.v0.1",
+  "checked_at": "2026-09-18",
+  "providers": [
+    {
+      "provider": "nvidia",
+      "endpoint": "https://integrate.api.nvidia.com/v1",
+      "credential_present": true,
+      "catalog_http_status": 200,
+      "catalog_count": 82,
+      "models": {
+        "nvidia/nemotron-3-ultra-550b-a55b": true,
+        "nvidia/nemotron-3-super-120b-a12b": true
+      }
+    },
+    {
+      "provider": "novita",
+      "endpoint": "https://api.novita.ai/openai/v1",
+      "credential_present": true,
+      "catalog_http_status": 200,
+      "catalog_count": 120,
+      "models": {
+        "zai-org/glm-5.2": true,
+        "zai-org/glm-5.3": true
+      }
+    }
+  ],
+  "method": "credential presence + metadata catalog GET only; no inference",
+  "status": "CATALOG_READY_FOR_CANARY"
+}
