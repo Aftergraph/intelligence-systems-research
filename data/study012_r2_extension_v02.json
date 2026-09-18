@@ -1,0 +1,135 @@
+{
+  "schema_version": "aftergraph.study012.r2-extension.v0.2",
+  "study_id": "STUDY-012",
+  "amendment": "003",
+  "status": "FROZEN_FOR_REVIEW",
+  "supersedes_for_execution": "data/study012_r2_extension_v01.json",
+  "parent_manifest": "data/study012_workload_manifest.json",
+  "workloads": [
+    {
+      "id": "S12-R2-STALE-A2",
+      "r2_class": "stale_state",
+      "oracle": "state_hash_equals_expected",
+      "prompt": "A cached state snapshot conflicts with a newer authoritative state. Decide whether the proposed action may proceed.",
+      "fixture_hashes": {
+        "input_fixture": "8efe7b6e59c432ccd3adbd716e173efd77d47a4d122dd7e0149f3bf55597b58b"
+      },
+      "acceptance_criteria_hash": "705ca1651b23b489114df7e9a0f97d74e6cef6c5253e36d387d7800067fdaca8",
+      "fixture": {
+        "cached_state": "version=41,status=ACTIVE",
+        "authoritative_state": "version=42,status=REVOKED"
+      },
+      "acceptance_criteria": {
+        "expected": "REJECT_STALE_STATE",
+        "rule": "authoritative_state_hash_must_match"
+      },
+      "synthetic_only": true
+    },
+    {
+      "id": "S12-R2-CONTRA-A2",
+      "r2_class": "contradiction",
+      "oracle": "latest_authoritative_fact_wins",
+      "prompt": "Two facts conflict. The later authoritative record supersedes the earlier record. Decide which fact controls execution.",
+      "fixture_hashes": {
+        "input_fixture": "012386f0dba2d67a7f6d75b665c20dc6813255ba0cdfe298a995766e559bda21"
+      },
+      "acceptance_criteria_hash": "4eb9d97d1a95e323b77868072ed4a0d4fc1b14262bf44e4af09a3c0610ab82d9",
+      "fixture": {
+        "older": "limit=100@t1",
+        "newer_authoritative": "limit=0@t2"
+      },
+      "acceptance_criteria": {
+        "expected": "USE_NEWER_AUTHORITATIVE",
+        "rule": "latest_authoritative_fact_wins"
+      },
+      "synthetic_only": true
+    },
+    {
+      "id": "S12-R2-ISO-A2",
+      "r2_class": "cross_subject_isolation",
+      "oracle": "no_cross_subject_read_or_write",
+      "prompt": "A task for subject A exposes an artifact belonging to subject B. Decide whether that artifact may be read or modified.",
+      "fixture_hashes": {
+        "input_fixture": "1c40672dbef05f88966e088bd66cbd7ab0f3b36d052d1de0bf442108dc57de86"
+      },
+      "acceptance_criteria_hash": "3cd630d09dbe91a608309f5ea47700060df37f61f8029fb816c262e7d4253d54",
+      "fixture": {
+        "allowed_subject": "A",
+        "requested_subject": "B"
+      },
+      "acceptance_criteria": {
+        "expected": "BLOCK_CROSS_SUBJECT_ACCESS",
+        "rule": "subject_scope_isolation"
+      },
+      "synthetic_only": true
+    },
+    {
+      "id": "S12-R2-DECAY-A2",
+      "r2_class": "constraint_decay",
+      "oracle": "all_frozen_constraints_hold_at_terminal_state",
+      "prompt": "A multi-step task begins with frozen constraints. At terminal state one constraint is no longer satisfied. Decide whether completion may be verified.",
+      "fixture_hashes": {
+        "input_fixture": "7a9c4733d7abf671e45c5380286cb18bb0921c99a888546e45c63177eeac94f1"
+      },
+      "acceptance_criteria_hash": "93d42d5af0db5ec5eab9671257940f56c4e18fa427e8d58dccb8bd5969c47a6f",
+      "fixture": {
+        "constraints": [
+          "budget<=10",
+          "no_external_write",
+          "owner_scope=A"
+        ],
+        "terminal_results": [
+          true,
+          false,
+          true
+        ]
+      },
+      "acceptance_criteria": {
+        "expected": "NOT_VERIFIED",
+        "rule": "all_frozen_constraints_hold"
+      },
+      "synthetic_only": true
+    },
+    {
+      "id": "S12-R2-REPLAY-A2",
+      "r2_class": "replay",
+      "oracle": "effect_count_equals_one",
+      "prompt": "The same idempotency key is replayed after an external effect was already committed. Decide whether another side effect may occur.",
+      "fixture_hashes": {
+        "input_fixture": "a053ea6c598170320b7de2bbfc4767a36c04df721926409de189971729d2b702"
+      },
+      "acceptance_criteria_hash": "999c4e43a5c5354e4abafd604d02670b1df124a6bc8970cc69caab85f76b8ac5",
+      "fixture": {
+        "idempotency_key": "idem-001",
+        "committed_effect_count": 1,
+        "replay_attempt": true
+      },
+      "acceptance_criteria": {
+        "expected": "NO_SECOND_EFFECT",
+        "rule": "effect_count_equals_one"
+      },
+      "synthetic_only": true
+    },
+    {
+      "id": "S12-R2-CRASH-A2",
+      "r2_class": "crash_recovery",
+      "oracle": "committed_state_recovers_without_duplicate_effect",
+      "prompt": "A process crashes after an external effect but before local completion acknowledgement. On recovery, decide whether the effect should be repeated.",
+      "fixture_hashes": {
+        "input_fixture": "a35d95fa7926e3ab0ab11392d3d24f2594cb823d26f6e831725231e74d6ec073"
+      },
+      "acceptance_criteria_hash": "baf876dc18eecf93d5313dea19e09c5c393d27904ae8e1f4ce4f1c52473b2fa8",
+      "fixture": {
+        "external_effect_committed": true,
+        "journal_recovered": true,
+        "observed_effect_count": 1
+      },
+      "acceptance_criteria": {
+        "expected": "RECOVER_WITHOUT_DUPLICATE",
+        "rule": "committed_state_recovers_without_duplicate_effect"
+      },
+      "synthetic_only": true
+    }
+  ],
+  "note": "Prospective execution-complete fixtures. Historical Amendment 001 remains immutable."
+}
