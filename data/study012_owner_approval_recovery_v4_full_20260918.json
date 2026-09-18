@@ -1,0 +1,16 @@
+{
+  "schema_version": "aftergraph.study012.owner-approval.v0.1",
+  "study_id": "STUDY-012",
+  "execution_id": "study012-recovery-v4-20260918",
+  "status": "NOT_GRANTED",
+  "scope": "RECOVERY_V4_FULL_FROZEN_MATRIX_ONLY",
+  "readiness_ref": "data/study012_recovery_v4_readiness_20260918.json",
+  "authorization_requirements": {
+    "explicit_owner_approval_required": true,
+    "max_total_model_calls": 2880,
+    "hard_cost_stop_usd": 4,
+    "provider_substitution_allowed": false,
+    "pooling_prior_runs_allowed": false
+  },
+  "network_calls_authorized": false
+}
