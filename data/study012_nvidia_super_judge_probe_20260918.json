@@ -1,0 +1,66 @@
+{
+  "model_id": "nvidia/nemotron-3-super-120b-a12b",
+  "rows": [
+    {
+      "completion_tokens": 4,
+      "content_sha256": "8766e017df3d4497840e53fa7594a954fd6e68b1b0bf7528045514bc774ea499",
+      "cost_usd": 0.0,
+      "failure": null,
+      "index": 1,
+      "is_live": true,
+      "latency_ms": 686.7656707763672,
+      "phase": "sequential",
+      "prompt_tokens": 26,
+      "semantic_match": true,
+      "total_tokens": 30
+    },
+    {
+      "completion_tokens": 4,
+      "content_sha256": "8766e017df3d4497840e53fa7594a954fd6e68b1b0bf7528045514bc774ea499",
+      "cost_usd": 0.0,
+      "failure": null,
+      "index": 1,
+      "is_live": true,
+      "latency_ms": 558.1796169281006,
+      "phase": "burst3",
+      "prompt_tokens": 26,
+      "semantic_match": true,
+      "total_tokens": 30
+    },
+    {
+      "completion_tokens": 4,
+      "content_sha256": "8766e017df3d4497840e53fa7594a954fd6e68b1b0bf7528045514bc774ea499",
+      "cost_usd": 0.0,
+      "failure": null,
+      "index": 2,
+      "is_live": true,
+      "latency_ms": 1210.9949588775635,
+      "phase": "burst3",
+      "prompt_tokens": 26,
+      "semantic_match": true,
+      "total_tokens": 30
+    },
+    {
+      "completion_tokens": 4,
+      "content_sha256": "8766e017df3d4497840e53fa7594a954fd6e68b1b0bf7528045514bc774ea499",
+      "cost_usd": 0.0,
+      "failure": null,
+      "index": 3,
+      "is_live": true,
+      "latency_ms": 560.1928234100342,
+      "phase": "burst3",
+      "prompt_tokens": 26,
+      "semantic_match": true,
+      "total_tokens": 30
+    }
+  ],
+  "schema_version": "aftergraph.study012.nvidia-super-judge-probe.v0.1",
+  "summary": {
+    "burst_live": 3,
+    "calls": 4,
+    "failures": [],
+    "live": 4,
+    "semantic_match": 4,
+    "sequential_live": 1
+  }
+}
