@@ -6,10 +6,11 @@ def test_freeze_manifest_binds_all_critical_artifacts():
  assert m["execution_gate"]["provider_model_matrix_ready"] is True
  assert m["execution_gate"]["network_calls_authorized"] is False
  assert verify(m)
-def test_go_no_go_reaches_owner_gate_only_after_provider_freeze():
+def test_go_no_go_reflects_granted_recovery_v4_execution_gate():
  g=evaluate()
- assert g["decision"]=="NO_GO"
- assert g["reasons"]==["owner_approval_not_granted"]
+ assert g["decision"]=="GO"
+ assert g["execution_id"]=="study012-recovery-v4-20260918"
+ assert g["reasons"]==[]
 def test_freeze_manifest_detects_drift():
  m=build(); k=next(iter(m["files"])); m["files"][k]="0"*64
  assert not verify(m)
