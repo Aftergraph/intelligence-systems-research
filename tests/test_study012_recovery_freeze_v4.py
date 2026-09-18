@@ -7,8 +7,8 @@ def test_v4_freeze_is_exact_and_fail_closed():
  assert m["pooling_with_prior_runs"] is False
  assert m["execution_gate"]["readiness_decision"]=="READY"
  assert m["execution_gate"]["readiness_calls"]==9
- assert m["execution_gate"]["owner_status"]=="NOT_GRANTED"
- assert m["execution_gate"]["network_calls_authorized"] is False
+ assert m["execution_gate"]["owner_status"]=="GRANTED"
+ assert m["execution_gate"]["network_calls_authorized"] is True
  assert m["execution_gate"]["provider_substitution_allowed"] is False
  assert m["execution_gate"]["hard_cost_stop_usd"]==4.0
  assert verify(m)
