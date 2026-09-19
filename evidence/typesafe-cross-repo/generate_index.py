@@ -69,6 +69,10 @@ ROLES = {
         "Exact proposed additive cron stanza (machine-validated; not applied)",
     "CROSS-REPO-ALIGNMENT-REPORT.md":
         "The alignment proof across all repos (24 checks, 0 failures)",
+    "verify_gate_plumbing_dry_run.py":
+        "Proof 5 gate-plumbing dry-run: REAL 0015 preflight, NO_GO->READY with only the 3 human gates",
+    "gate-dry-run-output.txt":
+        "Captured dry-run output (15/15 PASS; synthetic records are temp-only, deleted on exit)",
     "generate_index.py":
         "This generator, so the INDEX is reproducible and itself content-addressed",
 }
@@ -148,11 +152,15 @@ def main() -> int:
     A("| 2 | Emitter honesty + applied==reviewed + real-bytes gap + enforced fetch guard | `verify_crossrepo_end_to_end.mjs` | 8/8 PASS |")
     A("| 3 | Hermes canary: 0015 pin reproduces, NO_GO preserved, OER fail-close holds | `hermes-pin-projection-smoke.mjs` | 2/2 PASS |")
     A("| 4 | Cron stanza conformance vs the REAL spec (key shape, id, skills, global_safety) | `validate_hermes_stanza.mjs` | 6/6 PASS |")
+    A("| 5 | Gate-plumbing rehearsal: REAL 0015 preflight reaches READY_TO_CALIBRATE with only the 3 human gates; one-gate-at-a-time negative controls | `verify_gate_plumbing_dry_run.py` | 15/15 PASS |")
     A("")
-    A("**24 checks, 0 failures, 0 network calls, 0 foreign-tree writes** (the one deliberate")
-    A("write is the LOCAL unmerged bridge commit below). Re-running proofs 1 and 3 after every")
-    A("edit produced byte-identical output to the captured records (`HARNESS_IDENTICAL`,")
-    A("`CANARY_IDENTICAL`).")
+    A("**39 checks across 5 proofs, 0 failures, 0 network calls, 0 foreign-tree writes** (the")
+    A("one deliberate persistent write is the LOCAL unmerged bridge commit below; proof 5 writes")
+    A("only to a throwaway temp dir, deleted on exit). Proofs 1-4 are the cross-repo TypeSafe")
+    A("alignment (24 checks, the scope of `CROSS-REPO-ALIGNMENT-REPORT.md`); proof 5 is the")
+    A("gate-plumbing rehearsal against the real preflight (15 checks). Re-running proofs 1, 3")
+    A("and 5 after every edit produced byte-identical output to the captured records")
+    A("(`HARNESS_IDENTICAL`, `CANARY_IDENTICAL`, `DRYRUN_IDENTICAL`).")
     A("")
 
     A("## Foreign working copies (read-only unless noted)")
@@ -196,17 +204,20 @@ def main() -> int:
     A("# 4. Cron stanza conformance (simulated merge only; real spec untouched):")
     A("node evidence/typesafe-cross-repo/validate_hermes_stanza.mjs")
     A("")
-    A("# 5. Regenerate this INDEX (cwd-independent; hashes every artifact above):")
+    A("# 5. Gate-plumbing dry-run (REAL preflight; synthetic records are temp-only, deleted):")
+    A("python evidence/typesafe-cross-repo/verify_gate_plumbing_dry_run.py")
+    A("")
+    A("# 6. Regenerate this INDEX (cwd-independent; hashes every artifact above):")
     A("python evidence/typesafe-cross-repo/generate_index.py")
     A("")
-    A("# 6. Fihim emitter suite (no change; observed pass):")
+    A("# 7. Fihim emitter suite (no change; observed pass):")
     A("npm --prefix ~/fihim-typesafe-wt run test:typesafe-intelligence")
     A("")
-    A("# 7. Applied bridge suite + OER boundary regression (in the bridge worktree):")
+    A("# 8. Applied bridge suite + OER boundary regression (in the bridge worktree):")
     A("node --test ~/workspace/war-room-typesafe-bridge/packages/egac/tests/typesafe-bridge.test.js")
     A("node --test ~/workspace/war-room-typesafe-bridge/tests/oer-p0-boundary.test.js")
     A("")
-    A("# 8. Frozen 0015 record still green + NO_GO:")
+    A("# 9. Frozen 0015 record still green + NO_GO:")
     A("python scripts/verify_jar_exp_0015_semantic_review.py")
     A("```")
     A("")
