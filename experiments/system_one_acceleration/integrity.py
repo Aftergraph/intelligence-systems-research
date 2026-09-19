@@ -45,3 +45,26 @@ def content_manifest_sha256(root: Path, paths: Iterable[str]) -> str:
 
 def calibration_manifest_sha256(root: Path) -> str:
     return content_manifest_sha256(root, CALIBRATION_INTEGRITY_PATHS)
+
+
+EXECUTION_STATIC_PATHS = (
+    "data/jar_exp_0014_question_contracts_v01.json",
+    "data/jar_exp_0014_workload_plan_v01.json",
+    "data/jar_exp_0014_critical_risk_pack_v01.json",
+    "data/jar_exp_0014_randomization_v01.json",
+    "data/jar_exp_0014_calibration_protocol_v01.json",
+    "requirements-typesafe.txt",
+    "schemas/system-one-calibration-receipt.v0.1.json",
+    "schemas/system-one-decision-receipt.v0.1.json",
+    "schemas/system-one-execution-approval-receipt.v0.1.json",
+)
+
+
+def execution_manifest_sha256(root: Path) -> str:
+    root = Path(root).resolve()
+    module_dir = root / "experiments" / "system_one_acceleration"
+    module_paths = tuple(
+        path.relative_to(root).as_posix()
+        for path in sorted(module_dir.glob("*.py"))
+    )
+    return content_manifest_sha256(root, (*EXECUTION_STATIC_PATHS, *module_paths))
