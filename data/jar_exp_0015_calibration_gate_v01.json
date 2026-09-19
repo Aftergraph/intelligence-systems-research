@@ -1,7 +1,7 @@
 {
   "schema_version": "jar-exp-0015.calibration-gate/0.1",
   "experiment_id": "JAR-EXP-0015",
-  "status": "SEMANTIC_REVIEW_PASSED_AWAITING_OWNER_APPROVAL",
+  "status": "READY_TO_CALIBRATE",
   "active_protocol_ref": "data/jar_exp_0015_protocol_v04.json",
   "dataset_ref": "data/jar_exp_0015_dataset_v03.json",
   "dataset_sha256": "51846d8b4a95540a8e182a823a7256fbdd69d61b3244f89e078db77ad7e0496e",
@@ -12,16 +12,16 @@
   "max_provider_calls": 1952,
   "max_cost_usd": 5.38,
   "semantic_review_ref": "data/jar_exp_0015_semantic_review_20260919.json",
-  "owner_approval_ref": null,
-  "network_calls_authorized": false,
+  "owner_approval_ref": "data/jar_exp_0015_calibration_approval_20260919.json",
+  "network_calls_authorized": true,
   "sdk_retries_allowed": false,
   "notes": [
-    "Deterministic semantic review passed with 24 falsification checks on exact manifest cdc72e04e89b3fb56f0e71433df5e165200451eeabccbd74453462e37f2afa5c.",
-    "Calibration remains protected: explicit owner approval and network/spend authorization are still required.",
-    "This gate authorizes calibration only; it never authorizes hold-out evaluation.",
-    "Maximum provider calls: 1,952 frozen calibration case IDs only.",
-    "Worst-case reservation total: $5.373856; rounded hard stage ceiling: $5.38.",
-    "SDK retries remain prohibited."
+    "Semantic review passed on the exact calibration manifest.",
+    "Owner approval is recorded for calibration only.",
+    "Network calls are authorized for at most 1,952 frozen calibration case IDs.",
+    "Hard stage spend ceiling is $5.38; worst-case reservation total is $5.373856.",
+    "SDK retries remain prohibited.",
+    "Hold-out remains separately locked and unauthorized."
   ],
   "calibration_manifest_sha256": "cdc72e04e89b3fb56f0e71433df5e165200451eeabccbd74453462e37f2afa5c"
 }
