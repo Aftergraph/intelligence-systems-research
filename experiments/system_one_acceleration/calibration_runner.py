@@ -129,6 +129,7 @@ def run_calibration(
             state=case.state,
             questions=questions,
             requested_model=requested_model,
+            sdk=sdk,
         )
         model = returned_model(response)
         returned_models.add(model)
