@@ -145,15 +145,27 @@ class Repertoire:
         if not self._entries:
             raise LookupError("repertoire is empty")
         target = context.descriptor()
+        feasible_entries = [
+            entry
+            for entry in self._entries.values()
+            if evaluate_in_context(entry.genome, context).feasible
+        ]
+        if not feasible_entries:
+            raise LookupError("no target-feasible elite")
 
         def distance(entry: RepertoireEntry) -> tuple[float, float, str]:
             squared = sum(
                 (left - right) ** 2
                 for left, right in zip(entry.source_descriptor, target)
             )
-            return (squared, -entry.outcome.utility, entry.source_context_id)
+            target_outcome = evaluate_in_context(entry.genome, context)
+            return (
+                squared,
+                -target_outcome.utility,
+                entry.source_context_id,
+            )
 
-        return min(self._entries.values(), key=distance)
+        return min(feasible_entries, key=distance)
 
     def entries(self) -> tuple[RepertoireEntry, ...]:
         return tuple(self._entries[key] for key in sorted(self._entries))
