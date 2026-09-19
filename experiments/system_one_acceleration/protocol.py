@@ -42,7 +42,7 @@ class RoutingDecision:
     authority_bypassed: Literal[False] = False
 
 
-def _effective_confidence(
+def effective_confidence(
     *, answer_kind: str, answer_value: object, reported_confidence: float | None
 ) -> float | None:
     """Normalize Jev answer certainty without fabricating a Noul confidence field."""
@@ -95,7 +95,7 @@ def route_system_one_decision(
     if evidence_conflict:
         return RoutingDecision("escalate", True, "evidence_conflict", None)
 
-    confidence = _effective_confidence(
+    confidence = effective_confidence(
         answer_kind=answer_kind,
         answer_value=answer_value,
         reported_confidence=reported_confidence,
