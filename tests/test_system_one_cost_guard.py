@@ -1,4 +1,5 @@
 import json
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import pytest
@@ -167,3 +168,62 @@ def test_pricing_source_unavailable_denies_before_reservation(tmp_path):
             requested_model="jev-1.13.0",
         )
     assert ledger.used_microusd() == 0
+
+
+def test_concurrent_reservations_cannot_overrun_budget(tmp_path):
+    spec = load_pricing_spec(PRICING)
+    path = tmp_path / "race.sqlite"
+    first = BudgetLedger(
+        path,
+        run_id="race-run",
+        approved_budget_microusd=spec.max_request_cost_microusd,
+        pricing_spec_sha256=spec.canonical_sha256,
+    )
+    second = BudgetLedger(
+        path,
+        run_id="race-run",
+        approved_budget_microusd=spec.max_request_cost_microusd,
+        pricing_spec_sha256=spec.canonical_sha256,
+    )
+
+    def attempt(ledger, request_id, digest):
+        try:
+            ledger.reserve(
+                request_id=request_id,
+                request_sha256=digest,
+                reserved_microusd=spec.max_request_cost_microusd,
+            )
+            return "reserved"
+        except BudgetExceededError:
+            return "blocked"
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        outcomes = list(
+            pool.map(
+                lambda args: attempt(*args),
+                [
+                    (first, "race-a", "c" * 64),
+                    (second, "race-b", "d" * 64),
+                ],
+            )
+        )
+    assert sorted(outcomes) == ["blocked", "reserved"]
+    assert first.used_microusd() == spec.max_request_cost_microusd
+
+
+def test_stale_ledger_configuration_fails_closed(tmp_path):
+    spec, _ledger_instance = _ledger(tmp_path)
+    with pytest.raises(CostGuardError, match="configuration drift"):
+        BudgetLedger(
+            tmp_path / "budget.sqlite",
+            run_id="test-run",
+            approved_budget_microusd=20_000,
+            pricing_spec_sha256=spec.canonical_sha256,
+        )
+    with pytest.raises(CostGuardError, match="configuration drift"):
+        BudgetLedger(
+            tmp_path / "budget.sqlite",
+            run_id="test-run",
+            approved_budget_microusd=10_000,
+            pricing_spec_sha256="0" * 64,
+        )
