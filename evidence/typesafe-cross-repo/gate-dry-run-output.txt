@@ -2,7 +2,7 @@ check=00_all_manifest_paths_present_in_temp:PASS :: missing=
 check=01_manifest_reproduces_on_copy:PASS :: pin=dc5d7a94f333908abf09aebe1ca1dbf08f965e604eb2919d0b7a9ca70e149762
 check=02_gate_pin_matches_manifest:PASS
 check=03_baseline_no_go:PASS :: decision=NO_GO
-check=04_baseline_blockers_are_exactly_the_three_human_gates:PASS :: blockers=jar15_approval_not_recorded|jar15_network_calls_not_authorized|jar15_semantic_review_not_recorded
+check=04_baseline_blockers_are_exactly_the_open_human_gates:PASS :: open=jar15_approval_not_recorded|jar15_network_calls_not_authorized blockers=jar15_approval_not_recorded|jar15_network_calls_not_authorized
 check=05_dryrun_records_written_to_temp_only:PASS
 check=06_all_three_gates_satisfied_reaches_ready:PASS :: decision=READY_TO_CALIBRATE blockers=
 check=07_ready_has_zero_blockers:PASS :: blockers=
@@ -10,7 +10,7 @@ check=08_revert_semantic_review_alone_blocks:PASS :: blockers=jar15_semantic_rev
 check=09_revert_owner_approval_alone_blocks:PASS :: blockers=jar15_approval_not_recorded
 check=10_revert_network_alone_blocks:PASS :: blockers=jar15_network_calls_not_authorized
 check=11_pin_unchanged_after_gate_and_record_patches:PASS :: pin=dc5d7a94f333908abf09aebe1ca1dbf08f965e604eb2919d0b7a9ca70e149762
-check=12_real_tree_still_no_go:PASS :: decision=NO_GO blockers=jar15_approval_not_recorded|jar15_network_calls_not_authorized|jar15_semantic_review_not_recorded
+check=12_real_tree_still_no_go:PASS :: decision=NO_GO open=jar15_approval_not_recorded|jar15_network_calls_not_authorized blockers=jar15_approval_not_recorded|jar15_network_calls_not_authorized
 check=13_real_pin_unchanged:PASS
 ---TEMPLATE semantic-review record (satisfies live 0015 preflight)---
 {
@@ -52,6 +52,13 @@ schemas/system-one-*-receipt.v0.1.json (frozen in the 0014
 manifests, unused for 0015). For formal 0015 schema conformance the
 owner should fork those two schemas as new 0015 files (outside the
 30-path manifest, so pin dc5d7a94 is unaffected).
+---NOTE current live status---
+Gate A (the independent semantic review) is already closed for real
+(commit 1a2dc7f, isolated CI run 35473954572), so the live preflight
+baseline is the two outstanding human gates (owner approval + network
+authorization). The three templates above remain the full mechanism,
+shown for completeness and to drive the one-gate-at-a-time negative
+controls (08-10), which are independent of how many gates are open.
 check=14_temp_directory_removed:PASS
 
 verdict=PASS checks=15/15

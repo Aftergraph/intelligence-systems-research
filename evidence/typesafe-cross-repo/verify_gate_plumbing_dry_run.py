@@ -7,11 +7,22 @@ Exercise the REAL fail-closed preflight
 (``experiments.system_one_acceleration.jar15_calibration_preflight
 .evaluate_jar15_calibration_preflight``) against a faithful throwaway copy of
 the working tree, to prove *mechanically* that the ONLY things standing between
-the current NO_GO state and READY_TO_CALIBRATE are the three human gates:
+the current NO_GO state and READY_TO_CALIBRATE are the human gates:
 
   1. a content-addressed semantic falsification review record,
   2. an explicit owner/calibration approval record,
   3. ``network_calls_authorized`` flipped to true on the calibration gate.
+
+The baseline is ADAPTIVE. It asserts the preflight's blockers are exactly the
+human gates that are still OPEN, whatever that set is, and that no blocker
+outside the three human gates leaks. When this harness was authored all three
+were open; the independent semantic review has since been closed by a real
+isolated CI run (commit 1a2dc7f, run 35473954572), so the live baseline is now
+{owner approval, network authorization}. The mechanism proved is unchanged and
+is what matters: each gate is individually necessary (negative controls 08-10)
+and all together they are sufficient (positive control 06). Adapting the
+snapshot to the true open set never weakens the control -- a stale "all three
+open" assertion would merely be false, not safer.
 
 Safety contract
 ---------------
@@ -78,6 +89,26 @@ REVIEW_REL = "data/jar_exp_0015_semantic_review_DRYRUN.json"
 APPROVAL_REL = "data/jar_exp_0015_owner_approval_DRYRUN.json"
 
 
+def open_human_gates(gate: dict) -> set[str]:
+    """The subset of HUMAN_GATES still unsatisfied by ``gate``.
+
+    Mirrors ``evaluate_jar15_calibration_preflight`` exactly: a falsy
+    ``semantic_review_ref``/``owner_approval_ref`` yields the corresponding
+    ``*_not_recorded`` blocker, and a ``network_calls_authorized`` that is not
+    literally ``True`` yields ``jar15_network_calls_not_authorized``. Keeping
+    this in lockstep is what lets the baseline assert "only the open human gates
+    block" without hardcoding how many are open.
+    """
+    open_gates: set[str] = set()
+    if not gate.get("semantic_review_ref"):
+        open_gates.add("jar15_semantic_review_not_recorded")
+    if not gate.get("owner_approval_ref"):
+        open_gates.add("jar15_approval_not_recorded")
+    if gate.get("network_calls_authorized") is not True:
+        open_gates.add("jar15_network_calls_not_authorized")
+    return open_gates
+
+
 def main() -> int:
     failures: list[str] = []
 
@@ -117,12 +148,17 @@ def main() -> int:
         max_calls = gate["max_provider_calls"]
         max_cost = gate["max_cost_usd"]
 
-        # BASELINE: unpatched copy -> NO_GO with exactly the three human gates.
+        # BASELINE: unpatched copy -> NO_GO with exactly the OPEN human gates.
+        # ``gate`` is the inherited (unpatched) gate dict, so open_human_gates(gate)
+        # is the true current open set; the preflight must block on precisely that
+        # and on nothing outside HUMAN_GATES.
         base = evaluate_jar15_calibration_preflight(tree)
+        baseline_open = open_human_gates(gate)
         check("03_baseline_no_go", base.decision == "NO_GO", f"decision={base.decision}")
-        check("04_baseline_blockers_are_exactly_the_three_human_gates",
-              set(base.blockers) == HUMAN_GATES,
-              "blockers=" + "|".join(sorted(base.blockers)))
+        check("04_baseline_blockers_are_exactly_the_open_human_gates",
+              set(base.blockers) == baseline_open and set(base.blockers) <= HUMAN_GATES,
+              "open=" + "|".join(sorted(baseline_open))
+              + " blockers=" + "|".join(sorted(base.blockers)))
 
         # Synthetic DRY-RUN records (temp only; obviously labelled; never real).
         review = {
@@ -201,11 +237,18 @@ def main() -> int:
         check("11_pin_unchanged_after_gate_and_record_patches", pin_after == pin_copy,
               f"pin={pin_after}")
 
-        # REAL TREE UNTOUCHED: the live repo still NO_GO with the three gates + pin.
+        # REAL TREE UNTOUCHED: the live repo still NO_GO, blocked on exactly the
+        # open human gates (read fresh from the real gate file, not the patched
+        # temp copy), with the pin intact (check 13).
+        real_gate = json.loads((REPO_ROOT / GATE_REF).read_text(encoding="utf-8"))
+        real_open = open_human_gates(real_gate)
         real = evaluate_jar15_calibration_preflight(REPO_ROOT)
         check("12_real_tree_still_no_go",
-              real.decision == "NO_GO" and set(real.blockers) == HUMAN_GATES,
-              f"decision={real.decision} blockers={'|'.join(sorted(real.blockers))}")
+              real.decision == "NO_GO"
+              and set(real.blockers) == real_open
+              and set(real.blockers) <= HUMAN_GATES,
+              f"decision={real.decision} open={'|'.join(sorted(real_open))}"
+              f" blockers={'|'.join(sorted(real.blockers))}")
         check("13_real_pin_unchanged",
               jar15_calibration_manifest_sha256(REPO_ROOT) == pin_real)
 
@@ -227,6 +270,13 @@ def main() -> int:
         print("manifests, unused for 0015). For formal 0015 schema conformance the")
         print("owner should fork those two schemas as new 0015 files (outside the")
         print("30-path manifest, so pin dc5d7a94 is unaffected).")
+        print("---NOTE current live status---")
+        print("Gate A (the independent semantic review) is already closed for real")
+        print("(commit 1a2dc7f, isolated CI run 35473954572), so the live preflight")
+        print("baseline is the two outstanding human gates (owner approval + network")
+        print("authorization). The three templates above remain the full mechanism,")
+        print("shown for completeness and to drive the one-gate-at-a-time negative")
+        print("controls (08-10), which are independent of how many gates are open.")
 
     finally:
         shutil.rmtree(tmp, ignore_errors=True)

@@ -70,7 +70,7 @@ ROLES = {
     "CROSS-REPO-ALIGNMENT-REPORT.md":
         "The alignment proof across all repos (24 checks, 0 failures)",
     "verify_gate_plumbing_dry_run.py":
-        "Proof 5 gate-plumbing dry-run: REAL 0015 preflight, NO_GO->READY with only the 3 human gates",
+        "Proof 5 gate-plumbing dry-run: REAL 0015 preflight, NO_GO->READY with only the human gates (adaptive baseline; Gate A closed)",
     "gate-dry-run-output.txt":
         "Captured dry-run output (15/15 PASS; synthetic records are temp-only, deleted on exit)",
     "generate_index.py":
@@ -154,7 +154,7 @@ def main() -> int:
     A("| 2 | Emitter honesty + applied==reviewed + real-bytes gap + enforced fetch guard | `verify_crossrepo_end_to_end.mjs` | 8/8 PASS |")
     A("| 3 | Hermes canary: 0015 pin reproduces, NO_GO preserved, OER fail-close holds | `hermes-pin-projection-smoke.mjs` | 2/2 PASS |")
     A("| 4 | Cron stanza conformance vs the REAL spec (key shape, id, skills, global_safety) | `validate_hermes_stanza.mjs` | 6/6 PASS |")
-    A("| 5 | Gate-plumbing rehearsal: REAL 0015 preflight reaches READY_TO_CALIBRATE with only the 3 human gates; one-gate-at-a-time negative controls | `verify_gate_plumbing_dry_run.py` | 15/15 PASS |")
+    A("| 5 | Gate-plumbing rehearsal: REAL 0015 preflight reaches READY_TO_CALIBRATE with only the human gates (baseline adaptive to whichever remain open; Gate A now closed); one-gate-at-a-time negative controls | `verify_gate_plumbing_dry_run.py` | 15/15 PASS |")
     A("")
     A("**39 checks across 5 proofs, 0 failures, 0 network calls, 0 foreign-tree writes** (the")
     A("one deliberate persistent write is the LOCAL unmerged bridge commit below; proof 5 writes")

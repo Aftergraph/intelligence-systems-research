@@ -20,7 +20,7 @@ reviewed and re-run every proof. Start with `CROSS-REPO-ALIGNMENT-REPORT.md`.
 | 2 | Emitter honesty + applied==reviewed + real-bytes gap + enforced fetch guard | `verify_crossrepo_end_to_end.mjs` | 8/8 PASS |
 | 3 | Hermes canary: 0015 pin reproduces, NO_GO preserved, OER fail-close holds | `hermes-pin-projection-smoke.mjs` | 2/2 PASS |
 | 4 | Cron stanza conformance vs the REAL spec (key shape, id, skills, global_safety) | `validate_hermes_stanza.mjs` | 6/6 PASS |
-| 5 | Gate-plumbing rehearsal: REAL 0015 preflight reaches READY_TO_CALIBRATE with only the 3 human gates; one-gate-at-a-time negative controls | `verify_gate_plumbing_dry_run.py` | 15/15 PASS |
+| 5 | Gate-plumbing rehearsal: REAL 0015 preflight reaches READY_TO_CALIBRATE with only the human gates (baseline adaptive to whichever remain open; Gate A now closed); one-gate-at-a-time negative controls | `verify_gate_plumbing_dry_run.py` | 15/15 PASS |
 
 **39 checks across 5 proofs, 0 failures, 0 network calls, 0 foreign-tree writes** (the
 one deliberate persistent write is the LOCAL unmerged bridge commit below; proof 5 writes
@@ -55,8 +55,8 @@ editing the Hermes cron spec, are owner actions.
 | `CROSS-REPO-ALIGNMENT-REPORT.md` | `9638968bfadc04702f63bebbce6668a1d0220162ab561a43912c00fc0418b1a7` | The alignment proof across all repos (24 checks, 0 failures) |
 | `crossrepo-e2e-output.txt` | `f6a19212020d103be0d70f72b5599be21255a7005921f81efc93afd468472fb3` | Captured e2e output (8/8 PASS) |
 | `FIHIM-COVERAGE-REVIEW.md` | `77125ed9fa9b5c817329ad6f9de9ebc87a1c6c7b04be5411d6afb1f5f13e9e93` | Emitter-side review: suite passes, no change warranted |
-| `gate-dry-run-output.txt` | `94780ad6f3edf0026836ceafc663f7f48a90dcaad41014b414c292ceda86064e` | Captured dry-run output (15/15 PASS; synthetic records are temp-only, deleted on exit) |
-| `generate_index.py` | `d98878bbbeef6d09ab4991de703b926481d9b38a4fb4a6440b48cf72a2b734c5` | This generator, so the INDEX is reproducible and itself content-addressed |
+| `gate-dry-run-output.txt` | `65e17c5b65016a1827dda29590559df34d179e4ccd60a2cf114a0f935b70fce5` | Captured dry-run output (15/15 PASS; synthetic records are temp-only, deleted on exit) |
+| `generate_index.py` | `a80ee19eec662c3792c5ffcbac7c8f250ca734646ce048763ded4125f79b5096` | This generator, so the INDEX is reproducible and itself content-addressed |
 | `hermes-canary-job.proposed.json` | `5068607473e8ee20ea3d68092f59e50c7031e6589b9b9b172b072811808d2045` | Exact proposed additive cron stanza (machine-validated; not applied) |
 | `HERMES-CANARY-PROPOSAL.md` | `42c0fbe2bfca67248ae1dcf658a665b86c8d5a2944a2c94049e81e9eb5e72f2e` | Proposed additive Hermes cron job (not applied) |
 | `hermes-pin-projection-smoke.mjs` | `ec4f8c6a5b4cb74238984d6c14c93f01568da04f415bb1eb0b2113b82a6fe36f` | Proof 3 canary: pin-smoke + projection-smoke (read-only, zero-network) |
@@ -64,7 +64,7 @@ editing the Hermes cron spec, are owner actions.
 | `validate_hermes_stanza.mjs` | `0e312090de8a24116554f2cdb6755175e237f79eea825e4e09c5336a4612f12f` | Proof 4: stanza conformance vs REAL cron spec (simulated merge only) |
 | `verification-output.txt` | `9af0928b84c47c55400efa92bff8d8221f70eccdd8895e9bd236a1e28e34bc82` | Captured harness output (8/8 PASS) |
 | `verify_crossrepo_end_to_end.mjs` | `a5ba92dc28aba4509281f02ff01a0d774465e3ee4322e908abc2ef96ac19d1e2` | Proof 2 e2e: REAL Fihim -> applied bridge -> both EGACs; fetch stubbed |
-| `verify_gate_plumbing_dry_run.py` | `67c834360a25ae5eb6d7630df466baaff8ed6e31513b2d599471c0046a5fe834` | Proof 5 gate-plumbing dry-run: REAL 0015 preflight, NO_GO->READY with only the 3 human gates |
+| `verify_gate_plumbing_dry_run.py` | `0c31072226223fea480002be726688208771e73c81776f4fcf2c882fe429751f` | Proof 5 gate-plumbing dry-run: REAL 0015 preflight, NO_GO->READY with only the human gates (adaptive baseline; Gate A closed) |
 | `verify_typesafe_bridge.mjs` | `f45b67249591b184128bd246135a119e3557bc257e67f065abb6cb881a0b1bc4` | Proof 1 harness: bridge invariants vs real EGAC (main + OER) |
 | `war-room-typesafe-bridge.js` | `efb6348bcbacc84eedae55edced5ea64e85fc6faf5d92f498b86f1afc36ff4f7` | REVIEWED artifact: TypeSafe->EGAC tier_1 bridge (invariants I1..I5) |
 
