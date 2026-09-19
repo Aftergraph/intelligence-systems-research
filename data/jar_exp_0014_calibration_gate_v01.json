@@ -1,25 +1,21 @@
 {
   "schema_version": "jar-exp-0014.calibration-gate/0.1",
   "experiment_id": "JAR-EXP-0014",
-  "status": "READY_TO_CALIBRATE",
+  "status": "CALIBRATION_COMPLETE_NO_THRESHOLD",
   "requested_typesafe_model": "jev-1.13.0",
   "pricing_spec_ref": "data/jar_exp_0014_typesafe_pricing_v01.json",
   "cost_guard_mode": "worst_case_context_write_ahead_v1",
   "semantic_review_ref": "data/jar_exp_0014_semantic_review_20260919.json",
   "calibration_approval_ref": "data/jar_exp_0014_calibration_approval_20260919.json",
-  "network_calls_authorized": true,
+  "network_calls_authorized": false,
   "max_cost_usd": 0.44,
   "max_provider_calls": 158,
   "notes": [
-    "This gate controls bounded calibration only; it does not authorize confirmatory execution.",
-    "The frozen corpus contains 158 cases and the calibration runner performs no SDK retries.",
-    "The concrete Jev model pin jev-1.13.0 was verified by a direct non-calibration smoke request on 2026-09-19.",
-    "The cost guard reserves 2753 micro-USD before each provider request using the conservative 65,536-token bound and official $0.042/M input-token price.",
-    "Reservations are durable and write-ahead. A still-RESERVED exact request/hash may resume after a pre-transport crash without a second charge; transport claim is atomic; once TRANSPORT_STARTED, replay remains denied and the reservation is never refunded.",
-    "Official pricing/context markers are validated before reservation and revalidated immediately before the atomic transport claim; drift fails closed.",
-    "The $0.44 ceiling exceeds the 158-case worst-case reservation total of $0.434974.",
-    "Owner approval, bounded calibration network authorization, and the hosted deterministic semantic-review receipt are recorded; bounded calibration is READY_TO_CALIBRATE.",
-    "Calibration approval must bind the content-addressed calibration manifest; any relevant code/contract drift invalidates authorization."
+    "Bounded calibration completed on 2026-09-19 against jev-1.13.0.",
+    "All 158 frozen calibration cases were executed exactly once under the $0.44 hard cap.",
+    "The preregistered selector returned NO_THRESHOLD; no feasible cascade threshold exists for this calibration set.",
+    "Calibration network authorization is exhausted and disabled after completion.",
+    "A new calibration requires a new explicitly scoped approval and a new run identity; existing completed reservations must not be replayed."
   ],
   "calibration_manifest_sha256": "6a29bc8e7e168dbeb9e800b260d877ab1e9801be9d61eb2d4c85e2ac22f309f3"
 }
