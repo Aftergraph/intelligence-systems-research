@@ -2,9 +2,9 @@
   "schema_version": "jar-exp-0015.calibration-gate/0.1",
   "experiment_id": "JAR-EXP-0015",
   "status": "NOT_AUTHORIZED",
-  "active_protocol_ref": "data/jar_exp_0015_protocol_v03.json",
-  "dataset_ref": "data/jar_exp_0015_dataset_v02.json",
-  "dataset_sha256": "690a28874f409a7624d371374637c0421ef6008179eba68fdc8a02a8d539bc9d",
+  "active_protocol_ref": "data/jar_exp_0015_protocol_v04.json",
+  "dataset_ref": "data/jar_exp_0015_dataset_v03.json",
+  "dataset_sha256": "51846d8b4a95540a8e182a823a7256fbdd69d61b3244f89e078db77ad7e0496e",
   "split": "calibration",
   "split_case_count": 1952,
   "requested_model": "jev-1.13.0",
@@ -18,6 +18,8 @@
   "notes": [
     "This gate authorizes calibration only; it never authorizes hold-out evaluation.",
     "A content-addressed semantic falsification review and explicit owner/network approval are required before live calibration.",
-    "Maximum worst-case reservation total is $5.373856; the rounded stage ceiling is $5.38."
-  ]
+    "Maximum worst-case reservation total is $5.373856; the rounded stage ceiling is $5.38.",
+    "Dataset rebinding from v0.2 to v0.3 executes Amendment-003 under protocol v0.4 after deterministic projection and label-leakage tests passed. No provider call has occurred under any superseded dataset or protocol."
+  ],
+  "calibration_manifest_sha256": "dc5d7a94f333908abf09aebe1ca1dbf08f965e604eb2919d0b7a9ca70e149762"
 }
