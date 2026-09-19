@@ -81,3 +81,15 @@ def differential_mutation(
         verification_depth=depth,
     )
     return child, _receipt((base, a, b), "differential", seed, base, child)
+
+
+def mutate_rule(parent: PolicyGenome, seed: int) -> tuple[PolicyGenome, MutationReceipt]:
+    routes = (
+        ("discover", "execute", "verify"),
+        ("execute", "verify"),
+        ("discover", "execute"),
+        ("execute",),
+    )
+    alternatives = [route for route in routes if route != parent.routing_policy]
+    child = replace(parent, routing_policy=random.Random(seed).choice(alternatives))
+    return child, _receipt((parent,), "rule", seed, parent, child)
