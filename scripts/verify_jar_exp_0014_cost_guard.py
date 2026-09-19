@@ -174,8 +174,11 @@ def main() -> None:
         require(ledger.used_microusd() == 0, "drift denial must precede reservation")
 
     preflight = evaluate_calibration_preflight(ROOT)
-    require(preflight.decision == "READY_TO_CALIBRATE", "calibration readiness gate")
-    require(not preflight.blockers, "unexpected calibration blockers")
+    require(preflight.decision == "NO_GO", "completed calibration must be terminal")
+    require(
+        set(preflight.blockers) == {"calibration_already_completed"},
+        "unexpected terminal calibration blockers",
+    )
     require(preflight.maximum_calls == 158, "call ceiling")
     require(preflight.maximum_cost_usd == 0.44, "USD ceiling")
     require(preflight.requested_model == "jev-1.13.0", "preflight model")
@@ -183,7 +186,7 @@ def main() -> None:
     print("PASS: JAR-EXP-0014 cost guard independent verifier")
     print("per_request_microusd=2753")
     print("calibration_worst_case_microusd=434974")
-    print("calibration_preflight=READY_TO_CALIBRATE")
+    print("calibration_preflight=CALIBRATION_COMPLETE_NO_THRESHOLD")
 
 
 if __name__ == "__main__":
