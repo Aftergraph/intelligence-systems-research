@@ -1,0 +1,19 @@
+{
+  "schema_version": "aftergraph.system-one-semantic-review/0.1",
+  "experiment_id": "JAR-EXP-0014",
+  "verdict": "PASS_WITH_FINDINGS",
+  "independent": true,
+  "reviewer": "Aftergraph deterministic semantic verifier v0.1 on isolated GitHub Actions runner",
+  "reviewer_kind": "independent_verifier",
+  "reviewed_at": "2026-09-19T08:21:09Z",
+  "calibration_manifest_sha256": "cd8fdf00f2e44dae94687c23f41dfde1d54f3c8b9392170c7df0a51bccc1f5a3",
+  "falsification_attempts_considered": 18,
+  "evidence_ref": "github-actions:Aftergraph/intelligence-systems-research:run/35431738797:job/105867456688",
+  "findings": [
+    {
+      "severity": "Medium",
+      "summary": "A client-only guard cannot eliminate instantaneous provider-side pricing or billing-semantic drift after the final documentation validation and before provider billing.",
+      "disposition": "Accepted as an external-provider limitation, not a local budget or authority bypass. Pricing/context evidence is checked before reservation and immediately before atomic transport claim; observable drift fails closed and post-claim automatic retry is prohibited."
+    }
+  ]
+}
