@@ -107,6 +107,18 @@ jobs:
       - name: Run zero-network holdout isolation verifier
         run: python scripts/verify_jar_exp_0015_analysis.py
 
+  jar-exp-0015-cost-gate:
+    name: JAR-EXP-0015 stage cost/preflight verifier
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.11"
+      - name: Run zero-network stage cost/preflight verifier
+        run: python scripts/verify_jar_exp_0015_cost_gate.py
+
   conformance-python:
     name: Python conformance pack
     runs-on: ubuntu-latest
