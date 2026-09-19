@@ -19,3 +19,4 @@ JAR-EXP-0018,VERGE Bastion Robust Repertoire Evolution,"Matched total policy-con
 \n
 JAR-EXP-0019,VERGE Crucible Multi-Fidelity Robust Evolution,"Matched 256 policy-context budget: 144 nominal proposals plus 16 promoted halo evaluations versus 256 nominal proposals","WorstContextUtilityDelta,RobustCoverage,VSR,FCR,UAR,SelectionFailures,CPVO,Latency",COMPLETED
 \n
+JAR-EXP-0020,VERGE Headroom Margin-Aware Elite Ranking,"Same candidate set; margin-aware ranking vs nominal utility ranking under frozen context shift","WorstContextUtilityDelta,VSR,FCR,UAR,SelectionFailures,CPVO,Latency",COMPLETED
