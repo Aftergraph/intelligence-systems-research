@@ -1,4 +1,5 @@
 name: Computer Node Lenovo live proof
+# trigger: controlled physical-host acceptance
 
 on:
   push:
