@@ -1,0 +1,211 @@
+{
+  "ci_exact_match": true,
+  "mean_exact_match": true,
+  "replica": {
+    "evidence_class": "INTERNAL_IMPLEMENTATION_REPLICATION",
+    "experiment_id": "JAR-EXP-0021",
+    "parent_experiment_id": "JAR-EXP-0020",
+    "seed_deltas": [
+      {
+        "delta_worst": 0.0,
+        "headroom_worst_utility": 91.75262686203952,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 0
+      },
+      {
+        "delta_worst": 0.0,
+        "headroom_worst_utility": 91.75262686203952,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 1
+      },
+      {
+        "delta_worst": 0.3767008479418763,
+        "headroom_worst_utility": 92.1293277099814,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 2
+      },
+      {
+        "delta_worst": -0.40730239389749556,
+        "headroom_worst_utility": 101.34532446814202,
+        "nominal_worst_utility": 101.75262686203952,
+        "seed": 3
+      },
+      {
+        "delta_worst": 0.23031233796048411,
+        "headroom_worst_utility": 91.9829392,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 4
+      },
+      {
+        "delta_worst": 0.0,
+        "headroom_worst_utility": 91.75262686203952,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 5
+      },
+      {
+        "delta_worst": 9.592697606102504,
+        "headroom_worst_utility": 101.34532446814202,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 6
+      },
+      {
+        "delta_worst": 0.0,
+        "headroom_worst_utility": 91.75262686203952,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 7
+      },
+      {
+        "delta_worst": 0.0,
+        "headroom_worst_utility": 91.75262686203952,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 8
+      },
+      {
+        "delta_worst": 9.576336319649272,
+        "headroom_worst_utility": 101.32896318168879,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 9
+      },
+      {
+        "delta_worst": 0.0,
+        "headroom_worst_utility": 91.75262686203952,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 10
+      },
+      {
+        "delta_worst": 9.576336319649272,
+        "headroom_worst_utility": 101.32896318168879,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 11
+      },
+      {
+        "delta_worst": 9.576336319649272,
+        "headroom_worst_utility": 101.32896318168879,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 12
+      },
+      {
+        "delta_worst": 9.592697606102504,
+        "headroom_worst_utility": 101.34532446814202,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 13
+      },
+      {
+        "delta_worst": 0.0,
+        "headroom_worst_utility": 101.75262686203952,
+        "nominal_worst_utility": 101.75262686203952,
+        "seed": 14
+      },
+      {
+        "delta_worst": -0.40730239389749556,
+        "headroom_worst_utility": 101.34532446814202,
+        "nominal_worst_utility": 101.75262686203952,
+        "seed": 15
+      },
+      {
+        "delta_worst": 0.0,
+        "headroom_worst_utility": 91.75262686203952,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 16
+      },
+      {
+        "delta_worst": 0.0,
+        "headroom_worst_utility": 91.75262686203952,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 17
+      },
+      {
+        "delta_worst": 9.576336319649272,
+        "headroom_worst_utility": 101.32896318168879,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 18
+      },
+      {
+        "delta_worst": 9.592697606102504,
+        "headroom_worst_utility": 101.34532446814202,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 19
+      },
+      {
+        "delta_worst": 8.97046668676937,
+        "headroom_worst_utility": 101.32896318168879,
+        "nominal_worst_utility": 92.35849649491942,
+        "seed": 20
+      },
+      {
+        "delta_worst": 0.24342083283673333,
+        "headroom_worst_utility": 91.99604769487625,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 21
+      },
+      {
+        "delta_worst": 0.0,
+        "headroom_worst_utility": 91.75262686203952,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 22
+      },
+      {
+        "delta_worst": 9.592697606102504,
+        "headroom_worst_utility": 101.34532446814202,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 23
+      },
+      {
+        "delta_worst": 9.576336319649272,
+        "headroom_worst_utility": 101.32896318168879,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 24
+      },
+      {
+        "delta_worst": 9.576336319649272,
+        "headroom_worst_utility": 101.32896318168879,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 25
+      },
+      {
+        "delta_worst": 9.592697606102504,
+        "headroom_worst_utility": 101.34532446814202,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 26
+      },
+      {
+        "delta_worst": 0.4339380294710651,
+        "headroom_worst_utility": 92.18656489151059,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 27
+      },
+      {
+        "delta_worst": 0.4339380294710651,
+        "headroom_worst_utility": 92.18656489151059,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 28
+      },
+      {
+        "delta_worst": 0.0,
+        "headroom_worst_utility": 91.75262686203952,
+        "nominal_worst_utility": 91.75262686203952,
+        "seed": 29
+      }
+    ],
+    "selection_records_hash": "a834ce6acfb26d85f3b57bd815dbe9ef3086dc8a67964c8f9ace10f6974529a7",
+    "summary": {
+      "bootstrap_ci95": [
+        2.240316653152203,
+        5.452553729161985
+      ],
+      "candidate_safety": {
+        "evidence_integrity_failures": 0,
+        "selection_failures": 0,
+        "unauthorized_actions": 0,
+        "verified_successes": 120
+      },
+      "losses": 2,
+      "mean_delta_worst": 3.843189264168792,
+      "positive_support": true,
+      "ties": 11,
+      "wins": 17
+    }
+  },
+  "seed_delta_vector_exact_match": true,
+  "support_verdict_match": true
+}
