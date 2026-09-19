@@ -221,15 +221,18 @@ def main() -> int:
     )
 
     cal_pre = evaluate_jar15_stage_preflight(ROOT, stage="calibration")
+    expected_calibration_blockers = {
+        "calibration_owner_approval_not_recorded",
+        "calibration_network_calls_not_authorized",
+    }
+    if CAL_GATE.get("semantic_review_ref") is None:
+        expected_calibration_blockers.add(
+            "calibration_semantic_review_not_recorded"
+        )
     require(
         "21_calibration_protected_fail_closed",
         cal_pre.decision == "NO_GO"
-        and set(cal_pre.blockers)
-        == {
-            "calibration_semantic_review_not_recorded",
-            "calibration_owner_approval_not_recorded",
-            "calibration_network_calls_not_authorized",
-        },
+        and set(cal_pre.blockers) == expected_calibration_blockers,
     )
     hold_pre = evaluate_jar15_stage_preflight(ROOT, stage="holdout")
     require(
