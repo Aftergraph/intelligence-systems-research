@@ -20,7 +20,7 @@ class CalibrationPreflightResult:
     requested_model: str | None = None
 
 
-_CONCRETE_JEV_MODEL = re.compile(r"^jev-\\d+\\.\\d+\\.\\d+$")
+_CONCRETE_JEV_MODEL = re.compile(r"^jev-\d+\.\d+\.\d+$")
 
 
 def _load(path: Path) -> dict[str, Any]:
