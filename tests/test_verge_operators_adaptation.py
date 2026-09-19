@@ -3,7 +3,7 @@ import math
 from experiments.verge.adaptation import ProbabilityMatcher
 from experiments.verge.islands import IslandMember, IslandState, migrate_elites
 from experiments.verge.models import PolicyGenome
-from experiments.verge.operators import crossover, differential_mutation, mutate_numeric
+from experiments.verge.operators import crossover, differential_mutation, mutate_numeric, mutate_rule
 
 
 def genome(**overrides):
@@ -73,3 +73,12 @@ def test_island_migration_preserves_origin_lineage():
     migrated = migrate_elites(islands)
     explore_ids = {(m.candidate_id, m.origin_island) for m in migrated[1].members}
     assert ("a", "safe") in explore_ids
+
+
+def test_rule_mutation_changes_routing_and_binds_lineage():
+    parent = genome(routing_policy=("execute",))
+    child, receipt = mutate_rule(parent, seed=17)
+    assert child.routing_policy != parent.routing_policy
+    assert receipt.operator_id == "rule"
+    assert receipt.parent_ids == (parent.identity,)
+    assert receipt.child_id == child.identity
