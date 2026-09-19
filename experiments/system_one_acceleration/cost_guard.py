@@ -228,6 +228,24 @@ class BudgetLedger:
                 raise CostGuardError("budget ledger run configuration drift")
             db.execute("COMMIT")
 
+    def reservation_record(self, request_id: str) -> dict[str, Any] | None:
+        with closing(self._connect()) as db:
+            row = db.execute(
+                "SELECT request_sha256, reserved_microusd, status, "
+                "actual_input_tokens, actual_cost_microusd "
+                "FROM reservations WHERE run_id = ? AND request_id = ?",
+                (self.run_id, request_id),
+            ).fetchone()
+        if row is None:
+            return None
+        return {
+            "request_sha256": row[0],
+            "reserved_microusd": int(row[1]),
+            "status": row[2],
+            "actual_input_tokens": row[3],
+            "actual_cost_microusd": row[4],
+        }
+
     def used_microusd(self) -> int:
         with closing(self._connect()) as db:
             row = db.execute(
