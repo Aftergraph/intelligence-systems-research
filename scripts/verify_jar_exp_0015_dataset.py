@@ -21,7 +21,7 @@ from experiments.system_one_acceleration.jar15_dataset_v03 import (
 from experiments.system_one_acceleration.state_projection import project_decision_state
 
 ACTIVE = ROOT / "data" / "jar_exp_0015_active_protocol.json"
-PROTOCOL = ROOT / "data" / "jar_exp_0015_protocol_v04.json"
+PROTOCOL = ROOT / "data" / "jar_exp_0015_protocol_v05.json"
 DATASET = ROOT / "data" / "jar_exp_0015_dataset_v03.json"
 MANIFEST = ROOT / "data" / "jar_exp_0015_split_manifest_v03.json"
 
@@ -49,7 +49,7 @@ def main() -> int:
     dataset_sha = sha256(DATASET.read_bytes()).hexdigest()
     manifest_sha = sha256(MANIFEST.read_bytes()).hexdigest()
 
-    require("01_active_protocol", active["active_protocol_ref"] == "data/jar_exp_0015_protocol_v04.json")
+    require("01_active_protocol", active["active_protocol_ref"] == "data/jar_exp_0015_protocol_v05.json")
     require("02_protocol_blob_binding", active["active_protocol_git_blob_sha"] == git_blob_sha(PROTOCOL))
     require("03_dataset_sha", dataset_sha == EXPECTED_DATASET_SHA == active["active_dataset_sha256"])
     require("04_manifest_sha", manifest_sha == EXPECTED_MANIFEST_SHA == active["active_split_manifest_sha256"])
@@ -99,8 +99,8 @@ def main() -> int:
 
     require("16_v01_wilson_falsified", wilson_upper(0, 24) > 0.05 and wilson_upper(0, 16) > 0.05)
     require("17_minimum_wilson_n", wilson_upper(0, 72) > 0.05 and wilson_upper(0, 73) <= 0.05)
-    require("18_v04_coverage_rounding", math.ceil(244 * 0.30) == 74 and protocol["sample_size_feasibility"]["floor_accepted_n_at_30_percent"] == 74)
-    require("19_v04_zero_error_feasible", wilson_upper(0, 74) <= 0.05)
+    require("18_v05_coverage_rounding", math.ceil(244 * 0.30) == 74 and protocol["sample_size_feasibility"]["floor_accepted_n_at_30_percent"] == 74)
+    require("19_v05_zero_error_feasible", wilson_upper(0, 74) <= 0.05)
 
     projection_ok = True
     labels_hidden = True
@@ -125,6 +125,7 @@ def main() -> int:
             "data/jar_exp_0015_protocol_v01.json",
             "data/jar_exp_0015_protocol_v02.json",
             "data/jar_exp_0015_protocol_v03.json",
+            "data/jar_exp_0015_protocol_v04.json",
         },
     )
     require("24_manifest_parent_duplicate_counter", manifest["exact_parent_duplicates"] == 0)
@@ -137,7 +138,7 @@ def main() -> int:
     require("26_authority_critical_split", all({r["split"] for r in v} == {"calibration", "holdout"} for v in critical_by_type.values()))
 
     print("PASS: active JAR-EXP-0015 dataset/protocol verifier")
-    print("active_protocol=v0.4 dataset=v0.3")
+    print("active_protocol=v0.5 dataset=v0.3")
     print(f"dataset_sha256={dataset_sha}")
     print(f"split_manifest_sha256={manifest_sha}")
     print("cases=3904 calibration=1952 holdout=1952 parent_duplicates=0")
