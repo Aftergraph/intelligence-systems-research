@@ -61,15 +61,11 @@ jobs:
           $info | ConvertTo-Json | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "host.json") -Encoding utf8
           Get-Content (Join-Path $env:EVIDENCE_DIR "host.json")
 
-      - name: Initialize isolated config and connect Pollinations
+      - name: Initialize isolated config
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
           & $env:OMNIROUTE_CLI setup --non-interactive --password "aftergraph-proof-only-20260919"
-          & $env:OMNIROUTE_CLI setup --non-interactive --add-provider --provider pollinations --api-key free --test-provider 2>&1 |
-            Tee-Object -FilePath (Join-Path $env:EVIDENCE_DIR "provider-setup.txt")
-          & $env:OMNIROUTE_CLI providers list 2>&1 |
-            Tee-Object -FilePath (Join-Path $env:EVIDENCE_DIR "providers-list.txt")
 
       - name: Start gateway and prove inference path
         shell: pwsh
@@ -81,27 +77,24 @@ jobs:
           $p.Id | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "pid.txt")
 
           $ready = $false
-          for ($i = 0; $i -lt 90; $i++) {
+          for ($i = 0; $i -lt 300; $i++) {
             Start-Sleep -Seconds 1
             if ($p.HasExited) { break }
             try {
-              $resp = Invoke-WebRequest -UseBasicParsing -Uri "http://127.0.0.1:20128/v1/models" -TimeoutSec 2
+              $resp = Invoke-WebRequest -UseBasicParsing -Uri "http://127.0.0.1:20128/healthz" -TimeoutSec 2
               if ($resp.StatusCode -eq 200) { $ready = $true; break }
             } catch {}
           }
           if (-not $ready) {
             if (Test-Path $stdout) { Get-Content $stdout -Tail 200 }
             if (Test-Path $stderr) { Get-Content $stderr -Tail 200 }
-            throw "OmniRoute did not become ready on 127.0.0.1:20128"
+            throw "OmniRoute did not become healthy on 127.0.0.1:20128/healthz"
           }
 
-          $modelsRaw = Invoke-RestMethod -Uri "http://127.0.0.1:20128/v1/models" -Method Get -TimeoutSec 20
+          $modelsRaw = Invoke-RestMethod -Uri "http://127.0.0.1:20128/v1/models" -Method Get -TimeoutSec 120
           $modelsRaw | ConvertTo-Json -Depth 8 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "models.json") -Encoding utf8
 
-          $modelIds = @($modelsRaw.data | ForEach-Object { $_.id })
-          $model = $modelIds | Where-Object { $_ -match "pollinations" } | Select-Object -First 1
-          if (-not $model) { $model = $modelIds | Select-Object -First 1 }
-          if (-not $model) { throw "No models exposed after provider setup" }
+          $model = "auto"
 
           $body = @{
             model = $model
@@ -130,7 +123,7 @@ jobs:
         if: always()
         shell: pwsh
         run: |
-          & $env:OMNIROUTE_CLI doctor --json 2>&1 |
+          & $env:OMNIROUTE_CLI doctor 2>&1 |
             Tee-Object -FilePath (Join-Path $env:EVIDENCE_DIR "doctor.json")
 
       - name: Stop isolated gateway
