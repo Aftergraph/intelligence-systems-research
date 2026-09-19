@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   lenovo-live-proof:
-    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    runs-on: [self-hosted, Windows, X64]
     timeout-minutes: 20
     steps:
       - name: Live host acceptance
@@ -24,6 +24,10 @@ jobs:
           $ErrorActionPreference = 'Stop'
           $evidence = Join-Path $env:RUNNER_TEMP 'computer-node-lenovo-evidence'
           New-Item -ItemType Directory -Force -Path $evidence | Out-Null
+
+          if ($env:COMPUTERNAME -ne 'JONAS-LENOVO') {
+            throw "wrong_physical_host:$env:COMPUTERNAME"
+          }
 
           [ordered]@{
             computerName = $env:COMPUTERNAME
