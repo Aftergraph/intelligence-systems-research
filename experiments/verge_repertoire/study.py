@@ -112,6 +112,37 @@ def evolve_global_policy(
     )
 
 
+def build_random_repertoire(
+    contexts: tuple[MissionContext, ...],
+    seed: int,
+    evaluations_per_context: int,
+) -> RepertoireEvolutionResult:
+    if evaluations_per_context < 1:
+        raise ValueError("evaluations_per_context must be positive")
+    training = tuple(context for context in contexts if context.split == "TRAIN")
+    if not training:
+        raise ValueError("no TRAIN contexts")
+
+    rng = random.Random(seed)
+    repertoire = Repertoire()
+    evaluations = 0
+
+    for context in training:
+        candidates = [_conservative_policy()] + [
+            _random_policy(rng) for _ in range(evaluations_per_context - 1)
+        ]
+        evaluations += len(candidates)
+        for genome in candidates:
+            outcome = evaluate_in_context(genome, context)
+            repertoire.insert(context, genome, outcome)
+
+    return RepertoireEvolutionResult(
+        repertoire=repertoire.entries(),
+        training_context_ids=tuple(context.context_id for context in training),
+        evaluations=evaluations,
+    )
+
+
 def _restore_repertoire(
     result: RepertoireEvolutionResult,
     contexts_by_id: dict[str, MissionContext],
@@ -153,13 +184,24 @@ def run_development_pilot(
             population_size=population_size,
             generations=generations,
         )
+        random_result = build_random_repertoire(
+            contexts,
+            seed=seed,
+            evaluations_per_context=population_size * (generations + 1),
+        )
         repertoire = _restore_repertoire(repertoire_result, by_id)
+        random_repertoire = _restore_repertoire(random_result, by_id)
 
         search_runs.extend([
             {
                 "seed": seed,
                 "algorithm": "R1-global-evolved",
                 "policy_context_evaluations": global_result.policy_context_evaluations,
+            },
+            {
+                "seed": seed,
+                "algorithm": "R3-random-repertoire",
+                "policy_context_evaluations": random_result.evaluations,
             },
             {
                 "seed": seed,
@@ -172,6 +214,8 @@ def run_development_pilot(
             global_outcome = evaluate_in_context(global_result.genome, context)
             selected = repertoire.select(context)
             repertoire_outcome = evaluate_in_context(selected.genome, context)
+            random_selected = random_repertoire.select(context)
+            random_outcome = evaluate_in_context(random_selected.genome, context)
 
             rows.extend([
                 {
@@ -182,6 +226,16 @@ def run_development_pilot(
                     "feasible": global_outcome.feasible,
                     "verified_success": global_outcome.verified_success,
                     "unauthorized_actions": global_outcome.unauthorized_actions,
+                },
+                {
+                    "seed": seed,
+                    "algorithm": "R3-random-repertoire",
+                    "context_id": context.context_id,
+                    "source_context_id": random_selected.source_context_id,
+                    "utility": random_outcome.utility,
+                    "feasible": random_outcome.feasible,
+                    "verified_success": random_outcome.verified_success,
+                    "unauthorized_actions": random_outcome.unauthorized_actions,
                 },
                 {
                     "seed": seed,
@@ -204,9 +258,17 @@ def run_development_pilot(
                 ),
                 "global_feasible": global_outcome.feasible,
                 "repertoire_feasible": repertoire_outcome.feasible,
+                "random_repertoire_utility": random_outcome.utility,
+                "utility_delta_repertoire_minus_random": (
+                    repertoire_outcome.utility - random_outcome.utility
+                ),
+                "random_repertoire_feasible": random_outcome.feasible,
             })
 
     deltas = [row["utility_delta_repertoire_minus_global"] for row in paired]
+    random_deltas = [
+        row["utility_delta_repertoire_minus_random"] for row in paired
+    ]
     return {
         "experiment_id": "JAR-EXP-0016",
         "phase": "DEVELOPMENT",
@@ -233,6 +295,21 @@ def run_development_pilot(
             ),
             "global_safety_failures": sum(
                 not row["global_feasible"] for row in paired
+            ),
+            "mean_utility_delta_repertoire_minus_random": (
+                mean(random_deltas) if random_deltas else None
+            ),
+            "repertoire_vs_random_wins": sum(
+                delta > 1e-12 for delta in random_deltas
+            ),
+            "repertoire_vs_random_ties": sum(
+                abs(delta) <= 1e-12 for delta in random_deltas
+            ),
+            "repertoire_vs_random_losses": sum(
+                delta < -1e-12 for delta in random_deltas
+            ),
+            "random_repertoire_safety_failures": sum(
+                not row["random_repertoire_feasible"] for row in paired
             ),
         },
         "search_runs": search_runs,
