@@ -69,9 +69,20 @@ jobs:
             throw 'Aftergraph/runtime local clone not found'
           }
 
+          $expectedRuntimeHead = '0e91e3a84b52585405de567cbb897fe61f32e7a9'
           $sourceHead = (git -C $runtimeRepo rev-parse HEAD).Trim()
           $sourceBranch = (git -C $runtimeRepo branch --show-current).Trim()
           $sourceStatus = git -C $runtimeRepo status --porcelain
+          if ($sourceHead -ne $expectedRuntimeHead) {
+            [ordered]@{
+              ok = $false
+              stage = 'exact-head'
+              expectedRuntimeHead = $expectedRuntimeHead
+              observedRuntimeHead = $sourceHead
+              branch = $sourceBranch
+            } | ConvertTo-Json -Depth 5 | Set-Content -Path (Join-Path $evidence 'verdict.json') -Encoding utf8
+            throw "Runtime exact-head mismatch: expected $expectedRuntimeHead observed $sourceHead"
+          }
 
           [ordered]@{
             sourcePath = $runtimeRepo
@@ -105,11 +116,19 @@ jobs:
             $tokenBytes = New-Object byte[] 32
             [System.Security.Cryptography.RandomNumberGenerator]::Fill($tokenBytes)
             $token = [Convert]::ToHexString($tokenBytes).ToLowerInvariant()
+            $authorityBytes = New-Object byte[] 32
+            [System.Security.Cryptography.RandomNumberGenerator]::Fill($authorityBytes)
+            $authority = [Convert]::ToHexString($authorityBytes).ToLowerInvariant()
+            $actionRoot = Join-Path $env:RUNNER_TEMP ('computer-node-action-root-' + [Guid]::NewGuid().ToString('N'))
+            New-Item -ItemType Directory -Force -Path $actionRoot | Out-Null
+            Set-Content -LiteralPath (Join-Path $actionRoot 'read-proof.txt') -Value 'READ_OK' -NoNewline -Encoding utf8
 
             $env:AFTERGRAPH_COMPUTER_NODE_ID = 'jonas-lenovo'
             $env:AFTERGRAPH_COMPUTER_NODE_TOKEN = $token
+            $env:AFTERGRAPH_COMPUTER_NODE_AUTHORITY_TOKEN = $authority
             $env:AFTERGRAPH_COMPUTER_NODE_HOST = '127.0.0.1'
             $env:AFTERGRAPH_COMPUTER_NODE_PORT = '7799'
+            $env:AFTERGRAPH_COMPUTER_NODE_ALLOWED_ROOTS = $actionRoot
 
             $stdout = Join-Path $evidence 'server-stdout.log'
             $stderr = Join-Path $evidence 'server-stderr.log'
@@ -140,6 +159,51 @@ jobs:
               $manifest = Invoke-RestMethod -Uri 'http://127.0.0.1:7799/v1/manifest' -Headers $headers -Method Get -TimeoutSec 10
               $manifest | ConvertTo-Json -Depth 8 | Set-Content -Path (Join-Path $evidence 'manifest.json') -Encoding utf8
 
+              $controlProvider = @($manifest.providers | Where-Object { $_.id -eq 'native-windows-control' })
+              if ($controlProvider.Count -ne 1) { throw 'native-windows-control provider missing or duplicated' }
+              $shellCaps = @($controlProvider[0].capabilities | Where-Object { [string]$_ -like 'computer.shell.*' })
+              if ($shellCaps.Count -ne 0) { throw ('unrestricted shell advertised: ' + ($shellCaps -join ',')) }
+
+              $listBody = @{
+                providerId = 'native-windows-control'
+                capability = 'computer.process.list'
+                input = @{}
+              } | ConvertTo-Json -Depth 5
+              $plist = Invoke-RestMethod -Uri 'http://127.0.0.1:7799/v1/action' -Headers $headers -Method Post -ContentType 'application/json' -Body $listBody -TimeoutSec 15
+              if (-not $plist.ok -or @($plist.output.processes).Count -lt 1) { throw 'process list failed' }
+
+              $readBody = @{
+                providerId = 'native-windows-control'
+                capability = 'computer.files.read'
+                input = @{ path = (Join-Path $actionRoot 'read-proof.txt') }
+              } | ConvertTo-Json -Depth 6
+              $read = Invoke-RestMethod -Uri 'http://127.0.0.1:7799/v1/action' -Headers $headers -Method Post -ContentType 'application/json' -Body $readBody -TimeoutSec 15
+              if (-not $read.ok -or ([string]$read.output.content).Trim() -ne 'READ_OK') { throw 'bounded file read failed' }
+
+              $writeBody = @{
+                providerId = 'native-windows-control'
+                capability = 'computer.files.write'
+                input = @{ path = (Join-Path $actionRoot 'write-proof.txt'); content = 'WRITE_OK' }
+              } | ConvertTo-Json -Depth 6
+
+              $withoutAuthority = $null
+              try {
+                Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:7799/v1/action' -Headers $headers -Method Post -ContentType 'application/json' -Body $writeBody -TimeoutSec 15 | Out-Null
+                $withoutAuthority = 200
+              } catch {
+                $withoutAuthority = $_.Exception.Response.StatusCode.value__
+              }
+              if ($withoutAuthority -ne 403) { throw "effect without authority expected 403, got $withoutAuthority" }
+
+              $effectHeaders = @{
+                Authorization = "Bearer $token"
+                'X-Aftergraph-Authority' = $authority
+              }
+              $write = Invoke-RestMethod -Uri 'http://127.0.0.1:7799/v1/action' -Headers $effectHeaders -Method Post -ContentType 'application/json' -Body $writeBody -TimeoutSec 15
+              if (-not $write.ok) { throw 'bounded file write with authority failed' }
+              $written = (Get-Content -LiteralPath (Join-Path $actionRoot 'write-proof.txt') -Raw).Trim()
+              if ($written -ne 'WRITE_OK') { throw 'bounded file write content mismatch' }
+
               foreach ($depth in @('quick','standard','forensic')) {
                 $body = @{ scope = 'health'; depth = $depth } | ConvertTo-Json
                 $result = Invoke-RestMethod -Uri 'http://127.0.0.1:7799/v1/inspect' -Headers $headers -Method Post -ContentType 'application/json' -Body $body -TimeoutSec 30
@@ -165,12 +229,17 @@ jobs:
                 runtimeBranch = $sourceBranch
                 nodeVersion = $nodeVersion
                 pnpmVersion = $pnpmVersion
-                provider = 'native-windows'
-                capability = 'computer.health.inspect'
+                providers = @('native-windows','native-windows-control')
+                healthCapability = 'computer.health.inspect'
                 authRequired = $true
+                separateEffectAuthority = $true
+                processList = $true
+                boundedFileRead = $true
+                boundedFileWrite = $true
+                unrestrictedShellAdvertised = $false
                 loopbackOnly = $true
                 depths = @('quick','standard','forensic')
-                acceptance = 'physical-lenovo-live'
+                acceptance = 'physical-lenovo-live-v02'
               } | ConvertTo-Json -Depth 6 | Set-Content -Path (Join-Path $evidence 'verdict.json') -Encoding utf8
             }
             finally {
