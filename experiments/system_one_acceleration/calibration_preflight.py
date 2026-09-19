@@ -72,6 +72,18 @@ def evaluate_calibration_preflight(root: Path) -> CalibrationPreflightResult:
             if protocol.get("live_execution_authorized") is not False:
                 blockers.append("calibration_protocol_authorization_drift")
 
+    contracts_path = root / "data" / "jar_exp_0014_question_contracts_v01.json"
+    if not contracts_path.exists():
+        blockers.append("calibration_question_contracts_missing")
+    else:
+        try:
+            contracts_document = _load(contracts_path)
+        except (OSError, json.JSONDecodeError):
+            blockers.append("calibration_question_contracts_invalid_json")
+        else:
+            if contracts_document.get("status") != "FROZEN_PRECALIBRATION":
+                blockers.append("calibration_question_contracts_not_frozen")
+
     gate_path = root / "data" / "jar_exp_0014_calibration_gate_v01.json"
     if not gate_path.exists():
         blockers.append("calibration_gate_missing")
