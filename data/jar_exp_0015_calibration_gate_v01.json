@@ -23,7 +23,7 @@
     "SDK retries remain prohibited.",
     "Hold-out remains separately locked and unauthorized."
   ],
-  "calibration_manifest_sha256": "47fc0bab04459fcb2d1040dccf00b5e74894d06abfa02412ccb9b4db0c4328a7",
+  "calibration_manifest_sha256": "5a0fb1db3afa780137110f07a21345fadc6ed9854b45c81a2faadd7105d98f23",
   "contracts_ref": "data/jar_exp_0015_question_contracts_v01.json",
   "contract_mode": "original_contracts",
   "authorized_stage": "A_B_C_ORIGINAL_CONTRACT_CALIBRATION"
