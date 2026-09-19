@@ -16,6 +16,8 @@
     "Question contracts, workload plan, randomization and critical-risk pack are frozen separately.",
     "Returned TypeSafe model identity must be observed and pinned before confirmatory execution.",
     "Cascade confidence threshold must come from a bounded calibration set excluded from confirmatory analysis.",
-    "No live call or confirmatory execution is authorized by this template."
-  ]
+    "No live call or confirmatory execution is authorized by this template.",
+    "Execution approval must bind the content-addressed execution manifest; any relevant code/workload drift invalidates authorization."
+  ],
+  "execution_manifest_sha256": null
 }
