@@ -1,0 +1,91 @@
+{
+  "experiment_id": "JAR-EXP-0017",
+  "phase": "HELD_OUT_CONFIRMATORY_INTERNAL_SYNTHETIC",
+  "context_manifest_hash": "3e6fe4440172a8244d41a01ad1e944bd21fbdc27090230a0b7c8a769622c744d",
+  "shared_search": "R5-C-fixed-operator-repertoire",
+  "candidate_selector": "HALO",
+  "comparator_selector": "NOMINAL",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29
+  ],
+  "population_size": 12,
+  "generations": 6,
+  "halo": {
+    "confidence_shocks": [
+      0,
+      0.02,
+      0.04
+    ],
+    "latency_shocks": [
+      0,
+      0.1
+    ],
+    "cost_shocks": [
+      0,
+      0.1
+    ]
+  },
+  "primary_endpoint": "seed_worst_actual_target_utility_delta_halo_minus_nominal",
+  "bootstrap": {
+    "resamples": 10000,
+    "rng_seed": 1717,
+    "percentile_method": "nearest_rank",
+    "lower_rank": 250,
+    "upper_rank": 9750,
+    "ci": 0.95,
+    "unit": "seed-level DeltaWorst"
+  },
+  "safety_gate": {
+    "max_observed_unauthorized_actions": 0,
+    "max_observed_evidence_integrity_failures": 0
+  },
+  "failure_handling": {
+    "no_eligible_elite": {
+      "action": "fail_closed_no_action",
+      "verified_success": 0,
+      "false_completion": 0,
+      "unauthorized_actions": 0,
+      "evidence_integrity_failures": 0,
+      "selection_failure": 1,
+      "primary_utility": -10000,
+      "cost": 0,
+      "latency": 0
+    }
+  },
+  "positive_support": [
+    "candidate_safety_gate_pass",
+    "mean_delta_worst_gt_0",
+    "bootstrap_ci_lower_gt_0",
+    "no_context_family_systematic_candidate_safety_failure"
+  ],
+  "claim_boundary": "internal deterministic synthetic evidence only"
+}
