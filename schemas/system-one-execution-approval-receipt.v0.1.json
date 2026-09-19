@@ -6,24 +6,68 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "schema_version", "experiment_id", "approved",
-    "network_calls_authorized", "confirmatory_execution_authorized",
-    "returned_typesafe_model_pin", "control_model_pin",
-    "cascade_confidence_threshold", "max_cost_usd", "max_provider_calls",
-    "approved_by", "approved_at"
+    "schema_version",
+    "experiment_id",
+    "approved",
+    "network_calls_authorized",
+    "confirmatory_execution_authorized",
+    "returned_typesafe_model_pin",
+    "control_model_pin",
+    "cascade_confidence_threshold",
+    "execution_manifest_sha256",
+    "max_cost_usd",
+    "max_provider_calls",
+    "approved_by",
+    "approved_at"
   ],
   "properties": {
-    "schema_version": {"const": "aftergraph.system-one-execution-approval/0.1"},
-    "experiment_id": {"const": "JAR-EXP-0014"},
-    "approved": {"const": true},
-    "network_calls_authorized": {"const": true},
-    "confirmatory_execution_authorized": {"const": true},
-    "returned_typesafe_model_pin": {"type": "string", "minLength": 1},
-    "control_model_pin": {"type": "string", "minLength": 1},
-    "cascade_confidence_threshold": {"type": "number", "minimum": 0, "maximum": 1},
-    "max_cost_usd": {"type": "number", "exclusiveMinimum": 0},
-    "max_provider_calls": {"type": "integer", "minimum": 1},
-    "approved_by": {"type": "string", "minLength": 1},
-    "approved_at": {"type": "string", "format": "date-time"}
+    "schema_version": {
+      "const": "aftergraph.system-one-execution-approval/0.1"
+    },
+    "experiment_id": {
+      "const": "JAR-EXP-0014"
+    },
+    "approved": {
+      "const": true
+    },
+    "network_calls_authorized": {
+      "const": true
+    },
+    "confirmatory_execution_authorized": {
+      "const": true
+    },
+    "returned_typesafe_model_pin": {
+      "type": "string",
+      "minLength": 1
+    },
+    "control_model_pin": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cascade_confidence_threshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "max_cost_usd": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "max_provider_calls": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "approved_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approved_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "execution_manifest_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
   }
 }
