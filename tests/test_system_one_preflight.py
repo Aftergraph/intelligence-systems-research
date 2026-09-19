@@ -8,6 +8,7 @@ from experiments.system_one_acceleration.calibration_receipt import (
     canonical_sha256,
 )
 from experiments.system_one_acceleration.corpus import build_calibration_corpus
+from experiments.system_one_acceleration.integrity import execution_manifest_sha256
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -25,7 +26,22 @@ def test_current_repository_preflight_is_fail_closed_without_network():
         "confirmatory_execution_not_authorized",
         "cost_ceiling_not_frozen",
         "provider_call_ceiling_not_frozen",
+        "execution_manifest_not_frozen",
     }
+
+
+def _seed_execution_manifest_code(root: Path) -> None:
+    module_src = ROOT / "experiments" / "system_one_acceleration"
+    module_dst = root / "experiments" / "system_one_acceleration"
+    shutil.copytree(module_src, module_dst, dirs_exist_ok=True)
+    (root / "schemas").mkdir(parents=True, exist_ok=True)
+    for name in (
+        "system-one-calibration-receipt.v0.1.json",
+        "system-one-decision-receipt.v0.1.json",
+        "system-one-execution-approval-receipt.v0.1.json",
+    ):
+        shutil.copyfile(ROOT / "schemas" / name, root / "schemas" / name)
+    shutil.copyfile(ROOT / "requirements-typesafe.txt", root / "requirements-typesafe.txt")
 
 
 def test_ready_requires_every_gate_to_be_explicit(tmp_path):
@@ -63,6 +79,8 @@ def test_ready_requires_every_gate_to_be_explicit(tmp_path):
         "usage": {"provider_calls": 158, "input_tokens": 1000, "output_tokens": 200},
     }
     (data / "calibration.json").write_text(json.dumps(calibration), encoding="utf-8")
+    _seed_execution_manifest_code(tmp_path)
+    manifest = execution_manifest_sha256(tmp_path)
     (data / "approval.json").write_text(
         json.dumps({
             "schema_version": "aftergraph.system-one-execution-approval/0.1",
@@ -73,6 +91,7 @@ def test_ready_requires_every_gate_to_be_explicit(tmp_path):
             "returned_typesafe_model_pin": "jev-test-pin",
             "control_model_pin": "control-test-pin",
             "cascade_confidence_threshold": 0.9,
+            "execution_manifest_sha256": manifest,
             "max_cost_usd": 5.0,
             "max_provider_calls": 5000,
             "approved_by": "test-owner",
@@ -90,6 +109,7 @@ def test_ready_requires_every_gate_to_be_explicit(tmp_path):
         "execution_approval_ref": "data/approval.json",
         "network_calls_authorized": True,
         "confirmatory_execution_authorized": True,
+        "execution_manifest_sha256": manifest,
         "max_cost_usd": 5.0,
         "max_provider_calls": 5000,
     }
