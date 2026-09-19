@@ -5,10 +5,10 @@
   "independent": true,
   "reviewer": "Aftergraph deterministic semantic verifier v0.1 on isolated GitHub Actions runner",
   "reviewer_kind": "independent_verifier",
-  "reviewed_at": "2026-09-19T08:21:09Z",
-  "calibration_manifest_sha256": "cd8fdf00f2e44dae94687c23f41dfde1d54f3c8b9392170c7df0a51bccc1f5a3",
+  "reviewed_at": "2026-09-19T09:21:57Z",
+  "calibration_manifest_sha256": "6a29bc8e7e168dbeb9e800b260d877ab1e9801be9d61eb2d4c85e2ac22f309f3",
   "falsification_attempts_considered": 18,
-  "evidence_ref": "github-actions:Aftergraph/intelligence-systems-research:run/35431738797:job/105867456688",
+  "evidence_ref": "github-actions:Aftergraph/intelligence-systems-research:run/35434484417:job/105874731093",
   "findings": [
     {
       "severity": "Medium",
