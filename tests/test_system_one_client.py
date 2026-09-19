@@ -23,6 +23,7 @@ class FakeSDK:
     Noul = FakeQuestion
     Choice = FakeQuestion
     Score = FakeQuestion
+    RetryPolicy = FakeQuestion
 
 
 class FakeClient:
@@ -55,12 +56,14 @@ def test_invocation_passes_model_state_and_questions_without_retrying():
         state={"step": 1},
         questions={"continue_loop": object()},
         requested_model="jev-latest",
+        sdk=FakeSDK,
     )
     assert response.model == "jev-test-pin"
     assert latency_ms >= 0
     assert len(client.calls) == 1
     assert client.calls[0]["model"] == "jev-latest"
     assert client.calls[0]["state"] == {"step": 1}
+    assert client.calls[0]["retry"].kwargs == {"max_retries": 0}
 
 
 def test_missing_returned_model_fails_closed():
@@ -74,6 +77,7 @@ def test_missing_returned_model_fails_closed():
             state={},
             questions={"q": object()},
             requested_model="jev-latest",
+            sdk=FakeSDK,
         )
 
 
