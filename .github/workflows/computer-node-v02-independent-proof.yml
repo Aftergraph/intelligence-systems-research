@@ -102,6 +102,8 @@ jobs:
 
             $provider = $manifest.providers | Where-Object id -eq 'native-windows-control'
             if (-not $provider) { throw 'control_provider_missing' }
+            $shellCaps = @($provider.capabilities | Where-Object { [string]$_ -like 'computer.shell.*' })
+            if ($shellCaps.Count -ne 0) { throw ('unrestricted_shell_advertised:' + ($shellCaps -join ',')) }
 
             $readBody = @{
               providerId='native-windows-control'
@@ -130,25 +132,6 @@ jobs:
             $plist = Invoke-RestMethod 'http://127.0.0.1:7799/v1/action' -Method Post -Headers $headers -ContentType 'application/json' -Body $listBody
             if (-not $plist.ok -or $plist.output.processes.Count -lt 1) { throw 'process_list_failed' }
 
-            $shellStartBody = @{providerId='native-windows-control';capability='computer.shell.start';input=@{cwd=$root}} | ConvertTo-Json -Depth 5
-            $shell = Invoke-RestMethod 'http://127.0.0.1:7799/v1/action' -Method Post -Headers $effectHeaders -ContentType 'application/json' -Body $shellStartBody
-            if (-not $shell.ok -or -not $shell.output.sessionId) { throw 'shell_start_failed' }
-            $sid = $shell.output.sessionId
-
-            $shellSendBody = @{providerId='native-windows-control';capability='computer.shell.send';input=@{sessionId=$sid;data="Write-Output 'SHELL_OK'"}} | ConvertTo-Json -Depth 5
-            $send = Invoke-RestMethod 'http://127.0.0.1:7799/v1/action' -Method Post -Headers $effectHeaders -ContentType 'application/json' -Body $shellSendBody
-            if (-not $send.ok) { throw 'shell_send_failed' }
-
-            Start-Sleep -Milliseconds 750
-            $shellOutBody = @{providerId='native-windows-control';capability='computer.shell.output';input=@{sessionId=$sid;cursor=0}} | ConvertTo-Json -Depth 5
-            $out = Invoke-RestMethod 'http://127.0.0.1:7799/v1/action' -Method Post -Headers $headers -ContentType 'application/json' -Body $shellOutBody
-            $joined = (($out.output.output | ForEach-Object text) -join '')
-            if ($joined -notmatch 'SHELL_OK') { throw "shell_output_failed: $joined" }
-
-            $shellStopBody = @{providerId='native-windows-control';capability='computer.shell.stop';input=@{sessionId=$sid}} | ConvertTo-Json -Depth 5
-            $stop = Invoke-RestMethod 'http://127.0.0.1:7799/v1/action' -Method Post -Headers $effectHeaders -ContentType 'application/json' -Body $shellStopBody
-            if (-not $stop.ok) { throw 'shell_stop_failed' }
-
             [ordered]@{
               ok=$true
               runtimeHead=(git rev-parse HEAD).Trim()
@@ -158,7 +141,7 @@ jobs:
               processList=$true
               fileRead=$true
               fileWrite=$true
-              persistentShell=$true
+              unrestrictedShellAdvertised=$false
               loopback='127.0.0.1:7799'
             } | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $env:RUNNER_TEMP 'computer-node-v02-verdict.json')
             Get-Content (Join-Path $env:RUNNER_TEMP 'computer-node-v02-verdict.json')
