@@ -78,6 +78,7 @@ def invoke_system_one(
     state: Any,
     questions: Mapping[str, Any],
     requested_model: str,
+    sdk: Any | None = None,
 ) -> tuple[Any, float]:
     """Invoke an injected TypeSafe-compatible client and return response + latency.
 
@@ -86,11 +87,15 @@ def invoke_system_one(
     """
     if not requested_model:
         raise TypeSafeBoundaryError("requested_model is required")
+    module = _sdk_module(sdk)
+    retry_policy = module.RetryPolicy(max_retries=0)
+
     started = perf_counter()
     response = client.system_one(
         model=requested_model,
         state=state,
         questions=dict(questions),
+        retry=retry_policy,
     )
     latency_ms = (perf_counter() - started) * 1000.0
     returned = getattr(response, "model", None)
