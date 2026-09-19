@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 
 @dataclass(frozen=True)
@@ -22,6 +22,84 @@ REQUIRED_FROZEN_FILES = (
 
 def _load(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _safe_ref(root: Path, ref: Any) -> Path | None:
+    if not isinstance(ref, str) or not ref.strip():
+        return None
+    root_resolved = root.resolve()
+    candidate = (root / ref).resolve()
+    try:
+        candidate.relative_to(root_resolved)
+    except ValueError:
+        return None
+    return candidate
+
+
+def _validate_calibration_receipt(
+    root: Path, gate: Mapping[str, Any], blockers: list[str]
+) -> None:
+    ref = gate.get("calibration_receipt_ref")
+    if not ref:
+        blockers.append("calibration_not_recorded")
+        return
+
+    path = _safe_ref(root, ref)
+    if path is None:
+        blockers.append("calibration_receipt_ref_invalid")
+        return
+    if not path.exists():
+        blockers.append("calibration_receipt_missing")
+        return
+    try:
+        receipt = _load(path)
+    except (OSError, json.JSONDecodeError):
+        blockers.append("calibration_receipt_invalid_json")
+        return
+
+    if receipt.get("schema_version") != "aftergraph.system-one-calibration/0.1":
+        blockers.append("calibration_receipt_schema_invalid")
+    if receipt.get("experiment_id") != "JAR-EXP-0014":
+        blockers.append("calibration_receipt_experiment_mismatch")
+    if receipt.get("returned_model") != gate.get("returned_typesafe_model_pin"):
+        blockers.append("calibration_model_pin_mismatch")
+
+    result = receipt.get("result")
+    if not isinstance(result, Mapping):
+        blockers.append("calibration_receipt_result_invalid")
+        return
+
+    threshold = gate.get("cascade_confidence_threshold")
+    if result.get("threshold") != threshold:
+        blockers.append("calibration_threshold_mismatch")
+    if result.get("feasible") is not True:
+        blockers.append("calibration_not_feasible")
+    if result.get("critical_errors") != 0:
+        blockers.append("calibration_critical_error")
+    total = result.get("total")
+    critical_cases = result.get("critical_cases")
+    if not isinstance(total, int) or isinstance(total, bool) or total < 128:
+        blockers.append("calibration_sample_too_small")
+    if (
+        not isinstance(critical_cases, int)
+        or isinstance(critical_cases, bool)
+        or critical_cases < 30
+    ):
+        blockers.append("calibration_critical_pack_incomplete")
+
+
+def _validate_execution_approval(
+    root: Path, gate: Mapping[str, Any], blockers: list[str]
+) -> None:
+    ref = gate.get("execution_approval_ref")
+    if not ref:
+        blockers.append("execution_approval_not_recorded")
+        return
+    path = _safe_ref(root, ref)
+    if path is None:
+        blockers.append("execution_approval_ref_invalid")
+    elif not path.exists():
+        blockers.append("execution_approval_missing")
 
 
 def evaluate_preflight(root: Path) -> PreflightResult:
@@ -60,11 +138,8 @@ def evaluate_preflight(root: Path) -> PreflightResult:
     elif not 0.0 <= float(threshold) <= 1.0:
         blockers.append("cascade_threshold_invalid")
 
-    if not gate.get("calibration_receipt_ref"):
-        blockers.append("calibration_not_recorded")
-
-    if not gate.get("execution_approval_ref"):
-        blockers.append("execution_approval_not_recorded")
+    _validate_calibration_receipt(root, gate, blockers)
+    _validate_execution_approval(root, gate, blockers)
     if gate.get("network_calls_authorized") is not True:
         blockers.append("network_calls_not_authorized")
     if gate.get("confirmatory_execution_authorized") is not True:
