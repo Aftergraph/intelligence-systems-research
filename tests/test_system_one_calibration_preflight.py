@@ -26,11 +26,7 @@ class ExplodingClient:
 def test_current_calibration_preflight_is_fail_closed():
     result = evaluate_calibration_preflight(ROOT)
     assert result.decision == "NO_GO"
-    assert {
-        "calibration_semantic_review_not_recorded",
-        "calibration_approval_not_recorded",
-        "calibration_network_calls_not_authorized",
-    }.issubset(set(result.blockers))
+    assert set(result.blockers) == {"calibration_semantic_review_not_recorded"}
     assert "calibration_manifest_not_frozen" not in result.blockers
     assert "calibration_cost_hard_stop_unavailable" not in result.blockers
     assert "calibration_provider_call_ceiling_insufficient" not in result.blockers
