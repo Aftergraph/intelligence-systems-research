@@ -8,6 +8,7 @@ from typing import Any, Mapping
 
 from .calibration_receipt import calibration_corpus_sha256, canonical_sha256
 from .corpus import build_calibration_corpus
+from .integrity import execution_manifest_sha256
 
 
 @dataclass(frozen=True)
@@ -181,6 +182,10 @@ def _validate_execution_approval(
         blockers.append("approval_cost_ceiling_mismatch")
     if approval.get("max_provider_calls") != gate.get("max_provider_calls"):
         blockers.append("approval_call_ceiling_mismatch")
+    if approval.get("execution_manifest_sha256") != gate.get(
+        "execution_manifest_sha256"
+    ):
+        blockers.append("approval_execution_manifest_mismatch")
 
 
 def evaluate_preflight(root: Path) -> PreflightResult:
@@ -207,6 +212,18 @@ def evaluate_preflight(root: Path) -> PreflightResult:
         return PreflightResult("NO_GO", tuple(blockers))
 
     gate = _load(gate_path)
+
+    execution_manifest_pin = gate.get("execution_manifest_sha256")
+    if not isinstance(execution_manifest_pin, str) or len(execution_manifest_pin) != 64:
+        blockers.append("execution_manifest_not_frozen")
+    else:
+        try:
+            actual_execution_manifest = execution_manifest_sha256(root)
+        except (OSError, ValueError):
+            blockers.append("execution_manifest_unavailable")
+        else:
+            if actual_execution_manifest != execution_manifest_pin:
+                blockers.append("execution_manifest_mismatch")
 
     if not gate.get("requested_typesafe_model"):
         blockers.append("typesafe_requested_model_missing")
