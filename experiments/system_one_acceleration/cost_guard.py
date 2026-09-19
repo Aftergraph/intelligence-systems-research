@@ -247,11 +247,18 @@ class BudgetLedger:
         with closing(self._connect()) as db:
             db.execute("BEGIN IMMEDIATE")
             existing = db.execute(
-                "SELECT request_sha256 FROM reservations "
+                "SELECT request_sha256, reserved_microusd, status FROM reservations "
                 "WHERE run_id = ? AND request_id = ?",
                 (self.run_id, request_id),
             ).fetchone()
             if existing is not None:
+                same_request = (
+                    existing[0] == request_sha256
+                    and int(existing[1]) == reserved_microusd
+                )
+                if same_request and existing[2] == "RESERVED":
+                    db.execute("COMMIT")
+                    return
                 db.execute("ROLLBACK")
                 raise BudgetReplayError("request id already reserved; replay denied")
             used = int(
@@ -269,6 +276,29 @@ class BudgetLedger:
                 "(run_id, request_id, request_sha256, reserved_microusd, status) "
                 "VALUES (?, ?, ?, ?, 'RESERVED')",
                 (self.run_id, request_id, request_sha256, reserved_microusd),
+            )
+            db.execute("COMMIT")
+
+    def begin_transport(
+        self, *, request_id: str, request_sha256: str
+    ) -> None:
+        with closing(self._connect()) as db:
+            db.execute("BEGIN IMMEDIATE")
+            row = db.execute(
+                "SELECT request_sha256, status FROM reservations "
+                "WHERE run_id = ? AND request_id = ?",
+                (self.run_id, request_id),
+            ).fetchone()
+            if row is None or row[0] != request_sha256:
+                db.execute("ROLLBACK")
+                raise CostGuardError("reservation binding mismatch")
+            if row[1] != "RESERVED":
+                db.execute("ROLLBACK")
+                raise BudgetReplayError("transport already claimed or completed")
+            db.execute(
+                "UPDATE reservations SET status='TRANSPORT_STARTED' "
+                "WHERE run_id=? AND request_id=?",
+                (self.run_id, request_id),
             )
             db.execute("COMMIT")
 
@@ -290,9 +320,9 @@ class BudgetLedger:
             if row is None or row[0] != request_sha256:
                 db.execute("ROLLBACK")
                 raise CostGuardError("reservation binding mismatch")
-            if row[2] != "RESERVED":
+            if row[2] != "TRANSPORT_STARTED":
                 db.execute("ROLLBACK")
-                raise BudgetReplayError("reservation already completed")
+                raise BudgetReplayError("reservation is not in transport state")
             if actual_cost_microusd > int(row[1]):
                 db.execute("ROLLBACK")
                 raise CostGuardError("actual cost exceeded pre-request reservation")
@@ -352,6 +382,13 @@ class PreRequestCostGuard:
             reserved_microusd=reserved,
             projected_state=projected_state,
             contract=frozen_contract,
+        )
+
+    def begin_transport(self, reservation: CostReservation) -> None:
+        verify_live_pricing(self.spec, self.pricing_fetcher)
+        self.ledger.begin_transport(
+            request_id=reservation.request_id,
+            request_sha256=reservation.request_sha256,
         )
 
     def complete_request(
