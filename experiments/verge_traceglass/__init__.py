@@ -1,1 +1,3 @@
-"""JAR-EXP-0022 VERGE Traceglass evidence-readiness study."""\n\nEXPERIMENT_ID = "JAR-EXP-0022"\n
+"""JAR-EXP-0022 VERGE Traceglass evidence-readiness study."""
+
+EXPERIMENT_ID = "JAR-EXP-0022"
