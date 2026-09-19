@@ -10,6 +10,7 @@
   "notes": [
     "This gate controls bounded calibration only; it does not authorize confirmatory execution.",
     "The frozen corpus currently contains 158 cases and the calibration runner performs no retries.",
-    "Approval must bind requested model, cost ceiling, provider-call ceiling, principal and timestamp."
+    "Approval must bind requested model, cost ceiling, provider-call ceiling, principal and timestamp.",
+    "Provider-call ceiling is a technical call bound, not a USD hard stop. Calibration remains NO_GO until a pre-request cost hard-stop mechanism is implemented."
   ]
 }
