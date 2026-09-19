@@ -1,14 +1,19 @@
 # ADR: TypeSafe/jev output is bound to EGAC tier_1 and never crosses the authority boundary
 
-- **Status:** Proposed — implemented and verified on a fresh LOCAL unmerged worktree branch
-  (`feat/typesafe-egac-bridge` @ `6be6d80`, cut from OER `4a545fb`); not merged, not pushed,
-  no pre-existing tree modified. Awaiting owner ratification/merge.
+- **Status:** Accepted — owner-ratified by delegation on 2026-09-20 (owner instruction:
+  "you decide based on all knowledge, approved for all tasks"); implemented and verified on
+  a fresh LOCAL unmerged worktree branch (`feat/typesafe-egac-bridge` @ `6be6d80`, cut from
+  OER `4a545fb`); not merged, not pushed, no pre-existing tree modified. The rule is
+  ratified; the implementation merge onto `fix/oer-p0-authority-boundary` (never canonical
+  main — see Precondition) remains the owner's coupled act.
 - **Date:** 2026-09-19
 - **Scope:** JAR-EXP-0015 cross-repo evidence package. Governs how Fihim's TypeSafe
   semantic judgments may be consumed by war-room's Evidence-Gated Autonomy Controller
   (EGAC).
 - **Deciders:** Aftergraph research (author: deterministic build agent; ratification:
-  human owner — this ADR records a proposed rule, it does not enact one).
+  human owner, recorded here by delegation on 2026-09-20 — this ADR now records an accepted
+  rule; the bridge merge is still the owner's to enact, and this document authorizes no
+  provider call).
 
 ## Context
 

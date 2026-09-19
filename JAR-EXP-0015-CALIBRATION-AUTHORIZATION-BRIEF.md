@@ -1,7 +1,8 @@
 # JAR-EXP-0015 — Calibration Authorization Brief
 
-**Status: NOT AUTHORIZED. This brief authorizes nothing. It exists so that the two
-remaining human gates can be closed deliberately rather than by accident.**
+**Status: NOT AUTHORIZED. This brief authorizes nothing. Gate A (the independent
+semantic review) is now closed by a real isolated CI run; the one remaining human gate
+is Gate B (owner approval), whose signature this brief deliberately does not cast.**
 
 Date prepared: 2026-09-20
 Predecessor: JAR-EXP-0014 (returned `CALIBRATION_COMPLETE_NO_THRESHOLD`)
@@ -60,16 +61,19 @@ The preflight requires a record at the gate's `semantic_review_ref` carrying
 `independent: true`, a `PASS`/`PASS_WITH_FINDINGS` verdict, the current manifest pin,
 at least 32 falsification attempts, and an `evidence_ref` pointing at a hosted run.
 
-The mechanism to produce it now exists: the `jar-exp-0015-semantic-review` job in
-`.github/workflows/ci.yml` (added in `fad7fb9`) runs
-`scripts/verify_jar_exp_0015_semantic_review.py` on an isolated GitHub Actions runner
-and prints the verdict, the falsification count and the pinned manifest hash. Push the
-branch, let that job run, and record its run/job URL as `evidence_ref` — exactly as
-JAR-EXP-0014 did
-(`github-actions:Aftergraph/intelligence-systems-research:run/35434484417`). The point
-of the field is that the verification happened somewhere without write access to the
-thing being verified. Writing the record locally would satisfy the schema and defeat
-the control, so it has not been done.
+**Gate A is CLOSED.** The `jar-exp-0015-semantic-review` job in `.github/workflows/ci.yml`
+(added in `fad7fb9`, checkout hardened with `fetch-depth: 0` in `1d5cb40` so check 36 sees
+full history) ran `scripts/verify_jar_exp_0015_semantic_review.py` on an isolated GitHub
+Actions runner against commit `1d5cb40` and concluded `success`: verdict
+`PASS_WITH_FINDINGS`, 38 falsification attempts, `calibration_manifest_sha256 = dc5d7a94…`.
+Its real output was transcribed verbatim into
+`data/jar_exp_0015_semantic_review_20260919.json` and wired into the gate's
+`semantic_review_ref` (commit `1a2dc7f`), exactly as JAR-EXP-0014 did
+(`github-actions:Aftergraph/intelligence-systems-research:run/35434484417`). The point of
+the field is that the verification happened somewhere without write access to the thing
+being verified — this run did (a fresh GitHub-hosted clone), so the record is truthful. Its
+`evidence_ref` is
+`github-actions:Aftergraph/intelligence-systems-research:run/35473954572:job/105979835931`.
 
 ### Gate B: owner approval + budget authorization
 
@@ -126,14 +130,13 @@ the difference between this experiment and 0014's.
 
 ## 4. Exact steps to authorize
 
-1. **Produce the semantic review.** Push the branch; the
-   `jar-exp-0015-semantic-review` CI job runs the verifier on an isolated hosted
-   runner and prints the verdict, the falsification count and the pinned manifest
-   hash. Record that run/job URL, the verdict and `falsification_attempts_considered`
-   into `data/jar_exp_0015_semantic_review_<YYYYMMDD>.json` with
-   `calibration_manifest_sha256 = dc5d7a94…` and `independent: true`. The
-   gate-plumbing dry-run in `evidence/typesafe-cross-repo/` emits a validated
-   `DRY-RUN-TEMPLATE` of exactly this record — copy its shape, never its values.
+1. **Produce the semantic review.** ✅ DONE (commit `1a2dc7f`). The branch was pushed and
+   the `jar-exp-0015-semantic-review` CI job dispatched on an isolated hosted runner (run
+   `35473954572` / job `105979835931`, `success`); its real verdict, 38 falsification
+   attempts and `calibration_manifest_sha256 = dc5d7a94…` were transcribed into
+   `data/jar_exp_0015_semantic_review_20260919.json` and wired into the gate's
+   `semantic_review_ref`. Nothing further is needed here unless a manifest-tracked file
+   changes — which moves the pin and invalidates the record.
 2. **Sign the approval.** Copy `data/jar_exp_0015_calibration_approval_PENDING.json`
    to `data/jar_exp_0015_calibration_approval_<YYYYMMDD>.json`. Set `approved: true`
    and `network_calls_authorized: true`. Fill `approved_by` and `approved_at`
@@ -203,19 +206,30 @@ external-provider limitation rather than a local authority bypass.
 
 ## 7. What is committed, and what is left to a human
 
-The 0015 execution path is now committed on `feat/jar-exp-0015-execution-path` across
-eight commits (`1984577` dataset freeze → `4cc9ddf` protocol v0.4 activation →
-`0b771f0` guarded calibration + semantic verifier → `f49aa91` pending approval packet +
-this brief → `7646966`/`38ead85` cross-repo TypeSafe evidence → `fad7fb9` the
-`jar-exp-0015-semantic-review` CI job → `add0042` the gate-plumbing dry-run proof). The
-content-addressed pin `dc5d7a94…` reproduces from `HEAD`, not merely from a working
-tree.
+The 0015 execution path is committed on `feat/jar-exp-0015-execution-path` and pushed to
+`origin` across eleven commits (`1984577` dataset freeze → `4cc9ddf` protocol v0.4
+activation → `0b771f0` guarded calibration + semantic verifier → `f49aa91` pending
+approval packet + this brief → `7646966`/`38ead85` cross-repo TypeSafe evidence →
+`fad7fb9` the `jar-exp-0015-semantic-review` CI job → `add0042` the gate-plumbing dry-run
+proof → `7a3d2cf` this brief's first refresh → `1d5cb40` the `fetch-depth: 0` checkout
+hardening → `1a2dc7f` the Gate A close). The content-addressed pin `dc5d7a94…` reproduces
+from `HEAD`, not merely from a working tree.
 
 The only working-tree dirt left is unrelated to 0015 and none of it is a manifest path:
 the signed `dist/*` submission bundles, `data/durability_fault_injection_results.json`,
 and untracked `live_benchmark_dry_runs/`. They were deliberately never staged.
 
-What remains is exactly the two human gates in section 2 — Gate A (the isolated-runner
-semantic review, whose mechanism is now wired) and Gate B (the owner signature on the
-PENDING approval packet). Neither can be closed from inside this repo, and neither has
-been fabricated here. Everything else is built, verified and ready for them.
+Gate A is closed by a real isolated CI run (see section 2). **What remains is one human
+gate and two execution prerequisites:**
+
+- **Gate B — owner signature.** Sign `data/jar_exp_0015_calibration_approval_PENDING.json`
+  per section 4 step 2, then wire `owner_approval_ref` and set the gate's
+  `network_calls_authorized: true`. This is the only gate left, and it is yours by the
+  control's design — the agent that executes must not be the agent that authorizes the
+  spend. It has not been fabricated here.
+- **Execution prerequisites.** `pip install typesafe-sdk==0.7.0` (it is not installed in
+  this clone) and set `TYPESAFE_API_KEY`. Until both are present the live script fails at
+  `import typesafe_sdk` regardless of the gate state.
+
+After those, `--preflight-only` exits `0` and the live calibration runs. Everything else is
+built, verified and ready.

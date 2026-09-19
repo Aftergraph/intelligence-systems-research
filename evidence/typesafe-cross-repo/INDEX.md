@@ -3,7 +3,9 @@
 - **Experiment:** JAR-EXP-0015 (parent JAR-EXP-0014)
 - **Date:** 2026-09-20 (initial package 2026-09-19)
 - **Status:** Proven by execution. One LOCAL unmerged implementation (the war-room
-  bridge); no foreign tree merged or pushed. JAR-EXP-0015 remains **NO_GO**.
+  bridge); no foreign tree merged or pushed. JAR-EXP-0015 remains **NO_GO** (owner
+  approval and network authorization still open; the independent semantic review is
+  closed by isolated CI run 35473954572 / commit 1a2dc7f).
 - **Frozen 0015 calibration manifest pin:** `dc5d7a94f333908abf09aebe1ca1dbf08f965e604eb2919d0b7a9ca70e149762`
 
 Every artifact is content-addressed by SHA-256 and bound to the exact foreign
@@ -48,13 +50,13 @@ editing the Hermes cron spec, are owner actions.
 
 | File | SHA-256 | Role |
 |------|---------|------|
-| `ADR-TYPESAFE-ADVISORY-BOUNDARY.md` | `734f61a055e0a027da770d8c5571cf545b91cefa3d7f7dbc458cb0dd1273b464` | Architecture rule: advisory-only, tier_1-bound, OER precondition |
+| `ADR-TYPESAFE-ADVISORY-BOUNDARY.md` | `cb3e2ee6fc7eacee64a8e21de4f02a7be6f0a0ec5568e120941f03d0aa09f836` | Architecture rule: advisory-only, tier_1-bound, OER precondition |
 | `canary-output.txt` | `ebd814b7f39bac7c08cc4f27f9b373fd6a0430f46a8719b51fad3a7ee1757210` | Captured canary output (2/2 PASS) |
 | `CROSS-REPO-ALIGNMENT-REPORT.md` | `9638968bfadc04702f63bebbce6668a1d0220162ab561a43912c00fc0418b1a7` | The alignment proof across all repos (24 checks, 0 failures) |
 | `crossrepo-e2e-output.txt` | `f6a19212020d103be0d70f72b5599be21255a7005921f81efc93afd468472fb3` | Captured e2e output (8/8 PASS) |
 | `FIHIM-COVERAGE-REVIEW.md` | `77125ed9fa9b5c817329ad6f9de9ebc87a1c6c7b04be5411d6afb1f5f13e9e93` | Emitter-side review: suite passes, no change warranted |
 | `gate-dry-run-output.txt` | `94780ad6f3edf0026836ceafc663f7f48a90dcaad41014b414c292ceda86064e` | Captured dry-run output (15/15 PASS; synthetic records are temp-only, deleted on exit) |
-| `generate_index.py` | `2d51c09d350154440320196bc9c64df8d1c804d60d011b1edf00adbde52bc4b2` | This generator, so the INDEX is reproducible and itself content-addressed |
+| `generate_index.py` | `d98878bbbeef6d09ab4991de703b926481d9b38a4fb4a6440b48cf72a2b734c5` | This generator, so the INDEX is reproducible and itself content-addressed |
 | `hermes-canary-job.proposed.json` | `5068607473e8ee20ea3d68092f59e50c7031e6589b9b9b172b072811808d2045` | Exact proposed additive cron stanza (machine-validated; not applied) |
 | `HERMES-CANARY-PROPOSAL.md` | `42c0fbe2bfca67248ae1dcf658a665b86c8d5a2944a2c94049e81e9eb5e72f2e` | Proposed additive Hermes cron job (not applied) |
 | `hermes-pin-projection-smoke.mjs` | `ec4f8c6a5b4cb74238984d6c14c93f01568da04f415bb1eb0b2113b82a6fe36f` | Proof 3 canary: pin-smoke + projection-smoke (read-only, zero-network) |
@@ -113,7 +115,10 @@ zero-network is enforced by construction, not promised.
 - **No foreign tree is merged or pushed.** War-room (do-not-merge), Fihim, and the
   Hermes `ci-local`-gated convergence branch (4 dirty `renos/` files preserved) are
   read-only. The one exception is the deliberate LOCAL unmerged bridge branch above.
-- **JAR-EXP-0015 stays NO_GO.** No live TypeSafe/jev provider call is authorized; the
-  three human gates (semantic review, owner approval, network authorization) remain
-  closed. This package records authority; it never creates it.
+- **JAR-EXP-0015 stays NO_GO.** No live TypeSafe/jev provider call is authorized, and
+  this package records authority; it never creates it. Of the three human gates (semantic
+  review, owner approval, network authorization), all three were open when this package was
+  built; the independent semantic review has since been closed by a real isolated CI run
+  (commit 1a2dc7f, run 35473954572), while owner approval and network authorization remain
+  open and are the owner's alone to cast.
 
