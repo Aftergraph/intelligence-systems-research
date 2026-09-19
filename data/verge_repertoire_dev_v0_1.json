@@ -1,0 +1,2884 @@
+{
+  "configuration": {
+    "generations": 6,
+    "population_size": 12,
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29
+    ]
+  },
+  "confirmatory": false,
+  "context_manifest_hash": "88dbb5c7292de29ed4029bd565864b77e7e8fafa8b4c3488a3fab1e901e21069",
+  "development_context_ids": [
+    "DEV-LATENCY-1",
+    "DEV-RISK-1",
+    "DEV-RECOVERY-1"
+  ],
+  "evidence_class": "EXPLORATORY_DEVELOPMENT",
+  "experiment_id": "JAR-EXP-0016",
+  "held_out_evaluated": false,
+  "paired_context_rows": [
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.5258875,
+      "seed": 0,
+      "utility_delta_repertoire_minus_global": 0.3939946726229664
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 0,
+      "utility_delta_repertoire_minus_global": 0.09406961154131466
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.94894451505307,
+      "seed": 0,
+      "utility_delta_repertoire_minus_global": 0.1481769973611904
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.6081375,
+      "seed": 1,
+      "utility_delta_repertoire_minus_global": 0.4762446726229683
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.97048854609122,
+      "seed": 1,
+      "utility_delta_repertoire_minus_global": 0.0
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.96423099649873,
+      "seed": 1,
+      "utility_delta_repertoire_minus_global": 0.16346347880684675
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.44363750000001,
+      "seed": 2,
+      "utility_delta_repertoire_minus_global": 0.31174467262297867
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 2,
+      "utility_delta_repertoire_minus_global": 0.09406961154131466
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.96423099649873,
+      "seed": 2,
+      "utility_delta_repertoire_minus_global": 0.16346347880684675
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.02571055659008,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.58162147084387,
+      "seed": 3,
+      "utility_delta_repertoire_minus_global": 0.5559109142537864
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.95714871477767,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 3,
+      "utility_delta_repertoire_minus_global": 0.1074094428548591
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.77948855613091,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.96423099649873,
+      "seed": 3,
+      "utility_delta_repertoire_minus_global": 0.1847424403678133
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.6081375,
+      "seed": 4,
+      "utility_delta_repertoire_minus_global": 0.4762446726229683
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 4,
+      "utility_delta_repertoire_minus_global": 0.09406961154131466
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.80076751769188,
+      "seed": 4,
+      "utility_delta_repertoire_minus_global": 0.0
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.49541887208828,
+      "seed": 5,
+      "utility_delta_repertoire_minus_global": 0.36352604471125005
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.05437140956052,
+      "seed": 5,
+      "utility_delta_repertoire_minus_global": 0.08388286346929874
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.96423099649873,
+      "seed": 5,
+      "utility_delta_repertoire_minus_global": 0.16346347880684675
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.6081375,
+      "seed": 6,
+      "utility_delta_repertoire_minus_global": 0.4762446726229683
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 6,
+      "utility_delta_repertoire_minus_global": 0.09406961154131466
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.96423099649873,
+      "seed": 6,
+      "utility_delta_repertoire_minus_global": 0.16346347880684675
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.49541887208828,
+      "seed": 7,
+      "utility_delta_repertoire_minus_global": 0.36352604471125005
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 7,
+      "utility_delta_repertoire_minus_global": 0.09406961154131466
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.96423099649873,
+      "seed": 7,
+      "utility_delta_repertoire_minus_global": 0.16346347880684675
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.02571055659008,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.5258875,
+      "seed": 8,
+      "utility_delta_repertoire_minus_global": 0.5001769434099117
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.95714871477767,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 8,
+      "utility_delta_repertoire_minus_global": 0.1074094428548591
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.77948855613091,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.94894451505307,
+      "seed": 8,
+      "utility_delta_repertoire_minus_global": 0.16945595892215692
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.49541887208828,
+      "seed": 9,
+      "utility_delta_repertoire_minus_global": 0.36352604471125005
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 9,
+      "utility_delta_repertoire_minus_global": 0.09406961154131466
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.80076751769188,
+      "seed": 9,
+      "utility_delta_repertoire_minus_global": 0.0
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.6081375,
+      "seed": 10,
+      "utility_delta_repertoire_minus_global": 0.4762446726229683
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.05437140956052,
+      "seed": 10,
+      "utility_delta_repertoire_minus_global": 0.08388286346929874
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.80076751769188,
+      "seed": 10,
+      "utility_delta_repertoire_minus_global": 0.0
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.5258875,
+      "seed": 11,
+      "utility_delta_repertoire_minus_global": 0.3939946726229664
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.95714871477767,
+      "seed": 11,
+      "utility_delta_repertoire_minus_global": -0.013339831313544437
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.94894451505307,
+      "seed": 11,
+      "utility_delta_repertoire_minus_global": 0.1481769973611904
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.6081375,
+      "seed": 12,
+      "utility_delta_repertoire_minus_global": 0.4762446726229683
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.05437140956052,
+      "seed": 12,
+      "utility_delta_repertoire_minus_global": 0.08388286346929874
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.96423099649873,
+      "seed": 12,
+      "utility_delta_repertoire_minus_global": 0.16346347880684675
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.6081375,
+      "seed": 13,
+      "utility_delta_repertoire_minus_global": 0.4762446726229683
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 13,
+      "utility_delta_repertoire_minus_global": 0.09406961154131466
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.94894451505307,
+      "seed": 13,
+      "utility_delta_repertoire_minus_global": 0.1481769973611904
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.02571055659008,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.5102496283129,
+      "seed": 14,
+      "utility_delta_repertoire_minus_global": 0.4845390717228213
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.95714871477767,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 14,
+      "utility_delta_repertoire_minus_global": 0.1074094428548591
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.77948855613091,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.94894451505307,
+      "seed": 14,
+      "utility_delta_repertoire_minus_global": 0.16945595892215692
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.6081375,
+      "seed": 15,
+      "utility_delta_repertoire_minus_global": 0.4762446726229683
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.97048854609122,
+      "seed": 15,
+      "utility_delta_repertoire_minus_global": 0.0
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.96423099649873,
+      "seed": 15,
+      "utility_delta_repertoire_minus_global": 0.16346347880684675
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.02571055659008,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.5258875,
+      "seed": 16,
+      "utility_delta_repertoire_minus_global": 0.5001769434099117
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.95714871477767,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 16,
+      "utility_delta_repertoire_minus_global": 0.1074094428548591
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.77948855613091,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.96423099649873,
+      "seed": 16,
+      "utility_delta_repertoire_minus_global": 0.1847424403678133
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.6081375,
+      "seed": 17,
+      "utility_delta_repertoire_minus_global": 0.4762446726229683
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 17,
+      "utility_delta_repertoire_minus_global": 0.09406961154131466
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.96423099649873,
+      "seed": 17,
+      "utility_delta_repertoire_minus_global": 0.16346347880684675
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.32458331527565,
+      "seed": 18,
+      "utility_delta_repertoire_minus_global": 0.19269048789861642
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 18,
+      "utility_delta_repertoire_minus_global": 0.09406961154131466
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.96423099649873,
+      "seed": 18,
+      "utility_delta_repertoire_minus_global": 0.16346347880684675
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.6081375,
+      "seed": 19,
+      "utility_delta_repertoire_minus_global": 0.4762446726229683
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 19,
+      "utility_delta_repertoire_minus_global": 0.09406961154131466
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.94917124999999,
+      "seed": 19,
+      "utility_delta_repertoire_minus_global": 0.1484037323081111
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.6136287032717,
+      "seed": 20,
+      "utility_delta_repertoire_minus_global": 0.48173587589467104
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 20,
+      "utility_delta_repertoire_minus_global": 0.09406961154131466
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.80076751769188,
+      "seed": 20,
+      "utility_delta_repertoire_minus_global": 0.0
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.53407608854165,
+      "seed": 21,
+      "utility_delta_repertoire_minus_global": 0.4021832611646232
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 21,
+      "utility_delta_repertoire_minus_global": 0.09406961154131466
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.96423099649873,
+      "seed": 21,
+      "utility_delta_repertoire_minus_global": 0.16346347880684675
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.6081375,
+      "seed": 22,
+      "utility_delta_repertoire_minus_global": 0.4762446726229683
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 22,
+      "utility_delta_repertoire_minus_global": 0.09406961154131466
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.94894451505307,
+      "seed": 22,
+      "utility_delta_repertoire_minus_global": 0.1481769973611904
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.48577320433536,
+      "seed": 23,
+      "utility_delta_repertoire_minus_global": 0.35388037695832963
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 23,
+      "utility_delta_repertoire_minus_global": 0.09406961154131466
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.80076751769188,
+      "seed": 23,
+      "utility_delta_repertoire_minus_global": 0.0
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.5102496283129,
+      "seed": 24,
+      "utility_delta_repertoire_minus_global": 0.378356800935876
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.05437140956052,
+      "seed": 24,
+      "utility_delta_repertoire_minus_global": 0.08388286346929874
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.96423099649873,
+      "seed": 24,
+      "utility_delta_repertoire_minus_global": 0.16346347880684675
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.6136287032717,
+      "seed": 25,
+      "utility_delta_repertoire_minus_global": 0.48173587589467104
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 25,
+      "utility_delta_repertoire_minus_global": 0.09406961154131466
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.96423099649873,
+      "seed": 25,
+      "utility_delta_repertoire_minus_global": 0.16346347880684675
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.6081375,
+      "seed": 26,
+      "utility_delta_repertoire_minus_global": 0.4762446726229683
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 26,
+      "utility_delta_repertoire_minus_global": 0.09406961154131466
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.96423099649873,
+      "seed": 26,
+      "utility_delta_repertoire_minus_global": 0.16346347880684675
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.5102496283129,
+      "seed": 27,
+      "utility_delta_repertoire_minus_global": 0.378356800935876
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 27,
+      "utility_delta_repertoire_minus_global": 0.09406961154131466
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.96423099649873,
+      "seed": 27,
+      "utility_delta_repertoire_minus_global": 0.16346347880684675
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.6081375,
+      "seed": 28,
+      "utility_delta_repertoire_minus_global": 0.4762446726229683
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 28,
+      "utility_delta_repertoire_minus_global": 0.09406961154131466
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.96423099649873,
+      "seed": 28,
+      "utility_delta_repertoire_minus_global": 0.16346347880684675
+    },
+    {
+      "context_id": "DEV-LATENCY-1",
+      "global_feasible": true,
+      "global_utility": 103.13189282737703,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.41741647179427,
+      "seed": 29,
+      "utility_delta_repertoire_minus_global": 0.2855236444172391
+    },
+    {
+      "context_id": "DEV-RISK-1",
+      "global_feasible": true,
+      "global_utility": 102.97048854609122,
+      "repertoire_feasible": true,
+      "repertoire_utility": 103.06455815763253,
+      "seed": 29,
+      "utility_delta_repertoire_minus_global": 0.09406961154131466
+    },
+    {
+      "context_id": "DEV-RECOVERY-1",
+      "global_feasible": true,
+      "global_utility": 102.80076751769188,
+      "repertoire_feasible": true,
+      "repertoire_utility": 102.96423099649873,
+      "seed": 29,
+      "utility_delta_repertoire_minus_global": 0.16346347880684675
+    }
+  ],
+  "phase": "DEVELOPMENT",
+  "rows": [
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 0,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 0,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.5258875,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 0,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 0,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 0,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 0,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.94894451505307,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 1,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 1,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.6081375,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 1,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 1,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 1,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 1,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.96423099649873,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 2,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 2,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.44363750000001,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 2,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 2,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 2,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 2,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.96423099649873,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 3,
+      "unauthorized_actions": 0,
+      "utility": 103.02571055659008,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 3,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.58162147084387,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 3,
+      "unauthorized_actions": 0,
+      "utility": 102.95714871477767,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 3,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 3,
+      "unauthorized_actions": 0,
+      "utility": 102.77948855613091,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 3,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.96423099649873,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 4,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 4,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.6081375,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 4,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 4,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 4,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 4,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 5,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 5,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.49541887208828,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 5,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 5,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.05437140956052,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 5,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 5,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.96423099649873,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 6,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 6,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.6081375,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 6,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 6,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 6,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 6,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.96423099649873,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 7,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 7,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.49541887208828,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 7,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 7,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 7,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 7,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.96423099649873,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 8,
+      "unauthorized_actions": 0,
+      "utility": 103.02571055659008,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 8,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.5258875,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 8,
+      "unauthorized_actions": 0,
+      "utility": 102.95714871477767,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 8,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 8,
+      "unauthorized_actions": 0,
+      "utility": 102.77948855613091,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 8,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.94894451505307,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 9,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 9,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.49541887208828,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 9,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 9,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 9,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 9,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 10,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 10,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.6081375,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 10,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 10,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.05437140956052,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 10,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 10,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 11,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 11,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.5258875,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 11,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 11,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 102.95714871477767,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 11,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 11,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.94894451505307,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 12,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 12,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.6081375,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 12,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 12,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.05437140956052,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 12,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 12,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.96423099649873,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 13,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 13,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.6081375,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 13,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 13,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 13,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 13,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.94894451505307,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 14,
+      "unauthorized_actions": 0,
+      "utility": 103.02571055659008,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 14,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.5102496283129,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 14,
+      "unauthorized_actions": 0,
+      "utility": 102.95714871477767,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 14,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 14,
+      "unauthorized_actions": 0,
+      "utility": 102.77948855613091,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 14,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.94894451505307,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 15,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 15,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.6081375,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 15,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 15,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 15,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 15,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.96423099649873,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 16,
+      "unauthorized_actions": 0,
+      "utility": 103.02571055659008,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 16,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.5258875,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 16,
+      "unauthorized_actions": 0,
+      "utility": 102.95714871477767,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 16,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 16,
+      "unauthorized_actions": 0,
+      "utility": 102.77948855613091,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 16,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.96423099649873,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 17,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 17,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.6081375,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 17,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 17,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 17,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 17,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.96423099649873,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 18,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 18,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.32458331527565,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 18,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 18,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 18,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 18,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.96423099649873,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 19,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 19,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.6081375,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 19,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 19,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 19,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 19,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.94917124999999,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 20,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 20,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.6136287032717,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 20,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 20,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 20,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 20,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 21,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 21,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.53407608854165,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 21,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 21,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 21,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 21,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.96423099649873,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 22,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 22,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.6081375,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 22,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 22,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 22,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 22,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.94894451505307,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 23,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 23,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.48577320433536,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 23,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 23,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 23,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 23,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 24,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 24,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.5102496283129,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 24,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 24,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.05437140956052,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 24,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 24,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.96423099649873,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 25,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 25,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.6136287032717,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 25,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 25,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 25,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 25,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.96423099649873,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 26,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 26,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.6081375,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 26,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 26,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 26,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 26,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.96423099649873,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 27,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 27,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.5102496283129,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 27,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 27,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 27,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 27,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.96423099649873,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 28,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 28,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.6081375,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 28,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 28,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 28,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 28,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.96423099649873,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 29,
+      "unauthorized_actions": 0,
+      "utility": 103.13189282737703,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-LATENCY-1",
+      "feasible": true,
+      "seed": 29,
+      "source_context_id": "TRAIN-LATENCY-1",
+      "unauthorized_actions": 0,
+      "utility": 103.41741647179427,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 29,
+      "unauthorized_actions": 0,
+      "utility": 102.97048854609122,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RISK-1",
+      "feasible": true,
+      "seed": 29,
+      "source_context_id": "TRAIN-RISK-1",
+      "unauthorized_actions": 0,
+      "utility": 103.06455815763253,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 29,
+      "unauthorized_actions": 0,
+      "utility": 102.80076751769188,
+      "verified_success": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "context_id": "DEV-RECOVERY-1",
+      "feasible": true,
+      "seed": 29,
+      "source_context_id": "TRAIN-RECOVERY-1",
+      "unauthorized_actions": 0,
+      "utility": 102.96423099649873,
+      "verified_success": 1
+    }
+  ],
+  "search_runs": [
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 0
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 0
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 1
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 1
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 2
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 2
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 3
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 3
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 4
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 4
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 5
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 5
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 6
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 6
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 7
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 7
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 8
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 8
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 9
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 9
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 10
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 10
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 11
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 11
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 12
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 12
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 13
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 13
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 14
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 14
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 15
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 15
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 16
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 16
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 17
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 17
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 18
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 18
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 19
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 19
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 20
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 20
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 21
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 21
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 22
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 22
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 23
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 23
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 24
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 24
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 25
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 25
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 26
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 26
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 27
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 27
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 28
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 28
+    },
+    {
+      "algorithm": "R1-global-evolved",
+      "policy_context_evaluations": 504,
+      "seed": 29
+    },
+    {
+      "algorithm": "R6-verge-repertoire",
+      "policy_context_evaluations": 504,
+      "seed": 29
+    }
+  ],
+  "summary": {
+    "global_safety_failures": 0,
+    "mean_utility_delta_repertoire_minus_global": 0.21671768238761158,
+    "paired_context_evaluations": 90,
+    "repertoire_losses": 1,
+    "repertoire_safety_failures": 0,
+    "repertoire_wins": 82,
+    "ties": 7
+  }
+}
