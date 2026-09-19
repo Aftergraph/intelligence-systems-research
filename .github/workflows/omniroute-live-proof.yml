@@ -96,7 +96,7 @@ jobs:
           $modelsRaw = Invoke-RestMethod -Uri "http://127.0.0.1:20128/v1/models" -Method Get -Headers $headers -TimeoutSec 120
           $modelsRaw | ConvertTo-Json -Depth 8 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "models.json") -Encoding utf8
 
-          $model = "auto"
+          $model = "uncloseai/Lorbus/Qwen3.6-27B-int4-AutoRound"
 
           $body = @{
             model = $model
@@ -117,9 +117,30 @@ jobs:
             latencyMs = $sw.ElapsedMilliseconds
             usage = $chat.usage
             gateway = "http://127.0.0.1:20128/v1"
+            proof = "direct-keyless-provider"
           }
           $summary | ConvertTo-Json -Depth 8 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "inference-proof.json") -Encoding utf8
           $summary | ConvertTo-Json -Depth 8
+
+          # Secondary diagnostic only: exercise OmniRoute's auto route, but do not
+          # make the direct keyless-provider proof depend on external catalog drift.
+          try {
+            $autoBody = @{
+              model = "auto"
+              messages = @(@{ role = "user"; content = "Return exactly OMNIROUTE_AUTO_OK" })
+              temperature = 0
+              max_tokens = 32
+            } | ConvertTo-Json -Depth 6
+            $auto = Invoke-RestMethod -Uri "http://127.0.0.1:20128/v1/chat/completions" -Method Post -Headers $headers -ContentType "application/json" -Body $autoBody -TimeoutSec 120
+            [ordered]@{
+              ok = $true
+              returnedModel = $auto.model
+              content = $auto.choices[0].message.content
+              usage = $auto.usage
+            } | ConvertTo-Json -Depth 8 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "auto-route-diagnostic.json") -Encoding utf8
+          } catch {
+            $_.ErrorDetails.Message | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "auto-route-diagnostic-error.txt") -Encoding utf8
+          }
 
       - name: Run OmniRoute doctor
         if: always()
