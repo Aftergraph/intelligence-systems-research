@@ -1,0 +1,35 @@
+{
+  "schema_version": "aftergraph.system-one-calibration-approval/0.1",
+  "experiment_id": "JAR-EXP-0015",
+  "record_status": "PENDING_OWNER_SIGNATURE",
+  "approved": false,
+  "network_calls_authorized": false,
+  "requested_typesafe_model": "jev-1.13.0",
+  "calibration_manifest_sha256": "dc5d7a94f333908abf09aebe1ca1dbf08f965e604eb2919d0b7a9ca70e149762",
+  "max_cost_usd": 5.38,
+  "max_provider_calls": 1952,
+  "approved_by": "",
+  "approved_at": "",
+  "_budget_authorization": {
+    "pricing_model": "jev-1.13.0",
+    "input_usd_per_million_tokens": "0.042",
+    "output_usd_per_million_tokens": "0",
+    "conservative_max_input_tokens_per_request": 65536,
+    "max_request_cost_microusd": 2753,
+    "calibration_stage_worst_case_microusd": 5373856,
+    "calibration_stage_worst_case_usd": 5.373856,
+    "rounded_stage_ceiling_usd": 5.38,
+    "two_stage_worst_case_microusd": 10747712,
+    "two_stage_worst_case_usd": 10.747712,
+    "scope": "calibration stage only (1952 calls); holdout needs a separate gate + approval",
+    "sdk_retries": "disabled (RetryPolicy max_retries=0); no hidden repeat spend"
+  },
+  "_pending_instructions": [
+    "This record is UNSIGNED and authorizes NOTHING. approved=false and network_calls_authorized=false are the honest pre-approval state; the live entrypoint refuses to call until both are true and wired.",
+    "To authorize: copy this file to data/jar_exp_0015_calibration_approval_<YYYYMMDD>.json, set approved=true and network_calls_authorized=true, fill approved_by (owner principal) and approved_at (timezone-aware ISO 8601), and keep the four binding fields byte-identical to the gate. Drop the _-prefixed metadata from the signed record.",
+    "Then set data/jar_exp_0015_calibration_gate_v01.json owner_approval_ref to the signed record path.",
+    "Do not edit calibration_manifest_sha256, max_provider_calls, max_cost_usd, or requested_typesafe_model. If any binding must change, re-run scripts/verify_jar_exp_0015_semantic_review.py and re-pin the gate first.",
+    "A separate content-addressed semantic-review record (produced by running the verifier on a hosted CI runner and capturing its verdict + evidence_ref) must also be wired into the gate semantic_review_ref before live calibration.",
+    "scripts/run_jar_exp_0015_live_calibration.py re-checks preflight and exits non-zero unless decision=READY_TO_CALIBRATE; it also requires TYPESAFE_API_KEY and performs zero provider calls until then."
+  ]
+}
