@@ -23,6 +23,7 @@ def _valid_approval():
         "returned_typesafe_model_pin": "jev-1.13.0",
         "control_model_pin": "control-model-pin",
         "cascade_confidence_threshold": 0.91,
+        "execution_manifest_sha256": "a" * 64,
         "max_cost_usd": 5.0,
         "max_provider_calls": 5000,
         "approved_by": "owner-principal",
