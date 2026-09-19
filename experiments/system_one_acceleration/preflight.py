@@ -64,6 +64,8 @@ def _validate_calibration_receipt(
         blockers.append("calibration_receipt_schema_invalid")
     if receipt.get("experiment_id") != "JAR-EXP-0014":
         blockers.append("calibration_receipt_experiment_mismatch")
+    if receipt.get("requested_model") != gate.get("requested_typesafe_model"):
+        blockers.append("calibration_requested_model_mismatch")
     if receipt.get("returned_model") != gate.get("returned_typesafe_model_pin"):
         blockers.append("calibration_model_pin_mismatch")
 
@@ -105,6 +107,18 @@ def _validate_calibration_receipt(
         or critical_cases < 30
     ):
         blockers.append("calibration_critical_pack_incomplete")
+
+    usage = receipt.get("usage")
+    if not isinstance(usage, Mapping):
+        blockers.append("calibration_usage_invalid")
+    else:
+        provider_calls = usage.get("provider_calls")
+        if (
+            not isinstance(provider_calls, int)
+            or isinstance(provider_calls, bool)
+            or provider_calls != total
+        ):
+            blockers.append("calibration_provider_call_count_mismatch")
 
 
 def _validate_execution_approval(
