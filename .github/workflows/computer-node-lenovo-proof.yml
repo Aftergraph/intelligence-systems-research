@@ -167,6 +167,9 @@ jobs:
               if ($controlProvider.Count -ne 1) { throw 'native-windows-control provider missing or duplicated' }
               $shellCaps = @($controlProvider[0].capabilities | Where-Object { [string]$_ -like 'computer.shell.*' })
               if ($shellCaps.Count -ne 0) { throw ('unrestricted shell advertised: ' + ($shellCaps -join ',')) }
+              if (@($controlProvider[0].capabilities) -contains 'computer.files.write') {
+                throw 'race-unsafe file write advertised'
+              }
 
               $listBody = @{
                 providerId = 'native-windows-control'
@@ -184,29 +187,38 @@ jobs:
               $read = Invoke-RestMethod -Uri 'http://127.0.0.1:7799/v1/action' -Headers $headers -Method Post -ContentType 'application/json' -Body $readBody -TimeoutSec 15
               if (-not $read.ok -or ([string]$read.output.content).Trim() -ne 'READ_OK') { throw 'bounded file read failed' }
 
-              $writeBody = @{
-                providerId = 'native-windows-control'
-                capability = 'computer.files.write'
-                input = @{ path = (Join-Path $actionRoot 'write-proof.txt'); content = 'WRITE_OK' }
-              } | ConvertTo-Json -Depth 6
-
-              $withoutAuthority = $null
+              $effectProbe = Start-Process -FilePath 'powershell.exe' -ArgumentList '-NoLogo','-NoProfile','-NonInteractive','-Command','Start-Sleep -Seconds 120' -PassThru -WindowStyle Hidden
               try {
-                Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:7799/v1/action' -Headers $headers -Method Post -ContentType 'application/json' -Body $writeBody -TimeoutSec 15 | Out-Null
-                $withoutAuthority = 200
-              } catch {
-                $withoutAuthority = $_.Exception.Response.StatusCode.value__
-              }
-              if ($withoutAuthority -ne 403) { throw "effect without authority expected 403, got $withoutAuthority" }
+                $stopBody = @{
+                  providerId = 'native-windows-control'
+                  capability = 'computer.process.stop'
+                  input = @{ pid = $effectProbe.Id }
+                } | ConvertTo-Json -Depth 6
 
-              $effectHeaders = @{
-                Authorization = "Bearer $token"
-                'X-Aftergraph-Authority' = $authority
+                $withoutAuthority = $null
+                try {
+                  Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:7799/v1/action' -Headers $headers -Method Post -ContentType 'application/json' -Body $stopBody -TimeoutSec 15 | Out-Null
+                  $withoutAuthority = 200
+                } catch {
+                  $withoutAuthority = $_.Exception.Response.StatusCode.value__
+                }
+                if ($withoutAuthority -ne 403) { throw "effect without authority expected 403, got $withoutAuthority" }
+                if ($effectProbe.HasExited) { throw 'effect probe exited before authority test' }
+
+                $effectHeaders = @{
+                  Authorization = "Bearer $token"
+                  'X-Aftergraph-Authority' = $authority
+                }
+                $stopped = Invoke-RestMethod -Uri 'http://127.0.0.1:7799/v1/action' -Headers $effectHeaders -Method Post -ContentType 'application/json' -Body $stopBody -TimeoutSec 15
+                if (-not $stopped.ok -or -not $stopped.output.stopped) { throw 'controlled process stop with authority failed' }
+                $effectProbe.WaitForExit(10000) | Out-Null
+                if (-not $effectProbe.HasExited) { throw 'controlled process stop did not terminate probe' }
               }
-              $write = Invoke-RestMethod -Uri 'http://127.0.0.1:7799/v1/action' -Headers $effectHeaders -Method Post -ContentType 'application/json' -Body $writeBody -TimeoutSec 15
-              if (-not $write.ok) { throw 'bounded file write with authority failed' }
-              $written = (Get-Content -LiteralPath (Join-Path $actionRoot 'write-proof.txt') -Raw).Trim()
-              if ($written -ne 'WRITE_OK') { throw 'bounded file write content mismatch' }
+              finally {
+                if ($effectProbe -and -not $effectProbe.HasExited) {
+                  Stop-Process -Id $effectProbe.Id -Force -ErrorAction SilentlyContinue
+                }
+              }
 
               foreach ($depth in @('quick','standard','forensic')) {
                 $body = @{ scope = 'health'; depth = $depth } | ConvertTo-Json
@@ -239,7 +251,8 @@ jobs:
                 separateEffectAuthority = $true
                 processList = $true
                 boundedFileRead = $true
-                boundedFileWrite = $true
+                fileWriteAdvertised = $false
+                controlledProcessStopWithAuthority = $true
                 unrestrictedShellAdvertised = $false
                 loopbackOnly = $true
                 depths = @('quick','standard','forensic')
