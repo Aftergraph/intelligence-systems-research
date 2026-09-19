@@ -11,7 +11,7 @@
   "pricing_spec_ref": "data/jar_exp_0015_typesafe_pricing_v01.json",
   "max_provider_calls": 1952,
   "max_cost_usd": 5.38,
-  "semantic_review_ref": null,
+  "semantic_review_ref": "data/jar_exp_0015_semantic_review_20260919.json",
   "owner_approval_ref": null,
   "network_calls_authorized": false,
   "sdk_retries_allowed": false,
