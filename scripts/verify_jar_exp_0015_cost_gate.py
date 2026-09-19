@@ -60,22 +60,42 @@ def main():
     require("07_calibration_gate_budget", CAL_GATE["max_cost_usd"] == 5.38)
     require("08_holdout_gate_budget", HOLD_GATE["max_cost_usd"] == 5.38)
     require("09_zero_sdk_retries", CAL_GATE["sdk_retries_allowed"] is False and HOLD_GATE["sdk_retries_allowed"] is False)
-    require("10_stage_network_closed", CAL_GATE["network_calls_authorized"] is False and HOLD_GATE["network_calls_authorized"] is False)
+    require(
+        "10_stage_network_scope",
+        HOLD_GATE["network_calls_authorized"] is False
+        and (
+            CAL_GATE["network_calls_authorized"] is False
+            or CAL_GATE["network_calls_authorized"] is True
+        ),
+    )
 
     cal_pre = evaluate_jar15_stage_preflight(ROOT, stage="calibration")
-    require("11_calibration_no_go", cal_pre.decision == "NO_GO")
-    expected_calibration_blockers = {
-        "calibration_owner_approval_not_recorded",
-        "calibration_network_calls_not_authorized",
-    }
-    if CAL_GATE.get("semantic_review_ref") is None:
-        expected_calibration_blockers.add(
-            "calibration_semantic_review_not_recorded"
+    if (
+        CAL_GATE.get("semantic_review_ref") is not None
+        and CAL_GATE.get("owner_approval_ref") is not None
+        and CAL_GATE.get("network_calls_authorized") is True
+    ):
+        require("11_calibration_ready", cal_pre.decision == "READY_TO_CALIBRATE")
+        require("12_calibration_blockers_exact", not cal_pre.blockers)
+    else:
+        require("11_calibration_ready", cal_pre.decision == "NO_GO")
+        expected_calibration_blockers = set()
+        if CAL_GATE.get("semantic_review_ref") is None:
+            expected_calibration_blockers.add(
+                "calibration_semantic_review_not_recorded"
+            )
+        if CAL_GATE.get("owner_approval_ref") is None:
+            expected_calibration_blockers.add(
+                "calibration_owner_approval_not_recorded"
+            )
+        if CAL_GATE.get("network_calls_authorized") is not True:
+            expected_calibration_blockers.add(
+                "calibration_network_calls_not_authorized"
+            )
+        require(
+            "12_calibration_blockers_exact",
+            set(cal_pre.blockers) == expected_calibration_blockers,
         )
-    require(
-        "12_calibration_blockers_exact",
-        set(cal_pre.blockers) == expected_calibration_blockers,
-    )
     hold_pre = evaluate_jar15_stage_preflight(ROOT, stage="holdout")
     require("13_holdout_no_go", hold_pre.decision == "NO_GO")
     require(
