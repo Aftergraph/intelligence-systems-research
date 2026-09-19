@@ -4,6 +4,7 @@ from dataclasses import dataclass
 import math
 import random
 
+from experiments.verge.adaptation import ProbabilityMatcher
 from experiments.verge.models import PolicyGenome
 from experiments.verge.operators import (
     crossover,
@@ -42,6 +43,10 @@ class RepertoireEvolutionResult:
     repertoire: tuple[RepertoireEntry, ...]
     training_context_ids: tuple[str, ...]
     evaluations: int
+    adaptive: bool = False
+    operator_probabilities: tuple[
+        tuple[str, tuple[tuple[str, float], ...]], ...
+    ] = ()
 
 
 def evaluate_in_context(genome: PolicyGenome, context: MissionContext) -> ContextEvaluation:
@@ -195,13 +200,53 @@ def _random_policy(rng: random.Random) -> PolicyGenome:
     )
 
 
+def _weighted_choice(rng: random.Random, probabilities: dict[str, float]) -> str:
+    threshold = rng.random()
+    cumulative = 0.0
+    last = next(iter(probabilities))
+    for name, probability in probabilities.items():
+        last = name
+        cumulative += probability
+        if threshold <= cumulative:
+            return name
+    return last
+
+
+def _apply_operator(
+    operator: str,
+    parent: PolicyGenome,
+    parent_pool: list[tuple[PolicyGenome, ContextEvaluation]],
+    rng: random.Random,
+    op_seed: int,
+) -> PolicyGenome:
+    if operator == "numeric":
+        child, _ = mutate_numeric(parent, op_seed)
+        return child
+    if operator == "rule":
+        child, _ = mutate_rule(parent, op_seed)
+        return child
+    if operator == "crossover":
+        child, _ = crossover(parent, rng.choice(parent_pool)[0], op_seed)
+        return child
+    if operator == "differential":
+        a = rng.choice(parent_pool)[0]
+        b = rng.choice(parent_pool)[0]
+        child, _ = differential_mutation(parent, a, b, op_seed)
+        return child
+    raise KeyError(operator)
+
+
 def _evolve_context(
     context: MissionContext,
     seed: int,
     population_size: int,
     generations: int,
-) -> tuple[RepertoireEntry, int]:
+    adaptive: bool,
+) -> tuple[RepertoireEntry, int, tuple[tuple[str, float], ...]]:
     rng = random.Random(seed)
+    operators = ("numeric", "rule", "crossover", "differential")
+    matcher = ProbabilityMatcher(operators, minimum=0.05)
+
     population = [_conservative_policy()] + [
         _random_policy(rng) for _ in range(population_size - 1)
     ]
@@ -225,31 +270,41 @@ def _evolve_context(
             reverse=True,
         )[: max(2, population_size // 3)]
 
-        children: list[PolicyGenome] = []
+        pending: list[
+            tuple[PolicyGenome, str | None, ContextEvaluation | None]
+        ] = []
         for slot in range(population_size):
-            parent = rng.choice(parent_pool)[0]
-            op = rng.randrange(4)
-            op_seed = rng.randrange(2**31)
+            parent_genome, parent_outcome = rng.choice(parent_pool)
             if slot == population_size - 1:
-                child = _random_policy(rng)
-            elif op == 0:
-                child, _ = mutate_numeric(parent, op_seed)
-            elif op == 1:
-                child, _ = mutate_rule(parent, op_seed)
-            elif op == 2:
-                other = rng.choice(parent_pool)[0]
-                child, _ = crossover(parent, other, op_seed)
-            else:
-                a = rng.choice(parent_pool)[0]
-                b = rng.choice(parent_pool)[0]
-                child, _ = differential_mutation(parent, a, b, op_seed)
-            children.append(child)
+                pending.append((_random_policy(rng), None, None))
+                continue
 
-        outcomes = [(genome, score(genome)) for genome in children]
-        evaluations += population_size
-        for genome, outcome in outcomes:
+            if adaptive:
+                operator = _weighted_choice(rng, matcher.probabilities())
+            else:
+                operator = operators[rng.randrange(len(operators))]
+            child = _apply_operator(
+                operator,
+                parent_genome,
+                parent_pool,
+                rng,
+                rng.randrange(2**31),
+            )
+            pending.append((child, operator, parent_outcome))
+
+        outcomes = []
+        for child, operator, parent_outcome in pending:
+            outcome = score(child)
+            outcomes.append((child, outcome))
+            if adaptive and operator is not None and parent_outcome is not None:
+                matcher.update(
+                    operator,
+                    outcome.utility - parent_outcome.utility,
+                    outcome.feasible,
+                )
             if outcome.feasible and outcome.utility > best_outcome.utility:
-                best_genome, best_outcome = genome, outcome
+                best_genome, best_outcome = child, outcome
+        evaluations += population_size
 
     entry = RepertoireEntry(
         source_context_id=context.context_id,
@@ -257,14 +312,16 @@ def _evolve_context(
         genome=best_genome,
         outcome=best_outcome,
     )
-    return entry, evaluations
+    probabilities = tuple(sorted(matcher.probabilities().items()))
+    return entry, evaluations, probabilities
 
 
-def evolve_repertoire(
+def _evolve_repertoire(
     contexts: tuple[MissionContext, ...],
     seed: int,
-    population_size: int = 12,
-    generations: int = 6,
+    population_size: int,
+    generations: int,
+    adaptive: bool,
 ) -> RepertoireEvolutionResult:
     if population_size < 2:
         raise ValueError("population_size must be at least 2")
@@ -274,18 +331,54 @@ def evolve_repertoire(
 
     repertoire = Repertoire()
     evaluations = 0
+    probabilities: list[tuple[str, tuple[tuple[str, float], ...]]] = []
+
     for index, context in enumerate(training):
-        entry, used = _evolve_context(
+        entry, used, context_probabilities = _evolve_context(
             context,
             seed=seed * 1009 + index,
             population_size=population_size,
             generations=generations,
+            adaptive=adaptive,
         )
         evaluations += used
         repertoire.insert(context, entry.genome, entry.outcome)
+        probabilities.append((context.context_id, context_probabilities))
 
     return RepertoireEvolutionResult(
         repertoire=repertoire.entries(),
         training_context_ids=tuple(context.context_id for context in training),
         evaluations=evaluations,
+        adaptive=adaptive,
+        operator_probabilities=tuple(probabilities),
+    )
+
+
+def evolve_fixed_repertoire(
+    contexts: tuple[MissionContext, ...],
+    seed: int,
+    population_size: int = 12,
+    generations: int = 6,
+) -> RepertoireEvolutionResult:
+    return _evolve_repertoire(
+        contexts,
+        seed=seed,
+        population_size=population_size,
+        generations=generations,
+        adaptive=False,
+    )
+
+
+def evolve_repertoire(
+    contexts: tuple[MissionContext, ...],
+    seed: int,
+    population_size: int = 12,
+    generations: int = 6,
+) -> RepertoireEvolutionResult:
+    return _evolve_repertoire(
+        contexts,
+        seed=seed,
+        population_size=population_size,
+        generations=generations,
+        adaptive=True,
     )
