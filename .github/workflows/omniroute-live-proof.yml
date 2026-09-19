@@ -1,0 +1,163 @@
+name: OmniRoute live proof
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/omniroute-live-proof.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  omniroute-live-proof:
+    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    timeout-minutes: 20
+    env:
+      OMNIROUTE_SERVER_HOST: 127.0.0.1
+      REQUIRE_API_KEY: "false"
+      APP_LOG_LEVEL: info
+
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "24"
+
+      - name: Prepare isolated OmniRoute runtime
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $pkg = Join-Path $env:RUNNER_TEMP "omniroute-pkg"
+          $data = Join-Path $env:RUNNER_TEMP "omniroute-data"
+          $evidence = Join-Path $env:RUNNER_TEMP "omniroute-evidence"
+          New-Item -ItemType Directory -Force -Path $pkg,$data,$evidence | Out-Null
+          "PKG_DIR=$pkg" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "DATA_DIR=$data" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "EVIDENCE_DIR=$evidence" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          node --version | Tee-Object -FilePath (Join-Path $evidence "node-version.txt")
+          npm --version | Tee-Object -FilePath (Join-Path $evidence "npm-version.txt")
+          npm view omniroute version | Tee-Object -FilePath (Join-Path $evidence "registry-version.txt")
+          npm install --prefix $pkg omniroute@3.8.50 --no-audit --no-fund
+          $cli = Join-Path $pkg "node_modules\.bin\omniroute.cmd"
+          & $cli --version | Tee-Object -FilePath (Join-Path $evidence "omniroute-version.txt")
+          "OMNIROUTE_CLI=$cli" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Record controlled-host identity
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $info = [ordered]@{
+            hostname = $env:COMPUTERNAME
+            os = [System.Environment]::OSVersion.VersionString
+            architecture = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString()
+            processArchitecture = [System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture.ToString()
+            runnerName = $env:RUNNER_NAME
+            runnerTemp = $env:RUNNER_TEMP
+            sha = $env:GITHUB_SHA
+          }
+          $info | ConvertTo-Json | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "host.json") -Encoding utf8
+          Get-Content (Join-Path $env:EVIDENCE_DIR "host.json")
+
+      - name: Initialize isolated config and connect Pollinations
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          & $env:OMNIROUTE_CLI setup --non-interactive --password "aftergraph-proof-only-20260919"
+          & $env:OMNIROUTE_CLI setup --non-interactive --add-provider --provider pollinations --api-key free --test-provider 2>&1 |
+            Tee-Object -FilePath (Join-Path $env:EVIDENCE_DIR "provider-setup.txt")
+          & $env:OMNIROUTE_CLI providers list 2>&1 |
+            Tee-Object -FilePath (Join-Path $env:EVIDENCE_DIR "providers-list.txt")
+
+      - name: Start gateway and prove inference path
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $stdout = Join-Path $env:EVIDENCE_DIR "omniroute-stdout.log"
+          $stderr = Join-Path $env:EVIDENCE_DIR "omniroute-stderr.log"
+          $p = Start-Process -FilePath $env:OMNIROUTE_CLI -ArgumentList "--no-open" -PassThru -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+          $p.Id | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "pid.txt")
+
+          $ready = $false
+          for ($i = 0; $i -lt 90; $i++) {
+            Start-Sleep -Seconds 1
+            if ($p.HasExited) { break }
+            try {
+              $resp = Invoke-WebRequest -UseBasicParsing -Uri "http://127.0.0.1:20128/v1/models" -TimeoutSec 2
+              if ($resp.StatusCode -eq 200) { $ready = $true; break }
+            } catch {}
+          }
+          if (-not $ready) {
+            Write-Host "=== STDOUT ==="
+            if (Test-Path $stdout) { Get-Content $stdout -Tail 200 }
+            Write-Host "=== STDERR ==="
+            if (Test-Path $stderr) { Get-Content $stderr -Tail 200 }
+            throw "OmniRoute did not become ready on 127.0.0.1:20128"
+          }
+
+          $modelsRaw = Invoke-RestMethod -Uri "http://127.0.0.1:20128/v1/models" -Method Get -TimeoutSec 20
+          $modelsRaw | ConvertTo-Json -Depth 8 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "models.json") -Encoding utf8
+
+          $modelIds = @($modelsRaw.data | ForEach-Object { $_.id })
+          $model = $modelIds | Where-Object { $_ -match "pollinations" } | Select-Object -First 1
+          if (-not $model) { $model = $modelIds | Select-Object -First 1 }
+          if (-not $model) { throw "No models exposed after provider setup" }
+
+          $body = @{
+            model = $model
+            messages = @(@{ role = "user"; content = "Return exactly OMNIROUTE_PROOF_OK" })
+            temperature = 0
+            max_tokens = 32
+          } | ConvertTo-Json -Depth 6
+
+          $sw = [System.Diagnostics.Stopwatch]::StartNew()
+          $chat = Invoke-RestMethod -Uri "http://127.0.0.1:20128/v1/chat/completions" -Method Post -ContentType "application/json" -Body $body -TimeoutSec 120
+          $sw.Stop()
+
+          $summary = [ordered]@{
+            ok = $true
+            requestedModel = $model
+            returnedModel = $chat.model
+            content = $chat.choices[0].message.content
+            latencyMs = $sw.ElapsedMilliseconds
+            usage = $chat.usage
+            gateway = "http://127.0.0.1:20128/v1"
+          }
+          $summary | ConvertTo-Json -Depth 8 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "inference-proof.json") -Encoding utf8
+          $summary | ConvertTo-Json -Depth 8
+
+          try {
+            Invoke-RestMethod -Uri "http://127.0.0.1:20128/api/usage/request-logs" -Method Get -TimeoutSec 20 |
+              ConvertTo-Json -Depth 10 |
+              Set-Content -Path (Join-Path $env:EVIDENCE_DIR "request-logs.json") -Encoding utf8
+          } catch {
+            $_.Exception.Message | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "request-logs-error.txt")
+          }
+
+      - name: Run OmniRoute doctor
+        if: always()
+        shell: pwsh
+        run: |
+          & $env:OMNIROUTE_CLI doctor --json 2>&1 |
+            Tee-Object -FilePath (Join-Path $env:EVIDENCE_DIR "doctor.json")
+
+      - name: Stop isolated gateway
+        if: always()
+        shell: pwsh
+        run: |
+          $pidFile = Join-Path $env:EVIDENCE_DIR "pid.txt"
+          if (Test-Path $pidFile) {
+            $procId = [int](Get-Content $pidFile)
+            Stop-Process -Id $procId -Force -ErrorAction SilentlyContinue
+          }
+
+      - name: Upload live proof evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: omniroute-live-proof-${{ github.run_id }}
+          path: ${{ runner.temp }}/omniroute-evidence
+          if-no-files-found: error
+          retention-days: 14
