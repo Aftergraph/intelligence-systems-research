@@ -1,0 +1,193 @@
+name: Computer Node Lenovo live proof
+# trigger: controlled physical-host acceptance
+
+on:
+  push:
+    branches:
+      - experiment/computer-node-lenovo-proof-20260919
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lenovo-live-proof:
+    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    timeout-minutes: 20
+    steps:
+      - name: Live host acceptance
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $evidence = Join-Path $env:RUNNER_TEMP 'computer-node-lenovo-evidence'
+          New-Item -ItemType Directory -Force -Path $evidence | Out-Null
+
+          [ordered]@{
+            computerName = $env:COMPUTERNAME
+            user = $env:USERNAME
+            userProfile = $env:USERPROFILE
+            os = [Environment]::OSVersion.VersionString
+            architecture = $env:PROCESSOR_ARCHITECTURE
+            timestampUtc = [DateTime]::UtcNow.ToString('o')
+          } | ConvertTo-Json -Depth 4 | Set-Content -Path (Join-Path $evidence 'host.json') -Encoding utf8
+
+          $roots = @(
+            (Join-Path $env:USERPROFILE 'Documents'),
+            (Join-Path $env:USERPROFILE 'source'),
+            (Join-Path $env:USERPROFILE 'repos'),
+            (Join-Path $env:USERPROFILE 'workspace')
+          ) | Where-Object { Test-Path $_ }
+
+          $candidates = @()
+          foreach ($root in $roots) {
+            $candidates += Get-ChildItem -Path $root -Directory -Recurse -Depth 4 -ErrorAction SilentlyContinue |
+              Where-Object { $_.Name -eq 'runtime' } |
+              Select-Object -ExpandProperty FullName
+          }
+
+          $runtimeRepo = $null
+          foreach ($candidate in ($candidates | Select-Object -Unique)) {
+            try {
+              $remote = git -C $candidate remote get-url origin 2>$null
+              if ($LASTEXITCODE -eq 0 -and $remote -match 'Aftergraph/runtime(?:\.git)?$') {
+                $runtimeRepo = $candidate
+                break
+              }
+            } catch {}
+          }
+
+          if (-not $runtimeRepo) {
+            [ordered]@{
+              ok = $false
+              stage = 'repo-discovery'
+              error = 'Aftergraph/runtime local clone not found under expected user roots'
+              searchedRoots = $roots
+            } | ConvertTo-Json -Depth 6 | Set-Content -Path (Join-Path $evidence 'verdict.json') -Encoding utf8
+            throw 'Aftergraph/runtime local clone not found'
+          }
+
+          $sourceHead = (git -C $runtimeRepo rev-parse HEAD).Trim()
+          $sourceBranch = (git -C $runtimeRepo branch --show-current).Trim()
+          $sourceStatus = git -C $runtimeRepo status --porcelain
+
+          [ordered]@{
+            sourcePath = $runtimeRepo
+            head = $sourceHead
+            branch = $sourceBranch
+            dirty = [bool]$sourceStatus
+          } | ConvertTo-Json -Depth 4 | Set-Content -Path (Join-Path $evidence 'repo-state.json') -Encoding utf8
+
+          $tempRepo = Join-Path $env:RUNNER_TEMP ('aftergraph-runtime-' + [Guid]::NewGuid().ToString('N'))
+          git clone --local $runtimeRepo $tempRepo
+          if ($LASTEXITCODE -ne 0) { throw 'Failed to clone local Runtime repo into isolated temp directory' }
+          git -C $tempRepo checkout --detach $sourceHead
+          if ($LASTEXITCODE -ne 0) { throw 'Failed to detach at source HEAD' }
+
+          Push-Location $tempRepo
+          try {
+            corepack enable
+            corepack prepare pnpm@11.20.0 --activate
+            $nodeVersion = (node --version).Trim()
+            $pnpmVersion = (pnpm --version).Trim()
+
+            pnpm install --frozen-lockfile
+            if ($LASTEXITCODE -ne 0) { throw 'pnpm install failed' }
+
+            pnpm --filter @aftergraph/computer-node build
+            if ($LASTEXITCODE -ne 0) { throw 'computer-node build failed' }
+
+            pnpm --filter @aftergraph/computer-node test
+            if ($LASTEXITCODE -ne 0) { throw 'computer-node tests failed' }
+
+            $tokenBytes = New-Object byte[] 32
+            [System.Security.Cryptography.RandomNumberGenerator]::Fill($tokenBytes)
+            $token = [Convert]::ToHexString($tokenBytes).ToLowerInvariant()
+
+            $env:AFTERGRAPH_COMPUTER_NODE_ID = 'jonas-lenovo'
+            $env:AFTERGRAPH_COMPUTER_NODE_TOKEN = $token
+            $env:AFTERGRAPH_COMPUTER_NODE_HOST = '127.0.0.1'
+            $env:AFTERGRAPH_COMPUTER_NODE_PORT = '7799'
+
+            $stdout = Join-Path $evidence 'server-stdout.log'
+            $stderr = Join-Path $evidence 'server-stderr.log'
+            $proc = Start-Process -FilePath 'node' -ArgumentList 'packages/computer-node/dist/cli.js' -PassThru -RedirectStandardOutput $stdout -RedirectStandardError $stderr -WindowStyle Hidden
+
+            try {
+              $ready = $false
+              for ($i = 0; $i -lt 30; $i++) {
+                Start-Sleep -Milliseconds 500
+                if ($proc.HasExited) { break }
+                try {
+                  $resp = Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:7799/v1/manifest' -Headers @{ Authorization = "Bearer $token" } -TimeoutSec 2
+                  if ($resp.StatusCode -eq 200) { $ready = $true; break }
+                } catch {}
+              }
+              if (-not $ready) { throw 'Computer Node did not become ready on Lenovo' }
+
+              $unauthorized = $null
+              try {
+                Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:7799/v1/manifest' -TimeoutSec 5 | Out-Null
+                $unauthorized = 200
+              } catch {
+                $unauthorized = $_.Exception.Response.StatusCode.value__
+              }
+              if ($unauthorized -ne 401) { throw "Expected 401 without bearer token, got $unauthorized" }
+
+              $headers = @{ Authorization = "Bearer $token" }
+              $manifest = Invoke-RestMethod -Uri 'http://127.0.0.1:7799/v1/manifest' -Headers $headers -Method Get -TimeoutSec 10
+              $manifest | ConvertTo-Json -Depth 8 | Set-Content -Path (Join-Path $evidence 'manifest.json') -Encoding utf8
+
+              foreach ($depth in @('quick','standard','forensic')) {
+                $body = @{ scope = 'health'; depth = $depth } | ConvertTo-Json
+                $result = Invoke-RestMethod -Uri 'http://127.0.0.1:7799/v1/inspect' -Headers $headers -Method Post -ContentType 'application/json' -Body $body -TimeoutSec 30
+                $result | ConvertTo-Json -Depth 10 | Set-Content -Path (Join-Path $evidence "inspect-$depth.json") -Encoding utf8
+                if (-not ($result.providers -contains 'native-windows')) { throw "native-windows provider failed at depth=$depth" }
+                if ($result.errors.Count -ne 0) { throw "provider errors returned at depth=$depth" }
+              }
+
+              $listener = Get-NetTCPConnection -LocalPort 7799 -State Listen | Select-Object LocalAddress,LocalPort,OwningProcess
+              $listener | ConvertTo-Json -Depth 4 | Set-Content -Path (Join-Path $evidence 'listener.json') -Encoding utf8
+              if (($listener | Where-Object { $_.LocalAddress -eq '0.0.0.0' -or $_.LocalAddress -eq '::' }).Count -gt 0) {
+                throw 'Computer Node exposed beyond loopback'
+              }
+              if (($listener | Where-Object { $_.LocalAddress -eq '127.0.0.1' }).Count -lt 1) {
+                throw '127.0.0.1 listener missing'
+              }
+
+              [ordered]@{
+                ok = $true
+                host = $env:COMPUTERNAME
+                nodeId = $manifest.nodeId
+                runtimeHead = $sourceHead
+                runtimeBranch = $sourceBranch
+                nodeVersion = $nodeVersion
+                pnpmVersion = $pnpmVersion
+                provider = 'native-windows'
+                capability = 'computer.health.inspect'
+                authRequired = $true
+                loopbackOnly = $true
+                depths = @('quick','standard','forensic')
+                acceptance = 'physical-lenovo-live'
+              } | ConvertTo-Json -Depth 6 | Set-Content -Path (Join-Path $evidence 'verdict.json') -Encoding utf8
+            }
+            finally {
+              if ($proc -and -not $proc.HasExited) {
+                Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
+              }
+            }
+          }
+          finally {
+            Pop-Location
+          }
+
+      - name: Upload Lenovo evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: computer-node-lenovo-proof-${{ github.run_id }}
+          path: ${{ runner.temp }}/computer-node-lenovo-evidence
+          if-no-files-found: error
+          retention-days: 14
