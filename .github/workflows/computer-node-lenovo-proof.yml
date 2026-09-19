@@ -73,7 +73,7 @@ jobs:
             throw 'Aftergraph/runtime local clone not found'
           }
 
-          $expectedRuntimeHead = '0e91e3a84b52585405de567cbb897fe61f32e7a9'
+          $expectedRuntimeHead = '86e0000963f35750a411c1a6f3e154f2ba274071'
           $sourceHead = (git -C $runtimeRepo rev-parse HEAD).Trim()
           $sourceBranch = (git -C $runtimeRepo branch --show-current).Trim()
           $sourceStatus = git -C $runtimeRepo status --porcelain
