@@ -30,7 +30,7 @@
       "const": "FROZEN_PREHOLDOUT"
     },
     "protocol_version": {
-      "const": "jar-exp-0015.protocol/0.4"
+      "const": "jar-exp-0015.protocol/0.5"
     },
     "dataset_sha256": {
       "type": "string",
