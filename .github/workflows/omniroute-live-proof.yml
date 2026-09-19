@@ -97,10 +97,14 @@ jobs:
           $modelsRaw | ConvertTo-Json -Depth 8 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "models.json") -Encoding utf8
 
           $candidates = @(
+            "duckduckgo-web/gpt-5.4-mini",
+            "cloudflare-playground/qwen/qwen2.5-coder-32b-instruct",
+            "cloudflare-playground/ibm-granite/granite-4.0-h-micro",
             "opencode/big-pickle",
             "opencode/mimo-v2.5-free",
             "opencode/hy3-free",
             "opencode/nemotron-3-ultra-free",
+            "aihorde/google/gemma-4-31b",
             "uncloseai/Lorbus/Qwen3.6-27B-int4-AutoRound"
           )
 
@@ -116,13 +120,14 @@ jobs:
 
             $sw = [System.Diagnostics.Stopwatch]::StartNew()
             try {
-              $chat = Invoke-RestMethod -Uri "http://127.0.0.1:20128/v1/chat/completions" -Method Post -Headers $headers -ContentType "application/json" -Body $body -TimeoutSec 120
+              $chat = Invoke-RestMethod -Uri "http://127.0.0.1:20128/v1/chat/completions" -Method Post -Headers $headers -ContentType "application/json" -Body $body -TimeoutSec 180
               $sw.Stop()
               $attempts += [ordered]@{
                 model = $model
                 ok = $true
                 latencyMs = $sw.ElapsedMilliseconds
               }
+              Write-Host ("PROVIDER_ATTEMPT_OK {0} {1}ms" -f $model, $sw.ElapsedMilliseconds)
               $summary = [ordered]@{
                 ok = $true
                 requestedModel = $model
@@ -144,13 +149,30 @@ jobs:
                 latencyMs = $sw.ElapsedMilliseconds
                 error = $detail
               }
+              $compact = ($detail -replace "[
+]+", " ")
+              if ($compact.Length -gt 700) { $compact = $compact.Substring(0, 700) }
+              Write-Host ("PROVIDER_ATTEMPT_FAIL {0} {1}ms :: {2}" -f $model, $sw.ElapsedMilliseconds, $compact)
             }
           }
 
           $attempts | ConvertTo-Json -Depth 8 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "direct-provider-attempts.json") -Encoding utf8
           if (-not $summary) {
+            [ordered]@{
+              gatewayHealthy = $true
+              directInference = $false
+              candidateCount = $candidates.Count
+              classification = "external-free-provider-unavailable-on-runner"
+            } | ConvertTo-Json -Depth 6 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "verdict.json") -Encoding utf8
             throw "All direct keyless OmniRoute provider candidates failed"
           }
+
+          [ordered]@{
+            gatewayHealthy = $true
+            directInference = $true
+            successfulModel = $summary.requestedModel
+            classification = "end-to-end-keyless-inference-proven"
+          } | ConvertTo-Json -Depth 6 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "verdict.json") -Encoding utf8
 
           $summary | ConvertTo-Json -Depth 8 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "inference-proof.json") -Encoding utf8
           $summary | ConvertTo-Json -Depth 8
