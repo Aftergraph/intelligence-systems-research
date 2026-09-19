@@ -1,0 +1,169 @@
+{
+  "experiment_id": "JAR-EXP-0022",
+  "evidence_class": "EVIDENCE_READINESS_AUDIT",
+  "audited_at": "2026-09-19",
+  "promotion_ready": false,
+  "compatible_record_count": 0,
+  "sources": [
+    {
+      "source": "data/live_results.csv",
+      "observed_evidence_class": "MIXED_SIMULATED_PARTIAL_LIVE",
+      "admissible": false,
+      "reason": "Committed STUDY-008 table is overwhelmingly SIMULATED and its schema lacks frozen Headroom policy/context margin fields.",
+      "present_fields": [
+        "run_id",
+        "workload_id",
+        "verified_success",
+        "false_completion",
+        "unauthorized_action",
+        "total_cost",
+        "latency_ms",
+        "retries",
+        "manifest_sha256",
+        "run_classification"
+      ],
+      "missing_required_fields": [
+        "confidence_threshold",
+        "verification_depth",
+        "retry_ceiling",
+        "min_confidence",
+        "min_verification",
+        "min_retries",
+        "evidence_integrity_failures",
+        "human_interventions",
+        "source_artifact"
+      ],
+      "notes": "Claim-evidence audit records only 2/275 LIVE_VALID for STUDY-008; those few live outcomes still do not contain the Headroom policy-margin contract."
+    },
+    {
+      "source": "data/study011_runs/pilot/run_records.jsonl",
+      "observed_evidence_class": "PROVIDER_LIVE_PARTIAL",
+      "admissible": false,
+      "reason": "Records contain genuine LIVE_VALID provider rows and fixed mission outcome fields, but no Headroom policy configuration or context threshold fields.",
+      "present_fields": [
+        "run_id",
+        "workload_id",
+        "execution_class",
+        "mission_state_final",
+        "fcr_flag",
+        "latency_ms",
+        "cost_usd",
+        "provider_name",
+        "exact_model_id",
+        "request_hash",
+        "response_hash"
+      ],
+      "missing_required_fields": [
+        "confidence_threshold",
+        "verification_depth",
+        "retry_ceiling",
+        "min_confidence",
+        "min_verification",
+        "min_retries",
+        "unauthorized_actions",
+        "evidence_integrity_failures",
+        "human_interventions",
+        "source_artifact",
+        "source_hash"
+      ],
+      "notes": "Live provider evidence is real enough for provenance studies, but not sufficient to reconstruct the frozen Headroom ranking without post-hoc invention."
+    },
+    {
+      "source": "data/durability_fault_injection_results.json",
+      "observed_evidence_class": "INTERNAL_LIVE_FAULT_INJECTION",
+      "admissible": false,
+      "reason": "Durability outcomes are real controlled runtime evidence but do not encode Headroom policy/context margins or the required outcome vector.",
+      "present_fields": [
+        "mission_id",
+        "recovered_successfully",
+        "duplicate_actions",
+        "lost_actions",
+        "state_divergence",
+        "recovery_latency_ms"
+      ],
+      "missing_required_fields": [
+        "run_id",
+        "workload_id",
+        "confidence_threshold",
+        "verification_depth",
+        "retry_ceiling",
+        "min_confidence",
+        "min_verification",
+        "min_retries",
+        "verified_success",
+        "false_completion",
+        "unauthorized_actions",
+        "evidence_integrity_failures",
+        "cost",
+        "latency",
+        "human_interventions",
+        "source_artifact",
+        "source_hash"
+      ]
+    },
+    {
+      "source": "data/assurance_adversarial_results.json",
+      "observed_evidence_class": "INTERNAL_LIVE_ASSURANCE",
+      "admissible": false,
+      "reason": "Assurance attacks provide fixed safety labels but no candidate policy margin configuration or mission context thresholds.",
+      "present_fields": [
+        "vector_id",
+        "forged_verified",
+        "handled_safely",
+        "rejection_reason",
+        "latency_ms"
+      ],
+      "missing_required_fields": [
+        "run_id",
+        "workload_id",
+        "confidence_threshold",
+        "verification_depth",
+        "retry_ceiling",
+        "min_confidence",
+        "min_verification",
+        "min_retries",
+        "verified_success",
+        "false_completion",
+        "unauthorized_actions",
+        "evidence_integrity_failures",
+        "cost",
+        "latency",
+        "human_interventions",
+        "source_artifact",
+        "source_hash"
+      ]
+    },
+    {
+      "source": "experiments/runtime_acceleration/workloads/trace_replay.yaml",
+      "observed_evidence_class": "FIXTURE_ONLY",
+      "admissible": false,
+      "reason": "The committed JAR-EXP-0013 workload is a deterministic fixture trace definition, not a fixed-label policy/outcome corpus.",
+      "present_fields": [
+        "trace_id",
+        "revision",
+        "steps"
+      ],
+      "missing_required_fields": [
+        "run_id",
+        "workload_id",
+        "confidence_threshold",
+        "verification_depth",
+        "retry_ceiling",
+        "min_confidence",
+        "min_verification",
+        "min_retries",
+        "verified_success",
+        "false_completion",
+        "unauthorized_actions",
+        "evidence_integrity_failures",
+        "cost",
+        "latency",
+        "human_interventions",
+        "source_artifact",
+        "source_hash"
+      ],
+      "notes": "The runbook states authoritative controlled-host evidence exists under a machine-local evidence directory, but those raw artifacts are not committed here and their Phase-1 metadata does not define Headroom policy margins."
+    }
+  ],
+  "conclusion": "No currently committed non-synthetic ISR corpus satisfies the frozen Headroom trace contract. Out-of-simulator replay is blocked on instrumentation/data-contract availability, not on ranking implementation."
+}

@@ -21,4 +21,5 @@ JAR-EXP-0019,VERGE Crucible Multi-Fidelity Robust Evolution,"Matched 256 policy-
 \n
 JAR-EXP-0020,VERGE Headroom Margin-Aware Elite Ranking,"Same candidate set; margin-aware ranking vs nominal utility ranking under frozen context shift","WorstContextUtilityDelta,VSR,FCR,UAR,SelectionFailures,CPVO,Latency",COMPLETED
 JAR-EXP-0021,VERGE Parallax Internal Implementation Replication,"Independent ranking implementation path reproduces JAR-EXP-0020 frozen result exactly","SeedDeltaExactMatch,MeanExactMatch,CIExactMatch,SupportVerdictMatch,UAR,VSR",COMPLETED
+JAR-EXP-0022,VERGE Traceglass Evidence Readiness,"Audit committed non-synthetic execution evidence for frozen Headroom-compatible fixed-label traces","CompatibleRecordCount,MissingFields,EvidenceClass,PromotionReady",COMPLETED
 
