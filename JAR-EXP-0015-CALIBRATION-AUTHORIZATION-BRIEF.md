@@ -160,6 +160,16 @@ the difference between this experiment and 0014's.
 If any manifest-tracked file changes at any point, the pin moves and steps 1–4 must
 be repeated. That is the control working, not a malfunction.
 
+> **Expect verifier check 33 to go red the moment you sign Gate B.** Check 33
+> (`preflight_fail_closed_human_gated`) is a *pre-authorization snapshot*: it asserts the tree
+> is still `NO_GO` with the human-gate blockers present. Once `owner_approval_ref` is wired and
+> `network_calls_authorized` is `true`, the preflight flips to `READY_TO_CALIBRATE` and that
+> assertion is false **by design** — the CI job turns red, checks 1–32 and 34–38 stay green, and
+> the Gate A record remains valid (the approval file is outside the manifest, so the pin does not
+> move). It is not a regression and not a bad signature: the verifier's job is to prove nothing
+> was authorized *before* you authorized it. The thing that must go green is step 4's
+> `--preflight-only`, which is the live path.
+
 ---
 
 ## 5. Fail-closed guarantees already proven
