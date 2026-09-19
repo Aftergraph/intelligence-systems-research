@@ -60,10 +60,13 @@ The preflight requires a record at the gate's `semantic_review_ref` carrying
 `independent: true`, a `PASS`/`PASS_WITH_FINDINGS` verdict, the current manifest pin,
 at least 32 falsification attempts, and an `evidence_ref` pointing at a hosted run.
 
-The honest way to produce it is to run
+The mechanism to produce it now exists: the `jar-exp-0015-semantic-review` job in
+`.github/workflows/ci.yml` (added in `fad7fb9`) runs
 `scripts/verify_jar_exp_0015_semantic_review.py` on an isolated GitHub Actions runner
-and record the runner URL as `evidence_ref` — exactly as JAR-EXP-0014 did
-(`github-actions:Aftergraph/intelligence-systems-research:run/3543448441`). The point
+and prints the verdict, the falsification count and the pinned manifest hash. Push the
+branch, let that job run, and record its run/job URL as `evidence_ref` — exactly as
+JAR-EXP-0014 did
+(`github-actions:Aftergraph/intelligence-systems-research:run/35434484417`). The point
 of the field is that the verification happened somewhere without write access to the
 thing being verified. Writing the record locally would satisfy the schema and defeat
 the control, so it has not been done.
@@ -110,7 +113,7 @@ For reference, JAR-EXP-0014 spent $0.44 across 158 calls and returned `NO_THRESH
 with 3 critical-risk errors. The 0015 design is the correction of the measurement
 fault, not a rerun of the same measurement.
 
-### The feasibility bar you are buying a answer to
+### The feasibility bar you are buying an answer to
 
 The preregistered acceptance rule is a Wilson upper bound on the error rate at or
 below 0.05. `wilson_upper(0, 73) ≤ 0.05`, so **74 accepted cases with zero errors is
@@ -119,13 +122,18 @@ the stage has ample headroom to clear it *if* the model is accurate — but the 
 is what makes a negative result informative rather than merely underpowered. That is
 the difference between this experiment and 0014's.
 
----n
+---
+
 ## 4. Exact steps to authorize
 
-1. **Produce the semantic review.** Run the verifier on an isolated hosted runner.
-   Record its verdict, falsification count and runner URL into
-   `data/jar_exp_0015_semantic_review_<YYYYMMDD>.json` with
-   `calibration_manifest_sha256 = dc5d7a94…` and `independent: true`.
+1. **Produce the semantic review.** Push the branch; the
+   `jar-exp-0015-semantic-review` CI job runs the verifier on an isolated hosted
+   runner and prints the verdict, the falsification count and the pinned manifest
+   hash. Record that run/job URL, the verdict and `falsification_attempts_considered`
+   into `data/jar_exp_0015_semantic_review_<YYYYMMDD>.json` with
+   `calibration_manifest_sha256 = dc5d7a94…` and `independent: true`. The
+   gate-plumbing dry-run in `evidence/typesafe-cross-repo/` emits a validated
+   `DRY-RUN-TEMPLATE` of exactly this record — copy its shape, never its values.
 2. **Sign the approval.** Copy `data/jar_exp_0015_calibration_approval_PENDING.json`
    to `data/jar_exp_0015_calibration_approval_<YYYYMMDD>.json`. Set `approved: true`
    and `network_calls_authorized: true`. Fill `approved_by` and `approved_at`
@@ -135,9 +143,11 @@ the difference between this experiment and 0014's.
    `semantic_review_ref` and `owner_approval_ref` to those two paths. The gate is
    excluded from the manifest by design, so this does not move the pin.
 4. **Confirm.** Run
-   `python experiments/system_one_acceleration/jar15_calibration_preflight.py` — or
-   import `evaluate_jar15_calibration_preflight` — and expect
-   `READY_TO_CALIBRATE` with zero blockers. Anything else means step 1–3 drifted.
+   `python scripts/run_jar_exp_0015_live_calibration.py --preflight-only`. It
+   executes the real preflight with zero network and no API key (it short-circuits
+   before any credential check or SDK import), prints HEAD, the manifest hash, the
+   decision and the ceilings, and exits `0` only on `READY_TO_CALIBRATE` with zero
+   blockers (`2` otherwise). Anything but `0` means step 1–3 drifted.
 5. **Execute.** `python scripts/run_jar_exp_0015_live_calibration.py` with
    `TYPESAFE_API_KEY` set. It re-checks preflight and exits non-zero unless
    `READY_TO_CALIBRATE`; it prints HEAD, the manifest, the decision and the ceilings
@@ -171,6 +181,13 @@ be repeated. That is the control working, not a malfunction.
   for those paths. 0014's own CI pin is stale in this scratch clone for 0014-internal
   reasons (its post-freeze terminal-state commits edit `calibration_preflight.py`);
   re-validating that belongs to the canonical repo, not to 0015.
+- **The human gates are the only thing between `NO_GO` and `READY_TO_CALIBRATE`.**
+  `evidence/typesafe-cross-repo/verify_gate_plumbing_dry_run.py` (added in `add0042`,
+  15/15 PASS) drives the *real* `evaluate_jar15_calibration_preflight` against a
+  throwaway copy of the tree, flips all three human-gate blockers off at once to reach
+  `READY_TO_CALIBRATE`, then reverts each gate alone to show it re-blocks with only
+  that blocker. It never writes a persistent record and leaves the real tree `NO_GO`
+  with the pin unchanged.
 
 ## 6. Known limitation carried forward
 
@@ -184,9 +201,21 @@ external-provider limitation rather than a local authority bypass.
 
 ---
 
-## 7. One thing that is not yet done
+## 7. What is committed, and what is left to a human
 
-The entire 0015 execution path is **uncommitted** in this scratch clone — 27
-untracked files and 15 modified ones. The content-addressed pin above therefore
-describes a working tree that no checkout of `HEAD` would reproduce. Committing it
-locally is the natural next step and has been left for an explicit instruction.
+The 0015 execution path is now committed on `feat/jar-exp-0015-execution-path` across
+eight commits (`1984577` dataset freeze → `4cc9ddf` protocol v0.4 activation →
+`0b771f0` guarded calibration + semantic verifier → `f49aa91` pending approval packet +
+this brief → `7646966`/`38ead85` cross-repo TypeSafe evidence → `fad7fb9` the
+`jar-exp-0015-semantic-review` CI job → `add0042` the gate-plumbing dry-run proof). The
+content-addressed pin `dc5d7a94…` reproduces from `HEAD`, not merely from a working
+tree.
+
+The only working-tree dirt left is unrelated to 0015 and none of it is a manifest path:
+the signed `dist/*` submission bundles, `data/durability_fault_injection_results.json`,
+and untracked `live_benchmark_dry_runs/`. They were deliberately never staged.
+
+What remains is exactly the two human gates in section 2 — Gate A (the isolated-runner
+semantic review, whose mechanism is now wired) and Gate B (the owner signature on the
+PENDING approval packet). Neither can be closed from inside this repo, and neither has
+been fabricated here. Everything else is built, verified and ready for them.
