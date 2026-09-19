@@ -21,5 +21,5 @@
     "Owner approval, bounded calibration network authorization, and the hosted deterministic semantic-review receipt are recorded; bounded calibration is READY_TO_CALIBRATE.",
     "Calibration approval must bind the content-addressed calibration manifest; any relevant code/contract drift invalidates authorization."
   ],
-  "calibration_manifest_sha256": "cd8fdf00f2e44dae94687c23f41dfde1d54f3c8b9392170c7df0a51bccc1f5a3"
+  "calibration_manifest_sha256": "6a29bc8e7e168dbeb9e800b260d877ab1e9801be9d61eb2d4c85e2ac22f309f3"
 }
