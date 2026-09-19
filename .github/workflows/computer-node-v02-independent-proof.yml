@@ -1,9 +1,12 @@
 name: Computer Node v0.2 independent verification
 
 on:
-  pull_request:
-    branches: [main]
   workflow_dispatch:
+    inputs:
+      runtime_ref:
+        description: Exact Runtime branch, tag, or SHA to verify
+        required: true
+        default: feat/computer-node-v0-2-control-plane
 
 permissions:
   contents: read
@@ -11,14 +14,25 @@ permissions:
 jobs:
   runtime-package:
     runs-on: windows-latest
+    environment: independent-verifier
     timeout-minutes: 20
     steps:
-      - name: Checkout Runtime feature branch
+      - name: Require scoped Runtime read token
+        shell: pwsh
+        env:
+          RUNTIME_READ_TOKEN: ${{ secrets.AFTERGRAPH_RUNTIME_READ_TOKEN }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:RUNTIME_READ_TOKEN)) {
+            throw 'runtime_read_token_missing'
+          }
+
+      - name: Checkout Runtime exact ref
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           repository: Aftergraph/runtime
-          ref: feat/computer-node-v0-2-control-plane
+          ref: ${{ inputs.runtime_ref }}
           path: runtime
+          token: ${{ secrets.AFTERGRAPH_RUNTIME_READ_TOKEN }}
 
       - name: Setup Node 22
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
