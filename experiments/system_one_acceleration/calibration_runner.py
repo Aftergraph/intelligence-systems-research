@@ -129,6 +129,7 @@ def run_calibration(
             {case.decision_type: reservation.contract},
             sdk=sdk,
         )
+        cost_guard.begin_transport(reservation)
         response, latency_ms = invoke_system_one(
             client=client,
             state=reservation.projected_state,
