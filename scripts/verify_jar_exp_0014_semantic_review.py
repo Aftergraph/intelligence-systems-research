@@ -424,6 +424,10 @@ def main() -> None:
             preflight.decision == "NO_GO"
             and "calibration_manifest_mismatch" in preflight.blockers
         )
+        or (
+            preflight.decision == "NO_GO"
+            and set(preflight.blockers) == {"calibration_already_completed"}
+        )
     )
     require(
         "16_authorization_and_review_gate",
