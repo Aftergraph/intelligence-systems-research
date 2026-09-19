@@ -2,6 +2,7 @@ from experiments.verge_repertoire.contexts import load_contexts
 from experiments.verge_repertoire.study import (
     build_random_repertoire,
     evolve_global_policy,
+    evolve_global_pareto_policy,
     run_development_pilot,
 )
 from experiments.verge_repertoire.repertoire import (
@@ -130,3 +131,34 @@ def test_development_pilot_compares_fixed_operator_repertoire_to_adaptive_verge(
     }
     assert rows["R5-fixed-operator-repertoire"] == rows["R6-verge-repertoire"]
     assert "mean_utility_delta_verge_minus_fixed_repertoire" in report["summary"]
+
+
+def test_global_pareto_training_uses_matched_train_budget():
+    contexts = load_contexts()
+    result = evolve_global_pareto_policy(
+        contexts,
+        seed=6,
+        population_size=8,
+        generations=4,
+    )
+    train_count = sum(c.split == "TRAIN" for c in contexts)
+    assert result.policy_context_evaluations == 8 * (4 + 1) * train_count
+    assert all(cid.startswith("TRAIN-") for cid in result.training_context_ids)
+
+
+def test_development_pilot_freezes_strongest_non_repertoire_comparator():
+    report = run_development_pilot(
+        seeds=(0, 1, 2),
+        population_size=6,
+        generations=3,
+    )
+    rows = {
+        row["algorithm"]: row["policy_context_evaluations"]
+        for row in report["search_runs"]
+        if row["seed"] == 0
+    }
+    assert rows["R4-global-pareto"] == rows["R1-global-evolved"]
+    assert report["primary_non_repertoire_comparator"] in {
+        "R1-global-evolved",
+        "R4-global-pareto",
+    }
