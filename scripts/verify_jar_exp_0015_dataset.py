@@ -14,19 +14,19 @@ sys.path.insert(0, str(ROOT))
 from experiments.system_one_acceleration.calibration import wilson_upper
 from experiments.system_one_acceleration.corpus import build_calibration_corpus
 from experiments.system_one_acceleration.jar15_dataset import semantic_case_hash
-from experiments.system_one_acceleration.jar15_dataset_v02 import (
-    build_prospective_dataset_v02,
-    dataset_document_v02,
-    split_manifest_v02,
+from experiments.system_one_acceleration.jar15_dataset_v03 import (
+    dataset_document_v03,
+    split_manifest_v03,
 )
+from experiments.system_one_acceleration.state_projection import project_decision_state
 
 ACTIVE = ROOT / "data" / "jar_exp_0015_active_protocol.json"
-PROTOCOL = ROOT / "data" / "jar_exp_0015_protocol_v03.json"
-DATASET = ROOT / "data" / "jar_exp_0015_dataset_v02.json"
-MANIFEST = ROOT / "data" / "jar_exp_0015_split_manifest_v02.json"
+PROTOCOL = ROOT / "data" / "jar_exp_0015_protocol_v04.json"
+DATASET = ROOT / "data" / "jar_exp_0015_dataset_v03.json"
+MANIFEST = ROOT / "data" / "jar_exp_0015_split_manifest_v03.json"
 
-EXPECTED_DATASET_SHA = "690a28874f409a7624d371374637c0421ef6008179eba68fdc8a02a8d539bc9d"
-EXPECTED_MANIFEST_SHA = "9821b7513dee79d092ffd999e4848099c8b676529687b689b573ce02e5093dac"
+EXPECTED_DATASET_SHA = "51846d8b4a95540a8e182a823a7256fbdd69d61b3244f89e078db77ad7e0496e"
+EXPECTED_MANIFEST_SHA = "46b0123ed31b27d80823e518bef9e24bf4f1cc672f763d7b75e446698a00b745"
 
 
 def require(name: str, condition: bool) -> None:
@@ -49,14 +49,14 @@ def main() -> int:
     dataset_sha = sha256(DATASET.read_bytes()).hexdigest()
     manifest_sha = sha256(MANIFEST.read_bytes()).hexdigest()
 
-    require("01_active_protocol", active["active_protocol_ref"] == "data/jar_exp_0015_protocol_v03.json")
+    require("01_active_protocol", active["active_protocol_ref"] == "data/jar_exp_0015_protocol_v04.json")
     require("02_protocol_blob_binding", active["active_protocol_git_blob_sha"] == git_blob_sha(PROTOCOL))
     require("03_dataset_sha", dataset_sha == EXPECTED_DATASET_SHA == active["active_dataset_sha256"])
     require("04_manifest_sha", manifest_sha == EXPECTED_MANIFEST_SHA == active["active_split_manifest_sha256"])
     require("05_protocol_dataset_binding", protocol["dataset"]["dataset_sha256"] == dataset_sha)
     require("06_protocol_manifest_binding", protocol["dataset"]["split_manifest_sha256"] == manifest_sha)
-    require("07_generator_dataset_parity", dataset == dataset_document_v02())
-    require("08_generator_manifest_parity", manifest == split_manifest_v02())
+    require("07_generator_dataset_parity", dataset == dataset_document_v03())
+    require("08_generator_manifest_parity", manifest == split_manifest_v03())
 
     rows = dataset["cases"]
     require("09_total_cases", len(rows) == 3904)
@@ -99,26 +99,45 @@ def main() -> int:
 
     require("16_v01_wilson_falsified", wilson_upper(0, 24) > 0.05 and wilson_upper(0, 16) > 0.05)
     require("17_minimum_wilson_n", wilson_upper(0, 72) > 0.05 and wilson_upper(0, 73) <= 0.05)
-    require("18_v03_coverage_rounding", math.ceil(244 * 0.30) == 74 and protocol["sample_size_feasibility"]["floor_accepted_n_at_30_percent"] == 74)
-    require("19_v03_zero_error_feasible", wilson_upper(0, 74) <= 0.05)
-    require("20_network_fail_closed", protocol["network_calls_authorized"] is False and active["network_calls_authorized"] is False)
+    require("18_v04_coverage_rounding", math.ceil(244 * 0.30) == 74 and protocol["sample_size_feasibility"]["floor_accepted_n_at_30_percent"] == 74)
+    require("19_v04_zero_error_feasible", wilson_upper(0, 74) <= 0.05)
+
+    projection_ok = True
+    labels_hidden = True
+    for row in rows:
+        projected = project_decision_state(decision_type=row["decision_type"], state=row["state"])
+        if projected != row["state"] or set(projected) != {"scenario"}:
+            projection_ok = False
+            break
+        if row["decision_type"] in {"route_model", "route_tool_family"}:
+            if str(row["expected"]).lower() in projected["scenario"].lower():
+                labels_hidden = False
+                break
+    require("20_projection_semantics_visible", projection_ok)
+    require("21_route_labels_hidden", labels_hidden)
+
+    require("22_network_fail_closed", protocol["network_calls_authorized"] is False and active["network_calls_authorized"] is False)
 
     superseded = {x["protocol_ref"] for x in active["superseded"]}
     require(
-        "21_superseded_protocols",
-        superseded == {"data/jar_exp_0015_protocol_v01.json", "data/jar_exp_0015_protocol_v02.json"},
+        "23_superseded_protocols",
+        superseded == {
+            "data/jar_exp_0015_protocol_v01.json",
+            "data/jar_exp_0015_protocol_v02.json",
+            "data/jar_exp_0015_protocol_v03.json",
+        },
     )
-    require("22_manifest_parent_duplicate_counter", manifest["exact_parent_duplicates"] == 0)
+    require("24_manifest_parent_duplicate_counter", manifest["exact_parent_duplicates"] == 0)
 
     critical_by_type = {
         dtype: [r for r in rows if r["decision_type"] == dtype and r["critical"]]
         for dtype in ("needs_human", "risk_level")
     }
-    require("23_authority_critical_count", all(len(v) >= 8 for v in critical_by_type.values()))
-    require("24_authority_critical_split", all({r["split"] for r in v} == {"calibration", "holdout"} for v in critical_by_type.values()))
+    require("25_authority_critical_count", all(len(v) >= 8 for v in critical_by_type.values()))
+    require("26_authority_critical_split", all({r["split"] for r in v} == {"calibration", "holdout"} for v in critical_by_type.values()))
 
     print("PASS: active JAR-EXP-0015 dataset/protocol verifier")
-    print("active_protocol=v0.3 dataset=v0.2")
+    print("active_protocol=v0.4 dataset=v0.3")
     print(f"dataset_sha256={dataset_sha}")
     print(f"split_manifest_sha256={manifest_sha}")
     print("cases=3904 calibration=1952 holdout=1952 parent_duplicates=0")
