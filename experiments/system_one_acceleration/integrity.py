@@ -86,6 +86,7 @@ JAR15_CALIBRATION_INTEGRITY_PATHS = (
     "data/jar_exp_0015_dataset_v03.json",
     "data/jar_exp_0015_split_manifest_v03.json",
     "data/jar_exp_0015_typesafe_pricing_v01.json",
+    "data/jar_exp_0015_question_contracts_v01.json",
     "experiments/system_one_acceleration/jar15_analysis.py",
     "experiments/system_one_acceleration/jar15_cost_guard.py",
     "experiments/system_one_acceleration/jar15_dataset_v03.py",
