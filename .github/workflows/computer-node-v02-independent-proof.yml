@@ -1,12 +1,12 @@
 name: Computer Node v0.2 independent verification
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
-      runtime_ref:
-        description: Exact Runtime branch, tag, or SHA to verify
+      runtime_sha:
+        description: Exact Aftergraph/runtime commit SHA to verify
         required: true
-        default: feat/computer-node-v0-2-control-plane
+        type: string
 
 permissions:
   contents: read
@@ -14,25 +14,14 @@ permissions:
 jobs:
   runtime-package:
     runs-on: windows-latest
-    environment: independent-verifier
     timeout-minutes: 20
     steps:
-      - name: Require scoped Runtime read token
-        shell: pwsh
-        env:
-          RUNTIME_READ_TOKEN: ${{ secrets.AFTERGRAPH_RUNTIME_READ_TOKEN }}
-        run: |
-          if ([string]::IsNullOrWhiteSpace($env:RUNTIME_READ_TOKEN)) {
-            throw 'runtime_read_token_missing'
-          }
-
-      - name: Checkout Runtime exact ref
+      - name: Checkout exact caller Runtime head
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
-          repository: Aftergraph/runtime
-          ref: ${{ inputs.runtime_ref }}
+          ref: ${{ inputs.runtime_sha }}
           path: runtime
-          token: ${{ secrets.AFTERGRAPH_RUNTIME_READ_TOKEN }}
+          persist-credentials: false
 
       - name: Setup Node 22
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
@@ -47,11 +36,20 @@ jobs:
           node --version
           pnpm --version
 
-      - name: Record exact Runtime HEAD
+      - name: Verify caller and exact Runtime HEAD
         shell: pwsh
         run: |
-          git -C runtime rev-parse HEAD
-          git -C runtime status --porcelain
+          if ("$env:GITHUB_REPOSITORY" -ne "Aftergraph/runtime") {
+            throw "verifier_must_be_called_from_aftergraph_runtime"
+          }
+          $head = (git -C runtime rev-parse HEAD).Trim()
+          if ($head -ne "${{ inputs.runtime_sha }}") {
+            throw "runtime_head_mismatch:$head"
+          }
+          if ((git -C runtime status --porcelain).Length -ne 0) {
+            throw "runtime_checkout_not_clean"
+          }
+          Write-Output "runtime_head=$head"
 
       - name: Install, build and test package
         shell: pwsh
