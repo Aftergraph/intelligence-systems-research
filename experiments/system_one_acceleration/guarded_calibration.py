@@ -9,7 +9,7 @@ from .calibration_receipt import canonical_sha256
 from .calibration_runner import CalibrationRunResult, run_calibration
 from .client import TypeSafeBoundaryError, load_frozen_contracts
 from .corpus import build_calibration_corpus
-from .cost_guard import build_calibration_cost_guard
+from .cost_guard import build_calibration_cost_guard, calibration_budget_ledger_path
 
 
 class CalibrationAuthorizationError(RuntimeError):
@@ -22,7 +22,6 @@ def run_authorized_calibration(
     client: Any,
     sdk: Any,
     contracts: Mapping[str, Mapping[str, Any]],
-    budget_ledger_path: Path,
     pricing_fetcher: Callable[[str], str] | None = None,
 ) -> CalibrationRunResult:
     preflight = evaluate_calibration_preflight(root)
@@ -54,7 +53,7 @@ def run_authorized_calibration(
 
     cost_guard = build_calibration_cost_guard(
         root=root,
-        ledger_path=budget_ledger_path,
+        ledger_path=calibration_budget_ledger_path(),
         approved_budget_usd=preflight.maximum_cost_usd,
         pricing_fetcher=pricing_fetcher,
     )
