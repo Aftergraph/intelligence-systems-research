@@ -108,16 +108,21 @@ def main() -> None:
             pricing_spec_sha256=spec.canonical_sha256,
         )
         require(reopened.used_microusd() == budget, "restart must preserve reservations")
+        # A crash before transport may resume the same semantic reservation
+        # without consuming budget again.
+        reopened.reserve(
+            request_id="fixed",
+            request_sha256="a" * 64,
+            reserved_microusd=independent_per_request,
+        )
+        require(reopened.used_microusd() == budget, "resume must not double-spend")
+        reopened.begin_transport(request_id="fixed", request_sha256="a" * 64)
         try:
-            reopened.reserve(
-                request_id="fixed",
-                request_sha256="a" * 64,
-                reserved_microusd=independent_per_request,
-            )
+            reopened.begin_transport(request_id="fixed", request_sha256="a" * 64)
         except BudgetReplayError:
             pass
         else:
-            raise SystemExit("FAIL: replay was not denied")
+            raise SystemExit("FAIL: second transport claim was not denied")
 
     with tempfile.TemporaryDirectory() as temp:
         ledger = BudgetLedger(
@@ -140,6 +145,7 @@ def main() -> None:
         )
         require(reservation.projected_state == {"scenario": "work remains"}, "projection")
         require(len(reservation.request_sha256) == 64, "request binding hash")
+        guard.begin_transport(reservation)
 
     with tempfile.TemporaryDirectory() as temp:
         ledger = BudgetLedger(
