@@ -27,6 +27,7 @@ def test_current_calibration_preflight_is_fail_closed():
     result = evaluate_calibration_preflight(ROOT)
     assert result.decision == "NO_GO"
     assert {
+        "calibration_semantic_review_not_recorded",
         "calibration_approval_not_recorded",
         "calibration_network_calls_not_authorized",
     }.issubset(set(result.blockers))
