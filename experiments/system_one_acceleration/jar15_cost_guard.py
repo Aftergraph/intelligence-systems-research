@@ -183,6 +183,21 @@ def build_jar15_cost_guard(
     if worst_case > approved_microusd:
         raise CostGuardError("stage ceiling is below worst-case reservation total")
 
+    dataset = json.loads(
+        (root / "data" / "jar_exp_0015_dataset_v03.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    allowed_case_ids = frozenset(
+        row["case_id"]
+        for row in dataset.get("cases", [])
+        if row.get("split") == stage
+    )
+    if len(allowed_case_ids) != max_calls:
+        raise CostGuardError(
+            "frozen dataset split does not match stage call ceiling"
+        )
+
     canonical_path = jar15_budget_ledger_path(stage)
     selected = Path(ledger_path) if ledger_path is not None else canonical_path
     ledger = BudgetLedger(
@@ -191,8 +206,13 @@ def build_jar15_cost_guard(
         approved_budget_microusd=approved_microusd,
         pricing_spec_sha256=spec.canonical_sha256,
     )
-    return PreRequestCostGuard(
+    base = PreRequestCostGuard(
         spec=spec,
         ledger=ledger,
         pricing_fetcher=pricing_fetcher,
+    )
+    return JAR15StageCostGuard(
+        base=base,
+        stage=stage,
+        allowed_case_ids=allowed_case_ids,
     )
