@@ -27,9 +27,9 @@ def _valid_receipt():
         },
         "answer": {
             "kind": "noul",
-            "value": True,
-            "confidence": 0.97,
-            "distribution": {"yes": 0.97, "no": 0.03},
+            "value": 0.97,
+            "confidence": None,
+            "distribution": None,
         },
         "routing": {
             "decision": "accept",
@@ -50,8 +50,33 @@ def test_system_one_decision_schema_is_valid():
     jsonschema.Draft202012Validator.check_schema(_schema())
 
 
-def test_system_one_decision_receipt_accepts_valid_example():
+def test_system_one_decision_receipt_accepts_typesafe_noul_shape():
     jsonschema.validate(instance=_valid_receipt(), schema=_schema())
+
+
+def test_choice_requires_choice_value_distribution_and_confidence():
+    receipt = _valid_receipt()
+    receipt["decision_type"] = "route_model"
+    receipt["answer"] = {
+        "kind": "choice",
+        "value": "fast",
+        "confidence": 0.93,
+        "distribution": {"fast": 0.93, "powerful": 0.07},
+    }
+    jsonschema.validate(instance=receipt, schema=_schema())
+
+
+def test_noul_rejects_boolean_value_and_invented_confidence():
+    receipt = _valid_receipt()
+    receipt["answer"]["value"] = True
+    receipt["answer"]["confidence"] = 0.94
+
+    try:
+        jsonschema.validate(instance=receipt, schema=_schema())
+    except jsonschema.ValidationError:
+        return
+
+    raise AssertionError("Noul receipt must preserve probability shape without invented confidence")
 
 
 def test_system_one_decision_receipt_forbids_authority_bypass():
