@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   omniroute-live-proof:
-    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    runs-on: windows-latest
     timeout-minutes: 20
     env:
       OMNIROUTE_SERVER_HOST: 127.0.0.1
@@ -45,7 +45,7 @@ jobs:
           & $cli --version | Tee-Object -FilePath (Join-Path $evidence "omniroute-version.txt")
           "OMNIROUTE_CLI=$cli" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
-      - name: Record controlled-host identity
+      - name: Record host identity
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
@@ -90,9 +90,7 @@ jobs:
             } catch {}
           }
           if (-not $ready) {
-            Write-Host "=== STDOUT ==="
             if (Test-Path $stdout) { Get-Content $stdout -Tail 200 }
-            Write-Host "=== STDERR ==="
             if (Test-Path $stderr) { Get-Content $stderr -Tail 200 }
             throw "OmniRoute did not become ready on 127.0.0.1:20128"
           }
@@ -127,14 +125,6 @@ jobs:
           }
           $summary | ConvertTo-Json -Depth 8 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "inference-proof.json") -Encoding utf8
           $summary | ConvertTo-Json -Depth 8
-
-          try {
-            Invoke-RestMethod -Uri "http://127.0.0.1:20128/api/usage/request-logs" -Method Get -TimeoutSec 20 |
-              ConvertTo-Json -Depth 10 |
-              Set-Content -Path (Join-Path $env:EVIDENCE_DIR "request-logs.json") -Encoding utf8
-          } catch {
-            $_.Exception.Message | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "request-logs-error.txt")
-          }
 
       - name: Run OmniRoute doctor
         if: always()
