@@ -175,6 +175,7 @@ def test_guarded_calibration_rejects_unfrozen_contract_document(tmp_path, monkey
             client=ExplodingClient(),
             sdk=object(),
             contracts=contracts,
+            budget_ledger_path=tmp_path / "budget.sqlite",
         )
 
 
