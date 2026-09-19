@@ -95,11 +95,42 @@ def _validate_execution_approval(
     if not ref:
         blockers.append("execution_approval_not_recorded")
         return
+
     path = _safe_ref(root, ref)
     if path is None:
         blockers.append("execution_approval_ref_invalid")
-    elif not path.exists():
+        return
+    if not path.exists():
         blockers.append("execution_approval_missing")
+        return
+    try:
+        approval = _load(path)
+    except (OSError, json.JSONDecodeError):
+        blockers.append("execution_approval_invalid_json")
+        return
+
+    if approval.get("schema_version") != "aftergraph.system-one-execution-approval/0.1":
+        blockers.append("execution_approval_schema_invalid")
+    if approval.get("experiment_id") != "JAR-EXP-0014":
+        blockers.append("execution_approval_experiment_mismatch")
+    if approval.get("approved") is not True:
+        blockers.append("execution_approval_not_granted")
+    if approval.get("network_calls_authorized") is not True:
+        blockers.append("approval_network_scope_missing")
+    if approval.get("confirmatory_execution_authorized") is not True:
+        blockers.append("approval_confirmatory_scope_missing")
+    if approval.get("returned_typesafe_model_pin") != gate.get("returned_typesafe_model_pin"):
+        blockers.append("approval_typesafe_model_mismatch")
+    if approval.get("control_model_pin") != gate.get("control_model_pin"):
+        blockers.append("approval_control_model_mismatch")
+    if approval.get("cascade_confidence_threshold") != gate.get(
+        "cascade_confidence_threshold"
+    ):
+        blockers.append("approval_threshold_mismatch")
+    if approval.get("max_cost_usd") != gate.get("max_cost_usd"):
+        blockers.append("approval_cost_ceiling_mismatch")
+    if approval.get("max_provider_calls") != gate.get("max_provider_calls"):
+        blockers.append("approval_call_ceiling_mismatch")
 
 
 def evaluate_preflight(root: Path) -> PreflightResult:
