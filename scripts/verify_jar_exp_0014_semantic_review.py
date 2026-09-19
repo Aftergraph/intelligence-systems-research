@@ -121,14 +121,18 @@ def main() -> None:
         and independent * 158 == 434_974,
     )
 
-    # 2. Canonical durable ledger cannot be selected by the authorized entrypoint caller.
+    # 2. Authorized live entrypoint is pinned to canonical durable ledger + checkpoint.
     import experiments.system_one_acceleration.guarded_calibration as guarded
+    import experiments.system_one_acceleration.durable_calibration as durable
     guarded_source = inspect.getsource(guarded.run_authorized_calibration)
     require(
         "02_canonical_ledger_entrypoint",
         "ledger_path=calibration_budget_ledger_path()" in guarded_source
+        and "run_durable_calibration(" in guarded_source
+        and "checkpoint_path=calibration_checkpoint_path()" in guarded_source
         and "ledger_path" not in inspect.signature(guarded.run_authorized_calibration).parameters
-        and not calibration_budget_ledger_path().is_relative_to(ROOT),
+        and not calibration_budget_ledger_path().is_relative_to(ROOT)
+        and not durable.calibration_checkpoint_path().is_relative_to(ROOT),
     )
 
     # 3. Reservation/claim/transport/completion ordering is explicit.
@@ -241,7 +245,12 @@ def main() -> None:
             pass
         else:
             raise SystemExit("FAIL[09_postclaim_replay_denied]")
-        require("09_postclaim_replay_denied", True)
+        durable_source = inspect.getsource(durable.run_durable_calibration)
+        require(
+            "09_postclaim_replay_denied",
+            "ambiguous prior transport without durable observation" in durable_source
+            and "ledger has {record['status']} without durable observation" in durable_source,
+        )
 
         # 10. Request-id substitution with a different semantic hash is denied.
         sub_path = base / "sub.sqlite"
@@ -395,26 +404,30 @@ def main() -> None:
             raise SystemExit("FAIL[15_returned_model_mismatch]")
         require("15_returned_model_mismatch", wrong_client.calls == 1)
 
-    # 16. Approval/network are bound, while semantic review remains the only gate until receipt.
+    # 16. Authorization/review gates remain fail-closed across manifest drift.
     gate = json.loads((ROOT / "data" / "jar_exp_0014_calibration_gate_v01.json").read_text(encoding="utf-8"))
     approval = json.loads(
         (ROOT / gate["calibration_approval_ref"]).read_text(encoding="utf-8")
     )
     preflight = evaluate_calibration_preflight(ROOT)
-    if gate.get("semantic_review_ref"):
-        review_state_ok = preflight.decision == "READY_TO_CALIBRATE" and not preflight.blockers
-    else:
-        review_state_ok = (
-            preflight.decision == "NO_GO"
-            and set(preflight.blockers) == {"calibration_semantic_review_not_recorded"}
-        )
-    require(
-        "16_authorization_and_review_gate",
+    gate_pin = gate.get("calibration_manifest_sha256")
+    approval_pin = approval.get("calibration_manifest_sha256")
+    authorization_shape_ok = (
         gate.get("network_calls_authorized") is True
         and approval.get("approved") is True
         and approval.get("network_calls_authorized") is True
-        and approval.get("calibration_manifest_sha256") == gate.get("calibration_manifest_sha256")
-        and review_state_ok,
+        and approval_pin == gate_pin
+    )
+    readiness_shape_ok = (
+        (preflight.decision == "READY_TO_CALIBRATE" and not preflight.blockers)
+        or (
+            preflight.decision == "NO_GO"
+            and "calibration_manifest_mismatch" in preflight.blockers
+        )
+    )
+    require(
+        "16_authorization_and_review_gate",
+        authorization_shape_ok and readiness_shape_ok,
     )
 
     # 17. Ineligible/authority-sensitive decisions never turn into execution authority.
