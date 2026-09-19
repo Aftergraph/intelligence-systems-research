@@ -1,0 +1,19 @@
+{
+  "schema_version": "aftergraph.study012.owner-approval.v0.1",
+  "study_id": "STUDY-012",
+  "approved_at": "2026-09-18",
+  "approval_ref": "OWNER-CANARY-20260918-CHAT-CONTINUE",
+  "scope": "LIVE_CANARY_ONLY",
+  "authorized_actions": [
+    "one Google Direct canary inference on frozen model gemini-2.5-flash",
+    "one OpenRouter canary inference on frozen model google/gemma-4-31b-it"
+  ],
+  "explicitly_not_authorized": [
+    "full STUDY-012 matrix execution",
+    "PR merge",
+    "provider/model substitution",
+    "changes to frozen hypotheses or analysis"
+  ],
+  "network_calls_authorized": true,
+  "revocation": "approval expires after the two scoped canary attempts complete"
+}

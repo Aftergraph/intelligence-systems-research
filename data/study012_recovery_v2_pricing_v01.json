@@ -1,0 +1,22 @@
+{
+  "schema_version": "aftergraph.study012.recovery-v2-pricing.v0.1",
+  "observed_at": "2026-09-18",
+  "google": {
+    "model_id": "gemini-2.5-flash",
+    "input_usd_per_million": 0.3,
+    "output_usd_per_million": 2.5,
+    "accounting_basis": "Google Gemini Developer API paid standard tier; actual free-tier/provider charge may be lower"
+  },
+  "nvidia": {
+    "task_model_id": "nvidia/nemotron-3-ultra-550b-a55b",
+    "judge_model_id": "nvidia/nemotron-3-super-120b-a12b",
+    "accounted_usd_per_call": 0,
+    "accounting_basis": "NVIDIA-hosted prototype Free Endpoint as documented at freeze date"
+  },
+  "hard_cost_stop_usd": 4,
+  "source_urls": [
+    "https://ai.google.dev/gemini-api/docs/pricing",
+    "https://build.nvidia.com/models?api-key=false&label=Chat",
+    "https://build.nvidia.com/nvidia/nemotron-3-super-120b-a12b/deploy"
+  ]
+}

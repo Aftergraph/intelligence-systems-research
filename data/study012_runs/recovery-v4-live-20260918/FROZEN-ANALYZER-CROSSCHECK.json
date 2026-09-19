@@ -1,0 +1,18 @@
+{
+  "frozen_analyzer_sha256": "94f8f329a8322c622ffb0109d4961d805ce35ed406ce145a4d2234c81a6f7ecd",
+  "normalized_v4_result": {
+    "applicable_classes": 8,
+    "by_condition": {
+      "D": 240,
+      "DI": 240,
+      "J": 240,
+      "JD": 240
+    },
+    "covered_classes": 8,
+    "deterministically_verified": 720,
+    "independently_verified": 240,
+    "judge_only_verified": 240,
+    "judge_oracle_disagreements": 0,
+    "n": 960
+  }
+}

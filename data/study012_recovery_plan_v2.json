@@ -1,0 +1,63 @@
+{
+  "schema_version": "aftergraph.study012.recovery-plan.v2.0",
+  "study_id": "STUDY-012",
+  "parent_execution_id": "study012-full-matrix-20260918",
+  "execution_id": "study012-recovery-v2-20260918",
+  "pooling_with_parent": false,
+  "nominal_observations": 960,
+  "provider_split": {
+    "google": 480,
+    "nvidia": 480
+  },
+  "conditions": [
+    "J",
+    "D",
+    "JD",
+    "DI"
+  ],
+  "r2_classes": [
+    "stale_state",
+    "revocation",
+    "contradiction",
+    "cross_subject_isolation",
+    "constraint_decay",
+    "replay",
+    "crash_recovery",
+    "adversarial_evidence"
+  ],
+  "replicates_per_class_condition": 30,
+  "retry_policy": {
+    "max_attempts_per_api_call": 2,
+    "retryable_http_statuses": [
+      408,
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "retry_url_errors": true,
+    "retry_timeouts": true,
+    "non_retryable_http_statuses": [
+      400,
+      401,
+      402,
+      403,
+      404
+    ]
+  },
+  "concurrency": {
+    "google": 2,
+    "nvidia": 2
+  },
+  "max_total_api_calls": 2880,
+  "hard_cost_stop_usd": 4,
+  "final_readiness": {
+    "required": true,
+    "calls": 9,
+    "per_role": 3,
+    "must_all_be_live": true,
+    "must_all_semantically_match": true
+  },
+  "full_run_owner_approval_required_after_readiness": true
+}

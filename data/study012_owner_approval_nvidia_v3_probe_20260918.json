@@ -1,0 +1,20 @@
+{
+  "schema_version": "aftergraph.study012.owner-approval.v0.1",
+  "study_id": "STUDY-012",
+  "approved_at": "2026-09-18",
+  "approval_ref": "OWNER-NVIDIA-V3-TRIMODEL-PROBE-20260918-CHAT-NEXT",
+  "scope": "NVIDIA_V3_TRIMODEL_PROBE_ONLY",
+  "authorized_actions": [
+    "3 bounded canaries on nvidia/nemotron-3-super-120b-a12b",
+    "3 bounded canaries on mistralai/mistral-7b-instruct-v0.3",
+    "3 bounded judge canaries on google/gemma-3-4b-it"
+  ],
+  "explicitly_not_authorized": [
+    "full matrix v3 execution",
+    "PR merge",
+    "pooling with prior runs"
+  ],
+  "max_probe_calls": 9,
+  "hard_probe_cost_usd": 0.1,
+  "network_calls_authorized": true
+}

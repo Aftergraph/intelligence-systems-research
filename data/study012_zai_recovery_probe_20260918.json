@@ -1,0 +1,149 @@
+{
+  "model_id": "glm-5.3-flash",
+  "rows": [
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "da9ade84-d474-4359-973b-95d947483637"
+        },
+        "http_status": 429,
+        "provider_code": "1113",
+        "provider_message": "Insufficient balance or no resource package. Please recharge.",
+        "reason": "Too Many Requests"
+      },
+      "index": 1,
+      "is_live": false,
+      "latency_ms": 495.8987236022949,
+      "phase": "sequential",
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "0faedf34-a804-4131-8069-e1cf147e9941"
+        },
+        "http_status": 429,
+        "provider_code": "1113",
+        "provider_message": "Insufficient balance or no resource package. Please recharge.",
+        "reason": "Too Many Requests"
+      },
+      "index": 1,
+      "is_live": false,
+      "latency_ms": 385.24627685546875,
+      "phase": "burst3",
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "97d4b646-cfd4-4a70-89a1-5e518e4ea856"
+        },
+        "http_status": 429,
+        "provider_code": "1113",
+        "provider_message": "Insufficient balance or no resource package. Please recharge.",
+        "reason": "Too Many Requests"
+      },
+      "index": 2,
+      "is_live": false,
+      "latency_ms": 383.9561939239502,
+      "phase": "burst3",
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "ac001e1f-086a-4a03-a0f5-642070185e53"
+        },
+        "http_status": 429,
+        "provider_code": "1113",
+        "provider_message": "Insufficient balance or no resource package. Please recharge.",
+        "reason": "Too Many Requests"
+      },
+      "index": 3,
+      "is_live": false,
+      "latency_ms": 401.74031257629395,
+      "phase": "burst3",
+      "prompt_tokens": 0,
+      "semantic_match": false,
+      "total_tokens": 0
+    }
+  ],
+  "schema_version": "aftergraph.study012.zai-recovery-probe.v0.1",
+  "summary": {
+    "calls": 4,
+    "failures": [
+      {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "da9ade84-d474-4359-973b-95d947483637"
+        },
+        "http_status": 429,
+        "provider_code": "1113",
+        "provider_message": "Insufficient balance or no resource package. Please recharge.",
+        "reason": "Too Many Requests"
+      },
+      {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "0faedf34-a804-4131-8069-e1cf147e9941"
+        },
+        "http_status": 429,
+        "provider_code": "1113",
+        "provider_message": "Insufficient balance or no resource package. Please recharge.",
+        "reason": "Too Many Requests"
+      },
+      {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "97d4b646-cfd4-4a70-89a1-5e518e4ea856"
+        },
+        "http_status": 429,
+        "provider_code": "1113",
+        "provider_message": "Insufficient balance or no resource package. Please recharge.",
+        "reason": "Too Many Requests"
+      },
+      {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "headers": {
+          "x-request-id": "ac001e1f-086a-4a03-a0f5-642070185e53"
+        },
+        "http_status": 429,
+        "provider_code": "1113",
+        "provider_message": "Insufficient balance or no resource package. Please recharge.",
+        "reason": "Too Many Requests"
+      }
+    ],
+    "live": 0,
+    "semantic_match": 0
+  }
+}

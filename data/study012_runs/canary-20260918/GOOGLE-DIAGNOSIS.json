@@ -1,0 +1,30 @@
+{
+  "schema_version": "aftergraph.study012.google-canary-diagnosis.v0.1",
+  "study_id": "STUDY-012",
+  "source_receipt": "data/study012_runs/canary-20260918/google/receipts.jsonl",
+  "observed": {
+    "prompt_tokens": 16,
+    "candidates_tokens": 0,
+    "total_tokens": 44,
+    "visible_response_hash": "9180bd63e730b9fe9859e501bbc7e0a8c0c22983b3004d1c7b4b44fb235d3300"
+  },
+  "derived": {
+    "unaccounted_generated_tokens": 28,
+    "hypothesis": "thinking tokens consumed the small maxOutputTokens budget before visible candidate text"
+  },
+  "external_contract": {
+    "statement": "Gemini maxOutputTokens includes thought tokens; Gemini 2.5 Flash supports thinkingBudget=0.",
+    "evidence_urls": [
+      "https://ai.google.dev/gemini-api/docs/generate-content/thinking",
+      "https://ai.google.dev/api/generate-content"
+    ]
+  },
+  "corrective_action": {
+    "model": "gemini-2.5-flash",
+    "thinking_budget": 0,
+    "visible_part_rule": "exclude parts where thought=true",
+    "requires_new_live_retry": true
+  },
+  "confidence": "HIGH_BUT_NOT_DIRECTLY_PROVEN_WITH_RAW_GOOGLE_RESPONSE",
+  "note": "The original raw provider response body was not retained, so finishReason/thoughtsTokenCount cannot be retroactively inspected. The diagnosis is evidence-consistent, not promoted to certainty."
+}

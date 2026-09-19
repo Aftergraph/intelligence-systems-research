@@ -1,0 +1,21 @@
+{
+  "schema_version": "aftergraph.study012.novita-sandbox-fabric.v0.1",
+  "study_id": "STUDY-012",
+  "execution_id": "study012-recovery-v2-20260918",
+  "sdk": {
+    "package": "novita-sandbox",
+    "version": "2.1.1"
+  },
+  "lifecycle": {
+    "auto_pause": true,
+    "checkpoint_export_required": true,
+    "resume_into_new_sandbox_supported": true,
+    "state_after_kill": "EPHEMERAL_UNLESS_EXPORTED"
+  },
+  "security": {
+    "provider_credentials_injected_by_default": false,
+    "secrets_persisted_in_checkpoint": false
+  },
+  "purpose": "isolated research execution worker; inference providers remain independent external services",
+  "status": "BOUND_FOR_PROOF"
+}

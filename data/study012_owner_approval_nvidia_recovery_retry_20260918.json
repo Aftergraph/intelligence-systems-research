@@ -1,0 +1,19 @@
+{
+  "schema_version": "aftergraph.study012.owner-approval.v0.1",
+  "study_id": "STUDY-012",
+  "approved_at": "2026-09-18",
+  "approval_ref": "OWNER-NVIDIA-RECOVERY-RETRY-20260918-CHAT-RUN",
+  "scope": "NVIDIA_DIRECT_RECOVERY_RETRY_ONLY",
+  "authorized_actions": [
+    "4 bounded canaries on nvidia/nemotron-3-ultra-550b-a55b",
+    "4 bounded judge canaries on z-ai/glm-5.3 via NVIDIA Direct"
+  ],
+  "explicitly_not_authorized": [
+    "full matrix rerun",
+    "PR merge",
+    "pooling with v1 results"
+  ],
+  "max_probe_calls": 8,
+  "hard_probe_cost_usd": 0.1,
+  "network_calls_authorized": true
+}

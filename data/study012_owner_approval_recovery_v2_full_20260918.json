@@ -1,0 +1,27 @@
+{
+  "schema_version": "aftergraph.study012.owner-approval.v0.1",
+  "study_id": "STUDY-012",
+  "approved_at": "2026-09-18",
+  "approval_ref": "OWNER-RECOVERY-V2-FULL-MATRIX-20260918-CHAT-RUN",
+  "scope": "RECOVERY_V2_FULL_FROZEN_MATRIX_ONLY",
+  "prerequisite_readiness_ref": "data/study012_recovery_v2_readiness_20260918.json",
+  "authorized_actions": [
+    "execute exactly 960 recovery-v2 observations using frozen Google Direct and NVIDIA Direct task strata",
+    "use NVIDIA Nemotron 3 Super only as observational J/JD judge",
+    "use pinned Sentinel verifier for DI",
+    "retry only frozen transient failure classes within max 2 attempts",
+    "resume only from exact recovery-v2 append-only observations",
+    "stop before max 2880 API calls or USD 4.00 accounted cost"
+  ],
+  "explicitly_not_authorized": [
+    "PR merge",
+    "provider/model substitution",
+    "pooling v1 and v2",
+    "fixture/hypothesis mutation",
+    "cost cap increase"
+  ],
+  "max_total_api_calls": 2880,
+  "hard_cost_stop_usd": 4,
+  "network_calls_authorized": true,
+  "revocation": "expires when v2 matrix completes, hard stop triggers, or execution contract is violated"
+}

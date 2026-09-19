@@ -1,0 +1,27 @@
+{
+  "schema_version": "aftergraph.study012.ollama-local-binding.v0.1",
+  "endpoint": "http://127.0.0.1:11434/api/chat",
+  "model_id": "qwen3.6:latest",
+  "execution_host": "jonas-lenovo",
+  "request": {
+    "stream": false,
+    "think": false,
+    "temperature": 0
+  },
+  "canary": {
+    "expected": "LOCAL_READY_OK",
+    "observed": "LOCAL_READY_OK",
+    "semantic_match": true,
+    "prompt_eval_count": 21,
+    "eval_count": 4,
+    "total_duration_ns": 551971500
+  },
+  "alternative_canary": {
+    "model_id": "nemotron-3.5-lightning:latest",
+    "semantic_match": true,
+    "total_duration_ns": 38673389800
+  },
+  "selection_reason": "Qwen3.6 passed the same deterministic canary with materially lower observed latency.",
+  "external_billing": false,
+  "status": "BOUND_FOR_READINESS"
+}

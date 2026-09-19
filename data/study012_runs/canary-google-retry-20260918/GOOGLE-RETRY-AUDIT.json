@@ -1,0 +1,26 @@
+{
+  "schema_version": "aftergraph.study012.google-retry-audit.v0.1",
+  "study_id": "STUDY-012",
+  "run_id": "study012-canary-v1",
+  "approval_ref": "OWNER-GOOGLE-RETRY-20260918-CHAT-CONTINUE",
+  "provider": "google",
+  "model_id": "gemini-2.5-flash",
+  "configuration": {
+    "thinking_budget": 0,
+    "max_output_tokens": 32,
+    "temperature": 0
+  },
+  "expected_output": "AFTERGRAPH_CANARY_OK",
+  "expected_output_sha256": "ef6f2c4edbeace425f20c92bf38017723cd48d583f2b6a80dc674043f49ce3e5",
+  "observed_response_sha256": "ef6f2c4edbeace425f20c92bf38017723cd48d583f2b6a80dc674043f49ce3e5",
+  "transport_live": true,
+  "audited_execution_class": "LIVE_VALID",
+  "prompt_tokens": 16,
+  "completion_tokens": 7,
+  "total_tokens": 23,
+  "latency_ms": 655.7719707489014,
+  "receipt_hash": "253f4b68a6606ac038a03a855777a22bd617d8e514091bb58a885f8268fd2d7f",
+  "scope_exhausted": true,
+  "additional_live_calls_authorized": false,
+  "conclusion": "Google Direct canary is semantically valid after the frozen thinkingBudget=0 correction. The prior semantic failure remains preserved as historical evidence."
+}

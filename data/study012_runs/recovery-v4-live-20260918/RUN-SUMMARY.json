@@ -1,0 +1,17 @@
+{
+  "budget": {
+    "cost_usd": 0.0,
+    "model_calls": 1469
+  },
+  "canonical_counts": {
+    "UNESTABLISHED": 240,
+    "VERIFIED": 720
+  },
+  "decision": "COMPLETED",
+  "execution_class_counts": {
+    "LIVE_VALID": 960
+  },
+  "failures": [],
+  "observations": 960,
+  "unique_traces": 960
+}

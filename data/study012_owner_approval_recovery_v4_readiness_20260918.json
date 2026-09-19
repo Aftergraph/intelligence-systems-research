@@ -1,0 +1,21 @@
+{
+  "schema_version": "aftergraph.study012.owner-approval.v0.1",
+  "study_id": "STUDY-012",
+  "approved_at": "2026-09-18",
+  "approval_ref": "OWNER-RECOVERY-V4-READINESS-20260918-CHAT-CONTINUE",
+  "scope": "RECOVERY_V4_READINESS_ONLY",
+  "authorized_actions": [
+    "3 bounded local Ollama qwen3.6 readiness calls",
+    "3 bounded NVIDIA Nemotron Ultra readiness calls",
+    "3 bounded NVIDIA Nemotron Super observational-judge readiness calls",
+    "persist per-call readiness evidence"
+  ],
+  "explicitly_not_authorized": [
+    "full v4 matrix execution",
+    "PR merge",
+    "provider substitution",
+    "pooling prior runs"
+  ],
+  "max_calls": 9,
+  "network_calls_authorized": true
+}

@@ -1,0 +1,35 @@
+{
+  "execution_id": "study012-cross-model-v3-20260918",
+  "files": {
+    "STUDY-012-AMENDMENT-006-NOVITA-NVIDIA-CROSS-MODEL-V3.md": "73db901b81b1bfa9664a056532e74d6f4581669d2df0ab94d04f985ede125d4e",
+    "data/study012_evaluator_bindings_v01.json": "eefbef0a149acd9b9d160385dfc2c06051069bae10bf0154c9fd669ca489d5fc",
+    "data/study012_novita_sandbox_fabric_v01.json": "2d5909c440eeda3e04b04adb3156a6635527c09ee6f88f10dd65d1e73872be0f",
+    "data/study012_novita_sandbox_resume_proof_20260918.json": "9d3352ce7a91e839adc45f0cfd839123ca9dfc618f3f7f7405f9259748ccfcab",
+    "data/study012_provider_model_matrix_v3.json": "030dbc14da01d4574cf3bbc47e53e57985a506e1cb3fdf58b35809a877af48c5",
+    "data/study012_r2_extension_v03.json": "b063e568baceefef2f87100c3856a7d9a769b3f6fcfe049c9df023137790936b",
+    "data/study012_sentinel_binding_v01.json": "2eed5e652eb421fd6018a0e6b2f234d171175439c1303af46d529acf22a1e447",
+    "data/study012_v3_execution_plan_v01.json": "de180140d5c815b8c058fb8c9af7d7b63453ecaf9b2b95982d91b153685e275a",
+    "data/study012_v3_readiness_20260918.json": "d30b2e940edb43235212af8074b5f9cc4bbaea14a295b7236fae53d7bb95a86f",
+    "data/study012_works_verification_binding_v01.json": "d2eaea445227ed00165196251117ffdbcb98c495f262fc980f645cf34e4789ed",
+    "experiments/live_benchmark/study012_matrix_plan_v3.py": "2ae7a0feef35a328f890b568c8ed7260b62ee3ee79f0ca3c7bdf385894f12e1e",
+    "experiments/live_benchmark/study012_novita_sandbox_fabric.py": "4b289bc8627a58af90530e15b7bb1ce228e353d889348a905d605ad1d83f1733",
+    "experiments/live_benchmark/study012_novita_sandbox_resume_proof.py": "806e13191fd8e6833cc604503cb2d79c0e33113bc53cb2469db0902c1d7b53ed",
+    "experiments/live_benchmark/study012_v3_readiness.py": "6efcf451600177d2452d5cfedd4452ba7aa920b9c60df4b7e0de086e269da5ab",
+    "providers/nvidia.py": "8a9fe4406025934dc86be86ed49b68e2a4eb3c23d247a6522d1351309df6f09b",
+    "src/study012_oracles.py": "8233fab3cf20b557d2bb3c2c8f34e05f06a8edd70f60a98f2162ca1ed39968a0",
+    "tests/test_study012_novita_sandbox_fabric.py": "40c8cf7c49040d9b3cbe9a666d0d9a46e4e85bbcbc877f3a3f501c593c90fcdc",
+    "tests/test_study012_v3_readiness.py": "fb714e986f347a5a365425ad42873e56e42ec40b0f157853858a24444b0c43cd"
+  },
+  "gates": {
+    "full_run_owner_approval_required": true,
+    "pooling_with_prior_runs": false,
+    "provider_independence_claim_allowed": false,
+    "readiness_decision": "READY",
+    "readiness_observations": 9,
+    "sandbox_resume_complete": true,
+    "sandbox_resume_different_sandboxes": true
+  },
+  "schema_version": "aftergraph.study012.v3-freeze.v0.1",
+  "status": "FROZEN_READY_FOR_OWNER_APPROVAL",
+  "study_id": "STUDY-012"
+}

@@ -1,0 +1,19 @@
+{
+  "budget": {
+    "api_calls": 1910,
+    "cost_usd": 0.01801667
+  },
+  "canonical_counts": {
+    "BLOCKED": 561,
+    "UNESTABLISHED": 240,
+    "VERIFIED": 159
+  },
+  "decision": "COMPLETED",
+  "execution_class_counts": {
+    "LIVE_PROVIDER_FAILURE": 738,
+    "LIVE_VALID": 222
+  },
+  "failures": [],
+  "observations": 960,
+  "unique_traces": 960
+}

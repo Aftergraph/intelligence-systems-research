@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/research-metrics-receipt.v0.1.json",
+  "title": "Aftergraph Research Metrics Receipt v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","receipt_id","study_id","run_set_ref","population","window","counters","resources","provenance"],
+  "properties": {
+    "schema_version": {"const": "aftergraph.research.metrics.v0.1"},
+    "receipt_id": {"type":"string","minLength":1},
+    "study_id": {"type":"string","minLength":1},
+    "run_set_ref": {"type":"string","minLength":1},
+    "population": {"type":"string","minLength":1},
+    "window": {
+      "type":"object","additionalProperties":false,
+      "required":["start","end"],
+      "properties":{"start":{"type":"string","format":"date-time"},"end":{"type":"string","format":"date-time"}}
+    },
+    "counters": {
+      "type":"object","additionalProperties":false,
+      "required":["verifiable_claims","deterministically_verified_claims","verified_claims","judge_only_verified_claims","independently_verified_claims","replication_attempts","replication_successes","falsification_attempts","reproducible_counterexamples","applicable_adversarial_classes","covered_adversarial_classes","research_progress_events"],
+      "properties": {
+        "verifiable_claims":{"type":"integer","minimum":0},
+        "deterministically_verified_claims":{"type":"integer","minimum":0},
+        "verified_claims":{"type":"integer","minimum":0},
+        "judge_only_verified_claims":{"type":"integer","minimum":0},
+        "independently_verified_claims":{"type":"integer","minimum":0},
+        "replication_attempts":{"type":"integer","minimum":0},
+        "replication_successes":{"type":"integer","minimum":0},
+        "falsification_attempts":{"type":"integer","minimum":0},
+        "reproducible_counterexamples":{"type":"integer","minimum":0},
+        "applicable_adversarial_classes":{"type":"integer","minimum":0},
+        "covered_adversarial_classes":{"type":"integer","minimum":0},
+        "research_progress_events":{"type":"integer","minimum":0}
+      }
+    },
+    "resources": {
+      "type":"object","additionalProperties":false,
+      "required":["tokens","wall_clock_seconds","cost_usd","human_interventions"],
+      "properties":{
+        "tokens":{"type":["integer","null"],"minimum":0},
+        "wall_clock_seconds":{"type":["number","null"],"minimum":0},
+        "cost_usd":{"type":["number","null"],"minimum":0},
+        "human_interventions":{"type":["integer","null"],"minimum":0}
+      }
+    },
+    "provenance": {
+      "type":"object","additionalProperties":false,
+      "required":["source_commit","evidence_refs","verifier_refs","generated_at"],
+      "properties":{
+        "source_commit":{"type":"string","minLength":7},
+        "evidence_refs":{"type":"array","items":{"type":"string","minLength":1}},
+        "verifier_refs":{"type":"array","items":{"type":"string","minLength":1}},
+        "generated_at":{"type":"string","format":"date-time"}
+      }
+    }
+  }
+}

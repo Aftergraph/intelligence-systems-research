@@ -1,0 +1,21 @@
+{
+  "schema_version": "aftergraph.study012.owner-approval.v0.1",
+  "study_id": "STUDY-012",
+  "approved_at": "2026-09-18",
+  "approval_ref": "OWNER-HF-GROQ-PROBE-RETRY-20260918-CHAT-RESUME",
+  "scope": "HF_GROQ_RECOVERY_PROBE_RETRY_ONLY",
+  "authorized_actions": [
+    "3 bounded Hugging Face router calls pinned to Groq provider using openai/gpt-oss-120b:groq",
+    "persist each result append-only before aggregate summary"
+  ],
+  "explicitly_not_authorized": [
+    "full matrix rerun",
+    "PR merge",
+    "pooling with prior runs",
+    "auto provider routing"
+  ],
+  "max_probe_calls": 3,
+  "hard_probe_cost_usd": 0.1,
+  "network_calls_authorized": true,
+  "reason": "first 3-call probe completed network attempts but local summary serialization crashed before durable evidence was written"
+}

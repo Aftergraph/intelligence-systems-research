@@ -1,0 +1,19 @@
+{
+  "schema_version": "aftergraph.study012.owner-approval.v0.1",
+  "study_id": "STUDY-012",
+  "approved_at": "2026-09-18",
+  "approval_ref": "OWNER-HF-PUBLICAI-CANARY-20260918-CHAT-NEXT",
+  "scope": "HF_PUBLICAI_CANARY_ONLY",
+  "authorized_actions": [
+    "4 bounded Hugging Face router calls pinned to PublicAI backend swiss-ai/Apertus-v1.5-8B"
+  ],
+  "explicitly_not_authorized": [
+    "full matrix rerun",
+    "dynamic provider routing",
+    "PR merge",
+    "pooling"
+  ],
+  "max_probe_calls": 4,
+  "hard_probe_cost_usd": 0.05,
+  "network_calls_authorized": true
+}

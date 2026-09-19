@@ -1,0 +1,261 @@
+{
+  "calls": 9,
+  "decision": "BLOCKED",
+  "rows": [
+    {
+      "completion_tokens": 4,
+      "content_sha256": "82aa145e2490324d06156690f45558cc39a6bd0d8c3f2bfb7b930820eca6af72",
+      "cost_usd": 0.0,
+      "failure": null,
+      "index": 1,
+      "is_live": true,
+      "latency_ms": 563.2266998291016,
+      "model_id": "nvidia/nemotron-3-super-120b-a12b",
+      "phase": "sequential",
+      "prompt_tokens": 25,
+      "role": "task_m1",
+      "semantic_match": true,
+      "total_tokens": 29
+    },
+    {
+      "completion_tokens": 4,
+      "content_sha256": "82aa145e2490324d06156690f45558cc39a6bd0d8c3f2bfb7b930820eca6af72",
+      "cost_usd": 0.0,
+      "failure": null,
+      "index": 1,
+      "is_live": true,
+      "latency_ms": 584.6679210662842,
+      "model_id": "nvidia/nemotron-3-super-120b-a12b",
+      "phase": "burst2",
+      "prompt_tokens": 25,
+      "role": "task_m1",
+      "semantic_match": true,
+      "total_tokens": 29
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 503,
+        "provider_code": 503,
+        "provider_message": "Service temporarily overloaded",
+        "reason": "Service Unavailable"
+      },
+      "index": 2,
+      "is_live": false,
+      "latency_ms": 389.0197277069092,
+      "model_id": "nvidia/nemotron-3-super-120b-a12b",
+      "phase": "burst2",
+      "prompt_tokens": 0,
+      "role": "task_m1",
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 404,
+        "provider_status": "404",
+        "reason": "Not Found"
+      },
+      "index": 1,
+      "is_live": false,
+      "latency_ms": 274.5630741119385,
+      "model_id": "mistralai/mistral-7b-instruct-v0.3",
+      "phase": "sequential",
+      "prompt_tokens": 0,
+      "role": "task_m2",
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 404,
+        "provider_status": "404",
+        "reason": "Not Found"
+      },
+      "index": 1,
+      "is_live": false,
+      "latency_ms": 250.49662590026855,
+      "model_id": "mistralai/mistral-7b-instruct-v0.3",
+      "phase": "burst2",
+      "prompt_tokens": 0,
+      "role": "task_m2",
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 404,
+        "provider_status": "404",
+        "reason": "Not Found"
+      },
+      "index": 2,
+      "is_live": false,
+      "latency_ms": 251.71732902526855,
+      "model_id": "mistralai/mistral-7b-instruct-v0.3",
+      "phase": "burst2",
+      "prompt_tokens": 0,
+      "role": "task_m2",
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 404,
+        "provider_status": "404",
+        "reason": "Not Found"
+      },
+      "index": 1,
+      "is_live": false,
+      "latency_ms": 230.67355155944824,
+      "model_id": "google/gemma-3-4b-it",
+      "phase": "sequential",
+      "prompt_tokens": 0,
+      "role": "judge",
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 404,
+        "provider_status": "404",
+        "reason": "Not Found"
+      },
+      "index": 1,
+      "is_live": false,
+      "latency_ms": 273.5862731933594,
+      "model_id": "google/gemma-3-4b-it",
+      "phase": "burst2",
+      "prompt_tokens": 0,
+      "role": "judge",
+      "semantic_match": false,
+      "total_tokens": 0
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 404,
+        "provider_status": "404",
+        "reason": "Not Found"
+      },
+      "index": 2,
+      "is_live": false,
+      "latency_ms": 247.21336364746094,
+      "model_id": "google/gemma-3-4b-it",
+      "phase": "burst2",
+      "prompt_tokens": 0,
+      "role": "judge",
+      "semantic_match": false,
+      "total_tokens": 0
+    }
+  ],
+  "schema_version": "aftergraph.study012.nvidia-v3-readiness.v0.1",
+  "summary": {
+    "judge": {
+      "calls": 3,
+      "failures": [
+        {
+          "category": "HTTP_ERROR",
+          "exception_type": "HTTPError",
+          "http_status": 404,
+          "provider_status": "404",
+          "reason": "Not Found"
+        },
+        {
+          "category": "HTTP_ERROR",
+          "exception_type": "HTTPError",
+          "http_status": 404,
+          "provider_status": "404",
+          "reason": "Not Found"
+        },
+        {
+          "category": "HTTP_ERROR",
+          "exception_type": "HTTPError",
+          "http_status": 404,
+          "provider_status": "404",
+          "reason": "Not Found"
+        }
+      ],
+      "live": 0,
+      "model_id": "google/gemma-3-4b-it",
+      "semantic_match": 0
+    },
+    "task_m1": {
+      "calls": 3,
+      "failures": [
+        {
+          "category": "HTTP_ERROR",
+          "exception_type": "HTTPError",
+          "http_status": 503,
+          "provider_code": 503,
+          "provider_message": "Service temporarily overloaded",
+          "reason": "Service Unavailable"
+        }
+      ],
+      "live": 2,
+      "model_id": "nvidia/nemotron-3-super-120b-a12b",
+      "semantic_match": 2
+    },
+    "task_m2": {
+      "calls": 3,
+      "failures": [
+        {
+          "category": "HTTP_ERROR",
+          "exception_type": "HTTPError",
+          "http_status": 404,
+          "provider_status": "404",
+          "reason": "Not Found"
+        },
+        {
+          "category": "HTTP_ERROR",
+          "exception_type": "HTTPError",
+          "http_status": 404,
+          "provider_status": "404",
+          "reason": "Not Found"
+        },
+        {
+          "category": "HTTP_ERROR",
+          "exception_type": "HTTPError",
+          "http_status": 404,
+          "provider_status": "404",
+          "reason": "Not Found"
+        }
+      ],
+      "live": 0,
+      "model_id": "mistralai/mistral-7b-instruct-v0.3",
+      "semantic_match": 0
+    }
+  }
+}

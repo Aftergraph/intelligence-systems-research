@@ -1,0 +1,249 @@
+{
+  "rows": [
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 429,
+        "provider_code": 429,
+        "provider_message": "Provider returned error",
+        "reason": "Too Many Requests"
+      },
+      "index": 1,
+      "is_live": false,
+      "latency_ms": 462.296724319458,
+      "model_id": "google/gemma-4-31b-it:free",
+      "phase": "sequential",
+      "prompt_tokens": 0,
+      "semantic_match": false
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 429,
+        "provider_code": 429,
+        "provider_message": "Provider returned error",
+        "reason": "Too Many Requests"
+      },
+      "index": 1,
+      "is_live": false,
+      "latency_ms": 288.1326675415039,
+      "model_id": "google/gemma-4-31b-it:free",
+      "phase": "burst3",
+      "prompt_tokens": 0,
+      "semantic_match": false
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 429,
+        "provider_code": 429,
+        "provider_message": "Provider returned error",
+        "reason": "Too Many Requests"
+      },
+      "index": 2,
+      "is_live": false,
+      "latency_ms": 289.9208068847656,
+      "model_id": "google/gemma-4-31b-it:free",
+      "phase": "burst3",
+      "prompt_tokens": 0,
+      "semantic_match": false
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 429,
+        "provider_code": 429,
+        "provider_message": "Provider returned error",
+        "reason": "Too Many Requests"
+      },
+      "index": 3,
+      "is_live": false,
+      "latency_ms": 277.19998359680176,
+      "model_id": "google/gemma-4-31b-it:free",
+      "phase": "burst3",
+      "prompt_tokens": 0,
+      "semantic_match": false
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 403,
+        "provider_code": 403,
+        "provider_message": "thinkingmachines/inkling-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps",
+        "reason": "Forbidden"
+      },
+      "index": 1,
+      "is_live": false,
+      "latency_ms": 135.5459690093994,
+      "model_id": "thinkingmachines/inkling-small:free",
+      "phase": "sequential",
+      "prompt_tokens": 0,
+      "semantic_match": false
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 403,
+        "provider_code": 403,
+        "provider_message": "thinkingmachines/inkling-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps",
+        "reason": "Forbidden"
+      },
+      "index": 1,
+      "is_live": false,
+      "latency_ms": 111.15050315856934,
+      "model_id": "thinkingmachines/inkling-small:free",
+      "phase": "burst3",
+      "prompt_tokens": 0,
+      "semantic_match": false
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 403,
+        "provider_code": 403,
+        "provider_message": "thinkingmachines/inkling-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps",
+        "reason": "Forbidden"
+      },
+      "index": 2,
+      "is_live": false,
+      "latency_ms": 112.13564872741699,
+      "model_id": "thinkingmachines/inkling-small:free",
+      "phase": "burst3",
+      "prompt_tokens": 0,
+      "semantic_match": false
+    },
+    {
+      "completion_tokens": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cost_usd": 0.0,
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 403,
+        "provider_code": 403,
+        "provider_message": "thinkingmachines/inkling-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps",
+        "reason": "Forbidden"
+      },
+      "index": 3,
+      "is_live": false,
+      "latency_ms": 122.74956703186035,
+      "model_id": "thinkingmachines/inkling-small:free",
+      "phase": "burst3",
+      "prompt_tokens": 0,
+      "semantic_match": false
+    }
+  ],
+  "schema_version": "aftergraph.study012.free-recovery-probe.v0.1",
+  "summary": {
+    "google/gemma-4-31b-it:free": {
+      "burst_live": 0,
+      "calls": 4,
+      "failures": [
+        {
+          "category": "HTTP_ERROR",
+          "exception_type": "HTTPError",
+          "http_status": 429,
+          "provider_code": 429,
+          "provider_message": "Provider returned error",
+          "reason": "Too Many Requests"
+        },
+        {
+          "category": "HTTP_ERROR",
+          "exception_type": "HTTPError",
+          "http_status": 429,
+          "provider_code": 429,
+          "provider_message": "Provider returned error",
+          "reason": "Too Many Requests"
+        },
+        {
+          "category": "HTTP_ERROR",
+          "exception_type": "HTTPError",
+          "http_status": 429,
+          "provider_code": 429,
+          "provider_message": "Provider returned error",
+          "reason": "Too Many Requests"
+        },
+        {
+          "category": "HTTP_ERROR",
+          "exception_type": "HTTPError",
+          "http_status": 429,
+          "provider_code": 429,
+          "provider_message": "Provider returned error",
+          "reason": "Too Many Requests"
+        }
+      ],
+      "live": 0,
+      "semantic_match": 0,
+      "sequential_live": 0
+    },
+    "thinkingmachines/inkling-small:free": {
+      "burst_live": 0,
+      "calls": 4,
+      "failures": [
+        {
+          "category": "HTTP_ERROR",
+          "exception_type": "HTTPError",
+          "http_status": 403,
+          "provider_code": 403,
+          "provider_message": "thinkingmachines/inkling-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps",
+          "reason": "Forbidden"
+        },
+        {
+          "category": "HTTP_ERROR",
+          "exception_type": "HTTPError",
+          "http_status": 403,
+          "provider_code": 403,
+          "provider_message": "thinkingmachines/inkling-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps",
+          "reason": "Forbidden"
+        },
+        {
+          "category": "HTTP_ERROR",
+          "exception_type": "HTTPError",
+          "http_status": 403,
+          "provider_code": 403,
+          "provider_message": "thinkingmachines/inkling-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps",
+          "reason": "Forbidden"
+        },
+        {
+          "category": "HTTP_ERROR",
+          "exception_type": "HTTPError",
+          "http_status": 403,
+          "provider_code": 403,
+          "provider_message": "thinkingmachines/inkling-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps",
+          "reason": "Forbidden"
+        }
+      ],
+      "live": 0,
+      "semantic_match": 0,
+      "sequential_live": 0
+    }
+  }
+}

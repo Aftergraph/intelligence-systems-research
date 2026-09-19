@@ -1,0 +1,122 @@
+{
+  "rows": [
+    {
+      "content_sha256": "80f184c4dabbbcf88ab49cbca2a23a7303c06de6aa452e94c993650d675017b9",
+      "failure": null,
+      "index": 1,
+      "is_live": true,
+      "latency_ms": 2728.1863689422607,
+      "model_id": "nvidia/nemotron-3.5-lightning-30b-a3b",
+      "semantic_match": false
+    },
+    {
+      "content_sha256": "80f184c4dabbbcf88ab49cbca2a23a7303c06de6aa452e94c993650d675017b9",
+      "failure": null,
+      "index": 2,
+      "is_live": true,
+      "latency_ms": 2110.118865966797,
+      "model_id": "nvidia/nemotron-3.5-lightning-30b-a3b",
+      "semantic_match": false
+    },
+    {
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 404,
+        "provider_status": "404",
+        "reason": "Not Found"
+      },
+      "index": 1,
+      "is_live": false,
+      "latency_ms": 225.34871101379395,
+      "model_id": "nvidia/nemotron-nano-3-30b-a3b",
+      "semantic_match": false
+    },
+    {
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 404,
+        "provider_status": "404",
+        "reason": "Not Found"
+      },
+      "index": 2,
+      "is_live": false,
+      "latency_ms": 242.18177795410156,
+      "model_id": "nvidia/nemotron-nano-3-30b-a3b",
+      "semantic_match": false
+    },
+    {
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "failure": {
+        "category": "HTTP_ERROR",
+        "exception_type": "HTTPError",
+        "http_status": 503,
+        "provider_code": 503,
+        "provider_message": "ResourceExhausted: Worker local total request limit reached (16/16)",
+        "reason": "Service Unavailable"
+      },
+      "index": 1,
+      "is_live": false,
+      "latency_ms": 244.54259872436523,
+      "model_id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+      "semantic_match": false
+    },
+    {
+      "content_sha256": "2d82fa81e4779b33f11155b9e251b954f77099d1a675acd1976e730350c1db16",
+      "failure": null,
+      "index": 2,
+      "is_live": true,
+      "latency_ms": 1128.575325012207,
+      "model_id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+      "semantic_match": true
+    }
+  ],
+  "schema_version": "aftergraph.study012.nvidia-native-candidates.v0.1",
+  "summary": {
+    "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning": {
+      "calls": 2,
+      "failures": [
+        {
+          "category": "HTTP_ERROR",
+          "exception_type": "HTTPError",
+          "http_status": 503,
+          "provider_code": 503,
+          "provider_message": "ResourceExhausted: Worker local total request limit reached (16/16)",
+          "reason": "Service Unavailable"
+        }
+      ],
+      "live": 1,
+      "semantic_match": 1
+    },
+    "nvidia/nemotron-3.5-lightning-30b-a3b": {
+      "calls": 2,
+      "failures": [],
+      "live": 2,
+      "semantic_match": 0
+    },
+    "nvidia/nemotron-nano-3-30b-a3b": {
+      "calls": 2,
+      "failures": [
+        {
+          "category": "HTTP_ERROR",
+          "exception_type": "HTTPError",
+          "http_status": 404,
+          "provider_status": "404",
+          "reason": "Not Found"
+        },
+        {
+          "category": "HTTP_ERROR",
+          "exception_type": "HTTPError",
+          "http_status": 404,
+          "provider_status": "404",
+          "reason": "Not Found"
+        }
+      ],
+      "live": 0,
+      "semantic_match": 0
+    }
+  }
+}

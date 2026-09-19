@@ -1,0 +1,33 @@
+{
+  "schema_version": "aftergraph.study012.provider-matrix.v3.0",
+  "study_id": "STUDY-012",
+  "execution_id": "study012-cross-model-v3-20260918",
+  "execution_fabric": "novita_sandbox",
+  "task_strata": [
+    {
+      "id": "M1",
+      "provider": "nvidia",
+      "model_id": "nvidia/nemotron-3-ultra-550b-a55b",
+      "role": "task",
+      "claim_scope": "model_stratum_only"
+    },
+    {
+      "id": "M2",
+      "provider": "nvidia",
+      "model_id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+      "role": "task",
+      "claim_scope": "model_stratum_only"
+    }
+  ],
+  "judge": {
+    "id": "J1",
+    "provider": "nvidia",
+    "model_id": "nvidia/nemotron-3-super-120b-a12b",
+    "role": "observational_judge",
+    "canonical_verified_allowed": false
+  },
+  "provider_independence_claim_allowed": false,
+  "substitution_allowed": false,
+  "shared_provider_max_concurrency": 2,
+  "status": "FROZEN_FOR_READINESS"
+}

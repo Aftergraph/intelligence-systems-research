@@ -1,0 +1,32 @@
+{
+  "execution_id": "study012-cross-model-v3-20260918",
+  "files": {
+    "data/study012_novita_sandbox_resume_proof_20260918.json": "9d3352ce7a91e839adc45f0cfd839123ca9dfc618f3f7f7405f9259748ccfcab",
+    "data/study012_owner_approval_v3_full_20260918.json": "a499d2aa8eade0ac54b1a2e9f35862fd778ca0ba4db7618a538f006f8684d676",
+    "data/study012_provider_model_matrix_v3.json": "030dbc14da01d4574cf3bbc47e53e57985a506e1cb3fdf58b35809a877af48c5",
+    "data/study012_r2_extension_v03.json": "b063e568baceefef2f87100c3856a7d9a769b3f6fcfe049c9df023137790936b",
+    "data/study012_sentinel_binding_v01.json": "2eed5e652eb421fd6018a0e6b2f234d171175439c1303af46d529acf22a1e447",
+    "data/study012_v3_execution_plan_v01.json": "de180140d5c815b8c058fb8c9af7d7b63453ecaf9b2b95982d91b153685e275a",
+    "data/study012_v3_freeze_manifest_v01.json": "1d713b774787db0c989a2f4a6e9768ead3302ac860a432385e47794899896996",
+    "data/study012_v3_readiness_20260918.json": "d30b2e940edb43235212af8074b5f9cc4bbaea14a295b7236fae53d7bb95a86f",
+    "experiments/live_benchmark/study012_evaluators.py": "12283bb18789ba0b1001eea3ddb46896cb6d72634a0179ac2a003f466533faa6",
+    "experiments/live_benchmark/study012_matrix_plan_v3.py": "2ae7a0feef35a328f890b568c8ed7260b62ee3ee79f0ca3c7bdf385894f12e1e",
+    "experiments/live_benchmark/study012_sentinel_adapter.py": "6bd827975b5c01f487d20c64c9d2945a65b3d2ae044ed1808e4ff10d80cd9c17",
+    "experiments/live_benchmark/study012_v3_sandbox_runner.py": "17a0b2168b86dc14183fdeec6bf5dafd7a9717cd67a329febc16c0a3ea4dfda9",
+    "tests/test_study012_v3_sandbox_runner.py": "a6812a92865d821a08d78158a864fd6fe92abdf639ec034f1a2b8fff52502855"
+  },
+  "gates": {
+    "execution_fabric": "novita_sandbox",
+    "hard_cost_stop_usd": 4,
+    "max_total_api_calls": 2880,
+    "network_calls_authorized": true,
+    "owner_approval_ref": "OWNER-V3-FULL-MATRIX-20260918-CHAT-RESUME",
+    "pooling_with_prior_runs": false,
+    "provider_independence_claim_allowed": false,
+    "readiness_decision": "READY",
+    "readiness_observations": 9
+  },
+  "schema_version": "aftergraph.study012.v3-execution-freeze.v0.2",
+  "status": "FROZEN_AUTHORIZED_FOR_EXACT_V3_EXECUTION",
+  "study_id": "STUDY-012"
+}

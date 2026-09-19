@@ -1,0 +1,384 @@
+{
+  "condition_summary": {
+    "D": {
+      "canonical": {
+        "VERIFIED": 240
+      },
+      "deterministic": {
+        "VERIFIED": 240
+      },
+      "independent_passed": 0,
+      "judge": {},
+      "live_valid": 240,
+      "n": 240
+    },
+    "DI": {
+      "canonical": {
+        "VERIFIED": 240
+      },
+      "deterministic": {
+        "VERIFIED": 240
+      },
+      "independent_passed": 240,
+      "judge": {},
+      "live_valid": 240,
+      "n": 240
+    },
+    "J": {
+      "canonical": {
+        "UNESTABLISHED": 240
+      },
+      "deterministic": {},
+      "independent_passed": 0,
+      "judge": {
+        "VERIFIED": 240
+      },
+      "live_valid": 240,
+      "n": 240
+    },
+    "JD": {
+      "canonical": {
+        "VERIFIED": 240
+      },
+      "deterministic": {
+        "VERIFIED": 240
+      },
+      "independent_passed": 0,
+      "judge": {
+        "VERIFIED": 240
+      },
+      "live_valid": 240,
+      "n": 240
+    }
+  },
+  "confirmatory_admissibility": "PASS",
+  "execution_class_counts": {
+    "LIVE_VALID": 960
+  },
+  "execution_id": "study012-recovery-v4-20260918",
+  "hypothesis_dispositions": {
+    "H1": {
+      "basis": "0/240 judge-only comparator rows became canonical VERIFIED; 720/720 deterministic-verification rows were canonical VERIFIED.",
+      "status": "SUPPORTED"
+    },
+    "H2": {
+      "basis": "0/240 paired JD disagreements observed; Wilson 95% upper bound is 0.015754; McNemar exact p=1.0.",
+      "limitation": "Effects below the achieved confidence bound remain unresolved; this is not a universal no-disagreement claim.",
+      "status": "WALKED_BACK"
+    },
+    "H3": {
+      "basis": "8/8 R2 classes covered; every class had 90/90 deterministic-verification rows VERIFIED.",
+      "status": "SUPPORTED"
+    },
+    "H4": {
+      "basis": "240/240 DI rows had unique passed Sentinel receipts. Schema IVCR is 240/720 = 1/3; DI-conditional receipt pass rate is 240/240.",
+      "status": "SUPPORTED"
+    }
+  },
+  "jd_disagreement": {
+    "both_verified": 240,
+    "disagreement_rate": 0.0,
+    "disagreement_wilson95": [
+      0.0,
+      0.015753919941558815
+    ],
+    "disagreements": 0,
+    "judge_not_oracle_verified": 0,
+    "judge_verified_oracle_not": 0,
+    "mcnemar_exact_two_sided_p": 1.0,
+    "n_pairs": 240,
+    "neither_verified": 0
+  },
+  "judge_attempts": {
+    "0": 480,
+    "1": 459,
+    "2": 21
+  },
+  "judge_failure_provenance": 0,
+  "metrics": {
+    "adversarial_coverage": 1.0,
+    "dvcr": 1.0,
+    "falsification_yield": null,
+    "ivcr": 0.3333333333333333,
+    "jcr": 0.0,
+    "replication_success_rate": null,
+    "verified_progress_per_1k_tokens": null,
+    "verified_progress_per_cost_usd": null,
+    "verified_progress_per_hour": 0.0
+  },
+  "metrics_receipt": {
+    "counters": {
+      "applicable_adversarial_classes": 8,
+      "covered_adversarial_classes": 8,
+      "deterministically_verified_claims": 720,
+      "falsification_attempts": 0,
+      "independently_verified_claims": 240,
+      "judge_only_verified_claims": 0,
+      "replication_attempts": 0,
+      "replication_successes": 0,
+      "reproducible_counterexamples": 0,
+      "research_progress_events": 0,
+      "verifiable_claims": 720,
+      "verified_claims": 720
+    },
+    "population": "960 frozen recovery-v4 observations; J comparator excluded from verifiable_claims denominator",
+    "provenance": {
+      "evidence_refs": [
+        "sha256:7530a46da7faa935448f207dd3a276e751a4cc8b38d48585d29764b184fe71bd",
+        "sha256:f1e4ff0a92333072ad958b564ea112e7b3d140fee71049a1869e0209e96011bc"
+      ],
+      "generated_at": "2026-09-18T20:35:25.688285Z",
+      "source_commit": "0ce31cb4c9b9ad125db9e3ddfd314618aa930bee",
+      "verifier_refs": [
+        "sentinel:domain-verifier"
+      ]
+    },
+    "receipt_id": "rmr_study012_v4_7530a46da7faa935",
+    "resources": {
+      "cost_usd": 0.0,
+      "human_interventions": 0,
+      "tokens": null,
+      "wall_clock_seconds": 1379.88
+    },
+    "run_set_ref": "study012-recovery-v4-20260918",
+    "schema_version": "aftergraph.research.metrics.v0.1",
+    "study_id": "STUDY-012",
+    "window": {
+      "end": "2026-09-18T20:35:25.688285Z",
+      "start": "2026-09-18T20:12:29.833195Z"
+    }
+  },
+  "observations": 960,
+  "provider_stats": {
+    "nvidia": {
+      "conditions": {
+        "D": 120,
+        "DI": 120,
+        "J": 120,
+        "JD": 120
+      },
+      "jd": {
+        "both_verified": 120,
+        "disagreement_rate": 0.0,
+        "disagreement_wilson95": [
+          0.0,
+          0.031019166418703486
+        ],
+        "disagreements": 0,
+        "judge_not_oracle_verified": 0,
+        "judge_verified_oracle_not": 0,
+        "mcnemar_exact_two_sided_p": 1.0,
+        "n_pairs": 120,
+        "neither_verified": 0
+      },
+      "live_valid": 480,
+      "n": 480
+    },
+    "ollama-local": {
+      "conditions": {
+        "D": 120,
+        "DI": 120,
+        "J": 120,
+        "JD": 120
+      },
+      "jd": {
+        "both_verified": 120,
+        "disagreement_rate": 0.0,
+        "disagreement_wilson95": [
+          0.0,
+          0.031019166418703486
+        ],
+        "disagreements": 0,
+        "judge_not_oracle_verified": 0,
+        "judge_verified_oracle_not": 0,
+        "mcnemar_exact_two_sided_p": 1.0,
+        "n_pairs": 120,
+        "neither_verified": 0
+      },
+      "live_valid": 480,
+      "n": 480
+    }
+  },
+  "r2_stats": {
+    "adversarial_evidence": {
+      "deterministic_total": 90,
+      "deterministic_verified": 90,
+      "jd": {
+        "both_verified": 30,
+        "disagreement_rate": 0.0,
+        "disagreement_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "disagreements": 0,
+        "judge_not_oracle_verified": 0,
+        "judge_verified_oracle_not": 0,
+        "mcnemar_exact_two_sided_p": 1.0,
+        "n_pairs": 30,
+        "neither_verified": 0
+      },
+      "live_valid": 120,
+      "n": 120
+    },
+    "constraint_decay": {
+      "deterministic_total": 90,
+      "deterministic_verified": 90,
+      "jd": {
+        "both_verified": 30,
+        "disagreement_rate": 0.0,
+        "disagreement_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "disagreements": 0,
+        "judge_not_oracle_verified": 0,
+        "judge_verified_oracle_not": 0,
+        "mcnemar_exact_two_sided_p": 1.0,
+        "n_pairs": 30,
+        "neither_verified": 0
+      },
+      "live_valid": 120,
+      "n": 120
+    },
+    "contradiction": {
+      "deterministic_total": 90,
+      "deterministic_verified": 90,
+      "jd": {
+        "both_verified": 30,
+        "disagreement_rate": 0.0,
+        "disagreement_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "disagreements": 0,
+        "judge_not_oracle_verified": 0,
+        "judge_verified_oracle_not": 0,
+        "mcnemar_exact_two_sided_p": 1.0,
+        "n_pairs": 30,
+        "neither_verified": 0
+      },
+      "live_valid": 120,
+      "n": 120
+    },
+    "crash_recovery": {
+      "deterministic_total": 90,
+      "deterministic_verified": 90,
+      "jd": {
+        "both_verified": 30,
+        "disagreement_rate": 0.0,
+        "disagreement_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "disagreements": 0,
+        "judge_not_oracle_verified": 0,
+        "judge_verified_oracle_not": 0,
+        "mcnemar_exact_two_sided_p": 1.0,
+        "n_pairs": 30,
+        "neither_verified": 0
+      },
+      "live_valid": 120,
+      "n": 120
+    },
+    "cross_subject_isolation": {
+      "deterministic_total": 90,
+      "deterministic_verified": 90,
+      "jd": {
+        "both_verified": 30,
+        "disagreement_rate": 0.0,
+        "disagreement_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "disagreements": 0,
+        "judge_not_oracle_verified": 0,
+        "judge_verified_oracle_not": 0,
+        "mcnemar_exact_two_sided_p": 1.0,
+        "n_pairs": 30,
+        "neither_verified": 0
+      },
+      "live_valid": 120,
+      "n": 120
+    },
+    "replay": {
+      "deterministic_total": 90,
+      "deterministic_verified": 90,
+      "jd": {
+        "both_verified": 30,
+        "disagreement_rate": 0.0,
+        "disagreement_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "disagreements": 0,
+        "judge_not_oracle_verified": 0,
+        "judge_verified_oracle_not": 0,
+        "mcnemar_exact_two_sided_p": 1.0,
+        "n_pairs": 30,
+        "neither_verified": 0
+      },
+      "live_valid": 120,
+      "n": 120
+    },
+    "revocation": {
+      "deterministic_total": 90,
+      "deterministic_verified": 90,
+      "jd": {
+        "both_verified": 30,
+        "disagreement_rate": 0.0,
+        "disagreement_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "disagreements": 0,
+        "judge_not_oracle_verified": 0,
+        "judge_verified_oracle_not": 0,
+        "mcnemar_exact_two_sided_p": 1.0,
+        "n_pairs": 30,
+        "neither_verified": 0
+      },
+      "live_valid": 120,
+      "n": 120
+    },
+    "stale_state": {
+      "deterministic_total": 90,
+      "deterministic_verified": 90,
+      "jd": {
+        "both_verified": 30,
+        "disagreement_rate": 0.0,
+        "disagreement_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "disagreements": 0,
+        "judge_not_oracle_verified": 0,
+        "judge_verified_oracle_not": 0,
+        "mcnemar_exact_two_sided_p": 1.0,
+        "n_pairs": 30,
+        "neither_verified": 0
+      },
+      "live_valid": 120,
+      "n": 120
+    }
+  },
+  "raw_observations_sha256": "7530a46da7faa935448f207dd3a276e751a4cc8b38d48585d29764b184fe71bd",
+  "run_summary_sha256": "f1e4ff0a92333072ad958b564ea112e7b3d140fee71049a1869e0209e96011bc",
+  "schema_version": "aftergraph.study012.postrun-v4.v1",
+  "sentinel_audit": {
+    "all_dvr_refs": true,
+    "all_result_passed": true,
+    "all_sentinel_verdict_verified": true,
+    "all_verifier_id": true,
+    "di_rows": 240,
+    "receipts_present": 240,
+    "unique_receipts": 240
+  },
+  "source_commit": "0ce31cb4c9b9ad125db9e3ddfd314618aa930bee",
+  "study_id": "STUDY-012",
+  "task_attempts": {
+    "1": 952,
+    "2": 8
+  },
+  "task_provider_failures": 0,
+  "unique_trace_ids": 960
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "aftergraph.study012.sentinel-binding.v0.1",
+  "repository": "Aftergraph/sentinel",
+  "branch": "research/study012-evidence-profile",
+  "exact_commit": "f9a0f85a50cd4a74400b8b267c29a943da5af68b",
+  "verifier_cli": "bin/sentinel-research-verify.js",
+  "verifier_ref": "sentinel:domain-verifier",
+  "research_schema": "aftergraph.research-evidence/1.0",
+  "receipt_schema": "aftergraph.research-verification.receipt/1.0",
+  "receipt_id_regex": "^dvr_[a-f0-9]{64}$",
+  "transport": "local_subprocess_json_stdin_stdout",
+  "fallback_allowed": false,
+  "targeted_proof": "23 passed, 0 failed",
+  "status": "BOUND_FOR_REVIEW"
+}

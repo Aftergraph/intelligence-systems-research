@@ -1,0 +1,88 @@
+{
+  "schema_version": "aftergraph.study012.provider-recovery-registry.v0.1",
+  "study_id": "STUDY-012",
+  "updated_at": "2026-09-18",
+  "execution_fabric": {
+    "selected": "novita_sandbox",
+    "sdk_version": "2.1.1",
+    "evidence_ref": "data/study012_novita_sandbox_resume_proof_20260918.json",
+    "resume_proof": {
+      "phase1_rows": 5,
+      "phase2_rows": 12,
+      "unique_trace_ids": 12,
+      "different_sandboxes": true,
+      "complete": true
+    },
+    "status": "READY"
+  },
+  "routes": [
+    {
+      "route": "nvidia_direct",
+      "role": "task_or_judge",
+      "status": "READY_WITH_TRANSIENT_RETRY",
+      "evidence": "Nemotron Ultra 3/4 live semantic match with one HTTP 503; Nemotron Super judge 4/4 live semantic match"
+    },
+    {
+      "route": "google_gemini_developer_api",
+      "role": "task",
+      "status": "BLOCKED_QUOTA",
+      "evidence": "recovery-v2: 31/31 observed Google failures were HTTP 429 free-tier request quota after six live rows"
+    },
+    {
+      "route": "openrouter_paid",
+      "role": "task_or_judge",
+      "status": "BLOCKED_BALANCE",
+      "evidence": "HTTP 402 insufficient credits"
+    },
+    {
+      "route": "novita_model_api",
+      "role": "task_or_judge",
+      "status": "BLOCKED_BALANCE",
+      "evidence": "HTTP 403 not enough balance; sandbox voucher is a separate product"
+    },
+    {
+      "route": "novita_sandbox",
+      "role": "execution_fabric",
+      "status": "READY",
+      "evidence": "sandbox create/command/kill live; two-sandbox checkpoint restore 12/12"
+    },
+    {
+      "route": "zai_direct",
+      "role": "task",
+      "status": "BLOCKED_BALANCE",
+      "evidence": "4/4 HTTP 429 provider code 1113 insufficient balance/resource package"
+    },
+    {
+      "route": "byteplus_ark",
+      "role": "task",
+      "status": "BLOCKED_MODEL_NOT_OPEN",
+      "evidence": "seed-2-0-lite-260428 and glm-5-2-260617 both returned ModelNotOpen"
+    },
+    {
+      "route": "opencode_go",
+      "role": "task",
+      "status": "BLOCKED_BALANCE",
+      "evidence": "after required session-header fix: 4/4 HTTP 402 insufficient account funds"
+    },
+    {
+      "route": "huggingface_router_groq",
+      "role": "task",
+      "status": "BLOCKED_AUTH",
+      "evidence": "3/3 HTTP 401 on inference path despite metadata access"
+    },
+    {
+      "route": "opencode_zen_mimo_free",
+      "role": "task",
+      "status": "BLOCKED_CLIENT_POLICY",
+      "evidence": "4/4 HTTP 403 free tier only usable from within OpenCode"
+    }
+  ],
+  "selection_rules": [
+    "Never silently substitute a blocked route.",
+    "A route may transition to READY only after bounded live semantic canary evidence.",
+    "A new provider/model changes execution_id and requires an amendment.",
+    "Execution fabric readiness does not imply inference-provider readiness.",
+    "Provider failures are not task failures."
+  ],
+  "current_scientific_blocker": "No second independent task inference route is READY. NVIDIA Direct is ready; all tested alternatives are blocked by quota, balance, auth, activation, or client-policy constraints."
+}

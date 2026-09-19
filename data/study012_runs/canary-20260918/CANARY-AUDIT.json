@@ -1,0 +1,33 @@
+{
+  "schema_version": "aftergraph.study012.canary-audit.v0.1",
+  "study_id": "STUDY-012",
+  "run_id": "study012-canary-v1",
+  "approval_ref": "OWNER-CANARY-20260918-CHAT-CONTINUE",
+  "expected_output": "AFTERGRAPH_CANARY_OK",
+  "expected_output_sha256": "ef6f2c4edbeace425f20c92bf38017723cd48d583f2b6a80dc674043f49ce3e5",
+  "attempts": [
+    {
+      "provider": "google",
+      "model_id": "gemini-2.5-flash",
+      "transport_live": true,
+      "original_receipt_hash": "a9c0e1aaaeab68de4c64a7bc214ad2bc4160b9e6192f6ca3d79040539c77f5e0",
+      "observed_response_hash": "9180bd63e730b9fe9859e501bbc7e0a8c0c22983b3004d1c7b4b44fb235d3300",
+      "original_execution_class": "LIVE_VALID",
+      "audited_execution_class": "LIVE_SEMANTIC_FAILURE",
+      "rationale": "Transport/model call succeeded, but response hash does not equal the frozen expected-output hash. Original runner classified transport success too loosely."
+    },
+    {
+      "provider": "openrouter",
+      "model_id": "google/gemma-4-31b-it",
+      "transport_live": true,
+      "original_receipt_hash": "feceaef45e69fec2f2fc2c9ce715640b0c77fc03835c8a2a2fa0c6f08e215d28",
+      "observed_response_hash": "ef6f2c4edbeace425f20c92bf38017723cd48d583f2b6a80dc674043f49ce3e5",
+      "original_execution_class": "LIVE_VALID",
+      "audited_execution_class": "LIVE_VALID",
+      "rationale": "Observed response hash exactly matches frozen expected-output hash."
+    }
+  ],
+  "scope_exhausted": true,
+  "additional_live_calls_authorized": false,
+  "conclusion": "1/2 canaries semantically valid. Google requires diagnosis or a separately approved retry; no retry executed."
+}

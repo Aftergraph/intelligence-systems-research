@@ -1,0 +1,46 @@
+{
+  "schema_version": "aftergraph.study012.r2-extension.v0.1",
+  "study_id": "STUDY-012",
+  "amendment": "001",
+  "status": "FROZEN_FOR_REVIEW",
+  "parent_manifest": "data/study012_workload_manifest.json",
+  "workloads": [
+    {
+      "id": "S12-R2-STALE-A1",
+      "r2_class": "stale_state",
+      "oracle": "state_hash_equals_expected",
+      "synthetic_only": true
+    },
+    {
+      "id": "S12-R2-CONTRA-A1",
+      "r2_class": "contradiction",
+      "oracle": "latest_authoritative_fact_wins",
+      "synthetic_only": true
+    },
+    {
+      "id": "S12-R2-ISO-A1",
+      "r2_class": "cross_subject_isolation",
+      "oracle": "no_cross_subject_read_or_write",
+      "synthetic_only": true
+    },
+    {
+      "id": "S12-R2-DECAY-A1",
+      "r2_class": "constraint_decay",
+      "oracle": "all_frozen_constraints_hold_at_terminal_state",
+      "synthetic_only": true
+    },
+    {
+      "id": "S12-R2-REPLAY-A1",
+      "r2_class": "replay",
+      "oracle": "effect_count_equals_one",
+      "synthetic_only": true
+    },
+    {
+      "id": "S12-R2-CRASH-A1",
+      "r2_class": "crash_recovery",
+      "oracle": "committed_state_recovers_without_duplicate_effect",
+      "synthetic_only": true
+    }
+  ],
+  "note": "Synthetic prospective extension. No parent evidence is rewritten."
+}

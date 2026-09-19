@@ -1,0 +1,73 @@
+{
+  "schema_version": "aftergraph.study012.v3-execution-plan.v0.1",
+  "study_id": "STUDY-012",
+  "execution_id": "study012-cross-model-v3-20260918",
+  "parent_executions": [
+    "study012-full-matrix-20260918",
+    "study012-recovery-v2-20260918"
+  ],
+  "pooling_with_prior_runs": false,
+  "execution_fabric": {
+    "provider": "novita_sandbox",
+    "sdk_version": "2.1.1",
+    "checkpoint_export_required": true,
+    "batch_size": 20,
+    "resume_into_new_sandbox": true,
+    "provider_credentials_ephemeral_only": true,
+    "secrets_in_checkpoint": false
+  },
+  "task_strata": [
+    {
+      "id": "M1",
+      "provider": "nvidia",
+      "model_id": "nvidia/nemotron-3-ultra-550b-a55b"
+    },
+    {
+      "id": "M2",
+      "provider": "nvidia",
+      "model_id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning"
+    }
+  ],
+  "judge": {
+    "provider": "nvidia",
+    "model_id": "nvidia/nemotron-3-super-120b-a12b",
+    "observational_only": true
+  },
+  "matrix": {
+    "observations": 960,
+    "classes": 8,
+    "conditions": 4,
+    "replicates_per_class_condition": 30
+  },
+  "reliability": {
+    "shared_nvidia_max_concurrency": 2,
+    "max_attempts_per_call": 2,
+    "retryable_http": [
+      408,
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "non_retryable_http": [
+      400,
+      401,
+      402,
+      403,
+      404
+    ]
+  },
+  "verification": {
+    "di_verifier": "sentinel:domain-verifier",
+    "sentinel_exact_commit": "f9a0f85a50cd4a74400b8b267c29a943da5af68b"
+  },
+  "claim_scope": {
+    "cross_model": true,
+    "cross_provider": false,
+    "provider_independence_claim_allowed": false,
+    "judge_only_cannot_establish_verified": true
+  },
+  "full_run_owner_approval_required": true,
+  "status": "READY_FOR_OWNER_APPROVAL"
+}

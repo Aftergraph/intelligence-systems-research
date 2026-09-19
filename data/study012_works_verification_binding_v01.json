@@ -1,0 +1,26 @@
+{
+  "schema_version": "aftergraph.study012.works-verification-binding.v0.1",
+  "source_repository": "Aftergraph/works-execution",
+  "source_commit": "f69e5182f9d3d7e74817ec8ec2cee52ba2f9c62d",
+  "route": "POST /v1/works/{id}/verification",
+  "auth_header": "X-WORKS-Verifier-Token",
+  "token_min_bytes": 32,
+  "body": {
+    "result": [
+      "passed",
+      "failed"
+    ],
+    "verifier_id_prefix": "sentinel:",
+    "evidence_ref_regex": "^dvr_[a-f0-9]{64}$",
+    "verified_at": "RFC3339Nano"
+  },
+  "invariants": [
+    "terminal work required",
+    "immutable conflicting verdict returns 409",
+    "unknown fields rejected",
+    "indeterminate rejected",
+    "self verifier rejected"
+  ],
+  "status": "BOUND_FOR_REVIEW",
+  "note": "This binds canonical ingest only. Sentinel receipt production remains independently owned."
+}
