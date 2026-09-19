@@ -1,0 +1,54 @@
+{
+  "schema_version": "jar-exp-0014.workload-plan/0.1",
+  "experiment_id": "JAR-EXP-0014",
+  "status": "FROZEN_PRECALIBRATION",
+  "source": {
+    "study_id": "STUDY-011",
+    "manifest": "data/study011_workload_manifest.json",
+    "root_hash": "e823102a4ff09bfca560c95e341aa3eaf7a4003215abd3900749afc64d3e4e06",
+    "reuse_rule": "Reuse workload inputs only. Do not pool or import STUDY-011 outcomes."
+  },
+  "arms": {
+    "A": {
+      "name": "llm_only_control",
+      "decision_layer": "generative_llm_structured_output"
+    },
+    "B": {
+      "name": "jev_direct",
+      "decision_layer": "jev_no_llm_fallback_except_transport_or_schema_failure"
+    },
+    "C": {
+      "name": "jev_cascade",
+      "decision_layer": "jev_with_frozen_confidence_gate_and_same_control_llm_fallback"
+    }
+  },
+  "families": [
+    {
+      "name": "Software Engineering",
+      "source_workloads": ["S11-SWE-01", "S11-SWE-02", "S11-SWE-03", "S11-SWE-04"],
+      "runs_per_arm": 30,
+      "replication_counts": [8, 8, 7, 7]
+    },
+    {
+      "name": "Operational/Tool Workflow",
+      "source_workloads": ["S11-OPS-01", "S11-OPS-02", "S11-OPS-03", "S11-OPS-04"],
+      "runs_per_arm": 30,
+      "replication_counts": [8, 8, 7, 7]
+    },
+    {
+      "name": "Research/Structured Evidence",
+      "source_workloads": ["S11-RES-01", "S11-RES-02", "S11-RES-03", "S11-RES-04"],
+      "runs_per_arm": 30,
+      "replication_counts": [8, 8, 7, 7]
+    }
+  ],
+  "minimum_eligible_decision_points_per_mission": 3,
+  "planned_mission_runs": 270,
+  "randomization": "Within each arm, deterministically shuffle the 90 planned runs from a preregistered seed recorded before execution.",
+  "pooling": {
+    "study011_outcomes": false,
+    "study012_outcomes": false,
+    "cross_arm_pooling_before_primary_analysis": false
+  },
+  "live_execution_authorized": false
+}
