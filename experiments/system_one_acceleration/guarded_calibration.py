@@ -6,7 +6,8 @@ from typing import Any, Callable, Mapping
 
 from .calibration_preflight import evaluate_calibration_preflight
 from .calibration_receipt import canonical_sha256
-from .calibration_runner import CalibrationRunResult, run_calibration
+from .calibration_runner import CalibrationRunResult
+from .durable_calibration import calibration_checkpoint_path, run_durable_calibration
 from .client import TypeSafeBoundaryError, load_frozen_contracts
 from .corpus import build_calibration_corpus
 from .cost_guard import build_calibration_cost_guard, calibration_budget_ledger_path
@@ -60,7 +61,7 @@ def run_authorized_calibration(
     if cost_guard.spec.model_id != preflight.requested_model:
         raise CalibrationAuthorizationError("pricing model drift after preflight")
 
-    return run_calibration(
+    return run_durable_calibration(
         client=client,
         sdk=sdk,
         requested_model=preflight.requested_model,
@@ -68,4 +69,5 @@ def run_authorized_calibration(
         cases=build_calibration_corpus(),
         maximum_calls=preflight.maximum_calls,
         cost_guard=cost_guard,
+        checkpoint_path=calibration_checkpoint_path(),
     )
