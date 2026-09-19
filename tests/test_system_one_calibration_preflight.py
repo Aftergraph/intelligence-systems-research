@@ -80,11 +80,16 @@ def test_guarded_calibration_uses_preflight_model_without_gate_reread(tmp_path, 
     )
     captured = {}
 
-    def fake_run_calibration(**kwargs):
+    def fake_run_durable_calibration(**kwargs):
         captured.update(kwargs)
         return object()
 
-    monkeypatch.setattr(guarded_calibration, "run_calibration", fake_run_calibration)
+    monkeypatch.setattr(guarded_calibration, "run_durable_calibration", fake_run_durable_calibration)
+    monkeypatch.setattr(
+        guarded_calibration,
+        "calibration_checkpoint_path",
+        lambda: tmp_path / "checkpoint.json",
+    )
     monkeypatch.setattr(
         guarded_calibration,
         "build_calibration_cost_guard",
