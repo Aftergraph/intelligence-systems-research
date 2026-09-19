@@ -5,6 +5,7 @@
   "requested_typesafe_model": "jev-1.13.0",
   "pricing_spec_ref": "data/jar_exp_0014_typesafe_pricing_v01.json",
   "cost_guard_mode": "worst_case_context_write_ahead_v1",
+  "semantic_review_ref": null,
   "calibration_approval_ref": null,
   "network_calls_authorized": false,
   "max_cost_usd": 0.44,
@@ -17,7 +18,7 @@
     "Reservations are durable and write-ahead. A still-RESERVED exact request/hash may resume after a pre-transport crash without a second charge; transport claim is atomic; once TRANSPORT_STARTED, replay remains denied and the reservation is never refunded.",
     "Official pricing/context markers are validated before reservation and revalidated immediately before the atomic transport claim; drift fails closed.",
     "The $0.44 ceiling exceeds the 158-case worst-case reservation total of $0.434974.",
-    "Calibration remains NOT_READY until a scope-bound approval receipt and network authorization are recorded.",
+    "Calibration remains NOT_READY until an independent semantic-review receipt, a scope-bound approval receipt, and network authorization are recorded.",
     "Calibration approval must bind the content-addressed calibration manifest; any relevant code/contract drift invalidates authorization."
   ],
   "calibration_manifest_sha256": "4b52c86e4091b31751c57cce2cf2fd44cbd96b016e85165c121796496c81de9d"
