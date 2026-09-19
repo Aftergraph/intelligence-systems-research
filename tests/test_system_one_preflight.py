@@ -313,3 +313,80 @@ def test_calibration_receipt_must_bind_requested_model_and_provider_call_count(t
         "calibration_requested_model_mismatch",
         "calibration_provider_call_count_mismatch",
     }.issubset(set(result.blockers))
+
+
+def test_execution_approval_requires_attributed_timezone_aware_evidence(tmp_path):
+    data = tmp_path / "data"
+    data.mkdir()
+    for rel in (
+        "jar_exp_0014_question_contracts_v01.json",
+        "jar_exp_0014_workload_plan_v01.json",
+        "jar_exp_0014_critical_risk_pack_v01.json",
+        "jar_exp_0014_randomization_v01.json",
+    ):
+        (data / rel).write_text(
+            json.dumps({"status": "FROZEN_PRECALIBRATION"}), encoding="utf-8"
+        )
+
+    protocol = {"status": "FROZEN_PRECALIBRATION", "rule": "fixed"}
+    (data / "jar_exp_0014_calibration_protocol_v01.json").write_text(
+        json.dumps(protocol), encoding="utf-8"
+    )
+    (data / "calibration.json").write_text(
+        json.dumps({
+            "schema_version": "aftergraph.system-one-calibration/0.1",
+            "experiment_id": "JAR-EXP-0014",
+            "requested_model": "jev-latest",
+            "returned_model": "jev-test-pin",
+            "corpus_sha256": calibration_corpus_sha256(build_calibration_corpus()),
+            "protocol_sha256": canonical_sha256(protocol),
+            "result": {
+                "threshold": 0.9,
+                "feasible": True,
+                "critical_errors": 0,
+                "total": 158,
+                "critical_cases": 30,
+            },
+            "usage": {"provider_calls": 158, "input_tokens": 1000, "output_tokens": 200},
+        }),
+        encoding="utf-8",
+    )
+    (data / "approval.json").write_text(
+        json.dumps({
+            "schema_version": "aftergraph.system-one-execution-approval/0.1",
+            "experiment_id": "JAR-EXP-0014",
+            "approved": True,
+            "network_calls_authorized": True,
+            "confirmatory_execution_authorized": True,
+            "returned_typesafe_model_pin": "jev-test-pin",
+            "control_model_pin": "control-test-pin",
+            "cascade_confidence_threshold": 0.9,
+            "max_cost_usd": 5.0,
+            "max_provider_calls": 5000,
+            "approved_by": "   ",
+            "approved_at": "2026-09-19T00:00:00",
+        }),
+        encoding="utf-8",
+    )
+    gate = {
+        "requested_typesafe_model": "jev-latest",
+        "returned_typesafe_model_pin": "jev-test-pin",
+        "control_model_pin": "control-test-pin",
+        "cascade_confidence_threshold": 0.9,
+        "calibration_receipt_ref": "data/calibration.json",
+        "execution_approval_ref": "data/approval.json",
+        "network_calls_authorized": True,
+        "confirmatory_execution_authorized": True,
+        "max_cost_usd": 5.0,
+        "max_provider_calls": 5000,
+    }
+    (data / "jar_exp_0014_execution_gate_v01.json").write_text(
+        json.dumps(gate), encoding="utf-8"
+    )
+
+    result = evaluate_preflight(tmp_path)
+    assert result.decision == "NO_GO"
+    assert {
+        "execution_approval_principal_missing",
+        "execution_approval_timestamp_not_timezone_aware",
+    }.issubset(set(result.blockers))
