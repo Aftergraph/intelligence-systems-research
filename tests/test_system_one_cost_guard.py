@@ -77,13 +77,30 @@ def test_write_ahead_budget_denies_before_overrun(tmp_path):
         )
 
 
-def test_replay_is_denied_even_when_request_hash_matches(tmp_path):
+def test_pretransport_restart_can_resume_same_reservation_without_double_spend(tmp_path):
     spec, ledger = _ledger(tmp_path)
     ledger.reserve(
         request_id="same",
         request_sha256="a" * 64,
         reserved_microusd=spec.max_request_cost_microusd,
     )
+    before = ledger.used_microusd()
+    ledger.reserve(
+        request_id="same",
+        request_sha256="a" * 64,
+        reserved_microusd=spec.max_request_cost_microusd,
+    )
+    assert ledger.used_microusd() == before
+
+
+def test_replay_is_denied_after_transport_claim(tmp_path):
+    spec, ledger = _ledger(tmp_path)
+    ledger.reserve(
+        request_id="same",
+        request_sha256="a" * 64,
+        reserved_microusd=spec.max_request_cost_microusd,
+    )
+    ledger.begin_transport(request_id="same", request_sha256="a" * 64)
     with pytest.raises(BudgetReplayError):
         ledger.reserve(
             request_id="same",
@@ -92,7 +109,7 @@ def test_replay_is_denied_even_when_request_hash_matches(tmp_path):
         )
 
 
-def test_crash_style_unfinished_reservation_survives_restart(tmp_path):
+def test_crash_style_unfinished_reservation_survives_and_resumes_before_transport(tmp_path):
     spec, first = _ledger(tmp_path)
     first.reserve(
         request_id="crash",
@@ -106,12 +123,14 @@ def test_crash_style_unfinished_reservation_survives_restart(tmp_path):
         pricing_spec_sha256=spec.canonical_sha256,
     )
     assert second.used_microusd() == spec.max_request_cost_microusd
+    second.reserve(
+        request_id="crash",
+        request_sha256="b" * 64,
+        reserved_microusd=spec.max_request_cost_microusd,
+    )
+    second.begin_transport(request_id="crash", request_sha256="b" * 64)
     with pytest.raises(BudgetReplayError):
-        second.reserve(
-            request_id="crash",
-            request_sha256="b" * 64,
-            reserved_microusd=spec.max_request_cost_microusd,
-        )
+        second.begin_transport(request_id="crash", request_sha256="b" * 64)
 
 
 def test_exact_semantic_request_is_bound_to_reservation(tmp_path):
@@ -146,6 +165,7 @@ def test_malformed_usage_cannot_refund_or_exceed_reservation(tmp_path):
         contract={"type": "noul", "instructions": "Continue?"},
         requested_model="jev-1.13.0",
     )
+    guard.begin_transport(reservation)
     with pytest.raises(CostGuardError, match="exceeded frozen"):
         guard.complete_request(
             reservation,
@@ -227,3 +247,72 @@ def test_stale_ledger_configuration_fails_closed(tmp_path):
             approved_budget_microusd=10_000,
             pricing_spec_sha256="0" * 64,
         )
+
+
+def test_only_one_worker_can_claim_same_resumed_transport(tmp_path):
+    spec = load_pricing_spec(PRICING)
+    path = tmp_path / "claim.sqlite"
+    first = BudgetLedger(
+        path,
+        run_id="claim-run",
+        approved_budget_microusd=spec.max_request_cost_microusd,
+        pricing_spec_sha256=spec.canonical_sha256,
+    )
+    second = BudgetLedger(
+        path,
+        run_id="claim-run",
+        approved_budget_microusd=spec.max_request_cost_microusd,
+        pricing_spec_sha256=spec.canonical_sha256,
+    )
+    first.reserve(
+        request_id="same",
+        request_sha256="e" * 64,
+        reserved_microusd=spec.max_request_cost_microusd,
+    )
+    second.reserve(
+        request_id="same",
+        request_sha256="e" * 64,
+        reserved_microusd=spec.max_request_cost_microusd,
+    )
+
+    def claim(ledger):
+        try:
+            ledger.begin_transport(request_id="same", request_sha256="e" * 64)
+            return "claimed"
+        except BudgetReplayError:
+            return "blocked"
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        outcomes = sorted(pool.map(claim, (first, second)))
+
+    assert outcomes == ["blocked", "claimed"]
+    assert first.used_microusd() == spec.max_request_cost_microusd
+
+
+def test_pricing_drift_at_transport_claim_blocks_before_claim(tmp_path):
+    spec, ledger = _ledger(tmp_path)
+    calls = {"count": 0}
+
+    def fetch(_url):
+        calls["count"] += 1
+        if calls["count"] == 1:
+            return _source_text()
+        return _source_text().replace("$0.042", "$0.050")
+
+    guard = PreRequestCostGuard(spec=spec, ledger=ledger, pricing_fetcher=fetch)
+    reservation = guard.reserve_request(
+        request_id="drift-after-reserve",
+        decision_type="continue_loop",
+        state={"scenario": "work remains"},
+        contract={"type": "noul", "instructions": "Continue?"},
+        requested_model="jev-1.13.0",
+    )
+    with pytest.raises(PricingDriftError):
+        guard.begin_transport(reservation)
+    # Same reservation remains resumable; no second spend was consumed.
+    ledger.reserve(
+        request_id=reservation.request_id,
+        request_sha256=reservation.request_sha256,
+        reserved_microusd=reservation.reserved_microusd,
+    )
+    assert ledger.used_microusd() == reservation.reserved_microusd
