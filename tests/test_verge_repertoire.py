@@ -103,3 +103,74 @@ def test_evolution_is_deterministic_and_never_reads_heldout_for_training():
     assert not any(cid.startswith("HELD-") for cid in a.training_context_ids)
     assert a.evaluations == 8 * (4 + 1) * len(a.training_context_ids)
     assert len(a.repertoire) > 0
+
+
+def test_selector_filters_source_elite_that_is_infeasible_in_target_context():
+    contexts = {c.context_id: c for c in load_contexts()}
+    rep = Repertoire()
+
+    fast = policy(
+        parallelism=4,
+        retry_ceiling=1,
+        confidence_threshold=0.80,
+        verification_depth=2,
+    )
+    safe = policy(
+        parallelism=2,
+        retry_ceiling=3,
+        confidence_threshold=0.95,
+        verification_depth=4,
+    )
+    latency = contexts["TRAIN-LATENCY-1"]
+    risk = contexts["TRAIN-RISK-1"]
+    assert rep.insert(latency, fast, evaluate_in_context(fast, latency))
+    assert rep.insert(risk, safe, evaluate_in_context(safe, risk))
+
+    target = MissionContext(
+        context_id="TEST-STRICT-LATENCY",
+        split="DEVELOPMENT",
+        risk_class=0,
+        failure_pressure=0.21,
+        latency_pressure=0.99,
+        cost_pressure=0.36,
+        min_verification=4,
+        min_confidence=0.90,
+        min_retries=2,
+        base_cost=1.1,
+        base_latency=1.7,
+    )
+
+    selected = rep.select(target)
+    assert selected.genome == safe
+    assert evaluate_in_context(selected.genome, target).feasible is True
+
+
+def test_selector_fails_closed_when_no_target_feasible_elite_exists():
+    contexts = {c.context_id: c for c in load_contexts()}
+    rep = Repertoire()
+    fast = policy(
+        parallelism=4,
+        retry_ceiling=1,
+        confidence_threshold=0.80,
+        verification_depth=2,
+    )
+    latency = contexts["TRAIN-LATENCY-1"]
+    assert rep.insert(latency, fast, evaluate_in_context(fast, latency))
+
+    target = MissionContext(
+        context_id="TEST-STRICT",
+        split="DEVELOPMENT",
+        risk_class=2,
+        failure_pressure=1.0,
+        latency_pressure=0.5,
+        cost_pressure=0.5,
+        min_verification=4,
+        min_confidence=0.95,
+        min_retries=3,
+        base_cost=1.0,
+        base_latency=1.0,
+    )
+
+    import pytest
+    with pytest.raises(LookupError, match="no target-feasible elite"):
+        rep.select(target)
