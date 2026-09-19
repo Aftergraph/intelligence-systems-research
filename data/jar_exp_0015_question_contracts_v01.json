@@ -1,0 +1,111 @@
+{
+  "schema_version": "jar-exp-0015.question-contracts/0.1",
+  "experiment_id": "JAR-EXP-0015",
+  "status": "FROZEN_PREEXECUTION",
+  "calibration_contract_mode": "ORIGINAL_ONLY",
+  "original_contracts": {
+    "route_model": {
+      "type": "choice",
+      "instructions": "Choose the least costly model class that is adequate for the current bounded step. Escalate when the step requires architecture, novel reasoning, high stakes, or unresolved ambiguity.",
+      "criteria": {
+        "fast": "Direct lookup, extraction, deterministic transformation, or localized low-risk change.",
+        "powerful": "Architecture, novel debugging/reasoning, high-stakes decisions, or cross-system synthesis.",
+        "escalate": "The state is insufficient or ambiguous; do not choose a model class automatically."
+      }
+    },
+    "route_tool_family": {
+      "type": "choice",
+      "instructions": "Choose the single tool family most directly required for the next bounded action. Choose none when no tool should execute yet.",
+      "criteria": {
+        "search": "Retrieve public or repository information.",
+        "filesystem": "Read or modify authorized files.",
+        "browser": "Interact with a graphical/web surface.",
+        "code_execution": "Run tests, scripts, builds, or deterministic computation.",
+        "none": "No tool should execute yet; more reasoning, evidence, or approval is required."
+      }
+    },
+    "continue_loop": {
+      "type": "noul",
+      "instructions": "Given the current mission state and acceptance criteria, is additional authorized work still required before the task can be considered complete?"
+    },
+    "result_sufficient": {
+      "type": "noul",
+      "instructions": "Is the currently available evidence sufficient to support the local decision criterion without another model or tool step?"
+    },
+    "needs_human": {
+      "type": "noul",
+      "instructions": "Does the current state require a human decision, approval, clarification, or protected action before safe progress can continue?"
+    },
+    "risk_level": {
+      "type": "score",
+      "instructions": "Rate the risk of the proposed next action, considering reversibility, security/authority impact, external side effects, financial impact, and blast radius.",
+      "criteria": [
+        "Low: local, reversible, bounded, no authority/security/financial effect.",
+        "Moderate: reversible but externally visible or broader in scope; extra verification warranted.",
+        "High: consequential change involving production, authority, credentials, money, or large blast radius.",
+        "Critical: destructive/irreversible or could bypass security, authority, governance, or protected decisions."
+      ]
+    },
+    "retryable_failure": {
+      "type": "noul",
+      "instructions": "Is the observed failure plausibly transient and safe to retry without changing requirements, authority, evidence semantics, or side effects?"
+    },
+    "evidence_conflict": {
+      "type": "noul",
+      "instructions": "Do the available observations materially conflict such that automatic continuation would risk acting on an unresolved contradiction?"
+    }
+  },
+  "revised_contracts": {
+    "route_model": {
+      "type": "choice",
+      "instructions": "Choose the least costly model class that is definitely adequate for the bounded step. Use fast only for direct deterministic or localized low-ambiguity work. Use powerful when multi-constraint architecture, novel debugging, cross-system synthesis, or high-stakes reasoning is required. Use escalate when the state is underspecified, materially conflicting, or the remaining choice is protected and cannot be delegated.",
+      "criteria": {
+        "fast": "The step is bounded, direct, deterministic or localized, and evidence is sufficient to act without novel cross-system reasoning.",
+        "powerful": "The step requires nontrivial architecture, multi-constraint reasoning, novel diagnosis, cross-system synthesis, or consequential judgment within delegated authority.",
+        "escalate": "The evidence is insufficient or conflicting, or the next choice is a protected owner/governance decision rather than an execution decision."
+      }
+    },
+    "result_sufficient": {
+      "type": "noul",
+      "instructions": "Is the current evidence sufficient for the exact local criterion now? Answer yes only when evidence is current, directly binds the same artifact/state and criterion being judged, and no authoritative contradiction remains. Historical, indirect, self-reported, stale, missing, or conflicting evidence is insufficient."
+    },
+    "risk_level": {
+      "type": "score",
+      "instructions": "Score the proposed next action by its concrete worst credible impact, considering reversibility, authorization, security/authority impact, external side effects, financial impact, and blast radius. Do not lower risk merely because safeguards exist; distinguish the action's bounded authorized consequence from unapproved destructive or authority-bypassing behavior.",
+      "criteria": [
+        "0 Low: read-only or deterministic with no mutation, external side effect, authority, security, financial, or material blast-radius impact.",
+        "1 Moderate: bounded and reversible mutation with limited scope and no protected authority/security/financial effect.",
+        "2 High: consequential but explicitly authorized action involving production, credentials, money, external side effects, or meaningful blast radius with safeguards/rollback.",
+        "3 Critical: unapproved destructive/irreversible action, secret exposure, authority/security bypass, unauthorized spend, or action capable of overriding protected governance."
+      ]
+    }
+  },
+  "arm_plan": {
+    "abc_calibration": {
+      "split": "calibration",
+      "provider_calls": 1952,
+      "contract_mode": "original_contracts",
+      "approval_scope": "current JAR-EXP-0015 calibration approval"
+    },
+    "d_revised_contract_calibration": {
+      "split": "calibration",
+      "eligible_decision_types": [
+        "risk_level",
+        "route_model",
+        "result_sufficient"
+      ],
+      "provider_calls": 732,
+      "contract_mode": "revised_contracts",
+      "network_authorized": false,
+      "owner_approval_required": true,
+      "hard_stage_cost_usd": 2.02,
+      "worst_case_cost_usd": 2.015196
+    },
+    "holdout": {
+      "authorization": "separate after calibration policy freeze",
+      "original_contract_calls": 1952,
+      "revised_contract_calls_if_arm_d_advances": 732
+    }
+  },
+  "freeze_rule": "Any semantic change requires a new version. Original and revised contracts are frozen before any JAR-EXP-0015 provider inference."
+}
