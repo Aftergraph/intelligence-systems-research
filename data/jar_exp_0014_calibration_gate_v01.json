@@ -20,5 +20,5 @@
     "Calibration remains NOT_READY until a scope-bound approval receipt and network authorization are recorded.",
     "Calibration approval must bind the content-addressed calibration manifest; any relevant code/contract drift invalidates authorization."
   ],
-  "calibration_manifest_sha256": "795e54ee204663506f8012e24a2483581c6d1508ea91326e9bb1e9c37be35267"
+  "calibration_manifest_sha256": "4b52c86e4091b31751c57cce2cf2fd44cbd96b016e85165c121796496c81de9d"
 }
