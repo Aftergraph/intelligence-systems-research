@@ -125,7 +125,7 @@ def select_halo_robust(
     if not candidates:
         raise LookupError("no halo-feasible elite")
 
-    return max(
+    winner = max(
         candidates,
         key=lambda selection: (
             selection.worst_utility,
@@ -133,42 +133,11 @@ def select_halo_robust(
             -selection.descriptor_distance,
             selection.entry.source_context_id,
         ),
-    ).__class__(
-        entry=max(
-            candidates,
-            key=lambda selection: (
-                selection.worst_utility,
-                selection.mean_utility,
-                -selection.descriptor_distance,
-                selection.entry.source_context_id,
-            ),
-        ).entry,
-        worst_utility=max(
-            candidates,
-            key=lambda selection: (
-                selection.worst_utility,
-                selection.mean_utility,
-                -selection.descriptor_distance,
-                selection.entry.source_context_id,
-            ),
-        ).worst_utility,
-        mean_utility=max(
-            candidates,
-            key=lambda selection: (
-                selection.worst_utility,
-                selection.mean_utility,
-                -selection.descriptor_distance,
-                selection.entry.source_context_id,
-            ),
-        ).mean_utility,
-        descriptor_distance=max(
-            candidates,
-            key=lambda selection: (
-                selection.worst_utility,
-                selection.mean_utility,
-                -selection.descriptor_distance,
-                selection.entry.source_context_id,
-            ),
-        ).descriptor_distance,
+    )
+    return HaloSelection(
+        entry=winner.entry,
+        worst_utility=winner.worst_utility,
+        mean_utility=winner.mean_utility,
+        descriptor_distance=winner.descriptor_distance,
         halo_evaluations=len(entries) * len(points),
     )
