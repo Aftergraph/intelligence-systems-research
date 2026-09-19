@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/system-one-semantic-review-receipt.v0.1.json",
+  "title": "Aftergraph System One Semantic Review Receipt v0.1",
+  "description": "Evidence that a distinct reviewer semantically reviewed the exact calibration manifest. It records review evidence; it does not grant authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "experiment_id",
+    "verdict",
+    "independent",
+    "reviewer",
+    "reviewer_kind",
+    "reviewed_at",
+    "calibration_manifest_sha256",
+    "falsification_attempts_considered",
+    "evidence_ref"
+  ],
+  "properties": {
+    "schema_version": {"const": "aftergraph.system-one-semantic-review/0.1"},
+    "experiment_id": {"const": "JAR-EXP-0014"},
+    "verdict": {"enum": ["PASS", "PASS_WITH_FINDINGS"]},
+    "independent": {"const": true},
+    "reviewer": {"type": "string", "minLength": 1},
+    "reviewer_kind": {"enum": ["github_user", "external_agent", "independent_verifier"]},
+    "reviewed_at": {"type": "string", "format": "date-time"},
+    "calibration_manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "falsification_attempts_considered": {"type": "integer", "minimum": 18},
+    "evidence_ref": {"type": "string", "minLength": 1},
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["severity", "summary", "disposition"],
+        "properties": {
+          "severity": {"enum": ["Critical", "High", "Medium", "Low"]},
+          "summary": {"type": "string", "minLength": 1},
+          "disposition": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}
