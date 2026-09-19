@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime
 import json
 from pathlib import Path
+import re
 from typing import Any, Mapping
 
 from .corpus import build_calibration_corpus
@@ -19,8 +20,15 @@ class CalibrationPreflightResult:
     requested_model: str | None = None
 
 
+_CONCRETE_JEV_MODEL = re.compile(r"^jev-\\d+\\.\\d+\\.\\d+$")
+
+
 def _load(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _is_concrete_jev_model(value: Any) -> bool:
+    return isinstance(value, str) and bool(_CONCRETE_JEV_MODEL.fullmatch(value.strip()))
 
 
 def _safe_ref(root: Path, ref: Any) -> Path | None:
@@ -102,6 +110,8 @@ def evaluate_calibration_preflight(root: Path) -> CalibrationPreflightResult:
     requested_model = gate.get("requested_typesafe_model")
     if not isinstance(requested_model, str) or not requested_model.strip():
         blockers.append("calibration_requested_model_missing")
+    elif not _is_concrete_jev_model(requested_model):
+        blockers.append("calibration_requested_model_not_pinned")
 
     expected_calls = len(build_calibration_corpus())
     max_calls = gate.get("max_provider_calls")

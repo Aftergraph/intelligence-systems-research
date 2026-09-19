@@ -4,6 +4,7 @@ import pytest
 
 from experiments.system_one_acceleration.calibration_preflight import (
     CalibrationPreflightResult,
+    _is_concrete_jev_model,
     evaluate_calibration_preflight,
 )
 import experiments.system_one_acceleration.guarded_calibration as guarded_calibration
@@ -162,3 +163,19 @@ def test_guarded_calibration_rejects_unfrozen_contract_document(tmp_path, monkey
             sdk=object(),
             contracts=contracts,
         )
+
+
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [
+        ("jev-1.13.0", True),
+        ("jev-2.0.1", True),
+        ("jev-latest", False),
+        ("jev-preview", False),
+        ("jev-1.13", False),
+        ("", False),
+        (None, False),
+    ],
+)
+def test_calibration_requires_concrete_jev_model_pin(value, expected):
+    assert _is_concrete_jev_model(value) is expected
