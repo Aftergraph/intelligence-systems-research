@@ -29,6 +29,8 @@ class CalibrationObservation:
     effective_confidence: float
     returned_model: str
     latency_ms: float
+    input_tokens: int
+    output_tokens: int
 
 
 @dataclass(frozen=True)
@@ -38,6 +40,8 @@ class CalibrationRunResult:
     observations: tuple[CalibrationObservation, ...]
     threshold: ThresholdResult
     provider_calls: int
+    input_tokens: int
+    output_tokens: int
 
 
 def _answer_from_response(response: Any, key: str) -> Any:
@@ -47,6 +51,30 @@ def _answer_from_response(response: Any, key: str) -> Any:
     if not isinstance(answers, Mapping) or key not in answers:
         raise CalibrationRunError(f"provider response missing answer for {key}")
     return answers[key]
+
+
+def _usage_from_response(response: Any) -> tuple[int, int]:
+    usage = getattr(response, "usage", None)
+    if usage is None and isinstance(response, Mapping):
+        usage = response.get("usage")
+    if usage is None:
+        raise CalibrationRunError("provider response missing token usage")
+    if isinstance(usage, Mapping):
+        input_tokens = usage.get("input_tokens")
+        output_tokens = usage.get("output_tokens")
+    else:
+        input_tokens = getattr(usage, "input_tokens", None)
+        output_tokens = getattr(usage, "output_tokens", None)
+    if (
+        isinstance(input_tokens, bool)
+        or isinstance(output_tokens, bool)
+        or not isinstance(input_tokens, int)
+        or not isinstance(output_tokens, int)
+        or input_tokens < 0
+        or output_tokens < 0
+    ):
+        raise CalibrationRunError("provider response has invalid token usage")
+    return input_tokens, output_tokens
 
 
 def _predict(normalized: Mapping[str, Any]) -> Any:
@@ -108,6 +136,7 @@ def run_calibration(
         normalized = normalize_typesafe_answer(
             _answer_from_response(response, case.decision_type)
         )
+        input_tokens, output_tokens = _usage_from_response(response)
         confidence = effective_confidence(
             answer_kind=normalized["kind"],
             answer_value=normalized["value"],
@@ -129,6 +158,8 @@ def run_calibration(
                 effective_confidence=confidence,
                 returned_model=model,
                 latency_ms=latency_ms,
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
             )
         )
 
@@ -151,4 +182,6 @@ def run_calibration(
         observations=tuple(observations),
         threshold=threshold,
         provider_calls=len(observations),
+        input_tokens=sum(row.input_tokens for row in observations),
+        output_tokens=sum(row.output_tokens for row in observations),
     )
