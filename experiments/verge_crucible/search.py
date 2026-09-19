@@ -168,15 +168,8 @@ def evolve_crucible_context(
         population_size=population_size,
     )
 
-    unique = {}
-    for genome, utility, feasible in rows:
-        key = genome.identity
-        current = unique.get(key)
-        if current is None or utility > current[1]:
-            unique[key] = (genome, utility, feasible)
-
     ranked = sorted(
-        [row for row in unique.values() if row[2]],
+        [row for row in rows if row[2]],
         key=lambda row: row[1],
         reverse=True,
     )
