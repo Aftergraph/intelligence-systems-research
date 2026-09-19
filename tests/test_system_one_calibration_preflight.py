@@ -51,7 +51,6 @@ def test_guarded_calibration_never_reaches_client_while_no_go():
             client=ExplodingClient(),
             sdk=object(),
             contracts={},
-            budget_ledger_path=ROOT / "state" / "should-not-exist.sqlite",
         )
 
 
@@ -102,7 +101,6 @@ def test_guarded_calibration_uses_preflight_model_without_gate_reread(tmp_path, 
         client=object(),
         sdk=object(),
         contracts=contracts,
-        budget_ledger_path=tmp_path / "budget.sqlite",
     )
 
     assert captured["requested_model"] == "jev-preflight-pin"
@@ -130,7 +128,6 @@ def test_guarded_calibration_rejects_contract_substitution_before_client(tmp_pat
             client=ExplodingClient(),
             sdk=object(),
             contracts={"continue_loop": {"type": "noul", "instructions": "Different?"}},
-            budget_ledger_path=tmp_path / "budget.sqlite",
         )
 
 
@@ -175,7 +172,6 @@ def test_guarded_calibration_rejects_unfrozen_contract_document(tmp_path, monkey
             client=ExplodingClient(),
             sdk=object(),
             contracts=contracts,
-            budget_ledger_path=tmp_path / "budget.sqlite",
         )
 
 
