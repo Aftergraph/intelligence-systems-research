@@ -27,6 +27,7 @@ def test_current_calibration_preflight_is_fail_closed():
     assert {
         "calibration_provider_call_ceiling_insufficient",
         "calibration_cost_ceiling_not_frozen",
+        "calibration_manifest_not_frozen",
         "calibration_approval_not_recorded",
         "calibration_network_calls_not_authorized",
         "calibration_cost_hard_stop_unavailable",
@@ -114,3 +115,18 @@ def test_guarded_calibration_rejects_contract_substitution_before_client(tmp_pat
             sdk=object(),
             contracts={"continue_loop": {"type": "noul", "instructions": "Different?"}},
         )
+
+
+def test_calibration_manifest_changes_when_authorized_code_changes(tmp_path):
+    from experiments.system_one_acceleration.integrity import content_manifest_sha256
+
+    first = tmp_path / "a.py"
+    second = tmp_path / "b.json"
+    first.write_text("one\n", encoding="utf-8")
+    second.write_text('{"v":1}\n', encoding="utf-8")
+    before = content_manifest_sha256(tmp_path, ("a.py", "b.json"))
+
+    first.write_text("two\n", encoding="utf-8")
+    after = content_manifest_sha256(tmp_path, ("a.py", "b.json"))
+
+    assert before != after
