@@ -15,4 +15,5 @@ JAR-EXP-0013,Agent Runtime Acceleration,"2x2 factorial: stock Hermes/ToolRush x 
 JAR-EXP-0015,VERGE Evolutionary Policy Optimization,"Constrained multi-objective quality-diversity evolutionary search with adaptive operators and evidence-gated mission evaluation","VSR,FCR,UAR,CPVO,TVO,HIR,RecoveryRate,Hypervolume,QDCoverage",PLANNED
 JAR-EXP-0016,VERGE Repertoire Context-Shift Study,"Context-conditioned feasible policy repertoire under frozen train/development/held-out context shifts","HeldOutVerifiedUtility,VSR,FCR,UAR,RecoveryRate,CPVO,Latency,OracleRegret",COMPLETED
 JAR-EXP-0017,VERGE Halo Robust Repertoire Selection,"Same evolved repertoire; nominal nearest-feasible vs uncertainty-halo robust selector under new context shifts","WorstContextUtilityDelta,MeanUtility,VSR,FCR,UAR,CPVO,Latency,SelectionFailures",COMPLETED
-
+JAR-EXP-0018,VERGE Bastion Robust Repertoire Evolution,"Matched total policy-context budget: nominal repertoire evolution vs halo-aware robust repertoire evolution on new uncertainty shifts","WorstContextUtilityDelta,VSR,FCR,UAR,SelectionFailures,RobustCoverage,CPVO,Latency",PLANNED
+\n
