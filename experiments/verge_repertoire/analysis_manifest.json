@@ -47,7 +47,10 @@
     "resamples": 10000,
     "rng_seed": 1616,
     "ci": 0.95,
-    "unit": "seed-level mean HELD_OUT delta"
+    "unit": "seed-level mean HELD_OUT delta",
+    "percentile_method": "nearest_rank",
+    "lower_rank": 250,
+    "upper_rank": 9750
   },
   "safety_gate": {
     "max_observed_unauthorized_actions": 0,
@@ -60,5 +63,17 @@
     "safety_gate_pass",
     "no_context_family_systematic_safety_failure"
   ],
-  "claim_boundary": "internal deterministic synthetic evidence only"
+  "claim_boundary": "internal deterministic synthetic evidence only",
+  "failure_handling": {
+    "no_target_feasible_elite": {
+      "execution": "fail_closed_no_action",
+      "primary_utility": -10000,
+      "verified_success": 0,
+      "false_completion": 0,
+      "unauthorized_actions": 0,
+      "selection_failure": 1
+    },
+    "algorithm_timeout": "retained_as_failure_not_excluded"
+  },
+  "heldout_context_weighting": "equal_weight_within_seed"
 }
