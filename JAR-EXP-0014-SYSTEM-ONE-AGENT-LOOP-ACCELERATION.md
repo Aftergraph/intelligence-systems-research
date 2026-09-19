@@ -6,7 +6,7 @@
 **Scope:** Fast structured decision substitution inside agent loops  
 **Primary treatment:** TypeSafe AI Jev (System One)  
 **Control:** Generative LLM classification/decision calls  
-**Architecture boundary:** Advisory decision layer only; no new authority, execution, truth, or verification plane.
+**Architecture boundary:** Advisory decision layer only; no new authority, execution, truth, or verification plane.\n**Stack dependency:** Draft PR #112 is intentionally stacked on Protocol v0.2 draft PR #111 so the historical STUDY-012 scope fix is inherited rather than duplicated.
 
 > [!IMPORTANT]
 > This experiment is prospective. TypeSafe/third-party speed and cost figures are treated as external claims to test, not as Aftergraph evidence. No result from STUDY-012 is modified, pooled, or reinterpreted by this experiment.
