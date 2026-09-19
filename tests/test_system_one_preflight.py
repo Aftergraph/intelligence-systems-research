@@ -3,6 +3,11 @@ import json
 import shutil
 
 from experiments.system_one_acceleration.preflight import evaluate_preflight
+from experiments.system_one_acceleration.calibration_receipt import (
+    calibration_corpus_sha256,
+    canonical_sha256,
+)
+from experiments.system_one_acceleration.corpus import build_calibration_corpus
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -37,10 +42,16 @@ def test_ready_requires_every_gate_to_be_explicit(tmp_path):
             encoding="utf-8",
         )
 
+    protocol = {"status": "FROZEN_PRECALIBRATION", "rule": "fixed"}
+    (data / "jar_exp_0014_calibration_protocol_v01.json").write_text(
+        json.dumps(protocol), encoding="utf-8"
+    )
     calibration = {
         "schema_version": "aftergraph.system-one-calibration/0.1",
         "experiment_id": "JAR-EXP-0014",
         "returned_model": "jev-test-pin",
+        "corpus_sha256": calibration_corpus_sha256(build_calibration_corpus()),
+        "protocol_sha256": canonical_sha256(protocol),
         "result": {
             "threshold": 0.9,
             "feasible": True,
