@@ -10,6 +10,7 @@ from typing import Any, Callable
 from .cost_guard import (
     BudgetLedger,
     CostGuardError,
+    CostReservation,
     PreRequestCostGuard,
     PricingSpec,
 )
@@ -76,6 +77,56 @@ def load_jar15_pricing_spec(path: Path) -> PricingSpec:
     return spec
 
 
+
+class JAR15StageCostGuard:
+    """Stage-bound wrapper that enforces the frozen case-ID call ceiling."""
+
+    def __init__(self, *, base: PreRequestCostGuard, stage: str, allowed_case_ids: frozenset[str]) -> None:
+        if stage not in {"calibration", "holdout"}:
+            raise ValueError("stage must be calibration or holdout")
+        if len(allowed_case_ids) != 1952:
+            raise CostGuardError("stage allowed-case set must contain exactly 1952 ids")
+        self.base = base
+        self.stage = stage
+        self.allowed_case_ids = allowed_case_ids
+        self.spec = base.spec
+        self.ledger = base.ledger
+
+    def reserve_request(
+        self,
+        *,
+        request_id: str,
+        decision_type: str,
+        state: dict[str, Any],
+        contract: dict[str, Any],
+        requested_model: str,
+    ) -> CostReservation:
+        if request_id not in self.allowed_case_ids:
+            raise CostGuardError(
+                f"{self.stage} request id is outside the frozen stage split"
+            )
+        return self.base.reserve_request(
+            request_id=request_id,
+            decision_type=decision_type,
+            state=state,
+            contract=contract,
+            requested_model=requested_model,
+        )
+
+    def begin_transport(self, reservation: CostReservation) -> None:
+        if reservation.request_id not in self.allowed_case_ids:
+            raise CostGuardError("transport reservation is outside frozen stage split")
+        self.base.begin_transport(reservation)
+
+    def complete_request(
+        self, reservation: CostReservation, *, actual_input_tokens: int
+    ) -> None:
+        if reservation.request_id not in self.allowed_case_ids:
+            raise CostGuardError("completion reservation is outside frozen stage split")
+        self.base.complete_request(
+            reservation, actual_input_tokens=actual_input_tokens
+        )
+
 def jar15_budget_ledger_path(stage: str) -> Path:
     if stage not in {"calibration", "holdout"}:
         raise ValueError("stage must be calibration or holdout")
@@ -102,7 +153,7 @@ def build_jar15_cost_guard(
     stage: str,
     ledger_path: Path | None = None,
     pricing_fetcher: Callable[[str], str] | None = None,
-) -> PreRequestCostGuard:
+) -> JAR15StageCostGuard:
     root = Path(root)
     gate = json.loads(_gate_path(root, stage).read_text(encoding="utf-8"))
     spec = load_jar15_pricing_spec(
