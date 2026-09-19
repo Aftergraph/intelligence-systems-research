@@ -60,3 +60,14 @@ def test_contract_revision_scope_is_not_posthoc_unbounded():
         "route_model",
         "result_sufficient",
     }
+
+
+def test_protocol_binds_frozen_dataset_and_parent_evidence():
+    p = json.loads(PROTOCOL.read_text(encoding="utf-8"))
+    d = p["dataset"]
+    assert d["dataset_ref"] == "data/jar_exp_0015_dataset_v01.json"
+    assert d["dataset_sha256"] == "de90286586397af21a568a91c4cd4ec4d56ccfd8a7db09fbd2d7167f6541fac9"
+    assert d["split_manifest_ref"] == "data/jar_exp_0015_split_manifest_v01.json"
+    assert d["split_manifest_sha256"] == "185f5ca9ed25286fb3c60092f83357e0493038338b08bbdd9b4251c9f01707d1"
+    assert d["parent_terminal_head"] == "204aaf78e05250add39a6e91f9c23dd545109a1a"
+    assert d["parent_observations_sha256"] == "4e97753205e2c5bfd731ab65773cddf8d40af2604656e9a3fa163a82d3f18955"
