@@ -54,7 +54,10 @@ def _write_frozen_contracts(root: Path, contracts: dict) -> None:
     data_dir = root / "data"
     data_dir.mkdir(parents=True, exist_ok=True)
     (data_dir / "jar_exp_0014_question_contracts_v01.json").write_text(
-        __import__("json").dumps({"contracts": contracts}),
+        __import__("json").dumps({
+            "status": "FROZEN_PRECALIBRATION",
+            "contracts": contracts,
+        }),
         encoding="utf-8",
     )
 
@@ -130,3 +133,32 @@ def test_calibration_manifest_changes_when_authorized_code_changes(tmp_path):
     after = content_manifest_sha256(tmp_path, ("a.py", "b.json"))
 
     assert before != after
+
+
+def test_guarded_calibration_rejects_unfrozen_contract_document(tmp_path, monkeypatch):
+    data_dir = tmp_path / "data"
+    data_dir.mkdir(parents=True, exist_ok=True)
+    contracts = {"continue_loop": {"type": "noul", "instructions": "Continue?"}}
+    (data_dir / "jar_exp_0014_question_contracts_v01.json").write_text(
+        __import__("json").dumps({"status": "DRAFT", "contracts": contracts}),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        guarded_calibration,
+        "evaluate_calibration_preflight",
+        lambda _root: CalibrationPreflightResult(
+            decision="READY_TO_CALIBRATE",
+            blockers=(),
+            maximum_calls=999,
+            maximum_cost_usd=1.0,
+            requested_model="jev-preflight-pin",
+        ),
+    )
+
+    with pytest.raises(CalibrationAuthorizationError, match="contracts unavailable"):
+        guarded_calibration.run_authorized_calibration(
+            root=tmp_path,
+            client=ExplodingClient(),
+            sdk=object(),
+            contracts=contracts,
+        )
