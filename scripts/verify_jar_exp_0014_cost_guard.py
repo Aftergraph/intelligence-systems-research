@@ -177,7 +177,7 @@ def main() -> None:
     require(preflight.decision == "NO_GO", "calibration must remain protected")
     require(
         set(preflight.blockers)
-        == {"calibration_approval_not_recorded", "calibration_network_calls_not_authorized"},
+        == {"calibration_semantic_review_not_recorded"},
         "unexpected calibration blocker set",
     )
     require(preflight.maximum_calls == 158, "call ceiling")
@@ -187,7 +187,7 @@ def main() -> None:
     print("PASS: JAR-EXP-0014 cost guard independent verifier")
     print("per_request_microusd=2753")
     print("calibration_worst_case_microusd=434974")
-    print("protected_blockers=approval,network")
+    print("protected_blockers=semantic_review")
 
 
 if __name__ == "__main__":
