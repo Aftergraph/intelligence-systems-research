@@ -8,7 +8,7 @@ from .archive import BehaviorDescriptor, QDArchive
 from .evaluation import EvaluationOutcome
 from .harness import benchmark_manifest_hash, evaluate_policy
 from .models import PolicyGenome
-from .operators import crossover, differential_mutation, mutate_numeric
+from .operators import crossover, differential_mutation, mutate_numeric, mutate_rule
 from .pareto import ScoredCandidate, nondominated_fronts
 
 
@@ -56,7 +56,7 @@ def _random_genome(rng: random.Random) -> PolicyGenome:
         retry_ceiling=rng.randint(0, 3),
         confidence_threshold=round(rng.uniform(0.50, 0.95), 3),
         verification_depth=rng.randint(1, 4),
-        operator_weights=(("numeric", 0.34), ("crossover", 0.33), ("differential", 0.33)),
+        operator_weights=(("numeric", 0.25), ("rule", 0.25), ("crossover", 0.25), ("differential", 0.25)),
     )
 
 
@@ -116,17 +116,20 @@ def evolve(
         raise ValueError("benchmark manifest hash mismatch")
 
     rng = random.Random(seed)
-    matcher = ProbabilityMatcher(("numeric", "crossover", "differential"), minimum=0.05)
+    matcher = ProbabilityMatcher(("numeric", "rule", "crossover", "differential"), minimum=0.05)
     archive = QDArchive()
     population = [
+        _evaluate(_conservative_genome(), cases, seed * 1000)
+    ] + [
         _evaluate(_random_genome(rng), cases, seed * 1000 + index)
-        for index in range(population_size)
+        for index in range(1, population_size)
     ]
     evaluations = population_size
     for candidate in population:
         archive.insert(candidate.genome.identity, _descriptor(candidate), candidate.outcome)
 
-    initial_best = max(population, key=lambda candidate: candidate.quality)
+    feasible_initial = [candidate for candidate in population if candidate.outcome.feasible]
+    initial_best = max(feasible_initial or population, key=lambda candidate: candidate.quality)
     global_best = initial_best
 
     for generation in range(generations):
@@ -136,8 +139,13 @@ def evolve(
             parent = rng.choice(parents)
             operator = _weighted_choice(rng, matcher.probabilities())
             op_seed = rng.randrange(0, 2**31)
-            if operator == "numeric":
+            if slot == population_size - 1:
+                genome = _random_genome(rng)
+                operator = "immigrant"
+            elif operator == "numeric":
                 genome, _ = mutate_numeric(parent.genome, op_seed)
+            elif operator == "rule":
+                genome, _ = mutate_rule(parent.genome, op_seed)
             elif operator == "crossover":
                 other = rng.choice(parents)
                 genome, _ = crossover(parent.genome, other.genome, op_seed)
@@ -151,10 +159,11 @@ def evolve(
                 cases,
                 seed * 100000 + generation * population_size + slot,
             )
-            matcher.update(operator, child.quality - parent.quality, child.outcome.feasible)
+            if operator != "immigrant":
+                matcher.update(operator, child.quality - parent.quality, child.outcome.feasible)
             archive.insert(child.genome.identity, _descriptor(child), child.outcome)
             children.append(child)
-            if child.quality > global_best.quality:
+            if child.outcome.feasible and child.quality > global_best.quality:
                 global_best = child
         population = children
         evaluations += population_size
