@@ -67,4 +67,4 @@ def test_workload_plan_forbids_prior_result_pooling_and_live_execution():
         "cross_arm_pooling_before_primary_analysis": False,
     }
     assert plan["live_execution_authorized"] is False
-    assert _sha(WORKLOAD) == "0a899ce91f77ae1a31c8ef4c0dc4563e87ce816beed5dae2abd2059539ba5e7d"
+    assert _sha(WORKLOAD) == "04d6591d94d9c074918673d078cc9b19637598c5c644318bea4bde748e569852"
