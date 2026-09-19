@@ -7,7 +7,7 @@
   "holdout_authorized": false,
   "approved_by": "JonasAbde",
   "approved_at": "2026-09-19T14:18:00+02:00",
-  "calibration_manifest_sha256": "cdc72e04e89b3fb56f0e71433df5e165200451eeabccbd74453462e37f2afa5c",
+  "calibration_manifest_sha256": "47fc0bab04459fcb2d1040dccf00b5e74894d06abfa02412ccb9b4db0c4328a7",
   "requested_model": "jev-1.13.0",
   "max_provider_calls": 1952,
   "max_cost_usd": 5.38,
