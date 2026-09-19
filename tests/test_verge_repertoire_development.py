@@ -4,6 +4,10 @@ from experiments.verge_repertoire.study import (
     evolve_global_policy,
     run_development_pilot,
 )
+from experiments.verge_repertoire.repertoire import (
+    evolve_fixed_repertoire,
+    evolve_repertoire,
+)
 
 
 def test_global_policy_training_uses_train_contexts_only_and_matched_context_budget():
@@ -92,3 +96,37 @@ def test_development_pilot_includes_matched_random_repertoire_ablation():
         for row in report["search_runs"]
     }
     assert rows["R3-random-repertoire"] == rows["R6-verge-repertoire"]
+
+
+def test_fixed_and_adaptive_repertoires_have_equal_search_budget():
+    contexts = load_contexts()
+    fixed = evolve_fixed_repertoire(
+        contexts,
+        seed=4,
+        population_size=6,
+        generations=3,
+    )
+    adaptive = evolve_repertoire(
+        contexts,
+        seed=4,
+        population_size=6,
+        generations=3,
+    )
+    assert fixed.evaluations == adaptive.evaluations
+    assert fixed.training_context_ids == adaptive.training_context_ids
+    assert fixed.adaptive is False
+    assert adaptive.adaptive is True
+
+
+def test_development_pilot_compares_fixed_operator_repertoire_to_adaptive_verge():
+    report = run_development_pilot(
+        seeds=(0,),
+        population_size=6,
+        generations=2,
+    )
+    rows = {
+        row["algorithm"]: row["policy_context_evaluations"]
+        for row in report["search_runs"]
+    }
+    assert rows["R5-fixed-operator-repertoire"] == rows["R6-verge-repertoire"]
+    assert "mean_utility_delta_verge_minus_fixed_repertoire" in report["summary"]
