@@ -4,9 +4,9 @@
   "approved": true,
   "network_calls_authorized": true,
   "requested_typesafe_model": "jev-1.13.0",
-  "calibration_manifest_sha256": "cd8fdf00f2e44dae94687c23f41dfde1d54f3c8b9392170c7df0a51bccc1f5a3",
+  "calibration_manifest_sha256": "6a29bc8e7e168dbeb9e800b260d877ab1e9801be9d61eb2d4c85e2ac22f309f3",
   "max_cost_usd": 0.44,
   "max_provider_calls": 158,
   "approved_by": "JonasAbde",
-  "approved_at": "2026-09-19T10:13:10+02:00"
+  "approved_at": "2026-09-19T11:15:00+02:00"
 }
