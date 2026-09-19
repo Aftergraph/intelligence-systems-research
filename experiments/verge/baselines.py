@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import random
 
 from .archive import QDArchive
-from .engine import Candidate, _descriptor, _evaluate, _random_genome, _select_parents
+from .engine import Candidate, _conservative_genome, _descriptor, _evaluate, _random_genome, _select_parents
 from .harness import benchmark_manifest_hash
 from .operators import crossover, mutate_numeric
 
@@ -26,7 +26,8 @@ def _budget(population_size: int, generations: int) -> int:
 
 
 def _best(candidates: list[Candidate]) -> Candidate:
-    return max(candidates, key=lambda c: c.quality)
+    feasible = [candidate for candidate in candidates if candidate.outcome.feasible]
+    return max(feasible or candidates, key=lambda c: c.quality)
 
 
 def run_random(cases, seed: int, population_size: int = 20, generations: int = 10) -> BaselineResult:
@@ -41,17 +42,8 @@ def run_random(cases, seed: int, population_size: int = 20, generations: int = 1
 
 
 def run_fixed(cases, seed: int, population_size: int = 20, generations: int = 10) -> BaselineResult:
-    from .models import PolicyGenome
-
     count = _budget(population_size, generations)
-    genome = PolicyGenome(
-        routing_policy=("discover", "execute", "verify"),
-        parallelism=2,
-        retry_ceiling=2,
-        confidence_threshold=0.85,
-        verification_depth=3,
-        operator_weights=(("numeric", 0.5), ("crossover", 0.5)),
-    )
+    genome = _conservative_genome()
     candidates = [_evaluate(genome, cases, seed * 100000 + index) for index in range(count)]
     best = _best(candidates)
     return BaselineResult("B1-fixed", best, best.quality, count)
@@ -60,8 +52,10 @@ def run_fixed(cases, seed: int, population_size: int = 20, generations: int = 10
 def run_ga(cases, seed: int, population_size: int = 20, generations: int = 10) -> BaselineResult:
     rng = random.Random(seed)
     population = [
+        _evaluate(_conservative_genome(), cases, seed * 1000)
+    ] + [
         _evaluate(_random_genome(rng), cases, seed * 1000 + index)
-        for index in range(population_size)
+        for index in range(1, population_size)
     ]
     global_best = _best(population)
     for generation in range(generations):
@@ -85,8 +79,10 @@ def run_ga(cases, seed: int, population_size: int = 20, generations: int = 10) -
 def run_pareto(cases, seed: int, population_size: int = 20, generations: int = 10) -> BaselineResult:
     rng = random.Random(seed)
     population = [
+        _evaluate(_conservative_genome(), cases, seed * 1000)
+    ] + [
         _evaluate(_random_genome(rng), cases, seed * 1000 + index)
-        for index in range(population_size)
+        for index in range(1, population_size)
     ]
     global_best = _best(population)
     for generation in range(generations):
@@ -112,8 +108,10 @@ def run_qd(cases, seed: int, population_size: int = 20, generations: int = 10) -
     archive = QDArchive()
     candidates: dict[str, Candidate] = {}
     population = [
+        _evaluate(_conservative_genome(), cases, seed * 1000)
+    ] + [
         _evaluate(_random_genome(rng), cases, seed * 1000 + index)
-        for index in range(population_size)
+        for index in range(1, population_size)
     ]
     global_best = _best(population)
     for candidate in population:
