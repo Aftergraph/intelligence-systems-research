@@ -78,3 +78,35 @@ def execution_manifest_sha256(root: Path) -> str:
         for path in sorted(module_dir.glob("*.py"))
     )
     return content_manifest_sha256(root, (*EXECUTION_STATIC_PATHS, *module_paths))
+
+
+JAR15_CALIBRATION_INTEGRITY_PATHS = (
+    "data/jar_exp_0015_active_protocol.json",
+    "data/jar_exp_0015_protocol_v04.json",
+    "data/jar_exp_0015_dataset_v03.json",
+    "data/jar_exp_0015_split_manifest_v03.json",
+    "data/jar_exp_0015_typesafe_pricing_v01.json",
+    "data/jar_exp_0015_analysis_gate_v01.json",
+    "data/jar_exp_0015_calibration_gate_v01.json",
+    "data/jar_exp_0015_holdout_gate_v01.json",
+    "experiments/system_one_acceleration/jar15_analysis.py",
+    "experiments/system_one_acceleration/jar15_cost_guard.py",
+    "experiments/system_one_acceleration/jar15_dataset_v03.py",
+    "experiments/system_one_acceleration/jar15_preflight.py",
+    "experiments/system_one_acceleration/state_projection.py",
+    "experiments/system_one_acceleration/calibration.py",
+    "experiments/system_one_acceleration/cost_guard.py",
+    "schemas/jar-exp-0015-dataset.v0.3.json",
+    "schemas/jar-exp-0015-split-manifest.v0.3.json",
+    "schemas/jar-exp-0015-policy.v0.1.json",
+    "schemas/jar-exp-0015-typesafe-pricing.v0.1.json",
+    "schemas/jar-exp-0015-semantic-review-receipt.v0.1.json",
+    "scripts/verify_jar_exp_0015_dataset.py",
+    "scripts/verify_jar_exp_0015_analysis.py",
+    "scripts/verify_jar_exp_0015_cost_gate.py",
+    "scripts/verify_jar_exp_0015_semantic_review.py",
+)
+
+
+def jar15_calibration_manifest_sha256(root: Path) -> str:
+    return content_manifest_sha256(root, JAR15_CALIBRATION_INTEGRITY_PATHS)
