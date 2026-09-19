@@ -21,5 +21,5 @@
     "Owner approval and bounded calibration network authorization are recorded; calibration remains NOT_READY until an independent semantic-review receipt is recorded.",
     "Calibration approval must bind the content-addressed calibration manifest; any relevant code/contract drift invalidates authorization."
   ],
-  "calibration_manifest_sha256": "f5f25a17ccaf33966e77098a3e974123be344d0cc3fdbbce3baa29b3459bc00b"
+  "calibration_manifest_sha256": "cd8fdf00f2e44dae94687c23f41dfde1d54f3c8b9392170c7df0a51bccc1f5a3"
 }
