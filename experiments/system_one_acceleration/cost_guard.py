@@ -1,5 +1,6 @@
 """Crash-safe pre-request cost guard for JAR-EXP-0014."""
 
+from contextlib import closing
 from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation, ROUND_CEILING, ROUND_FLOOR
 from hashlib import sha256
@@ -184,7 +185,7 @@ class BudgetLedger:
         return connection
 
     def _initialize(self) -> None:
-        with self._connect() as db:
+        with closing(self._connect()) as db:
             db.execute(
                 """CREATE TABLE IF NOT EXISTS budget_runs (
                     run_id TEXT PRIMARY KEY,
@@ -228,7 +229,7 @@ class BudgetLedger:
             db.execute("COMMIT")
 
     def used_microusd(self) -> int:
-        with self._connect() as db:
+        with closing(self._connect()) as db:
             row = db.execute(
                 "SELECT COALESCE(SUM(reserved_microusd), 0) "
                 "FROM reservations WHERE run_id = ?",
@@ -243,7 +244,7 @@ class BudgetLedger:
             raise CostGuardError("invalid reservation identity")
         if reserved_microusd <= 0:
             raise CostGuardError("invalid reservation amount")
-        with self._connect() as db:
+        with closing(self._connect()) as db:
             db.execute("BEGIN IMMEDIATE")
             existing = db.execute(
                 "SELECT request_sha256 FROM reservations "
@@ -279,7 +280,7 @@ class BudgetLedger:
         actual_input_tokens: int,
         actual_cost_microusd: int,
     ) -> None:
-        with self._connect() as db:
+        with closing(self._connect()) as db:
             db.execute("BEGIN IMMEDIATE")
             row = db.execute(
                 "SELECT request_sha256, reserved_microusd, status "
