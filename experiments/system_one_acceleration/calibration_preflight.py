@@ -168,6 +168,45 @@ def evaluate_calibration_preflight(root: Path) -> CalibrationPreflightResult:
         if approved_microusd < required_microusd:
             blockers.append("calibration_cost_ceiling_insufficient_for_hard_stop")
 
+    review_ref = gate.get("semantic_review_ref")
+    if not review_ref:
+        blockers.append("calibration_semantic_review_not_recorded")
+    else:
+        review_path = _safe_ref(root, review_ref)
+        if review_path is None:
+            blockers.append("calibration_semantic_review_ref_invalid")
+        elif not review_path.exists():
+            blockers.append("calibration_semantic_review_missing")
+        else:
+            try:
+                review = _load(review_path)
+            except (OSError, json.JSONDecodeError):
+                blockers.append("calibration_semantic_review_invalid_json")
+            else:
+                if review.get("schema_version") != "aftergraph.system-one-semantic-review/0.1":
+                    blockers.append("calibration_semantic_review_schema_invalid")
+                if review.get("experiment_id") != "JAR-EXP-0014":
+                    blockers.append("calibration_semantic_review_experiment_mismatch")
+                if review.get("verdict") not in {"PASS", "PASS_WITH_FINDINGS"}:
+                    blockers.append("calibration_semantic_review_not_passed")
+                if review.get("independent") is not True:
+                    blockers.append("calibration_semantic_review_not_independent")
+                if review.get("calibration_manifest_sha256") != manifest_pin:
+                    blockers.append("calibration_semantic_review_manifest_mismatch")
+                attempts = review.get("falsification_attempts_considered")
+                if not isinstance(attempts, int) or isinstance(attempts, bool) or attempts < 18:
+                    blockers.append("calibration_semantic_review_falsification_incomplete")
+                reviewer = review.get("reviewer")
+                if not isinstance(reviewer, str) or not reviewer.strip():
+                    blockers.append("calibration_semantic_review_reviewer_missing")
+                evidence_ref = review.get("evidence_ref")
+                if not isinstance(evidence_ref, str) or not evidence_ref.strip():
+                    blockers.append("calibration_semantic_review_evidence_missing")
+                _valid_attribution(
+                    {"approved_by": reviewer, "approved_at": review.get("reviewed_at")},
+                    blockers,
+                )
+
     approval_ref = gate.get("calibration_approval_ref")
     if not approval_ref:
         blockers.append("calibration_approval_not_recorded")
