@@ -83,6 +83,8 @@ def test_retryable_failure_projection_removes_unrelated_rich_agent_state():
             "acceptance_criteria": "Read current status.",
             "current_evidence": "Status is stale.",
             "failure": "No failure has occurred.",
+            "failure_present": False,
+            "retry_pending": False,
             "proposed_next_action": "Read status.",
             "observations": ["No contradictory observations."],
         },
@@ -92,8 +94,22 @@ def test_retryable_failure_projection_removes_unrelated_rich_agent_state():
     )
     assert client.calls[0]["state"] == {
         "failure": "No failure has occurred.",
-        "proposed_next_action": "Read status.",
+        "failure_present": False,
+        "retry_pending": False,
     }
+
+
+def test_retryable_failure_requires_explicit_runtime_retry_state():
+    client = FakeClient()
+    with pytest.raises(TypeSafeBoundaryError, match="failure_present and retry_pending"):
+        invoke_system_one(
+            client=client,
+            state={"failure": "No failure has occurred."},
+            questions={"retryable_failure": object()},
+            requested_model="jev-latest",
+            sdk=FakeSDK,
+        )
+    assert client.calls == []
 
 
 def test_heterogeneous_question_batch_is_rejected_before_network():

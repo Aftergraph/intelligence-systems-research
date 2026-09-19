@@ -65,8 +65,9 @@ DECISION_STATE_FIELDS: dict[str, frozenset[str]] = {
     | frozenset(
         {
             "failure",
+            "failure_present",
+            "retry_pending",
             "proposed_retry",
-            "proposed_next_action",
             "side_effect_state",
             "idempotency_state",
             "requirements_changed",
@@ -101,6 +102,19 @@ def project_decision_state(
         raise StateProjectionError(
             f"{decision_type}: state has no decision-relevant fields"
         )
+
+    if decision_type == "retryable_failure" and "scenario" not in projected:
+        failure_present = projected.get("failure_present")
+        retry_pending = projected.get("retry_pending")
+        if not isinstance(failure_present, bool) or not isinstance(retry_pending, bool):
+            raise StateProjectionError(
+                "retryable_failure: runtime state requires boolean "
+                "failure_present and retry_pending"
+            )
+        if failure_present is False and retry_pending is not False:
+            raise StateProjectionError(
+                "retryable_failure: retry_pending must be false when no failure is present"
+            )
 
     try:
         json.dumps(projected, allow_nan=False, ensure_ascii=False)
