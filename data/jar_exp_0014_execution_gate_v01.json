@@ -1,23 +1,23 @@
 {
-  "schema_version": "jar-exp-0014.execution-gate/0.1",
-  "experiment_id": "JAR-EXP-0014",
-  "status": "NOT_READY",
-  "requested_typesafe_model": "jev-latest",
-  "returned_typesafe_model_pin": null,
-  "control_model_pin": null,
+  "calibration_receipt_ref": "data/jar_exp_0014_calibration_live_20260919/CALIBRATION-RECEIPT.json",
   "cascade_confidence_threshold": null,
-  "calibration_receipt_ref": null,
-  "execution_approval_ref": null,
-  "network_calls_authorized": false,
   "confirmatory_execution_authorized": false,
+  "control_model_pin": null,
+  "execution_approval_ref": null,
+  "execution_manifest_sha256": null,
+  "experiment_id": "JAR-EXP-0014",
   "max_cost_usd": null,
   "max_provider_calls": null,
+  "network_calls_authorized": false,
   "notes": [
-    "Question contracts, workload plan, randomization and critical-risk pack are frozen separately.",
-    "Returned TypeSafe model identity must be observed and pinned before confirmatory execution.",
-    "Cascade confidence threshold must come from a bounded calibration set excluded from confirmatory analysis.",
-    "No live call or confirmatory execution is authorized by this template.",
-    "Execution approval must bind the content-addressed execution manifest; any relevant code/workload drift invalidates authorization."
+    "Question contracts, workload plan, randomization and critical-risk pack remain frozen.",
+    "Bounded calibration completed on jev-1.13.0 with 158/158 observations.",
+    "The preregistered threshold selector returned NO_THRESHOLD: feasible=false, 15/158 incorrect overall and 3 critical-risk errors.",
+    "Per preregistration, Arm C cannot proceed to confirmatory execution when no feasible threshold exists.",
+    "No post-hoc threshold substitution, confirmatory approval, or confirmatory network authorization is permitted by this gate."
   ],
-  "execution_manifest_sha256": null
+  "requested_typesafe_model": "jev-1.13.0",
+  "returned_typesafe_model_pin": "jev-1.13.0",
+  "schema_version": "jar-exp-0014.execution-gate/0.1",
+  "status": "BLOCKED_NO_THRESHOLD"
 }

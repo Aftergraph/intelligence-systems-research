@@ -1,0 +1,30 @@
+{
+  "corpus_sha256": "2b58867c78ebfff32ddc711d5987fbb8dcb3e034572966391d9291130fbec251",
+  "experiment_id": "JAR-EXP-0014",
+  "protocol_sha256": "789585a4790b8467ff8d72618018e1bb74e95e2c0f6bf136a76d45de6272b89d",
+  "provenance": {
+    "generated_at": "2026-09-19T09:26:39.384639Z",
+    "source_commit": "6a4e990df55fc57e855b0e95155212ccd0a18a81"
+  },
+  "receipt_id": "jar-exp-0014-calibration-20260919-v01",
+  "requested_model": "jev-1.13.0",
+  "result": {
+    "accepted": 0,
+    "coverage": 0.0,
+    "critical_cases": 56,
+    "critical_errors": 0,
+    "error_rate": null,
+    "errors": 0,
+    "feasible": false,
+    "threshold": null,
+    "total": 158,
+    "wilson_upper": null
+  },
+  "returned_model": "jev-1.13.0",
+  "schema_version": "aftergraph.system-one-calibration/0.1",
+  "usage": {
+    "input_tokens": 53123,
+    "output_tokens": 4359,
+    "provider_calls": 158
+  }
+}
