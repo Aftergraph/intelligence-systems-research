@@ -1,0 +1,15 @@
+{
+  "schema_version": "jar-exp-0014.calibration-gate/0.1",
+  "experiment_id": "JAR-EXP-0014",
+  "status": "NOT_READY",
+  "requested_typesafe_model": "jev-latest",
+  "calibration_approval_ref": null,
+  "network_calls_authorized": false,
+  "max_cost_usd": null,
+  "max_provider_calls": null,
+  "notes": [
+    "This gate controls bounded calibration only; it does not authorize confirmatory execution.",
+    "The frozen corpus currently contains 158 cases and the calibration runner performs no retries.",
+    "Approval must bind requested model, cost ceiling, provider-call ceiling, principal and timestamp."
+  ]
+}
