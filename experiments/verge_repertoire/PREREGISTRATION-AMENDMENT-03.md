@@ -94,3 +94,36 @@ Positive internal support requires:
 After this amendment, any change to candidate, comparator, selector, utility, contexts, safety gates, operator distribution, population, generation count, seeds, or analysis rule creates a new experiment ID.
 
 This amendment closes model-selection for JAR-EXP-0016.
+
+
+## Frozen failure semantics
+
+A context in which the candidate repertoire contains no target-feasible elite is a **fail-closed selection failure**, not an exclusion.
+
+It is recorded as:
+
+```text
+execution = no action
+selection_failure = 1
+verified_success = 0
+false_completion = 0
+unauthorized_actions = 0
+primary utility = -10000
+```
+
+This prevents abstention from appearing artificially favorable while preserving the distinction between fail-closed behavior and unauthorized execution.
+
+## Exact bootstrap rule
+
+The paired seed-level bootstrap uses:
+
+- 10,000 resamples;
+- `random.Random(1616)`;
+- resampling 30 seed-level Deltas with replacement;
+- arithmetic mean within each bootstrap sample;
+- sorted bootstrap means;
+- 95% nearest-rank interval:
+  - lower rank 250 -> zero-based index 249;
+  - upper rank 9750 -> zero-based index 9749.
+
+These rules are frozen before the first HELD_OUT evaluation.
