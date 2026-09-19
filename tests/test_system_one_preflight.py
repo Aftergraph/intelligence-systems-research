@@ -39,9 +39,14 @@ def _seed_execution_manifest_code(root: Path) -> None:
         "system-one-calibration-receipt.v0.1.json",
         "system-one-decision-receipt.v0.1.json",
         "system-one-execution-approval-receipt.v0.1.json",
+        "system-one-pricing-spec.v0.1.json",
     ):
         shutil.copyfile(ROOT / "schemas" / name, root / "schemas" / name)
     shutil.copyfile(ROOT / "requirements-typesafe.txt", root / "requirements-typesafe.txt")
+    shutil.copyfile(
+        ROOT / "data" / "jar_exp_0014_typesafe_pricing_v01.json",
+        root / "data" / "jar_exp_0014_typesafe_pricing_v01.json",
+    )
 
 
 def test_ready_requires_every_gate_to_be_explicit(tmp_path):
