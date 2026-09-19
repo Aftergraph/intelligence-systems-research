@@ -82,7 +82,7 @@ def execution_manifest_sha256(root: Path) -> str:
 
 JAR15_CALIBRATION_INTEGRITY_PATHS = (
     "data/jar_exp_0015_active_protocol.json",
-    "data/jar_exp_0015_protocol_v04.json",
+    "data/jar_exp_0015_protocol_v05.json",
     "data/jar_exp_0015_dataset_v03.json",
     "data/jar_exp_0015_split_manifest_v03.json",
     "data/jar_exp_0015_typesafe_pricing_v01.json",
