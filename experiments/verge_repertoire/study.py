@@ -20,6 +20,7 @@ from .repertoire import (
     _conservative_policy,
     _random_policy,
     evaluate_in_context,
+    evolve_fixed_repertoire,
     evolve_repertoire,
 )
 
@@ -178,6 +179,12 @@ def run_development_pilot(
             population_size=population_size,
             generations=generations,
         )
+        fixed_repertoire_result = evolve_fixed_repertoire(
+            contexts,
+            seed=seed,
+            population_size=population_size,
+            generations=generations,
+        )
         repertoire_result = evolve_repertoire(
             contexts,
             seed=seed,
@@ -189,6 +196,7 @@ def run_development_pilot(
             seed=seed,
             evaluations_per_context=population_size * (generations + 1),
         )
+        fixed_repertoire = _restore_repertoire(fixed_repertoire_result, by_id)
         repertoire = _restore_repertoire(repertoire_result, by_id)
         random_repertoire = _restore_repertoire(random_result, by_id)
 
@@ -205,6 +213,11 @@ def run_development_pilot(
             },
             {
                 "seed": seed,
+                "algorithm": "R5-fixed-operator-repertoire",
+                "policy_context_evaluations": fixed_repertoire_result.evaluations,
+            },
+            {
+                "seed": seed,
                 "algorithm": "R6-verge-repertoire",
                 "policy_context_evaluations": repertoire_result.evaluations,
             },
@@ -212,6 +225,8 @@ def run_development_pilot(
 
         for context in development:
             global_outcome = evaluate_in_context(global_result.genome, context)
+            fixed_selected = fixed_repertoire.select(context)
+            fixed_outcome = evaluate_in_context(fixed_selected.genome, context)
             selected = repertoire.select(context)
             repertoire_outcome = evaluate_in_context(selected.genome, context)
             random_selected = random_repertoire.select(context)
@@ -239,6 +254,16 @@ def run_development_pilot(
                 },
                 {
                     "seed": seed,
+                    "algorithm": "R5-fixed-operator-repertoire",
+                    "context_id": context.context_id,
+                    "source_context_id": fixed_selected.source_context_id,
+                    "utility": fixed_outcome.utility,
+                    "feasible": fixed_outcome.feasible,
+                    "verified_success": fixed_outcome.verified_success,
+                    "unauthorized_actions": fixed_outcome.unauthorized_actions,
+                },
+                {
+                    "seed": seed,
                     "algorithm": "R6-verge-repertoire",
                     "context_id": context.context_id,
                     "source_context_id": selected.source_context_id,
@@ -263,11 +288,19 @@ def run_development_pilot(
                     repertoire_outcome.utility - random_outcome.utility
                 ),
                 "random_repertoire_feasible": random_outcome.feasible,
+                "fixed_repertoire_utility": fixed_outcome.utility,
+                "utility_delta_verge_minus_fixed_repertoire": (
+                    repertoire_outcome.utility - fixed_outcome.utility
+                ),
+                "fixed_repertoire_feasible": fixed_outcome.feasible,
             })
 
     deltas = [row["utility_delta_repertoire_minus_global"] for row in paired]
     random_deltas = [
         row["utility_delta_repertoire_minus_random"] for row in paired
+    ]
+    fixed_deltas = [
+        row["utility_delta_verge_minus_fixed_repertoire"] for row in paired
     ]
     return {
         "experiment_id": "JAR-EXP-0016",
@@ -310,6 +343,21 @@ def run_development_pilot(
             ),
             "random_repertoire_safety_failures": sum(
                 not row["random_repertoire_feasible"] for row in paired
+            ),
+            "mean_utility_delta_verge_minus_fixed_repertoire": (
+                mean(fixed_deltas) if fixed_deltas else None
+            ),
+            "verge_vs_fixed_repertoire_wins": sum(
+                delta > 1e-12 for delta in fixed_deltas
+            ),
+            "verge_vs_fixed_repertoire_ties": sum(
+                abs(delta) <= 1e-12 for delta in fixed_deltas
+            ),
+            "verge_vs_fixed_repertoire_losses": sum(
+                delta < -1e-12 for delta in fixed_deltas
+            ),
+            "fixed_repertoire_safety_failures": sum(
+                not row["fixed_repertoire_feasible"] for row in paired
             ),
         },
         "search_runs": search_runs,
