@@ -18,6 +18,7 @@ jobs:
       OMNIROUTE_SERVER_HOST: 127.0.0.1
       REQUIRE_API_KEY: "false"
       APP_LOG_LEVEL: info
+      OMNIROUTE_API_KEY: omniroute-proof-local-only-20260919
 
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -91,7 +92,8 @@ jobs:
             throw "OmniRoute did not become healthy on 127.0.0.1:20128/healthz"
           }
 
-          $modelsRaw = Invoke-RestMethod -Uri "http://127.0.0.1:20128/v1/models" -Method Get -TimeoutSec 120
+          $headers = @{ Authorization = "Bearer $env:OMNIROUTE_API_KEY" }
+          $modelsRaw = Invoke-RestMethod -Uri "http://127.0.0.1:20128/v1/models" -Method Get -Headers $headers -TimeoutSec 120
           $modelsRaw | ConvertTo-Json -Depth 8 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "models.json") -Encoding utf8
 
           $model = "auto"
@@ -104,7 +106,7 @@ jobs:
           } | ConvertTo-Json -Depth 6
 
           $sw = [System.Diagnostics.Stopwatch]::StartNew()
-          $chat = Invoke-RestMethod -Uri "http://127.0.0.1:20128/v1/chat/completions" -Method Post -ContentType "application/json" -Body $body -TimeoutSec 120
+          $chat = Invoke-RestMethod -Uri "http://127.0.0.1:20128/v1/chat/completions" -Method Post -Headers $headers -ContentType "application/json" -Body $body -TimeoutSec 120
           $sw.Stop()
 
           $summary = [ordered]@{
