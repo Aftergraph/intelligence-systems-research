@@ -1,6 +1,7 @@
 """Deterministic zero-network preflight for JAR-EXP-0014."""
 
 from dataclasses import dataclass
+from datetime import datetime
 import json
 from pathlib import Path
 from typing import Any, Mapping
@@ -146,6 +147,22 @@ def _validate_execution_approval(
         blockers.append("execution_approval_schema_invalid")
     if approval.get("experiment_id") != "JAR-EXP-0014":
         blockers.append("execution_approval_experiment_mismatch")
+    approved_by = approval.get("approved_by")
+    if not isinstance(approved_by, str) or not approved_by.strip():
+        blockers.append("execution_approval_principal_missing")
+
+    approved_at = approval.get("approved_at")
+    if not isinstance(approved_at, str) or not approved_at.strip():
+        blockers.append("execution_approval_timestamp_missing")
+    else:
+        try:
+            parsed_approved_at = datetime.fromisoformat(approved_at.replace("Z", "+00:00"))
+        except ValueError:
+            blockers.append("execution_approval_timestamp_invalid")
+        else:
+            if parsed_approved_at.tzinfo is None:
+                blockers.append("execution_approval_timestamp_not_timezone_aware")
+
     if approval.get("approved") is not True:
         blockers.append("execution_approval_not_granted")
     if approval.get("network_calls_authorized") is not True:
@@ -191,6 +208,8 @@ def evaluate_preflight(root: Path) -> PreflightResult:
 
     gate = _load(gate_path)
 
+    if not gate.get("requested_typesafe_model"):
+        blockers.append("typesafe_requested_model_missing")
     if not gate.get("returned_typesafe_model_pin"):
         blockers.append("typesafe_model_not_pinned")
     if not gate.get("control_model_pin"):
