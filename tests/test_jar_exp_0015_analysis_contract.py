@@ -14,8 +14,8 @@ from experiments.system_one_acceleration.jar15_analysis import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-DATASET = json.loads((ROOT / "data" / "jar_exp_0015_dataset_v02.json").read_text(encoding="utf-8"))
-PROTOCOL = json.loads((ROOT / "data" / "jar_exp_0015_protocol_v03.json").read_text(encoding="utf-8"))
+DATASET = json.loads((ROOT / "data" / "jar_exp_0015_dataset_v03.json").read_text(encoding="utf-8"))
+PROTOCOL = json.loads((ROOT / "data" / "jar_exp_0015_protocol_v04.json").read_text(encoding="utf-8"))
 POLICY_SCHEMA = json.loads((ROOT / "schemas" / "jar-exp-0015-policy.v0.1.json").read_text(encoding="utf-8"))
 ANALYSIS_GATE = json.loads((ROOT / "data" / "jar_exp_0015_analysis_gate_v01.json").read_text(encoding="utf-8"))
 
