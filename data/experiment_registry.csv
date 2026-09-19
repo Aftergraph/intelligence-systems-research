@@ -14,3 +14,5 @@ JAR-EXP-0012,STUDY-011 Controlled Live Pilot (harness validation),"Single-worklo
 JAR-EXP-0013,Agent Runtime Acceleration,"2x2 factorial: stock Hermes/ToolRush x Chromium/Obscura; deterministic trace replay plus verifier-backed missions","VSR,MissionWallClock,ToolTime,BrowserTime,PeakRSS,CorrectnessDelta",PLANNED
 JAR-EXP-0015,VERGE Evolutionary Policy Optimization,"Constrained multi-objective quality-diversity evolutionary search with adaptive operators and evidence-gated mission evaluation","VSR,FCR,UAR,CPVO,TVO,HIR,RecoveryRate,Hypervolume,QDCoverage",PLANNED
 JAR-EXP-0016,VERGE Repertoire Context-Shift Study,"Context-conditioned feasible policy repertoire under frozen train/development/held-out context shifts","HeldOutVerifiedUtility,VSR,FCR,UAR,RecoveryRate,CPVO,Latency,OracleRegret",COMPLETED
+JAR-EXP-0017,VERGE Halo Robust Repertoire Selection,"Same evolved repertoire; nominal nearest-feasible vs uncertainty-halo robust selector under new context shifts","WorstContextUtilityDelta,MeanUtility,VSR,FCR,UAR,CPVO,Latency,SelectionFailures",PLANNED
+
