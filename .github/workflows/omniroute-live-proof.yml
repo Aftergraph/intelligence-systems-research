@@ -149,8 +149,7 @@ jobs:
                 latencyMs = $sw.ElapsedMilliseconds
                 error = $detail
               }
-              $compact = ($detail -replace "[
-]+", " ")
+              $compact = ($detail -replace '[\r\n]+', ' ')
               if ($compact.Length -gt 700) { $compact = $compact.Substring(0, 700) }
               Write-Host ("PROVIDER_ATTEMPT_FAIL {0} {1}ms :: {2}" -f $model, $sw.ElapsedMilliseconds, $compact)
             }
