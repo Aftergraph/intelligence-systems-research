@@ -18,7 +18,6 @@ jobs:
       OMNIROUTE_SERVER_HOST: 127.0.0.1
       REQUIRE_API_KEY: "false"
       APP_LOG_LEVEL: info
-      OMNIROUTE_API_KEY: omniroute-proof-local-only-20260919
 
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -38,6 +37,10 @@ jobs:
           "PKG_DIR=$pkg" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           "DATA_DIR=$data" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           "EVIDENCE_DIR=$evidence" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          $endpointKey = "proof-" + [guid]::NewGuid().ToString("N")
+          $adminPassword = "proof-" + [guid]::NewGuid().ToString("N")
+          "OMNIROUTE_API_KEY=$endpointKey" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "OMNIROUTE_ADMIN_PASSWORD=$adminPassword" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           node --version | Tee-Object -FilePath (Join-Path $evidence "node-version.txt")
           npm --version | Tee-Object -FilePath (Join-Path $evidence "npm-version.txt")
           npm view omniroute version | Tee-Object -FilePath (Join-Path $evidence "registry-version.txt")
@@ -66,7 +69,8 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
-          & $env:OMNIROUTE_CLI setup --non-interactive --password "aftergraph-proof-only-20260919"
+          & $env:OMNIROUTE_CLI setup --non-interactive --password $env:OMNIROUTE_ADMIN_PASSWORD
+          & $env:OMNIROUTE_CLI setup --non-interactive --add-provider --provider llm7 --provider-name "LLM7 live proof" --api-key $env:OMNIROUTE_API_KEY
 
       - name: Start gateway and prove inference path
         shell: pwsh
@@ -97,6 +101,10 @@ jobs:
           $modelsRaw | ConvertTo-Json -Depth 8 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "models.json") -Encoding utf8
 
           $candidates = @(
+            "llm7/gpt-4o-mini-2024-07-18",
+            "llm7/qwen2.5-coder-32b-instruct",
+            "llm7/deepseek-r1-0528",
+            "llm7/gemini-3.1-flash-lite",
             "duckduckgo-web/gpt-5.4-mini",
             "cloudflare-playground/qwen/qwen2.5-coder-32b-instruct",
             "cloudflare-playground/ibm-granite/granite-4.0-h-micro",
