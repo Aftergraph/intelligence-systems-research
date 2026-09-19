@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_corpus_has_all_frozen_cases_and_minimum_16_per_decision_type():
     rows = build_calibration_corpus()
     assert len(rows) == 158
-    assert len({row.case_id for row in rows}) == 128
+    assert len({row.case_id for row in rows}) == 158
     assert Counter(row.decision_type for row in rows) == {
         "route_model": 16,
         "route_tool_family": 16,
