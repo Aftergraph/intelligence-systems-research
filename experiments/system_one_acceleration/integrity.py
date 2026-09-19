@@ -29,6 +29,7 @@ CALIBRATION_INTEGRITY_PATHS = (
     "schemas/system-one-pricing-spec.v0.1.json",
     "schemas/system-one-semantic-review-receipt.v0.1.json",
     "scripts/verify_jar_exp_0014_semantic_review.py",
+    "scripts/run_jar_exp_0014_live_calibration.py",
 )
 
 
