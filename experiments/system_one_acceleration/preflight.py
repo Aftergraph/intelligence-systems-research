@@ -5,6 +5,9 @@ import json
 from pathlib import Path
 from typing import Any, Mapping
 
+from .calibration_receipt import calibration_corpus_sha256, canonical_sha256
+from .corpus import build_calibration_corpus
+
 
 @dataclass(frozen=True)
 class PreflightResult:
@@ -63,6 +66,22 @@ def _validate_calibration_receipt(
         blockers.append("calibration_receipt_experiment_mismatch")
     if receipt.get("returned_model") != gate.get("returned_typesafe_model_pin"):
         blockers.append("calibration_model_pin_mismatch")
+
+    expected_corpus_hash = calibration_corpus_sha256(build_calibration_corpus())
+    if receipt.get("corpus_sha256") != expected_corpus_hash:
+        blockers.append("calibration_corpus_hash_mismatch")
+
+    protocol_path = root / "data" / "jar_exp_0014_calibration_protocol_v01.json"
+    if not protocol_path.exists():
+        blockers.append("calibration_protocol_missing")
+    else:
+        try:
+            protocol = _load(protocol_path)
+        except (OSError, json.JSONDecodeError):
+            blockers.append("calibration_protocol_invalid_json")
+        else:
+            if receipt.get("protocol_sha256") != canonical_sha256(protocol):
+                blockers.append("calibration_protocol_hash_mismatch")
 
     result = receipt.get("result")
     if not isinstance(result, Mapping):
