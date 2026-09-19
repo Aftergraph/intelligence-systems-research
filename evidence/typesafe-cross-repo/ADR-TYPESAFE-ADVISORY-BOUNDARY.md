@@ -1,6 +1,8 @@
 # ADR: TypeSafe/jev output is bound to EGAC tier_1 and never crosses the authority boundary
 
-- **Status:** Proposed — awaiting owner ratification. Not applied to any foreign tree.
+- **Status:** Proposed — implemented and verified on a fresh LOCAL unmerged worktree branch
+  (`feat/typesafe-egac-bridge` @ `6be6d80`, cut from OER `4a545fb`); not merged, not pushed,
+  no pre-existing tree modified. Awaiting owner ratification/merge.
 - **Date:** 2026-09-19
 - **Scope:** JAR-EXP-0015 cross-repo evidence package. Governs how Fihim's TypeSafe
   semantic judgments may be consumed by war-room's Evidence-Gated Autonomy Controller
@@ -130,6 +132,15 @@ verdict=PASS
 `case5` vs `case6` is the precondition made concrete: identical bridge output, opposite
 decisions, because of `c076ccf`. The canary `hermes-pin-projection-smoke.mjs` re-asserts
 the OER fail-close and the frozen 0015 pin on a schedule (`canary-output.txt`, 2/2 PASS).
+
+A stronger end-to-end proof (`verify_crossrepo_end_to_end.mjs`, output in
+`crossrepo-e2e-output.txt`) chains the *real* Fihim emitter (`toSemanticJudgment` @
+`34780e8`) through the *applied* bridge (war-room `feat/typesafe-egac-bridge` @ `6be6d80`,
+asserted byte-identical to the reviewed copy) into both EGAC builds, with `globalThis.fetch`
+stubbed to throw before any import — same verdicts on real bytes, zero network enforced by
+construction. It also establishes by exhaustive confidence x consequence sweep that
+`routeSemanticJudgment` can never return `ESCALATE` today; the bridge's ESCALATE path is
+therefore defense-in-depth for future emitters, not live behavior.
 
 ## Reproduction
 

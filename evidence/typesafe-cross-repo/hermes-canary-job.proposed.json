@@ -1,0 +1,11 @@
+{
+  "id": "rendetalje-typesafe-canary",
+  "schedule_hint": "Daily around 07:30 Europe/Copenhagen (after the ops brief)",
+  "skills": [
+    "nora-model-routing",
+    "protected-action-gate",
+    "approval-package-bundler"
+  ],
+  "prompt": "Run the read-only TypeSafe/JAR-EXP-0015 canary (hermes-pin-projection-smoke.mjs). Report pin stability, NO_GO preservation, and OER fail-close status. Prepare a brief only; do not send messages, change calendars, or authorize anything.",
+  "deliverable": "Canary brief: pin-smoke + projection-smoke pass/fail, zero-network"
+}

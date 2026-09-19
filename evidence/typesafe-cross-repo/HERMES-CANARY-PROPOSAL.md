@@ -40,6 +40,14 @@ external_actions_performed=0 network_calls=0 calendar_mutations=0
 verdict=PASS
 ```
 
+## Machine validation (executed, not asserted)
+
+`validate_hermes_stanza.mjs` checks the exact stanza below against the *real* cron spec
+without touching the tree: key-shape parity with existing jobs, id uniqueness, skill-name
+parity against the union of the cron and commands specs, and invariance of `global_safety`
+and all top-level fields under a simulated merge. Observed output:
+`hermes-stanza-validation-output.txt`.
+
 ## Exact stanza to add (owner applies; append to `jobs[]`)
 
 ```json

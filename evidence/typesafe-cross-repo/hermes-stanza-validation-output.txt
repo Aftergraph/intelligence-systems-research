@@ -1,0 +1,10 @@
+PASS  cron_spec_parses_and_has_jobs
+PASS  stanza_key_shape_matches_existing_jobs
+PASS  stanza_id_unique
+PASS  stanza_skills_are_known_in_workspace_specs
+PASS  simulated_merge_preserves_global_safety_and_top_level
+PASS  canary_script_ships_with_the_proposal
+---
+stanza_checks=6 failures=0
+network_calls=0 foreign_repo_writes=0 (simulated merge only; real spec untouched)
+verdict=PASS
