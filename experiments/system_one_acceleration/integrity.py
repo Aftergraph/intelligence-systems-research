@@ -15,6 +15,7 @@ CALIBRATION_INTEGRITY_PATHS = (
     "experiments/system_one_acceleration/client.py",
     "experiments/system_one_acceleration/corpus.py",
     "experiments/system_one_acceleration/cost_guard.py",
+    "experiments/system_one_acceleration/durable_calibration.py",
     "experiments/system_one_acceleration/guarded_calibration.py",
     "experiments/system_one_acceleration/integrity.py",
     "experiments/system_one_acceleration/protocol.py",
