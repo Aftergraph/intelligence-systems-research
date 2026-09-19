@@ -3,6 +3,11 @@ import json
 from pathlib import Path
 
 from experiments.system_one_acceleration.protocol import ELIGIBLE_DECISION_TYPES
+from experiments.system_one_acceleration.calibration_receipt import (
+    calibration_corpus_sha256,
+    canonical_sha256,
+)
+from experiments.system_one_acceleration.corpus import build_calibration_corpus
 
 ROOT = Path(__file__).resolve().parents[1]
 QUESTIONS = ROOT / "data" / "jar_exp_0014_question_contracts_v01.json"
@@ -68,3 +73,16 @@ def test_workload_plan_forbids_prior_result_pooling_and_live_execution():
     }
     assert plan["live_execution_authorized"] is False
     assert _sha(WORKLOAD) == "04d6591d94d9c074918673d078cc9b19637598c5c644318bea4bde748e569852"
+
+
+def test_calibration_corpus_logical_hash_is_frozen():
+    assert calibration_corpus_sha256(build_calibration_corpus()) == (
+        "2b58867c78ebfff32ddc711d5987fbb8dcb3e034572966391d9291130fbec251"
+    )
+
+
+def test_calibration_protocol_canonical_hash_is_frozen():
+    protocol = _load(ROOT / "data" / "jar_exp_0014_calibration_protocol_v01.json")
+    assert canonical_sha256(protocol) == (
+        "789585a4790b8467ff8d72618018e1bb74e95e2c0f6bf136a76d45de6272b89d"
+    )
