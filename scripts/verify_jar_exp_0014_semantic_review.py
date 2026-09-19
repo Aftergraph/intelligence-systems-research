@@ -412,12 +412,20 @@ def main() -> None:
     preflight = evaluate_calibration_preflight(ROOT)
     gate_pin = gate.get("calibration_manifest_sha256")
     approval_pin = approval.get("calibration_manifest_sha256")
-    authorization_shape_ok = (
-        gate.get("network_calls_authorized") is True
-        and approval.get("approved") is True
-        and approval.get("network_calls_authorized") is True
-        and approval_pin == gate_pin
-    )
+    if gate.get("status") == "CALIBRATION_COMPLETE_NO_THRESHOLD":
+        authorization_shape_ok = (
+            gate.get("network_calls_authorized") is False
+            and approval.get("approved") is True
+            and approval.get("network_calls_authorized") is True
+            and approval_pin == gate_pin
+        )
+    else:
+        authorization_shape_ok = (
+            gate.get("network_calls_authorized") is True
+            and approval.get("approved") is True
+            and approval.get("network_calls_authorized") is True
+            and approval_pin == gate_pin
+        )
     readiness_shape_ok = (
         (preflight.decision == "READY_TO_CALIBRATE" and not preflight.blockers)
         or (
