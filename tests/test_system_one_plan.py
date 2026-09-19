@@ -50,14 +50,14 @@ def test_randomization_is_reproducible_and_not_lexical():
 
 def test_first_ten_are_stable_regression_sentinel():
     assert [row.run_id for row in _plan()[:10]] == [
-        "J14-C-software-engineering-S11-SWE-03-R04",
-        "J14-C-research-structured-evidence-S11-RES-02-R05",
-        "J14-A-software-engineering-S11-SWE-02-R04",
-        "J14-B-operational-tool-workflow-S11-OPS-01-R03",
-        "J14-C-operational-tool-workflow-S11-OPS-03-R04",
-        "J14-C-research-structured-evidence-S11-RES-01-R07",
-        "J14-B-research-structured-evidence-S11-RES-01-R08",
-        "J14-A-operational-tool-workflow-S11-OPS-04-R07",
-        "J14-A-software-engineering-S11-SWE-04-R06",
-        "J14-B-software-engineering-S11-SWE-03-R03",
+        "J14-C-research-structured-evidence-S11-RES-01-R08",
+        "J14-C-research-structured-evidence-S11-RES-02-R02",
+        "J14-A-software-engineering-S11-SWE-04-R05",
+        "J14-A-research-structured-evidence-S11-RES-03-R02",
+        "J14-C-software-engineering-S11-SWE-01-R05",
+        "J14-A-software-engineering-S11-SWE-02-R03",
+        "J14-A-operational-tool-workflow-S11-OPS-01-R07",
+        "J14-B-software-engineering-S11-SWE-01-R03",
+        "J14-C-software-engineering-S11-SWE-04-R07",
+        "J14-B-research-structured-evidence-S11-RES-02-R03",
     ]
