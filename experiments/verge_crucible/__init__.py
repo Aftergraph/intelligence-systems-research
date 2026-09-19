@@ -1,0 +1,1 @@
+"""JAR-EXP-0019 VERGE Crucible multi-fidelity research."""\n\nEXPERIMENT_ID = "JAR-EXP-0019"\nALGORITHM_NAME = "VERGE Crucible"\n
