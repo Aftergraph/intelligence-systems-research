@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from .corpus import build_calibration_corpus
+from .integrity import calibration_manifest_sha256
 
 
 @dataclass(frozen=True)
@@ -95,6 +96,18 @@ def evaluate_calibration_preflight(root: Path) -> CalibrationPreflightResult:
     if not isinstance(max_calls, int) or isinstance(max_calls, bool) or max_calls < expected_calls:
         blockers.append("calibration_provider_call_ceiling_insufficient")
 
+    manifest_pin = gate.get("calibration_manifest_sha256")
+    if not isinstance(manifest_pin, str) or len(manifest_pin) != 64:
+        blockers.append("calibration_manifest_not_frozen")
+    else:
+        try:
+            actual_manifest = calibration_manifest_sha256(root)
+        except (OSError, ValueError):
+            blockers.append("calibration_manifest_unavailable")
+        else:
+            if actual_manifest != manifest_pin:
+                blockers.append("calibration_manifest_mismatch")
+
     max_cost = gate.get("max_cost_usd")
     if (
         not isinstance(max_cost, (int, float))
@@ -128,6 +141,8 @@ def evaluate_calibration_preflight(root: Path) -> CalibrationPreflightResult:
                     blockers.append("calibration_approval_network_scope_missing")
                 if approval.get("requested_typesafe_model") != requested_model:
                     blockers.append("calibration_approval_model_mismatch")
+                if approval.get("calibration_manifest_sha256") != manifest_pin:
+                    blockers.append("calibration_approval_manifest_mismatch")
                 if approval.get("max_provider_calls") != max_calls:
                     blockers.append("calibration_approval_call_ceiling_mismatch")
                 if approval.get("max_cost_usd") != max_cost:
