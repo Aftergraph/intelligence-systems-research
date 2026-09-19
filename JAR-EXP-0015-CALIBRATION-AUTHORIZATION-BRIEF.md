@@ -138,13 +138,19 @@ the difference between this experiment and 0014's.
    `semantic_review_ref`. Nothing further is needed here unless a manifest-tracked file
    changes — which moves the pin and invalidates the record.
 2. **Sign the approval.** Copy `data/jar_exp_0015_calibration_approval_PENDING.json`
-   to `data/jar_exp_0015_calibration_approval_<YYYYMMDD>.json`. Set `approved: true`
-   and `network_calls_authorized: true`. Fill `approved_by` and `approved_at`
-   (timezone-aware ISO 8601). Drop the `_`-prefixed metadata keys. Do not touch the
-   four binding fields.
+   to `data/jar_exp_0015_calibration_approval_<YYYYMMDD>.json`. In that copy set
+   `approved: true` **and** the record's own `network_calls_authorized: true` (this is
+   one of two same-named booleans — see the map below; the gate file has its own). Fill
+   `approved_by` with your name and `approved_at` with a **timezone-aware** ISO 8601
+   stamp (e.g. `2026-09-20T14:00:00+02:00`; a naive `2026-09-20T14:00:00` is rejected).
+   Drop the `_`-prefixed metadata keys. Leave the four binding fields byte-identical to
+   the gate: `requested_typesafe_model` (`jev-1.13.0`), `calibration_manifest_sha256`
+   (`dc5d7a94…`), `max_provider_calls` (`1952`), `max_cost_usd` (`5.38`).
 3. **Wire the gate.** In `data/jar_exp_0015_calibration_gate_v01.json`, set
-   `semantic_review_ref` and `owner_approval_ref` to those two paths. The gate is
-   excluded from the manifest by design, so this does not move the pin.
+   `owner_approval_ref` to the dated approval path from step 2 (`semantic_review_ref` is
+   already wired by the Gate A close, so leave it) and flip the gate's own
+   `network_calls_authorized` to `true`. The gate is excluded from the manifest by design,
+   so neither edit moves the pin.
 4. **Confirm.** Run
    `python scripts/run_jar_exp_0015_live_calibration.py --preflight-only`. It
    executes the real preflight with zero network and no API key (it short-circuits
@@ -169,6 +175,37 @@ be repeated. That is the control working, not a malfunction.
 > move). It is not a regression and not a bad signature: the verifier's job is to prove nothing
 > was authorized *before* you authorized it. The thing that must go green is step 4's
 > `--preflight-only`, which is the live path.
+
+### Gate B blocker map (self-diagnosis)
+
+Step 4 prints any blockers that remain. Each string below names its exact cause, so a
+failed signature attempt tells you which field to fix. The first sixteen rows read the
+approval record at `owner_approval_ref`; the last row reads the gate file itself.
+
+| Blocker | Field | Cause → fix |
+| --- | --- | --- |
+| `jar15_approval_not_recorded` | gate `owner_approval_ref` | still `null` → wire it (step 3) |
+| `jar15_approval_ref_invalid` | gate `owner_approval_ref` | path escapes the repo → use `data/jar_exp_0015_calibration_approval_<date>.json` |
+| `jar15_approval_missing` | approval file | the ref points at a nonexistent file → step 2's copy didn't land |
+| `jar15_approval_invalid_json` | approval file | malformed JSON → re-check commas/quotes after dropping `_` keys |
+| `jar15_approval_schema_invalid` | `schema_version` | ≠ `aftergraph.system-one-calibration-approval/0.1` → don't edit it |
+| `jar15_approval_experiment_mismatch` | `experiment_id` | ≠ `JAR-EXP-0015` → don't edit it |
+| `jar15_approval_not_granted` | `approved` | not literally `true` → set it (step 2) |
+| `jar15_approval_network_scope_missing` | approval `network_calls_authorized` | the **record's** boolean not `true` → set it (step 2) |
+| `jar15_approval_model_mismatch` | `requested_typesafe_model` | ≠ gate `jev-1.13.0` → keep byte-identical |
+| `jar15_approval_manifest_mismatch` | `calibration_manifest_sha256` | ≠ pin `dc5d7a94…` → keep byte-identical |
+| `jar15_approval_call_ceiling_mismatch` | `max_provider_calls` | ≠ gate `1952` → keep byte-identical |
+| `jar15_approval_cost_ceiling_mismatch` | `max_cost_usd` | ≠ gate `5.38` → keep byte-identical |
+| `jar15_approval_principal_missing` | `approved_by` | empty / not a string → fill your name |
+| `jar15_approval_timestamp_missing` | `approved_at` | empty → fill it |
+| `jar15_approval_timestamp_invalid` | `approved_at` | not parseable ISO 8601 → use `2026-09-20T14:00:00+02:00` |
+| `jar15_approval_timestamp_not_timezone_aware` | `approved_at` | parses but has no offset/zone → append `+02:00` or `Z` |
+| `jar15_network_calls_not_authorized` | gate `network_calls_authorized` | the **gate's** boolean not `true` → flip it (step 3) |
+
+The two `network_calls_authorized` fields are the common trap: one lives in the approval
+record (`jar15_approval_network_scope_missing`), one in the gate file
+(`jar15_network_calls_not_authorized`). Both must be `true`; setting only one leaves the
+other blocker and the gate stays `NO_GO`.
 
 ---
 
@@ -239,7 +276,10 @@ gate and two execution prerequisites:**
   spend. It has not been fabricated here.
 - **Execution prerequisites.** `pip install typesafe-sdk==0.7.0` (it is not installed in
   this clone) and set `TYPESAFE_API_KEY`. Until both are present the live script fails at
-  `import typesafe_sdk` regardless of the gate state.
+  `import typesafe_sdk` regardless of the gate state. (`requirements-typesafe.txt` still
+  reads "Optional dependency for JAR-EXP-0014 only"; that comment is stale — 0015 imports
+  the same SDK — but the file is a 30-path manifest member, so editing it would move the
+  pin and invalidate Gate A. It is documented here instead of changed.)
 
 After those, `--preflight-only` exits `0` and the live calibration runs. Everything else is
 built, verified and ready.
