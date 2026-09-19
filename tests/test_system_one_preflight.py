@@ -13,14 +13,13 @@ from experiments.system_one_acceleration.integrity import execution_manifest_sha
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_current_repository_preflight_is_fail_closed_without_network():
+def test_current_repository_preflight_is_fail_closed_after_no_threshold_calibration():
     result = evaluate_preflight(ROOT)
     assert result.decision == "NO_GO"
     assert set(result.blockers) == {
-        "typesafe_model_not_pinned",
         "control_model_not_pinned",
         "cascade_threshold_not_frozen",
-        "calibration_not_recorded",
+        "calibration_not_feasible",
         "execution_approval_not_recorded",
         "network_calls_not_authorized",
         "confirmatory_execution_not_authorized",
