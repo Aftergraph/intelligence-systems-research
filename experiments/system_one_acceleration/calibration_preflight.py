@@ -15,6 +15,7 @@ class CalibrationPreflightResult:
     blockers: tuple[str, ...]
     maximum_calls: int | None = None
     maximum_cost_usd: float | None = None
+    requested_model: str | None = None
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -148,5 +149,8 @@ def evaluate_calibration_preflight(root: Path) -> CalibrationPreflightResult:
         maximum_calls=max_calls if isinstance(max_calls, int) and not isinstance(max_calls, bool) else None,
         maximum_cost_usd=float(max_cost)
         if isinstance(max_cost, (int, float)) and not isinstance(max_cost, bool) and max_cost > 0
+        else None,
+        requested_model=requested_model
+        if isinstance(requested_model, str) and requested_model.strip()
         else None,
     )
