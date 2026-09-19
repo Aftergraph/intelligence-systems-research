@@ -110,6 +110,21 @@ def evaluate_calibration_preflight(root: Path) -> CalibrationPreflightResult:
         blockers.append("calibration_gate_experiment_mismatch")
 
     requested_model = gate.get("requested_typesafe_model")
+    max_calls = gate.get("max_provider_calls")
+    max_cost = gate.get("max_cost_usd")
+
+    if gate.get("status") == "CALIBRATION_COMPLETE_NO_THRESHOLD":
+        return CalibrationPreflightResult(
+            "NO_GO",
+            ("calibration_already_completed",),
+            maximum_calls=max_calls if isinstance(max_calls, int) and not isinstance(max_calls, bool) else None,
+            maximum_cost_usd=float(max_cost)
+            if isinstance(max_cost, (int, float)) and not isinstance(max_cost, bool) and max_cost > 0
+            else None,
+            requested_model=requested_model
+            if isinstance(requested_model, str) and requested_model.strip()
+            else None,
+        )
     if not isinstance(requested_model, str) or not requested_model.strip():
         blockers.append("calibration_requested_model_missing")
     elif not _is_concrete_jev_model(requested_model):
@@ -135,7 +150,6 @@ def evaluate_calibration_preflight(root: Path) -> CalibrationPreflightResult:
         blockers.append("calibration_cost_hard_stop_unavailable")
 
     expected_calls = len(build_calibration_corpus())
-    max_calls = gate.get("max_provider_calls")
     if not isinstance(max_calls, int) or isinstance(max_calls, bool) or max_calls < expected_calls:
         blockers.append("calibration_provider_call_ceiling_insufficient")
 
@@ -151,7 +165,6 @@ def evaluate_calibration_preflight(root: Path) -> CalibrationPreflightResult:
             if actual_manifest != manifest_pin:
                 blockers.append("calibration_manifest_mismatch")
 
-    max_cost = gate.get("max_cost_usd")
     if (
         not isinstance(max_cost, (int, float))
         or isinstance(max_cost, bool)
