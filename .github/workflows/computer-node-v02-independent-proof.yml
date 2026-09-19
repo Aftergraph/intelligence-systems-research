@@ -1,0 +1,163 @@
+name: Computer Node v0.2 independent verification
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  runtime-package:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout Runtime feature branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: Aftergraph/runtime
+          ref: feat/computer-node-v0-2-control-plane
+          path: runtime
+
+      - name: Setup Node 22
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+
+      - name: Enable pnpm
+        shell: pwsh
+        run: |
+          corepack enable
+          corepack prepare pnpm@11.20.0 --activate
+          node --version
+          pnpm --version
+
+      - name: Record exact Runtime HEAD
+        shell: pwsh
+        run: |
+          git -C runtime rev-parse HEAD
+          git -C runtime status --porcelain
+
+      - name: Install, build and test package
+        shell: pwsh
+        working-directory: runtime
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm --filter @aftergraph/computer-node build
+          pnpm --filter @aftergraph/computer-node test
+
+      - name: Windows live v0.2 smoke
+        shell: pwsh
+        working-directory: runtime
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = Join-Path $env:RUNNER_TEMP 'computer-node-v02-root'
+          New-Item -ItemType Directory -Force -Path $root | Out-Null
+          Set-Content -Path (Join-Path $root 'read-proof.txt') -Value 'READ_OK'
+
+          $transport = [Convert]::ToHexString((1..32 | ForEach-Object { Get-Random -Maximum 256 })).ToLowerInvariant()
+          $authority = [Convert]::ToHexString((1..32 | ForEach-Object { Get-Random -Maximum 256 })).ToLowerInvariant()
+
+          $env:AFTERGRAPH_COMPUTER_NODE_ID = 'github-windows-v02-proof'
+          $env:AFTERGRAPH_COMPUTER_NODE_TOKEN = $transport
+          $env:AFTERGRAPH_COMPUTER_NODE_AUTHORITY_TOKEN = $authority
+          $env:AFTERGRAPH_COMPUTER_NODE_HOST = '127.0.0.1'
+          $env:AFTERGRAPH_COMPUTER_NODE_PORT = '7799'
+          $env:AFTERGRAPH_COMPUTER_NODE_ALLOWED_ROOTS = $root
+
+          $stdout = Join-Path $env:RUNNER_TEMP 'computer-node-v02.stdout.log'
+          $stderr = Join-Path $env:RUNNER_TEMP 'computer-node-v02.stderr.log'
+          $proc = Start-Process node -ArgumentList 'packages/computer-node/dist/cli.js' -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+          try {
+            $headers = @{ Authorization = "Bearer $transport" }
+            $ready = $false
+            for ($i=0; $i -lt 40; $i++) {
+              Start-Sleep -Milliseconds 250
+              try {
+                $manifest = Invoke-RestMethod 'http://127.0.0.1:7799/v1/manifest' -Headers $headers -TimeoutSec 2
+                $ready = $true
+                break
+              } catch {}
+            }
+            if (-not $ready) {
+              Get-Content $stdout -ErrorAction SilentlyContinue
+              Get-Content $stderr -ErrorAction SilentlyContinue
+              throw 'node_not_ready'
+            }
+
+            $provider = $manifest.providers | Where-Object id -eq 'native-windows-control'
+            if (-not $provider) { throw 'control_provider_missing' }
+
+            $readBody = @{
+              providerId='native-windows-control'
+              capability='computer.files.read'
+              input=@{path=(Join-Path $root 'read-proof.txt')}
+            } | ConvertTo-Json -Depth 6
+            $read = Invoke-RestMethod 'http://127.0.0.1:7799/v1/action' -Method Post -Headers $headers -ContentType 'application/json' -Body $readBody
+            if (-not $read.ok -or $read.output.content.Trim() -ne 'READ_OK') { throw 'file_read_failed' }
+
+            $writeBody = @{
+              providerId='native-windows-control'
+              capability='computer.files.write'
+              input=@{path=(Join-Path $root 'write-proof.txt');content='WRITE_OK'}
+            } | ConvertTo-Json -Depth 6
+            try {
+              Invoke-RestMethod 'http://127.0.0.1:7799/v1/action' -Method Post -Headers $headers -ContentType 'application/json' -Body $writeBody | Out-Null
+              throw 'effect_without_authority_succeeded'
+            } catch {
+              if ($_.Exception.Response.StatusCode.value__ -ne 403) { throw }
+            }
+            $effectHeaders = @{ Authorization="Bearer $transport"; 'X-Aftergraph-Authority'=$authority }
+            $write = Invoke-RestMethod 'http://127.0.0.1:7799/v1/action' -Method Post -Headers $effectHeaders -ContentType 'application/json' -Body $writeBody
+            if (-not $write.ok -or (Get-Content (Join-Path $root 'write-proof.txt') -Raw).Trim() -ne 'WRITE_OK') { throw 'file_write_failed' }
+
+            $listBody = @{providerId='native-windows-control';capability='computer.process.list';input=@{}} | ConvertTo-Json -Depth 5
+            $plist = Invoke-RestMethod 'http://127.0.0.1:7799/v1/action' -Method Post -Headers $headers -ContentType 'application/json' -Body $listBody
+            if (-not $plist.ok -or $plist.output.processes.Count -lt 1) { throw 'process_list_failed' }
+
+            $shellStartBody = @{providerId='native-windows-control';capability='computer.shell.start';input=@{cwd=$root}} | ConvertTo-Json -Depth 5
+            $shell = Invoke-RestMethod 'http://127.0.0.1:7799/v1/action' -Method Post -Headers $effectHeaders -ContentType 'application/json' -Body $shellStartBody
+            if (-not $shell.ok -or -not $shell.output.sessionId) { throw 'shell_start_failed' }
+            $sid = $shell.output.sessionId
+
+            $shellSendBody = @{providerId='native-windows-control';capability='computer.shell.send';input=@{sessionId=$sid;data="Write-Output 'SHELL_OK'"}} | ConvertTo-Json -Depth 5
+            $send = Invoke-RestMethod 'http://127.0.0.1:7799/v1/action' -Method Post -Headers $effectHeaders -ContentType 'application/json' -Body $shellSendBody
+            if (-not $send.ok) { throw 'shell_send_failed' }
+
+            Start-Sleep -Milliseconds 750
+            $shellOutBody = @{providerId='native-windows-control';capability='computer.shell.output';input=@{sessionId=$sid;cursor=0}} | ConvertTo-Json -Depth 5
+            $out = Invoke-RestMethod 'http://127.0.0.1:7799/v1/action' -Method Post -Headers $headers -ContentType 'application/json' -Body $shellOutBody
+            $joined = (($out.output.output | ForEach-Object text) -join '')
+            if ($joined -notmatch 'SHELL_OK') { throw "shell_output_failed: $joined" }
+
+            $shellStopBody = @{providerId='native-windows-control';capability='computer.shell.stop';input=@{sessionId=$sid}} | ConvertTo-Json -Depth 5
+            $stop = Invoke-RestMethod 'http://127.0.0.1:7799/v1/action' -Method Post -Headers $effectHeaders -ContentType 'application/json' -Body $shellStopBody
+            if (-not $stop.ok) { throw 'shell_stop_failed' }
+
+            [ordered]@{
+              ok=$true
+              runtimeHead=(git rev-parse HEAD).Trim()
+              platform='windows-latest'
+              transportAuth=$true
+              separateEffectAuthority=$true
+              processList=$true
+              fileRead=$true
+              fileWrite=$true
+              persistentShell=$true
+              loopback='127.0.0.1:7799'
+            } | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $env:RUNNER_TEMP 'computer-node-v02-verdict.json')
+            Get-Content (Join-Path $env:RUNNER_TEMP 'computer-node-v02-verdict.json')
+          }
+          finally {
+            if ($proc -and -not $proc.HasExited) { Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue }
+          }
+
+      - name: Upload verdict
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: computer-node-v02-verdict-${{ github.run_id }}
+          path: ${{ runner.temp }}/computer-node-v02-verdict.json
+          if-no-files-found: warn
+          retention-days: 14
