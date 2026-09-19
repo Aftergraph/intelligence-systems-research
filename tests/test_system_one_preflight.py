@@ -51,7 +51,20 @@ def test_ready_requires_every_gate_to_be_explicit(tmp_path):
     }
     (data / "calibration.json").write_text(json.dumps(calibration), encoding="utf-8")
     (data / "approval.json").write_text(
-        json.dumps({"experiment_id": "JAR-EXP-0014", "approved": True}),
+        json.dumps({
+            "schema_version": "aftergraph.system-one-execution-approval/0.1",
+            "experiment_id": "JAR-EXP-0014",
+            "approved": True,
+            "network_calls_authorized": True,
+            "confirmatory_execution_authorized": True,
+            "returned_typesafe_model_pin": "jev-test-pin",
+            "control_model_pin": "control-test-pin",
+            "cascade_confidence_threshold": 0.9,
+            "max_cost_usd": 5.0,
+            "max_provider_calls": 5000,
+            "approved_by": "test-owner",
+            "approved_at": "2026-09-19T00:00:00Z",
+        }),
         encoding="utf-8",
     )
 
@@ -140,4 +153,73 @@ def test_stale_or_missing_calibration_evidence_blocks_ready(tmp_path):
         "calibration_sample_too_small",
         "calibration_critical_pack_incomplete",
         "execution_approval_missing",
+    }.issubset(set(result.blockers))
+
+
+def test_execution_approval_must_match_frozen_execution_scope(tmp_path):
+    data = tmp_path / "data"
+    data.mkdir()
+    for rel in (
+        "jar_exp_0014_question_contracts_v01.json",
+        "jar_exp_0014_workload_plan_v01.json",
+        "jar_exp_0014_critical_risk_pack_v01.json",
+        "jar_exp_0014_randomization_v01.json",
+    ):
+        (data / rel).write_text(
+            json.dumps({"status": "FROZEN_PRECALIBRATION"}), encoding="utf-8"
+        )
+    (data / "calibration.json").write_text(
+        json.dumps({
+            "schema_version": "aftergraph.system-one-calibration/0.1",
+            "experiment_id": "JAR-EXP-0014",
+            "returned_model": "jev-test-pin",
+            "result": {
+                "threshold": 0.9,
+                "feasible": True,
+                "critical_errors": 0,
+                "total": 158,
+                "critical_cases": 30,
+            },
+        }),
+        encoding="utf-8",
+    )
+    (data / "approval.json").write_text(
+        json.dumps({
+            "schema_version": "aftergraph.system-one-execution-approval/0.1",
+            "experiment_id": "JAR-EXP-0014",
+            "approved": True,
+            "network_calls_authorized": True,
+            "confirmatory_execution_authorized": True,
+            "returned_typesafe_model_pin": "wrong-model",
+            "control_model_pin": "control-test-pin",
+            "cascade_confidence_threshold": 0.8,
+            "max_cost_usd": 50.0,
+            "max_provider_calls": 50000,
+            "approved_by": "test-owner",
+            "approved_at": "2026-09-19T00:00:00Z",
+        }),
+        encoding="utf-8",
+    )
+    gate = {
+        "returned_typesafe_model_pin": "jev-test-pin",
+        "control_model_pin": "control-test-pin",
+        "cascade_confidence_threshold": 0.9,
+        "calibration_receipt_ref": "data/calibration.json",
+        "execution_approval_ref": "data/approval.json",
+        "network_calls_authorized": True,
+        "confirmatory_execution_authorized": True,
+        "max_cost_usd": 5.0,
+        "max_provider_calls": 5000,
+    }
+    (data / "jar_exp_0014_execution_gate_v01.json").write_text(
+        json.dumps(gate), encoding="utf-8"
+    )
+
+    result = evaluate_preflight(tmp_path)
+    assert result.decision == "NO_GO"
+    assert {
+        "approval_typesafe_model_mismatch",
+        "approval_threshold_mismatch",
+        "approval_cost_ceiling_mismatch",
+        "approval_call_ceiling_mismatch",
     }.issubset(set(result.blockers))
