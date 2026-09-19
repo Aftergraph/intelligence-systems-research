@@ -14,8 +14,8 @@
     "The frozen corpus contains 158 cases and the calibration runner performs no SDK retries.",
     "The concrete Jev model pin jev-1.13.0 was verified by a direct non-calibration smoke request on 2026-09-19.",
     "The cost guard reserves 2753 micro-USD before each provider request using the conservative 65,536-token bound and official $0.042/M input-token price.",
-    "Reservations are durable, write-ahead, replay-denying and are never refunded after transport or crash.",
-    "Official pricing/context markers are revalidated before every provider transport; drift fails closed.",
+    "Reservations are durable and write-ahead. A still-RESERVED exact request/hash may resume after a pre-transport crash without a second charge; transport claim is atomic; once TRANSPORT_STARTED, replay remains denied and the reservation is never refunded.",
+    "Official pricing/context markers are validated before reservation and revalidated immediately before the atomic transport claim; drift fails closed.",
     "The $0.44 ceiling exceeds the 158-case worst-case reservation total of $0.434974.",
     "Calibration remains NOT_READY until a scope-bound approval receipt and network authorization are recorded.",
     "Calibration approval must bind the content-addressed calibration manifest; any relevant code/contract drift invalidates authorization."
