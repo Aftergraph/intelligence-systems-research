@@ -1,0 +1,21 @@
+{
+  "schema_version": "jar-exp-0014.execution-gate/0.1",
+  "experiment_id": "JAR-EXP-0014",
+  "status": "NOT_READY",
+  "requested_typesafe_model": "jev-latest",
+  "returned_typesafe_model_pin": null,
+  "control_model_pin": null,
+  "cascade_confidence_threshold": null,
+  "calibration_receipt_ref": null,
+  "execution_approval_ref": null,
+  "network_calls_authorized": false,
+  "confirmatory_execution_authorized": false,
+  "max_cost_usd": null,
+  "max_provider_calls": null,
+  "notes": [
+    "Question contracts, workload plan, randomization and critical-risk pack are frozen separately.",
+    "Returned TypeSafe model identity must be observed and pinned before confirmatory execution.",
+    "Cascade confidence threshold must come from a bounded calibration set excluded from confirmatory analysis.",
+    "No live call or confirmatory execution is authorized by this template."
+  ]
+}
