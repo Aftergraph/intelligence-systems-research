@@ -106,18 +106,12 @@ jobs:
           $modelsRaw | ConvertTo-Json -Depth 8 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "models.json") -Encoding utf8
 
           $candidates = @(
-            "cloudflare-playground/qwen/qwen2.5-coder-32b-instruct",
-            "cloudflare-playground/ibm-granite/granite-4.0-h-micro",
-            "llm7/gpt-4o-mini-2024-07-18",
-            "llm7/qwen2.5-coder-32b-instruct",
-            "llm7/deepseek-r1-0528",
-            "llm7/gemini-3.1-flash-lite",
-            "duckduckgo-web/gpt-5.4-mini",
+            "pollinations/openai-fast",
+            "pollinations/deepseek",
+            "pollinations/qwen-coder",
+            "aihorde/google/gemma-4-31b",
             "opencode/big-pickle",
             "opencode/mimo-v2.5-free",
-            "opencode/hy3-free",
-            "opencode/nemotron-3-ultra-free",
-            "aihorde/google/gemma-4-31b",
             "uncloseai/Lorbus/Qwen3.6-27B-int4-AutoRound"
           )
 
@@ -176,6 +170,7 @@ jobs:
               candidateCount = $candidates.Count
               classification = "external-free-provider-unavailable-on-runner"
             } | ConvertTo-Json -Depth 6 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "verdict.json") -Encoding utf8
+            Get-Content (Join-Path $env:EVIDENCE_DIR "direct-provider-attempts.json")
             throw "All direct keyless OmniRoute provider candidates failed"
           }
 
