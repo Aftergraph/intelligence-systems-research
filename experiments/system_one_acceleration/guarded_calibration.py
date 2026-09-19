@@ -12,6 +12,7 @@ from typing import Any, Mapping
 from .calibration_preflight import evaluate_calibration_preflight
 from .calibration_receipt import canonical_sha256
 from .calibration_runner import CalibrationRunResult, run_calibration
+from .client import TypeSafeBoundaryError, load_frozen_contracts
 from .corpus import build_calibration_corpus
 
 
@@ -40,9 +41,8 @@ def run_authorized_calibration(
         Path(root) / "data" / "jar_exp_0014_question_contracts_v01.json"
     )
     try:
-        frozen_document = json.loads(contracts_path.read_text(encoding="utf-8"))
-        frozen_contracts = frozen_document["contracts"]
-    except (OSError, json.JSONDecodeError, KeyError, TypeError) as exc:
+        frozen_contracts = load_frozen_contracts(contracts_path)
+    except (OSError, json.JSONDecodeError, TypeSafeBoundaryError) as exc:
         raise CalibrationAuthorizationError(
             "frozen calibration contracts unavailable"
         ) from exc
