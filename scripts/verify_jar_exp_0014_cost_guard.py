@@ -5,7 +5,11 @@ from concurrent.futures import ThreadPoolExecutor
 from decimal import Decimal, ROUND_CEILING
 import json
 from pathlib import Path
+import sys
 import tempfile
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 
 from experiments.system_one_acceleration.calibration_preflight import evaluate_calibration_preflight
 from experiments.system_one_acceleration.cost_guard import (
@@ -19,7 +23,6 @@ from experiments.system_one_acceleration.cost_guard import (
 )
 
 
-ROOT = Path(__file__).resolve().parents[1]
 SPEC_PATH = ROOT / "data" / "jar_exp_0014_typesafe_pricing_v01.json"
 
 
