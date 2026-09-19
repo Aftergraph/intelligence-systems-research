@@ -136,6 +136,12 @@ def evaluate_calibration_preflight(root: Path) -> CalibrationPreflightResult:
     if gate.get("network_calls_authorized") is not True:
         blockers.append("calibration_network_calls_not_authorized")
 
+    # TypeSafe currently exposes usage after a request, but no repository-verified
+    # native pre-request spend/token hard cap. A provider-call ceiling is not a
+    # dollar hard stop, so live calibration remains impossible until a technical
+    # cost enforcement mechanism is implemented and independently verified.
+    blockers.append("calibration_cost_hard_stop_unavailable")
+
     return CalibrationPreflightResult(
         "READY_TO_CALIBRATE" if not blockers else "NO_GO",
         tuple(blockers),
