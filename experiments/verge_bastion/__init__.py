@@ -1,1 +1,4 @@
-"""JAR-EXP-0018 VERGE Bastion robust-evolution research."""\n\nEXPERIMENT_ID = "JAR-EXP-0018"\nALGORITHM_NAME = "VERGE Bastion"\n
+"""JAR-EXP-0018 VERGE Bastion robust-evolution research."""
+
+EXPERIMENT_ID = "JAR-EXP-0018"
+ALGORITHM_NAME = "VERGE Bastion"
