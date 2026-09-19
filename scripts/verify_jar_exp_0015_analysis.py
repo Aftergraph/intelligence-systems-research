@@ -17,7 +17,7 @@ from experiments.system_one_acceleration.jar15_analysis import (
 )
 
 DATASET = json.loads((ROOT / "data" / "jar_exp_0015_dataset_v03.json").read_text(encoding="utf-8"))
-PROTOCOL = json.loads((ROOT / "data" / "jar_exp_0015_protocol_v04.json").read_text(encoding="utf-8"))
+PROTOCOL = json.loads((ROOT / "data" / "jar_exp_0015_protocol_v05.json").read_text(encoding="utf-8"))
 GATE = json.loads((ROOT / "data" / "jar_exp_0015_analysis_gate_v01.json").read_text(encoding="utf-8"))
 
 
@@ -45,7 +45,7 @@ def main():
     cal = obs("calibration")
     hold = obs("holdout")
 
-    require("01_protocol_v04", PROTOCOL["schema_version"] == "jar-exp-0015.protocol/0.4")
+    require("01_protocol_v05", PROTOCOL["schema_version"] == "jar-exp-0015.protocol/0.5")
     require("02_dataset_v03", DATASET["schema_version"] == "jar-exp-0015.dataset/0.3")
     require("03_calibration_count", len(cal) == 1952)
     require("04_holdout_count", len(hold) == 1952)
@@ -73,7 +73,7 @@ def main():
     verify_frozen_policy(policy, PROTOCOL)
     require("08_policy_frozen", policy["status"] == "FROZEN_PREHOLDOUT")
     require("09_policy_binds_1952", policy["calibration_observation_count"] == 1952)
-    require("10_policy_protocol_v04", policy["protocol_version"] == "jar-exp-0015.protocol/0.4")
+    require("10_policy_protocol_v05", policy["protocol_version"] == "jar-exp-0015.protocol/0.5")
     require("11_policy_does_not_consume_holdout", policy["holdout_consumed"] is False)
     require("12_policy_hash_present", len(policy["policy_sha256"]) == 64)
     require("13_eight_per_type_policies", len(policy["per_decision_type"]) == 8)
@@ -87,7 +87,7 @@ def main():
         tamper_blocked = True
     require("14_policy_tamper_blocked", tamper_blocked)
 
-    require("15_gate_protocol_v04", GATE["active_protocol_ref"] == "data/jar_exp_0015_protocol_v04.json")
+    require("15_gate_protocol_v05", GATE["active_protocol_ref"] == "data/jar_exp_0015_protocol_v05.json")
     require("16_gate_calibration_not_run", GATE["status"] == "CALIBRATION_NOT_RUN")
     require("17_holdout_not_authorized", GATE["holdout_evaluation_authorized"] is False)
     require("18_network_not_authorized", GATE["network_calls_authorized"] is False)
