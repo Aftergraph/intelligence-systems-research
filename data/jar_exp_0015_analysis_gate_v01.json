@@ -2,7 +2,7 @@
   "schema_version": "jar-exp-0015.analysis-gate/0.1",
   "experiment_id": "JAR-EXP-0015",
   "status": "CALIBRATION_NOT_RUN",
-  "active_protocol_ref": "data/jar_exp_0015_protocol_v03.json",
+  "active_protocol_ref": "data/jar_exp_0015_protocol_v04.json",
   "calibration_policy_ref": null,
   "calibration_policy_sha256": null,
   "holdout_evaluation_authorized": false,
