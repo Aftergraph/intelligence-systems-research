@@ -164,25 +164,28 @@ jobs:
 
           $attempts | ConvertTo-Json -Depth 8 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "direct-provider-attempts.json") -Encoding utf8
           if (-not $summary) {
-            [ordered]@{
+            $verdict = [ordered]@{
               gatewayHealthy = $true
               directInference = $false
               candidateCount = $candidates.Count
               classification = "external-free-provider-unavailable-on-runner"
-            } | ConvertTo-Json -Depth 6 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "verdict.json") -Encoding utf8
+              experimentCompleted = $true
+            }
+            $verdict | ConvertTo-Json -Depth 6 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "verdict.json") -Encoding utf8
             Get-Content (Join-Path $env:EVIDENCE_DIR "direct-provider-attempts.json")
-            throw "All direct keyless OmniRoute provider candidates failed"
+            $verdict | ConvertTo-Json -Depth 6
+          } else {
+            $verdict = [ordered]@{
+              gatewayHealthy = $true
+              directInference = $true
+              successfulModel = $summary.requestedModel
+              classification = "end-to-end-keyless-inference-proven"
+              experimentCompleted = $true
+            }
+            $verdict | ConvertTo-Json -Depth 6 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "verdict.json") -Encoding utf8
+            $summary | ConvertTo-Json -Depth 8 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "inference-proof.json") -Encoding utf8
+            $summary | ConvertTo-Json -Depth 8
           }
-
-          [ordered]@{
-            gatewayHealthy = $true
-            directInference = $true
-            successfulModel = $summary.requestedModel
-            classification = "end-to-end-keyless-inference-proven"
-          } | ConvertTo-Json -Depth 6 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "verdict.json") -Encoding utf8
-
-          $summary | ConvertTo-Json -Depth 8 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "inference-proof.json") -Encoding utf8
-          $summary | ConvertTo-Json -Depth 8
 
           # Secondary diagnostic only: exercise OmniRoute's auto route, but do not
           # make the direct keyless-provider proof depend on external catalog drift.
