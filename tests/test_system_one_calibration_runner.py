@@ -18,6 +18,7 @@ class FakeSDK:
     Noul = FakeQuestion
     Choice = FakeQuestion
     Score = FakeQuestion
+    RetryPolicy = FakeQuestion
 
 
 class FakeClient:
