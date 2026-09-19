@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/jar-exp-0015-typesafe-pricing.v0.1.json",
+  "title": "JAR-EXP-0015 TypeSafe Pricing Freeze v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "experiment_id",
+    "status",
+    "verified_at",
+    "source_url",
+    "model_id",
+    "model_name",
+    "input_usd_per_million_tokens",
+    "output_usd_per_million_tokens",
+    "conservative_max_input_tokens_per_request",
+    "max_request_cost_microusd",
+    "calibration_max_provider_calls",
+    "calibration_worst_case_microusd",
+    "holdout_max_provider_calls",
+    "holdout_worst_case_microusd",
+    "full_two_stage_worst_case_microusd",
+    "required_source_markers",
+    "sdk_retry_policy",
+    "notes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "jar-exp-0015.typesafe-pricing/0.1"
+    },
+    "experiment_id": {
+      "const": "JAR-EXP-0015"
+    },
+    "status": {
+      "const": "FROZEN_PREEXECUTION"
+    },
+    "verified_at": {
+      "type": "string"
+    },
+    "source_url": {
+      "const": "https://docs.typesafe.ai/models"
+    },
+    "model_id": {
+      "const": "jev-1.13.0"
+    },
+    "model_name": {
+      "const": "Jev 1.13"
+    },
+    "input_usd_per_million_tokens": {
+      "const": "0.042"
+    },
+    "output_usd_per_million_tokens": {
+      "const": "0"
+    },
+    "conservative_max_input_tokens_per_request": {
+      "const": 65536
+    },
+    "max_request_cost_microusd": {
+      "const": 2753
+    },
+    "calibration_max_provider_calls": {
+      "const": 1952
+    },
+    "calibration_worst_case_microusd": {
+      "const": 5373856
+    },
+    "holdout_max_provider_calls": {
+      "const": 1952
+    },
+    "holdout_worst_case_microusd": {
+      "const": 5373856
+    },
+    "full_two_stage_worst_case_microusd": {
+      "const": 10747712
+    },
+    "required_source_markers": {
+      "type": "array",
+      "minItems": 5
+    },
+    "sdk_retry_policy": {
+      "const": "MUST_DISABLE_DEFAULT_RETRIES"
+    },
+    "notes": {
+      "type": "array"
+    }
+  }
+}
