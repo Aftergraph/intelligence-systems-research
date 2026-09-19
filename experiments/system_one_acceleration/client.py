@@ -10,6 +10,9 @@ from time import perf_counter
 import json
 from typing import Any, Mapping
 
+from .protocol import ELIGIBLE_DECISION_TYPES
+from .state_projection import StateProjectionError, project_decision_state
+
 
 class TypeSafeBoundaryError(RuntimeError):
     pass
@@ -87,13 +90,29 @@ def invoke_system_one(
     """
     if not requested_model:
         raise TypeSafeBoundaryError("requested_model is required")
+    if len(questions) != 1:
+        raise TypeSafeBoundaryError(
+            "JAR-EXP-0014 requires exactly one eligible decision question per call"
+        )
+    decision_type = next(iter(questions))
+    if decision_type not in ELIGIBLE_DECISION_TYPES:
+        raise TypeSafeBoundaryError(
+            f"ineligible System One decision type: {decision_type}"
+        )
+    try:
+        projected_state = project_decision_state(
+            decision_type=decision_type, state=state
+        )
+    except StateProjectionError as exc:
+        raise TypeSafeBoundaryError(str(exc)) from exc
+
     module = _sdk_module(sdk)
     retry_policy = module.RetryPolicy(max_retries=0)
 
     started = perf_counter()
     response = client.system_one(
         model=requested_model,
-        state=state,
+        state=projected_state,
         questions=dict(questions),
         retry=retry_policy,
     )

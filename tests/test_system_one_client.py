@@ -53,7 +53,11 @@ def test_invocation_passes_model_state_and_questions_without_retrying():
     client = FakeClient()
     response, latency_ms = invoke_system_one(
         client=client,
-        state={"step": 1},
+        state={
+            "scenario": "Two acceptance criteria remain unverified.",
+            "private_context": "must not cross provider boundary",
+            "failure": "unrelated failure text",
+        },
         questions={"continue_loop": object()},
         requested_model="jev-latest",
         sdk=FakeSDK,
@@ -62,8 +66,63 @@ def test_invocation_passes_model_state_and_questions_without_retrying():
     assert latency_ms >= 0
     assert len(client.calls) == 1
     assert client.calls[0]["model"] == "jev-latest"
-    assert client.calls[0]["state"] == {"step": 1}
+    assert client.calls[0]["state"] == {
+        "scenario": "Two acceptance criteria remain unverified."
+    }
+    assert "private_context" not in client.calls[0]["state"]
+    assert "failure" not in client.calls[0]["state"]
     assert client.calls[0]["retry"].kwargs == {"max_retries": 0}
+
+
+def test_retryable_failure_projection_removes_unrelated_rich_agent_state():
+    client = FakeClient()
+    invoke_system_one(
+        client=client,
+        state={
+            "mission": "Inspect a pull request.",
+            "acceptance_criteria": "Read current status.",
+            "current_evidence": "Status is stale.",
+            "failure": "No failure has occurred.",
+            "proposed_next_action": "Read status.",
+            "observations": ["No contradictory observations."],
+        },
+        questions={"retryable_failure": object()},
+        requested_model="jev-latest",
+        sdk=FakeSDK,
+    )
+    assert client.calls[0]["state"] == {
+        "failure": "No failure has occurred.",
+        "proposed_next_action": "Read status.",
+    }
+
+
+def test_heterogeneous_question_batch_is_rejected_before_network():
+    client = FakeClient()
+    with pytest.raises(TypeSafeBoundaryError, match="exactly one"):
+        invoke_system_one(
+            client=client,
+            state={"scenario": "Read status."},
+            questions={
+                "continue_loop": object(),
+                "retryable_failure": object(),
+            },
+            requested_model="jev-latest",
+            sdk=FakeSDK,
+        )
+    assert client.calls == []
+
+
+def test_state_without_decision_relevant_fields_is_rejected_before_network():
+    client = FakeClient()
+    with pytest.raises(TypeSafeBoundaryError, match="no decision-relevant fields"):
+        invoke_system_one(
+            client=client,
+            state={"mission": "Unrelated broad context only."},
+            questions={"retryable_failure": object()},
+            requested_model="jev-latest",
+            sdk=FakeSDK,
+        )
+    assert client.calls == []
 
 
 def test_missing_returned_model_fails_closed():
@@ -74,8 +133,8 @@ def test_missing_returned_model_fails_closed():
     with pytest.raises(TypeSafeBoundaryError):
         invoke_system_one(
             client=BadClient(),
-            state={},
-            questions={"q": object()},
+            state={"scenario": "Work remains."},
+            questions={"continue_loop": object()},
             requested_model="jev-latest",
             sdk=FakeSDK,
         )

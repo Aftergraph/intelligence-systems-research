@@ -56,9 +56,9 @@ CONTRACTS = {
 
 def test_runner_normalizes_scores_labels_and_selects_threshold():
     cases = [
-        CalibrationCase("n1", "continue_loop", {"x": 1}, True, False),
-        CalibrationCase("c1", "route_model", {"x": 2}, "fast", False),
-        CalibrationCase("s1", "risk_level", {"x": 3}, 3, True),
+        CalibrationCase("n1", "continue_loop", {"scenario": "work remains"}, True, False),
+        CalibrationCase("c1", "route_model", {"scenario": "simple lookup"}, "fast", False),
+        CalibrationCase("s1", "risk_level", {"scenario": "critical action"}, 3, True),
     ] * 40
     answers = []
     for _ in range(40):
@@ -92,8 +92,8 @@ def test_runner_normalizes_scores_labels_and_selects_threshold():
 def test_runner_has_hard_call_ceiling_before_any_call():
     client = FakeClient([SimpleNamespace(type="noul", noul=0.99)] * 2)
     cases = [
-        CalibrationCase("a", "continue_loop", {}, True, False),
-        CalibrationCase("b", "continue_loop", {}, True, False),
+        CalibrationCase("a", "continue_loop", {"scenario": "work remains"}, True, False),
+        CalibrationCase("b", "continue_loop", {"scenario": "more work remains"}, True, False),
     ]
     with pytest.raises(CalibrationRunError, match="provider-call ceiling"):
         run_calibration(
@@ -105,8 +105,8 @@ def test_runner_has_hard_call_ceiling_before_any_call():
 
 def test_runner_fails_on_model_drift():
     cases = [
-        CalibrationCase("a", "continue_loop", {}, True, False),
-        CalibrationCase("b", "continue_loop", {}, True, False),
+        CalibrationCase("a", "continue_loop", {"scenario": "work remains"}, True, False),
+        CalibrationCase("b", "continue_loop", {"scenario": "more work remains"}, True, False),
     ]
     client = FakeClient(
         [SimpleNamespace(type="noul", noul=0.99)] * 2,
@@ -120,7 +120,7 @@ def test_runner_fails_on_model_drift():
 
 
 def test_runner_rejects_ambiguous_score_argmax():
-    case = CalibrationCase("s", "risk_level", {}, 2, False)
+    case = CalibrationCase("s", "risk_level", {"scenario": "high-risk action"}, 2, False)
     answer = SimpleNamespace(
         type="score", score=1.5, confidence=0.5,
         probabilities={0: 0.0, 1: 0.5, 2: 0.5, 3: 0.0},
@@ -148,6 +148,10 @@ def test_runner_rejects_missing_usage_evidence():
             sdk=FakeSDK,
             requested_model="jev-latest",
             contracts=CONTRACTS,
-            cases=[CalibrationCase("a", "continue_loop", {}, True, False)],
+            cases=[
+                CalibrationCase(
+                    "a", "continue_loop", {"scenario": "work remains"}, True, False
+                )
+            ],
             maximum_calls=1,
         )

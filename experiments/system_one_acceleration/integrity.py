@@ -17,6 +17,7 @@ CALIBRATION_INTEGRITY_PATHS = (
     "experiments/system_one_acceleration/guarded_calibration.py",
     "experiments/system_one_acceleration/integrity.py",
     "experiments/system_one_acceleration/protocol.py",
+    "experiments/system_one_acceleration/state_projection.py",
     "data/jar_exp_0014_calibration_protocol_v01.json",
     "data/jar_exp_0014_question_contracts_v01.json",
     "requirements-typesafe.txt",
