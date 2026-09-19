@@ -221,19 +221,35 @@ def main() -> int:
     )
 
     cal_pre = evaluate_jar15_stage_preflight(ROOT, stage="calibration")
-    expected_calibration_blockers = {
-        "calibration_owner_approval_not_recorded",
-        "calibration_network_calls_not_authorized",
-    }
-    if CAL_GATE.get("semantic_review_ref") is None:
-        expected_calibration_blockers.add(
-            "calibration_semantic_review_not_recorded"
+    if (
+        CAL_GATE.get("semantic_review_ref") is not None
+        and CAL_GATE.get("owner_approval_ref") is not None
+        and CAL_GATE.get("network_calls_authorized") is True
+    ):
+        require(
+            "21_calibration_protected_fail_closed",
+            cal_pre.decision == "READY_TO_CALIBRATE"
+            and not cal_pre.blockers,
         )
-    require(
-        "21_calibration_protected_fail_closed",
-        cal_pre.decision == "NO_GO"
-        and set(cal_pre.blockers) == expected_calibration_blockers,
-    )
+    else:
+        expected_calibration_blockers = set()
+        if CAL_GATE.get("semantic_review_ref") is None:
+            expected_calibration_blockers.add(
+                "calibration_semantic_review_not_recorded"
+            )
+        if CAL_GATE.get("owner_approval_ref") is None:
+            expected_calibration_blockers.add(
+                "calibration_owner_approval_not_recorded"
+            )
+        if CAL_GATE.get("network_calls_authorized") is not True:
+            expected_calibration_blockers.add(
+                "calibration_network_calls_not_authorized"
+            )
+        require(
+            "21_calibration_protected_fail_closed",
+            cal_pre.decision == "NO_GO"
+            and set(cal_pre.blockers) == expected_calibration_blockers,
+        )
     hold_pre = evaluate_jar15_stage_preflight(ROOT, stage="holdout")
     require(
         "22_holdout_independently_fail_closed",
