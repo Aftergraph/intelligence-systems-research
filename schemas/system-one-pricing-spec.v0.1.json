@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/system-one-pricing-spec.v0.1.json",
+  "title": "Aftergraph System One Pricing Spec v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "experiment_id", "status", "provider", "model_id",
+    "input_usd_per_million_tokens", "output_usd_per_million_tokens",
+    "documented_context_limit", "conservative_max_input_tokens_per_request",
+    "source_url", "source_retrieved_on", "required_source_markers",
+    "reservation_rule", "notes"
+  ],
+  "properties": {
+    "schema_version": {"const": "jar-exp-0014.typesafe-pricing/0.1"},
+    "experiment_id": {"const": "JAR-EXP-0014"},
+    "status": {"const": "FROZEN_PRECALIBRATION"},
+    "provider": {"const": "TypeSafe AI"},
+    "model_id": {"type": "string", "pattern": "^jev-[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "input_usd_per_million_tokens": {"type": "string", "pattern": "^[0-9]+(?:\\.[0-9]+)?$"},
+    "output_usd_per_million_tokens": {"const": "0"},
+    "documented_context_limit": {"type": "string", "minLength": 1},
+    "conservative_max_input_tokens_per_request": {"type": "integer", "minimum": 1},
+    "source_url": {"type": "string", "format": "uri"},
+    "source_retrieved_on": {"type": "string", "format": "date"},
+    "required_source_markers": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "reservation_rule": {"type": "string", "minLength": 1},
+    "notes": {"type": "array", "items": {"type": "string"}}
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/system-one-calibration-receipt.v0.1.json",
+  "title": "Aftergraph System One Calibration Receipt v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "experiment_id",
+    "receipt_id",
+    "requested_model",
+    "returned_model",
+    "corpus_sha256",
+    "protocol_sha256",
+    "result",
+    "usage",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {"const": "aftergraph.system-one-calibration/0.1"},
+    "experiment_id": {"const": "JAR-EXP-0014"},
+    "receipt_id": {"type": "string", "minLength": 1},
+    "requested_model": {"type": "string", "minLength": 1},
+    "returned_model": {"type": "string", "minLength": 1},
+    "corpus_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "protocol_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "threshold", "accepted", "total", "coverage", "errors",
+        "error_rate", "wilson_upper", "critical_cases", "critical_errors", "feasible"
+      ],
+      "properties": {
+        "threshold": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "accepted": {"type": "integer", "minimum": 0},
+        "total": {"type": "integer", "minimum": 1},
+        "coverage": {"type": "number", "minimum": 0, "maximum": 1},
+        "errors": {"type": "integer", "minimum": 0},
+        "error_rate": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "wilson_upper": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "critical_cases": {"type": "integer", "minimum": 0},
+        "critical_errors": {"type": "integer", "minimum": 0},
+        "feasible": {"type": "boolean"}
+      }
+    },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider_calls", "input_tokens", "output_tokens"],
+      "properties": {
+        "provider_calls": {"type": "integer", "minimum": 0},
+        "input_tokens": {"type": "integer", "minimum": 0},
+        "output_tokens": {"type": "integer", "minimum": 0}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_commit", "generated_at"],
+      "properties": {
+        "source_commit": {"type": "string", "minLength": 7},
+        "generated_at": {"type": "string", "format": "date-time"}
+      }
+    }
+  }
+}

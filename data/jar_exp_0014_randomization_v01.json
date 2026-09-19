@@ -1,0 +1,11 @@
+{
+  "schema_version": "jar-exp-0014.randomization/0.1",
+  "experiment_id": "JAR-EXP-0014",
+  "status": "FROZEN_PRECALIBRATION",
+  "algorithm": "Python random.Random(seed).shuffle over canonical run ids sorted lexicographically before shuffle",
+  "seed": 140014,
+  "seed_origin": "Preregistered fixed constant derived from experiment identifier JAR-EXP-0014; chosen before calibration or confirmatory outcomes exist.",
+  "run_id_format": "J14-{arm}-{family_slug}-{source_workload_id}-R{replicate:02d}",
+  "expected_total_runs": 270,
+  "live_execution_authorized": false
+}
