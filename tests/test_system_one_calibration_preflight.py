@@ -23,10 +23,10 @@ class ExplodingClient:
         raise AssertionError("network-capable client must not be invoked while calibration is NO_GO")
 
 
-def test_current_calibration_preflight_is_fail_closed():
+def test_current_calibration_preflight_is_ready_after_bound_review_and_approval():
     result = evaluate_calibration_preflight(ROOT)
-    assert result.decision == "NO_GO"
-    assert set(result.blockers) == {"calibration_semantic_review_not_recorded"}
+    assert result.decision == "READY_TO_CALIBRATE"
+    assert result.blockers == ()
     assert "calibration_manifest_not_frozen" not in result.blockers
     assert "calibration_cost_hard_stop_unavailable" not in result.blockers
     assert "calibration_provider_call_ceiling_insufficient" not in result.blockers
@@ -35,14 +35,14 @@ def test_current_calibration_preflight_is_fail_closed():
     assert result.maximum_cost_usd == 0.44
 
 
-def test_cost_hard_stop_is_available_without_authorizing_calibration():
+def test_cost_hard_stop_is_available_in_authorized_ready_state():
     result = evaluate_calibration_preflight(ROOT)
     assert "calibration_cost_hard_stop_unavailable" not in result.blockers
-    assert result.decision == "NO_GO"
+    assert result.decision == "READY_TO_CALIBRATE"
 
 
-def test_guarded_calibration_never_reaches_client_while_no_go():
-    with pytest.raises(CalibrationAuthorizationError, match="calibration not authorized"):
+def test_guarded_calibration_still_rejects_contract_substitution_before_network():
+    with pytest.raises(CalibrationAuthorizationError, match="do not match frozen"):
         run_authorized_calibration(
             root=ROOT,
             client=ExplodingClient(),
