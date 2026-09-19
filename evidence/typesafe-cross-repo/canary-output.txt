@@ -1,0 +1,6 @@
+PASS  pin_smoke_0015_manifest_and_nogo
+PASS  projection_smoke_oer_fail_close
+---
+canary_checks=2 failures=0
+external_actions_performed=0 network_calls=0 calendar_mutations=0
+verdict=PASS

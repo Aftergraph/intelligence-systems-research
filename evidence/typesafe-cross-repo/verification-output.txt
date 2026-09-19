@@ -1,0 +1,12 @@
+PASS  I1_tier_is_always_tier_1
+PASS  I2_advisory_only_no_authority
+PASS  I3_only_display_passes_escalate_needs_human
+PASS  I4_I5_pure_deterministic_lineage_copied
+PASS  fail_closed_on_malformed
+PASS  case5_OER_fail_close_halts
+PASS  case6_canonical_main_gap_executes
+PASS  escalate_never_satisfies_gate
+---
+bridge_invariant_checks=8 failures=0
+network_calls=0 foreign_repo_writes=0
+verdict=PASS
