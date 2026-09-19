@@ -1,0 +1,60 @@
+{
+  "contracts": {
+    "continue_loop": {
+      "instructions": "Given the current mission state and acceptance criteria, is additional authorized work still required before the task can be considered complete?",
+      "type": "noul"
+    },
+    "evidence_conflict": {
+      "instructions": "Do the available observations materially conflict such that automatic continuation would risk acting on an unresolved contradiction?",
+      "type": "noul"
+    },
+    "needs_human": {
+      "instructions": "Does the current state require a human decision, approval, clarification, or protected action before safe progress can continue?",
+      "type": "noul"
+    },
+    "result_sufficient": {
+      "instructions": "Is the currently available evidence sufficient to support the local decision criterion without another model or tool step?",
+      "type": "noul"
+    },
+    "retryable_failure": {
+      "instructions": "Is the observed failure plausibly transient and safe to retry without changing requirements, authority, evidence semantics, or side effects?",
+      "type": "noul"
+    },
+    "risk_level": {
+      "criteria": [
+        "Low: local, reversible, bounded, no authority/security/financial effect.",
+        "Moderate: reversible but externally visible or broader in scope; extra verification warranted.",
+        "High: consequential change involving production, authority, credentials, money, or large blast radius.",
+        "Critical: destructive/irreversible or could bypass security, authority, governance, or protected decisions."
+      ],
+      "instructions": "Rate the risk of the proposed next action, considering reversibility, security/authority impact, external side effects, financial impact, and blast radius.",
+      "type": "score"
+    },
+    "route_model": {
+      "criteria": {
+        "escalate": "The state is insufficient or ambiguous; do not choose a model class automatically.",
+        "fast": "Direct lookup, extraction, deterministic transformation, or localized low-risk change.",
+        "powerful": "Architecture, novel debugging/reasoning, high-stakes decisions, or cross-system synthesis."
+      },
+      "instructions": "Choose the least costly model class that is adequate for the current bounded step. Escalate when the step requires architecture, novel reasoning, high stakes, or unresolved ambiguity.",
+      "type": "choice"
+    },
+    "route_tool_family": {
+      "criteria": {
+        "browser": "Interact with a graphical/web surface.",
+        "code_execution": "Run tests, scripts, builds, or deterministic computation.",
+        "filesystem": "Read or modify authorized files.",
+        "none": "No tool should execute yet; more reasoning, evidence, or approval is required.",
+        "search": "Retrieve public or repository information."
+      },
+      "instructions": "Choose the single tool family most directly required for the next bounded action. Choose none when no tool should execute yet.",
+      "type": "choice"
+    }
+  },
+  "experiment_id": "JAR-EXP-0015",
+  "freeze_rule": "Contracts are frozen before any JAR-EXP-0015 provider call. Revisions are permitted only for initially_revision_eligible classes and only after calibration observations exist.",
+  "origin": "Byte-identical decision contracts copied from JAR-EXP-0014 (arms A/B original-contract baseline). Arm D revisions may only be frozen after calibration.",
+  "parent_contracts_ref": "data/jar_exp_0014_question_contracts_v01.json",
+  "schema_version": "jar-exp-0015.question-contracts/0.1",
+  "status": "FROZEN_PRECALIBRATION"
+}

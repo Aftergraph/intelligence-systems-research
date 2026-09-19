@@ -7,9 +7,9 @@ from experiments.system_one_acceleration.calibration import wilson_upper
 
 ROOT = Path(__file__).resolve().parents[1]
 ACTIVE = ROOT / "data" / "jar_exp_0015_active_protocol.json"
-PROTOCOL = ROOT / "data" / "jar_exp_0015_protocol_v03.json"
-DATASET = ROOT / "data" / "jar_exp_0015_dataset_v02.json"
-MANIFEST = ROOT / "data" / "jar_exp_0015_split_manifest_v02.json"
+PROTOCOL = ROOT / "data" / "jar_exp_0015_protocol_v04.json"
+DATASET = ROOT / "data" / "jar_exp_0015_dataset_v03.json"
+MANIFEST = ROOT / "data" / "jar_exp_0015_split_manifest_v03.json"
 
 
 def _load(path: Path):
@@ -22,15 +22,16 @@ def _git_blob_sha(path: Path) -> str:
     return hashlib.sha1(header + payload).hexdigest()
 
 
-def test_active_registry_points_only_to_protocol_v03():
+def test_active_registry_points_only_to_protocol_v04():
     active = _load(ACTIVE)
     assert active["status"] == "ACTIVE_PREEXECUTION"
-    assert active["active_protocol_ref"] == "data/jar_exp_0015_protocol_v03.json"
+    assert active["active_protocol_ref"] == "data/jar_exp_0015_protocol_v04.json"
     assert active["active_protocol_git_blob_sha"] == _git_blob_sha(PROTOCOL)
     assert active["network_calls_authorized"] is False
     assert {x["protocol_ref"] for x in active["superseded"]} == {
         "data/jar_exp_0015_protocol_v01.json",
         "data/jar_exp_0015_protocol_v02.json",
+        "data/jar_exp_0015_protocol_v03.json",
     }
 
 
@@ -40,11 +41,11 @@ def test_active_dataset_and_manifest_hashes_match_registry():
     assert hashlib.sha256(MANIFEST.read_bytes()).hexdigest() == active["active_split_manifest_sha256"]
 
 
-def test_protocol_v03_corrects_coverage_integer_rounding():
+def test_protocol_v04_preserves_v03_feasibility_with_v03_activation():
     p = _load(PROTOCOL)
     f = p["sample_size_feasibility"]
-    assert p["schema_version"] == "jar-exp-0015.protocol/0.3"
-    assert p["amendments"] == ["001", "002"]
+    assert p["schema_version"] == "jar-exp-0015.protocol/0.4"
+    assert p["amendments"] == ["001", "002", "003"]
     assert f["v01_calibration_n"] == 24
     assert f["v01_holdout_n"] == 16
     assert f["v01_feasible"] is False
@@ -73,7 +74,7 @@ def test_protocol_v03_dataset_math_is_exact():
     assert len(d["decision_types"]) == 8
 
 
-def test_v03_preserves_zero_network_authority():
+def test_v04_preserves_zero_network_authority():
     p = _load(PROTOCOL)
     active = _load(ACTIVE)
     assert p["network_calls_authorized"] is False
