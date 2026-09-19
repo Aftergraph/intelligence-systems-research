@@ -26,6 +26,7 @@ CALIBRATION_INTEGRITY_PATHS = (
     "schemas/system-one-calibration-approval-receipt.v0.1.json",
     "schemas/system-one-calibration-receipt.v0.1.json",
     "schemas/system-one-pricing-spec.v0.1.json",
+    "schemas/system-one-semantic-review-receipt.v0.1.json",
 )
 
 
