@@ -91,6 +91,8 @@ JAR15_CALIBRATION_INTEGRITY_PATHS = (
     "experiments/system_one_acceleration/jar15_cost_guard.py",
     "experiments/system_one_acceleration/jar15_dataset_v03.py",
     "experiments/system_one_acceleration/jar15_preflight.py",
+    "experiments/system_one_acceleration/jar15_live.py",
+    "experiments/system_one_acceleration/jar15_durable_calibration.py",
     "experiments/system_one_acceleration/state_projection.py",
     "experiments/system_one_acceleration/calibration.py",
     "experiments/system_one_acceleration/cost_guard.py",
@@ -103,6 +105,7 @@ JAR15_CALIBRATION_INTEGRITY_PATHS = (
     "scripts/verify_jar_exp_0015_analysis.py",
     "scripts/verify_jar_exp_0015_cost_gate.py",
     "scripts/verify_jar_exp_0015_semantic_review.py",
+    "scripts/run_jar_exp_0015_abc_calibration.py",
 )
 
 
