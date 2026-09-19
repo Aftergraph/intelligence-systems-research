@@ -60,6 +60,17 @@ def _random_genome(rng: random.Random) -> PolicyGenome:
     )
 
 
+def _conservative_genome() -> PolicyGenome:
+    return PolicyGenome(
+        routing_policy=("discover", "execute", "verify"),
+        parallelism=2,
+        retry_ceiling=3,
+        confidence_threshold=0.95,
+        verification_depth=4,
+        operator_weights=(("numeric", 0.25), ("rule", 0.25), ("crossover", 0.25), ("differential", 0.25)),
+    )
+
+
 def _evaluate(genome: PolicyGenome, cases: tuple[dict, ...], seed: int) -> Candidate:
     outcome = evaluate_policy(genome, cases, seed)
     return Candidate(genome, outcome, _quality(outcome))
