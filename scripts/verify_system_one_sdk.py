@@ -2,14 +2,16 @@
 
 from pathlib import Path
 import importlib.metadata
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from experiments.system_one_acceleration.client import (
     build_sdk_questions,
     load_frozen_contracts,
 )
-
-
-ROOT = Path(__file__).resolve().parents[1]
 
 
 def main() -> int:
