@@ -12,7 +12,7 @@ Per TRAIN niche and seed:
 1. generate/evaluate 144 candidate genomes nominally;
 2. keep nominally feasible candidates;
 3. rank by nominal utility;
-4. promote top 16 unique genomes;
+4. promote top 16 nominally feasible candidate evaluations;
 5. evaluate the remaining 7 points of the frozen 8-point training halo;
 6. robust-feasible requires feasibility on all 8 points;
 7. source elite ranks by worst halo utility, then mean halo utility.
@@ -57,3 +57,10 @@ Fail-closed target selection remains data with utility -10000.
 ## Claim boundary
 
 Maximum claim is internal deterministic synthetic evidence on the frozen JAR-EXP-0019 problem class.
+
+
+## Pre-development implementation clarification
+
+Promotion operates on candidate evaluations rather than deduplicated genome identities.
+
+Repeated genomes remain legitimate evaluated candidates and consume robustness budget if they rank in the top 16. This rule is frozen before the first DEVELOPMENT run and avoids introducing an unregistered resampling procedure when nominal search converges to the same genotype.
