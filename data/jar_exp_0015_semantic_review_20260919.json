@@ -5,10 +5,10 @@
   "independent": true,
   "reviewer": "Aftergraph deterministic JAR-EXP-0015 semantic verifier on isolated GitHub Actions runner",
   "reviewer_kind": "independent_verifier",
-  "reviewed_at": "2026-09-19T12:42:59Z",
-  "calibration_manifest_sha256": "47fc0bab04459fcb2d1040dccf00b5e74894d06abfa02412ccb9b4db0c4328a7",
-  "falsification_attempts_considered": 24,
-  "evidence_ref": "github-actions:Aftergraph/intelligence-systems-research:run/35443643545:job/105898740568",
+  "reviewed_at": "2026-09-19T12:50:37Z",
+  "calibration_manifest_sha256": "5a0fb1db3afa780137110f07a21345fadc6ed9854b45c81a2faadd7105d98f23",
+  "falsification_attempts_considered": 25,
+  "evidence_ref": "github-actions:Aftergraph/intelligence-systems-research:run/35443982910:job/105899647100",
   "findings": [
     {
       "severity": "Medium",
