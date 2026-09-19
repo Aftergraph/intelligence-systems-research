@@ -72,13 +72,20 @@ def test_cost_guard_reserves_with_stage_budget(tmp_path):
 
 
 def test_calibration_preflight_is_fail_closed_on_protected_gates():
+    gate = json.loads(
+        (ROOT / "data" / "jar_exp_0015_calibration_gate_v01.json").read_text(
+            encoding="utf-8"
+        )
+    )
     result = evaluate_jar15_stage_preflight(ROOT, stage="calibration")
     assert result.decision == "NO_GO"
-    assert set(result.blockers) == {
-        "calibration_semantic_review_not_recorded",
+    expected = {
         "calibration_owner_approval_not_recorded",
         "calibration_network_calls_not_authorized",
     }
+    if gate.get("semantic_review_ref") is None:
+        expected.add("calibration_semantic_review_not_recorded")
+    assert set(result.blockers) == expected
     assert result.requested_model == "jev-1.13.0"
     assert result.maximum_calls == 1952
     assert result.maximum_cost_usd == 5.38
