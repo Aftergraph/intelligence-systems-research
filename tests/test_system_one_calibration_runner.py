@@ -31,7 +31,11 @@ class FakeClient:
         model = self.models[self.calls]
         self.calls += 1
         key = next(iter(kwargs["questions"]))
-        return SimpleNamespace(model=model, answers={key: answer})
+        return SimpleNamespace(
+            model=model,
+            answers={key: answer},
+            usage=SimpleNamespace(input_tokens=10, output_tokens=2),
+        )
 
 
 CONTRACTS = {
@@ -78,6 +82,8 @@ def test_runner_normalizes_scores_labels_and_selects_threshold():
     )
     assert result.provider_calls == 120
     assert result.returned_model == "jev-test-pin"
+    assert result.input_tokens == 1200
+    assert result.output_tokens == 240
     assert all(row.correct for row in result.observations)
     assert result.threshold.feasible is True
 
@@ -123,4 +129,24 @@ def test_runner_rejects_ambiguous_score_argmax():
             client=FakeClient([answer]), sdk=FakeSDK,
             requested_model="jev-latest", contracts=CONTRACTS,
             cases=[case], maximum_calls=1,
+        )
+
+
+def test_runner_rejects_missing_usage_evidence():
+    class NoUsageClient:
+        def system_one(self, **kwargs):
+            key = next(iter(kwargs["questions"]))
+            return SimpleNamespace(
+                model="jev-test-pin",
+                answers={key: SimpleNamespace(type="noul", noul=0.99)},
+            )
+
+    with pytest.raises(CalibrationRunError, match="missing token usage"):
+        run_calibration(
+            client=NoUsageClient(),
+            sdk=FakeSDK,
+            requested_model="jev-latest",
+            contracts=CONTRACTS,
+            cases=[CalibrationCase("a", "continue_loop", {}, True, False)],
+            maximum_calls=1,
         )
