@@ -55,6 +55,9 @@ class FakeCostGuard:
             contract=dict(contract),
         )
 
+    def begin_transport(self, reservation):
+        self.reserved.append("transport:" + reservation.request_id)
+
     def complete_request(self, reservation, *, actual_input_tokens):
         self.completed.append((reservation.request_id, actual_input_tokens))
 
