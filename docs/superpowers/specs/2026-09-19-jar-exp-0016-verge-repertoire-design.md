@@ -122,3 +122,13 @@ Otherwise H1-R is unsupported or refuted.
 ## Evidence boundary
 
 This document creates no positive result. JAR-EXP-0016 starts with zero empirical evidence.
+
+
+## Prior-art anchors
+
+- Liang et al., **Evolutionary constrained multi-objective optimization: a review** (2024), DOI 10.1007/s44336-024-00006-5 — dynamic objectives/constraints and constraint-handling are distinct CMOEA problem classes.
+- Qin et al., **A survey on Quality-Diversity optimization: Approaches, applications, and challenges** (2026), DOI 10.1016/j.swevo.2025.102240 — QD targets collections of diverse, high-performing solutions rather than a single optimum.
+- Nordmoen et al., **MAP-Elites Enables Powerful Stepping Stones and Diversity for Modular Robotics** (2021) — empirical evidence that MAP-Elites can regain performance after transfer to changed environments.
+- Yang et al., **DpEA: A dual-population evolutionary algorithm for dynamic constrained multiobjective optimization** (2024/2025 publication cycle), DOI 10.1016/j.eswa.2024.124441 — dynamic constrained multiobjective optimization explicitly treats changing objectives/constraints as a harder search regime.
+
+These works motivate a context-shift/repertoire hypothesis. None validates VERGE Repertoire or its application to agent execution.
