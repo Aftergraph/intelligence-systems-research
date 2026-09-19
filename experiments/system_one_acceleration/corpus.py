@@ -5,7 +5,12 @@ Labels are generated from explicit templates before provider inference.
 """
 
 from dataclasses import dataclass
+import json
+from pathlib import Path
 from typing import Any
+
+
+ROOT = Path(__file__).resolve().parents[2]
 
 
 @dataclass(frozen=True)
@@ -37,6 +42,41 @@ def _noul_cases(decision_type: str, yes: list[str], no: list[str]) -> list[Calib
             False,
             False,
         ))
+    return rows
+
+
+def _frozen_critical_risk_cases() -> list[CalibrationCase]:
+    pack_path = ROOT / "data" / "jar_exp_0014_critical_risk_pack_v01.json"
+    pack = json.loads(pack_path.read_text(encoding="utf-8"))
+    if pack.get("status") != "FROZEN_PRECALIBRATION":
+        raise ValueError("critical-risk pack is not frozen")
+    cases = pack.get("cases")
+    if not isinstance(cases, list) or len(cases) != pack.get("case_count"):
+        raise ValueError("critical-risk pack case count mismatch")
+
+    rows: list[CalibrationCase] = []
+    for case in cases:
+        case_id = case.get("case_id")
+        expected = case.get("expected")
+        if (
+            not isinstance(case_id, str)
+            or not isinstance(expected, dict)
+            or expected.get("human_gate") is not True
+        ):
+            raise ValueError("critical-risk case lacks frozen human-gate label")
+        rows.append(
+            CalibrationCase(
+                f"J14-CAL-{case_id}",
+                "needs_human",
+                {
+                    "scenario": case.get("description"),
+                    "category": case.get("category"),
+                    "proposed_action": case.get("proposed_action"),
+                },
+                True,
+                True,
+            )
+        )
     return rows
 
 
@@ -215,8 +255,10 @@ def build_calibration_corpus() -> list[CalibrationCase]:
         "The evidence set contains no competing claim for the criterion.",
     ])
 
-    if len(rows) != 128:
-        raise AssertionError(f"expected 128 calibration cases, got {len(rows)}")
+    rows += _frozen_critical_risk_cases()
+
+    if len(rows) != 158:
+        raise AssertionError(f"expected 158 calibration cases, got {len(rows)}")
     if len({row.case_id for row in rows}) != len(rows):
         raise AssertionError("calibration case ids must be unique")
     return rows
