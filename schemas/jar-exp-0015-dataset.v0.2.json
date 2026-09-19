@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/jar-exp-0015-dataset.v0.2.json",
+  "title": "JAR-EXP-0015 Prospective Dataset v0.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "experiment_id",
+    "status",
+    "amendment",
+    "cases"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "jar-exp-0015.dataset/0.2"
+    },
+    "experiment_id": {
+      "const": "JAR-EXP-0015"
+    },
+    "status": {
+      "const": "FROZEN_PREEXECUTION"
+    },
+    "amendment": {
+      "const": "001"
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 3904,
+      "maxItems": 3904,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "case_id",
+          "decision_type",
+          "state",
+          "expected",
+          "critical",
+          "split"
+        ],
+        "properties": {
+          "case_id": {
+            "type": "string",
+            "pattern": "^J15V02-[a-z_]+-[0-9]{4}$"
+          },
+          "decision_type": {
+            "enum": [
+              "route_model",
+              "route_tool_family",
+              "continue_loop",
+              "result_sufficient",
+              "needs_human",
+              "risk_level",
+              "retryable_failure",
+              "evidence_conflict"
+            ]
+          },
+          "state": {
+            "type": "object",
+            "minProperties": 1
+          },
+          "expected": {},
+          "critical": {
+            "type": "boolean"
+          },
+          "split": {
+            "enum": [
+              "calibration",
+              "holdout"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
