@@ -33,7 +33,7 @@ def evaluate_jar15_stage_preflight(root: Path, *, stage: str) -> JAR15StagePrefl
     blockers: list[str] = []
 
     active_path = root / "data" / "jar_exp_0015_active_protocol.json"
-    protocol_path = root / "data" / "jar_exp_0015_protocol_v04.json"
+    protocol_path = root / "data" / "jar_exp_0015_protocol_v05.json"
     dataset_path = root / "data" / "jar_exp_0015_dataset_v03.json"
     pricing_path = root / "data" / "jar_exp_0015_typesafe_pricing_v01.json"
     gate_path = root / "data" / (
@@ -52,9 +52,9 @@ def evaluate_jar15_stage_preflight(root: Path, *, stage: str) -> JAR15StagePrefl
             "NO_GO", ("stage_inputs_unavailable_or_invalid",), None, None, None
         )
 
-    if active.get("active_protocol_ref") != "data/jar_exp_0015_protocol_v04.json":
+    if active.get("active_protocol_ref") != "data/jar_exp_0015_protocol_v05.json":
         blockers.append("active_protocol_mismatch")
-    if protocol.get("schema_version") != "jar-exp-0015.protocol/0.4":
+    if protocol.get("schema_version") != "jar-exp-0015.protocol/0.5":
         blockers.append("protocol_version_mismatch")
     if protocol.get("network_calls_authorized") is not False:
         blockers.append("protocol_must_remain_non_authorizing")
@@ -65,7 +65,7 @@ def evaluate_jar15_stage_preflight(root: Path, *, stage: str) -> JAR15StagePrefl
     if dataset_sha != gate.get("dataset_sha256"):
         blockers.append("dataset_gate_hash_mismatch")
 
-    if gate.get("active_protocol_ref") != "data/jar_exp_0015_protocol_v04.json":
+    if gate.get("active_protocol_ref") != "data/jar_exp_0015_protocol_v05.json":
         blockers.append("gate_protocol_mismatch")
     if gate.get("requested_model") != spec.model_id:
         blockers.append("gate_model_mismatch")
