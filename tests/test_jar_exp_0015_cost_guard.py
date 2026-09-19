@@ -1,5 +1,8 @@
 from pathlib import Path
+import json
+import pytest
 
+from experiments.system_one_acceleration.cost_guard import CostGuardError
 from experiments.system_one_acceleration.jar15_cost_guard import (
     build_jar15_cost_guard,
     jar15_budget_ledger_path,
@@ -10,6 +13,17 @@ from experiments.system_one_acceleration.jar15_preflight import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
+DATASET = json.loads(
+    (ROOT / "data" / "jar_exp_0015_dataset_v03.json").read_text(encoding="utf-8")
+)
+
+
+def case_for(split: str, decision_type: str = "continue_loop"):
+    return next(
+        row
+        for row in DATASET["cases"]
+        if row["split"] == split and row["decision_type"] == decision_type
+    )
 
 
 def pricing_fixture() -> str:
@@ -45,10 +59,11 @@ def test_cost_guard_reserves_with_stage_budget(tmp_path):
         ledger_path=tmp_path / "cal.sqlite",
         pricing_fetcher=lambda _url: pricing_fixture(),
     )
+    row = case_for("calibration")
     reservation = guard.reserve_request(
-        request_id="J15-test-reservation",
-        decision_type="continue_loop",
-        state={"scenario": "Two acceptance criteria remain unverified."},
+        request_id=row["case_id"],
+        decision_type=row["decision_type"],
+        state=row["state"],
         contract={"type": "noul", "instructions": "Should work continue?"},
         requested_model="jev-1.13.0",
     )
@@ -82,3 +97,41 @@ def test_holdout_preflight_is_independently_fail_closed():
     assert result.requested_model == "jev-1.13.0"
     assert result.maximum_calls == 1952
     assert result.maximum_cost_usd == 5.38
+
+
+def test_stage_guard_binds_exactly_1952_case_ids(tmp_path):
+    calibration = build_jar15_cost_guard(
+        root=ROOT,
+        stage="calibration",
+        ledger_path=tmp_path / "cal.sqlite",
+        pricing_fetcher=lambda _url: pricing_fixture(),
+    )
+    holdout = build_jar15_cost_guard(
+        root=ROOT,
+        stage="holdout",
+        ledger_path=tmp_path / "hold.sqlite",
+        pricing_fetcher=lambda _url: pricing_fixture(),
+    )
+    assert len(calibration.allowed_case_ids) == 1952
+    assert len(holdout.allowed_case_ids) == 1952
+    assert calibration.allowed_case_ids.isdisjoint(holdout.allowed_case_ids)
+
+
+def test_calibration_guard_rejects_holdout_case_before_network(tmp_path):
+    guard = build_jar15_cost_guard(
+        root=ROOT,
+        stage="calibration",
+        ledger_path=tmp_path / "cal.sqlite",
+        pricing_fetcher=lambda _url: (_ for _ in ()).throw(
+            AssertionError("pricing fetch should not occur for wrong-split id")
+        ),
+    )
+    row = case_for("holdout")
+    with pytest.raises(CostGuardError, match="outside the frozen stage split"):
+        guard.reserve_request(
+            request_id=row["case_id"],
+            decision_type=row["decision_type"],
+            state=row["state"],
+            contract={"type": "noul", "instructions": "Should work continue?"},
+            requested_model="jev-1.13.0",
+        )
