@@ -1,7 +1,7 @@
 """Crash-safe pre-request cost guard for JAR-EXP-0014."""
 
 from dataclasses import dataclass
-from decimal import Decimal, InvalidOperation, ROUND_CEILING
+from decimal import Decimal, InvalidOperation, ROUND_CEILING, ROUND_FLOOR
 from hashlib import sha256
 from html.parser import HTMLParser
 import json
@@ -378,6 +378,17 @@ class PreRequestCostGuard:
         )
 
 
+def calibration_budget_ledger_path() -> Path:
+    """Canonical durable ledger path shared across checkouts for this user."""
+    return (
+        Path.home()
+        / ".aftergraph"
+        / "research"
+        / "jar-exp-0014"
+        / "calibration-budget-v01.sqlite"
+    )
+
+
 def build_calibration_cost_guard(
     *,
     root: Path,
@@ -389,7 +400,9 @@ def build_calibration_cost_guard(
         Path(root) / "data" / "jar_exp_0014_typesafe_pricing_v01.json"
     )
     approved_microusd = int(
-        (Decimal(str(approved_budget_usd)) * Decimal(1_000_000)).to_integral_value()
+        (
+            Decimal(str(approved_budget_usd)) * Decimal(1_000_000)
+        ).to_integral_value(rounding=ROUND_FLOOR)
     )
     ledger = BudgetLedger(
         ledger_path,
