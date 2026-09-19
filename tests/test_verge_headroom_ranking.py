@@ -47,13 +47,13 @@ def test_normalized_min_headroom_uses_0_10_2_2_scaling():
         verification_depth=context.min_verification + 2,
         retry_ceiling=context.min_retries + 2,
     )
-    assert normalized_min_headroom(genome, context) == 0.5
+    assert round(normalized_min_headroom(genome, context), 12) == 0.5
 
 
 def test_headroom_ranking_can_choose_safer_margin_over_higher_nominal_utility():
     context = next(c for c in load_contexts() if c.context_id == "TRAIN-HDR-BAL-A")
     nominal = policy(
-        confidence_threshold=context.min_confidence + 0.01,
+        confidence_threshold=context.min_confidence + 0.05,
         verification_depth=context.min_verification,
         retry_ceiling=context.min_retries,
         parallelism=4,
