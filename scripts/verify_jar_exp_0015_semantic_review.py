@@ -39,7 +39,7 @@ ACTIVE = json.loads(
     (ROOT / "data" / "jar_exp_0015_active_protocol.json").read_text(encoding="utf-8")
 )
 PROTOCOL = json.loads(
-    (ROOT / "data" / "jar_exp_0015_protocol_v04.json").read_text(encoding="utf-8")
+    (ROOT / "data" / "jar_exp_0015_protocol_v05.json").read_text(encoding="utf-8")
 )
 DATASET = json.loads(
     (ROOT / "data" / "jar_exp_0015_dataset_v03.json").read_text(encoding="utf-8")
@@ -49,6 +49,9 @@ CAL_GATE = json.loads(
 )
 HOLD_GATE = json.loads(
     (ROOT / "data" / "jar_exp_0015_holdout_gate_v01.json").read_text(encoding="utf-8")
+)
+ARM_D_GATE = json.loads(
+    (ROOT / "data" / "jar_exp_0015_arm_d_gate_v01.json").read_text(encoding="utf-8")
 )
 
 
@@ -78,9 +81,9 @@ def main() -> int:
 
     require("01_manifest_computable", len(manifest) == 64)
     require(
-        "02_active_protocol_v04",
-        ACTIVE["active_protocol_ref"] == "data/jar_exp_0015_protocol_v04.json"
-        and PROTOCOL["schema_version"] == "jar-exp-0015.protocol/0.4",
+        "02_active_protocol_v05",
+        ACTIVE["active_protocol_ref"] == "data/jar_exp_0015_protocol_v05.json"
+        and PROTOCOL["schema_version"] == "jar-exp-0015.protocol/0.5",
     )
     require(
         "03_dataset_v03_bound",
@@ -108,7 +111,7 @@ def main() -> int:
         wilson_upper(0, 24) > 0.05 and wilson_upper(0, 16) > 0.05,
     )
     require(
-        "08_sample_size_v04_feasible_at_floor",
+        "08_sample_size_v05_feasible_at_floor",
         math.ceil(244 * 0.30) == 74
         and wilson_upper(0, 74) <= 0.05
         and PROTOCOL["sample_size_feasibility"]["floor_accepted_n_at_30_percent"] == 74,
@@ -269,7 +272,14 @@ def main() -> int:
         },
     )
     require(
-        "24_mutable_gates_not_in_manifest",
+        "24_arm_d_separately_protected",
+        ARM_D_GATE["status"] == "NOT_AUTHORIZED"
+        and ARM_D_GATE["network_calls_authorized"] is False
+        and ARM_D_GATE["max_provider_calls"] == 732
+        and ARM_D_GATE["max_cost_usd"] == 2.02,
+    )
+    require(
+        "25_mutable_gates_not_in_manifest",
         all(
             item not in inspect.getsource(sys.modules[
                 "experiments.system_one_acceleration.integrity"
@@ -283,7 +293,7 @@ def main() -> int:
     )
 
     print("verdict=PASS_WITH_FINDINGS")
-    print("falsification_attempts=24")
+    print("falsification_attempts=25")
     print(f"calibration_manifest_sha256={manifest}")
     print(
         "finding=Provider-side pricing/billing semantics may still drift after "
