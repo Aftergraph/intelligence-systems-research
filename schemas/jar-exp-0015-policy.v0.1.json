@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/jar-exp-0015-policy.v0.1.json",
+  "title": "JAR-EXP-0015 Frozen Pre-Holdout Policy v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "experiment_id",
+    "status",
+    "protocol_version",
+    "dataset_sha256",
+    "split_manifest_sha256",
+    "calibration_observations_sha256",
+    "calibration_observation_count",
+    "global_threshold",
+    "per_decision_type",
+    "selective_cascade",
+    "holdout_consumed",
+    "policy_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "jar-exp-0015.policy/0.1"
+    },
+    "experiment_id": {
+      "const": "JAR-EXP-0015"
+    },
+    "status": {
+      "const": "FROZEN_PREHOLDOUT"
+    },
+    "protocol_version": {
+      "const": "jar-exp-0015.protocol/0.5"
+    },
+    "dataset_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "split_manifest_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "calibration_observations_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "calibration_observation_count": {
+      "const": 1952
+    },
+    "global_threshold": {
+      "type": "object"
+    },
+    "per_decision_type": {
+      "type": "object",
+      "minProperties": 8,
+      "maxProperties": 8
+    },
+    "selective_cascade": {
+      "type": "object"
+    },
+    "holdout_consumed": {
+      "const": false
+    },
+    "policy_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

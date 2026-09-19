@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/jar-exp-0015-split-manifest.v0.1.json",
+  "title": "JAR-EXP-0015 Split Manifest v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "experiment_id",
+    "status",
+    "split_seed",
+    "parent_experiment_id",
+    "parent_case_count_checked",
+    "exact_parent_duplicates",
+    "case_count",
+    "cases"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "jar-exp-0015.split-manifest/0.1"
+    },
+    "experiment_id": {
+      "const": "JAR-EXP-0015"
+    },
+    "status": {
+      "const": "FROZEN_PREEXECUTION"
+    },
+    "split_seed": {
+      "type": "integer"
+    },
+    "parent_experiment_id": {
+      "const": "JAR-EXP-0014"
+    },
+    "parent_case_count_checked": {
+      "const": 158
+    },
+    "exact_parent_duplicates": {
+      "const": 0
+    },
+    "case_count": {
+      "const": 320
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 320,
+      "maxItems": 320,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "case_id",
+          "decision_type",
+          "split",
+          "critical",
+          "semantic_sha256"
+        ],
+        "properties": {
+          "case_id": {
+            "type": "string",
+            "pattern": "^J15-[a-z_]+-[0-9]{3}$"
+          },
+          "decision_type": {
+            "enum": [
+              "route_model",
+              "route_tool_family",
+              "continue_loop",
+              "result_sufficient",
+              "needs_human",
+              "risk_level",
+              "retryable_failure",
+              "evidence_conflict"
+            ]
+          },
+          "split": {
+            "enum": [
+              "calibration",
+              "holdout"
+            ]
+          },
+          "critical": {
+            "type": "boolean"
+          },
+          "semantic_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      }
+    }
+  }
+}

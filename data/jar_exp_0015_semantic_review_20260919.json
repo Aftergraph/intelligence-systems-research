@@ -1,0 +1,19 @@
+{
+  "schema_version": "jar-exp-0015.semantic-review/0.1",
+  "experiment_id": "JAR-EXP-0015",
+  "verdict": "PASS_WITH_FINDINGS",
+  "independent": true,
+  "reviewer": "Aftergraph deterministic JAR-EXP-0015 semantic verifier on isolated GitHub Actions runner",
+  "reviewer_kind": "independent_verifier",
+  "reviewed_at": "2026-09-19T12:55:00Z",
+  "calibration_manifest_sha256": "8c95ad4e0021d3647198e6ed979708f667514c410cb75d41c4f02b65fb274f39",
+  "falsification_attempts_considered": 25,
+  "evidence_ref": "github-actions:Aftergraph/intelligence-systems-research:run/35444228524:job/105900286695",
+  "findings": [
+    {
+      "severity": "Medium",
+      "summary": "A client-side guard cannot eliminate provider-side pricing or billing-semantic drift occurring after final client validation and before provider billing.",
+      "disposition": "Accepted external-provider limitation. Double pricing validation, exact frozen stage IDs, separate $5.38 stage caps, zero SDK retries, durable ledgers, and no automatic replay remain mandatory."
+    }
+  ]
+}

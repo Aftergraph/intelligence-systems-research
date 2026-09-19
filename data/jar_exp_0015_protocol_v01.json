@@ -1,0 +1,65 @@
+{
+  "schema_version": "jar-exp-0015.protocol/0.1",
+  "experiment_id": "JAR-EXP-0015",
+  "parent_experiment_id": "JAR-EXP-0014",
+  "status": "FROZEN_PREEXECUTION",
+  "network_calls_authorized": false,
+  "parent_data_role": "DIAGNOSTIC_DESIGN_ONLY_NOT_ADMISSIBLE_AS_0015_OBSERVATIONS",
+  "dataset": {
+    "total_cases": 320,
+    "decision_types": [
+      "route_model",
+      "route_tool_family",
+      "continue_loop",
+      "result_sufficient",
+      "needs_human",
+      "risk_level",
+      "retryable_failure",
+      "evidence_conflict"
+    ],
+    "cases_per_decision_type": 40,
+    "calibration_per_decision_type": 24,
+    "holdout_per_decision_type": 16,
+    "split_frozen_before_inference": true,
+    "exact_parent_case_duplicates_forbidden": true,
+    "dataset_ref": "data/jar_exp_0015_dataset_v01.json",
+    "dataset_sha256": "de90286586397af21a568a91c4cd4ec4d56ccfd8a7db09fbd2d7167f6541fac9",
+    "split_manifest_ref": "data/jar_exp_0015_split_manifest_v01.json",
+    "split_manifest_sha256": "185f5ca9ed25286fb3c60092f83357e0493038338b08bbdd9b4251c9f01707d1",
+    "parent_terminal_head": "204aaf78e05250add39a6e91f9c23dd545109a1a",
+    "parent_observations_sha256": "4e97753205e2c5bfd731ab65773cddf8d40af2604656e9a3fa163a82d3f18955"
+  },
+  "initially_revision_eligible": [
+    "risk_level",
+    "route_model",
+    "result_sufficient"
+  ],
+  "arms": {
+    "A": "global_threshold_original_contracts",
+    "B": "decision_specific_thresholds_original_contracts",
+    "C": "selective_cascade_feasible_classes_only",
+    "D": "revised_contracts_eligible_classes_only"
+  },
+  "threshold_rule": {
+    "minimum_accepted_coverage": 0.3,
+    "maximum_wilson_upper_error": 0.05,
+    "confidence_level": 0.95,
+    "maximum_critical_accepted_errors": 0,
+    "selector": "lowest_feasible_threshold",
+    "no_feasible_threshold": "NO_THRESHOLD"
+  },
+  "promotion": {
+    "requires_frozen_policy_before_holdout": true,
+    "per_class_holdout_wilson_upper_max": 0.05,
+    "aggregate_holdout_coverage_min": 0.3,
+    "critical_holdout_errors_max": 0,
+    "fallback_required_for_infeasible_classes": true,
+    "failure_outcome": "NO_PROMOTION"
+  },
+  "authority_boundary": {
+    "system_one_role": "ADVISORY_ONLY",
+    "grants_authority": false,
+    "grants_verification": false,
+    "grants_execution_truth": false
+  }
+}

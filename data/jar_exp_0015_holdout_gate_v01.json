@@ -1,0 +1,28 @@
+{
+  "schema_version": "jar-exp-0015.holdout-gate/0.1",
+  "experiment_id": "JAR-EXP-0015",
+  "status": "LOCKED_PENDING_FROZEN_POLICY",
+  "active_protocol_ref": "data/jar_exp_0015_protocol_v05.json",
+  "dataset_ref": "data/jar_exp_0015_dataset_v03.json",
+  "dataset_sha256": "51846d8b4a95540a8e182a823a7256fbdd69d61b3244f89e078db77ad7e0496e",
+  "split": "holdout",
+  "split_case_count": 1952,
+  "requested_model": "jev-1.13.0",
+  "pricing_spec_ref": "data/jar_exp_0015_typesafe_pricing_v01.json",
+  "max_provider_calls": 1952,
+  "max_cost_usd": 5.38,
+  "frozen_policy_ref": null,
+  "frozen_policy_sha256": null,
+  "semantic_review_ref": null,
+  "owner_approval_ref": null,
+  "holdout_evaluation_authorized": false,
+  "network_calls_authorized": false,
+  "sdk_retries_allowed": false,
+  "notes": [
+    "Hold-out execution is a separate protected stage.",
+    "Calibration authorization does not authorize hold-out calls.",
+    "A FROZEN_PREHOLDOUT policy must exist and bind the calibration observations before this gate can advance.",
+    "A new explicit owner/network approval is required for hold-out evaluation."
+  ],
+  "contracts_ref": "data/jar_exp_0015_question_contracts_v01.json"
+}

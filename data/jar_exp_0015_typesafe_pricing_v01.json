@@ -1,0 +1,31 @@
+{
+  "schema_version": "jar-exp-0015.typesafe-pricing/0.1",
+  "experiment_id": "JAR-EXP-0015",
+  "status": "FROZEN_PREEXECUTION",
+  "verified_at": "2026-09-19",
+  "source_url": "https://docs.typesafe.ai/models",
+  "model_id": "jev-1.13.0",
+  "model_name": "Jev 1.13",
+  "input_usd_per_million_tokens": "0.042",
+  "output_usd_per_million_tokens": "0",
+  "conservative_max_input_tokens_per_request": 65536,
+  "max_request_cost_microusd": 2753,
+  "calibration_max_provider_calls": 1952,
+  "calibration_worst_case_microusd": 5373856,
+  "holdout_max_provider_calls": 1952,
+  "holdout_worst_case_microusd": 5373856,
+  "full_two_stage_worst_case_microusd": 10747712,
+  "required_source_markers": [
+    "Jev 1.13",
+    "jev-1.13.0",
+    "$42 / $0.042",
+    "64k tokens per request",
+    "Output tokens are free"
+  ],
+  "sdk_retry_policy": "MUST_DISABLE_DEFAULT_RETRIES",
+  "notes": [
+    "The official model docs state that client SDKs retry with backoff by default.",
+    "JAR-EXP-0015 requires zero hidden SDK retries for both calibration and hold-out stages.",
+    "The versioned model ID is pinned because confidence thresholds are model-version-specific."
+  ]
+}

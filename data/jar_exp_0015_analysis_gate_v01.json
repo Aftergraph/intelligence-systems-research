@@ -1,0 +1,17 @@
+{
+  "schema_version": "jar-exp-0015.analysis-gate/0.1",
+  "experiment_id": "JAR-EXP-0015",
+  "status": "CALIBRATION_NOT_RUN",
+  "active_protocol_ref": "data/jar_exp_0015_protocol_v05.json",
+  "calibration_policy_ref": null,
+  "calibration_policy_sha256": null,
+  "holdout_evaluation_authorized": false,
+  "holdout_consumed": false,
+  "network_calls_authorized": false,
+  "notes": [
+    "Calibration policy must be selected from exactly the 1,952 frozen calibration cases.",
+    "Any holdout case observed during policy selection invalidates the analysis.",
+    "Holdout evaluation remains disabled until a content-addressed FROZEN_PREHOLDOUT policy is persisted.",
+    "This gate authorizes no provider calls."
+  ]
+}
