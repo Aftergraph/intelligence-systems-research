@@ -13,7 +13,7 @@ permissions:
 jobs:
   omniroute-live-proof:
     runs-on: windows-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     env:
       OMNIROUTE_SERVER_HOST: 127.0.0.1
       REQUIRE_API_KEY: "false"
@@ -41,6 +41,11 @@ jobs:
           $adminPassword = "proof-" + [guid]::NewGuid().ToString("N")
           "OMNIROUTE_API_KEY=$endpointKey" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           "OMNIROUTE_ADMIN_PASSWORD=$adminPassword" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          $chromeRegistry = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe"
+          $chromePath = (Get-ItemProperty $chromeRegistry).'(default)'
+          if (-not (Test-Path $chromePath)) { throw "Hosted Windows Chrome executable not found" }
+          "CLOUDFLARE_PLAYGROUND_CHROME_PATH=$chromePath" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          $chromePath | Set-Content -Path (Join-Path $evidence "chrome-path.txt") -Encoding utf8
           node --version | Tee-Object -FilePath (Join-Path $evidence "node-version.txt")
           npm --version | Tee-Object -FilePath (Join-Path $evidence "npm-version.txt")
           npm view omniroute version | Tee-Object -FilePath (Join-Path $evidence "registry-version.txt")
@@ -101,13 +106,13 @@ jobs:
           $modelsRaw | ConvertTo-Json -Depth 8 | Set-Content -Path (Join-Path $env:EVIDENCE_DIR "models.json") -Encoding utf8
 
           $candidates = @(
+            "cloudflare-playground/qwen/qwen2.5-coder-32b-instruct",
+            "cloudflare-playground/ibm-granite/granite-4.0-h-micro",
             "llm7/gpt-4o-mini-2024-07-18",
             "llm7/qwen2.5-coder-32b-instruct",
             "llm7/deepseek-r1-0528",
             "llm7/gemini-3.1-flash-lite",
             "duckduckgo-web/gpt-5.4-mini",
-            "cloudflare-playground/qwen/qwen2.5-coder-32b-instruct",
-            "cloudflare-playground/ibm-granite/granite-4.0-h-micro",
             "opencode/big-pickle",
             "opencode/mimo-v2.5-free",
             "opencode/hy3-free",
