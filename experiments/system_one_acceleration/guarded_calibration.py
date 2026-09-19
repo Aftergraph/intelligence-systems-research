@@ -1,19 +1,15 @@
-"""Guarded calibration entrypoint for JAR-EXP-0014.
-
-This is the only repository-provided composition path from authorization evidence
-to the network-capable calibration runner. The injected client owns transport;
-this wrapper refuses to call it unless calibration preflight is READY.
-"""
+"""Guarded calibration entrypoint for JAR-EXP-0014."""
 
 import json
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
 
 from .calibration_preflight import evaluate_calibration_preflight
 from .calibration_receipt import canonical_sha256
 from .calibration_runner import CalibrationRunResult, run_calibration
 from .client import TypeSafeBoundaryError, load_frozen_contracts
 from .corpus import build_calibration_corpus
+from .cost_guard import build_calibration_cost_guard
 
 
 class CalibrationAuthorizationError(RuntimeError):
@@ -26,6 +22,8 @@ def run_authorized_calibration(
     client: Any,
     sdk: Any,
     contracts: Mapping[str, Mapping[str, Any]],
+    budget_ledger_path: Path,
+    pricing_fetcher: Callable[[str], str] | None = None,
 ) -> CalibrationRunResult:
     preflight = evaluate_calibration_preflight(root)
     if preflight.decision != "READY_TO_CALIBRATE":
@@ -34,6 +32,8 @@ def run_authorized_calibration(
         )
     if preflight.maximum_calls is None:
         raise CalibrationAuthorizationError("calibration provider-call ceiling unavailable")
+    if preflight.maximum_cost_usd is None:
+        raise CalibrationAuthorizationError("calibration cost ceiling unavailable")
     if preflight.requested_model is None:
         raise CalibrationAuthorizationError("calibration requested model unavailable")
 
@@ -52,6 +52,15 @@ def run_authorized_calibration(
             "calibration contracts do not match frozen question contracts"
         )
 
+    cost_guard = build_calibration_cost_guard(
+        root=root,
+        ledger_path=budget_ledger_path,
+        approved_budget_usd=preflight.maximum_cost_usd,
+        pricing_fetcher=pricing_fetcher,
+    )
+    if cost_guard.spec.model_id != preflight.requested_model:
+        raise CalibrationAuthorizationError("pricing model drift after preflight")
+
     return run_calibration(
         client=client,
         sdk=sdk,
@@ -59,4 +68,5 @@ def run_authorized_calibration(
         contracts=contracts,
         cases=build_calibration_corpus(),
         maximum_calls=preflight.maximum_calls,
+        cost_guard=cost_guard,
     )

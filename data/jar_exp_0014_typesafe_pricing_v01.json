@@ -1,0 +1,26 @@
+{
+  "schema_version": "jar-exp-0014.typesafe-pricing/0.1",
+  "experiment_id": "JAR-EXP-0014",
+  "status": "FROZEN_PRECALIBRATION",
+  "provider": "TypeSafe AI",
+  "model_id": "jev-1.13.0",
+  "input_usd_per_million_tokens": "0.042",
+  "output_usd_per_million_tokens": "0",
+  "documented_context_limit": "64k tokens per request",
+  "conservative_max_input_tokens_per_request": 65536,
+  "source_url": "https://docs.typesafe.ai/models",
+  "source_retrieved_on": "2026-09-19",
+  "required_source_markers": [
+    "jev-1.13.0",
+    "$42 / $0.042",
+    "64k tokens per request",
+    "Output tokens are free"
+  ],
+  "reservation_rule": "Reserve the worst-case successful-request input cost before transport; never refund a reservation after transport or crash.",
+  "notes": [
+    "65,536 is used as a conservative binary interpretation of the documented 64k context limit.",
+    "At $0.042 per million input tokens, one reservation is ceil(65536 * 0.042) = 2753 micro-USD.",
+    "Output tokens are documented as free for Jev 1.13.",
+    "The official pricing source is revalidated before every paid provider transport; source drift fails closed."
+  ]
+}

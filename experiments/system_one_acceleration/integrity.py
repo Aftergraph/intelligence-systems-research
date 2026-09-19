@@ -14,15 +14,18 @@ CALIBRATION_INTEGRITY_PATHS = (
     "experiments/system_one_acceleration/calibration_runner.py",
     "experiments/system_one_acceleration/client.py",
     "experiments/system_one_acceleration/corpus.py",
+    "experiments/system_one_acceleration/cost_guard.py",
     "experiments/system_one_acceleration/guarded_calibration.py",
     "experiments/system_one_acceleration/integrity.py",
     "experiments/system_one_acceleration/protocol.py",
     "experiments/system_one_acceleration/state_projection.py",
     "data/jar_exp_0014_calibration_protocol_v01.json",
     "data/jar_exp_0014_question_contracts_v01.json",
+    "data/jar_exp_0014_typesafe_pricing_v01.json",
     "requirements-typesafe.txt",
     "schemas/system-one-calibration-approval-receipt.v0.1.json",
     "schemas/system-one-calibration-receipt.v0.1.json",
+    "schemas/system-one-pricing-spec.v0.1.json",
 )
 
 
@@ -54,10 +57,12 @@ EXECUTION_STATIC_PATHS = (
     "data/jar_exp_0014_critical_risk_pack_v01.json",
     "data/jar_exp_0014_randomization_v01.json",
     "data/jar_exp_0014_calibration_protocol_v01.json",
+    "data/jar_exp_0014_typesafe_pricing_v01.json",
     "requirements-typesafe.txt",
     "schemas/system-one-calibration-receipt.v0.1.json",
     "schemas/system-one-decision-receipt.v0.1.json",
     "schemas/system-one-execution-approval-receipt.v0.1.json",
+    "schemas/system-one-pricing-spec.v0.1.json",
 )
 
 

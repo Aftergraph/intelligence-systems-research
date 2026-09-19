@@ -2,12 +2,14 @@
 
 from dataclasses import dataclass
 from datetime import datetime
+from decimal import Decimal
 import json
 from pathlib import Path
 import re
 from typing import Any, Mapping
 
 from .corpus import build_calibration_corpus
+from .cost_guard import CostGuardError, load_pricing_spec
 from .integrity import calibration_manifest_sha256
 
 
@@ -113,6 +115,25 @@ def evaluate_calibration_preflight(root: Path) -> CalibrationPreflightResult:
     elif not _is_concrete_jev_model(requested_model):
         blockers.append("calibration_requested_model_not_pinned")
 
+    pricing_spec = None
+    pricing_ref = gate.get("pricing_spec_ref")
+    pricing_path = _safe_ref(root, pricing_ref)
+    if pricing_path is None:
+        blockers.append("calibration_pricing_spec_ref_invalid")
+    elif not pricing_path.exists():
+        blockers.append("calibration_pricing_spec_missing")
+    else:
+        try:
+            pricing_spec = load_pricing_spec(pricing_path)
+        except (OSError, json.JSONDecodeError, CostGuardError):
+            blockers.append("calibration_pricing_spec_invalid")
+        else:
+            if pricing_spec.model_id != requested_model:
+                blockers.append("calibration_pricing_model_mismatch")
+
+    if gate.get("cost_guard_mode") != "worst_case_context_write_ahead_v1":
+        blockers.append("calibration_cost_hard_stop_unavailable")
+
     expected_calls = len(build_calibration_corpus())
     max_calls = gate.get("max_provider_calls")
     if not isinstance(max_calls, int) or isinstance(max_calls, bool) or max_calls < expected_calls:
@@ -137,6 +158,15 @@ def evaluate_calibration_preflight(root: Path) -> CalibrationPreflightResult:
         or max_cost <= 0
     ):
         blockers.append("calibration_cost_ceiling_not_frozen")
+    elif pricing_spec is not None:
+        approved_microusd = int(
+            (Decimal(str(max_cost)) * Decimal(1_000_000)).to_integral_value()
+        )
+        required_microusd = (
+            expected_calls * pricing_spec.max_request_cost_microusd
+        )
+        if approved_microusd < required_microusd:
+            blockers.append("calibration_cost_ceiling_insufficient_for_hard_stop")
 
     approval_ref = gate.get("calibration_approval_ref")
     if not approval_ref:
@@ -173,12 +203,6 @@ def evaluate_calibration_preflight(root: Path) -> CalibrationPreflightResult:
 
     if gate.get("network_calls_authorized") is not True:
         blockers.append("calibration_network_calls_not_authorized")
-
-    # TypeSafe currently exposes usage after a request, but no repository-verified
-    # native pre-request spend/token hard cap. A provider-call ceiling is not a
-    # dollar hard stop, so live calibration remains impossible until a technical
-    # cost enforcement mechanism is implemented and independently verified.
-    blockers.append("calibration_cost_hard_stop_unavailable")
 
     return CalibrationPreflightResult(
         "READY_TO_CALIBRATE" if not blockers else "NO_GO",

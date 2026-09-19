@@ -1,4 +1,5 @@
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -26,19 +27,21 @@ def test_current_calibration_preflight_is_fail_closed():
     result = evaluate_calibration_preflight(ROOT)
     assert result.decision == "NO_GO"
     assert {
-        "calibration_provider_call_ceiling_insufficient",
-        "calibration_cost_ceiling_not_frozen",
         "calibration_manifest_not_frozen",
         "calibration_approval_not_recorded",
         "calibration_network_calls_not_authorized",
-        "calibration_cost_hard_stop_unavailable",
     }.issubset(set(result.blockers))
+    assert "calibration_cost_hard_stop_unavailable" not in result.blockers
+    assert "calibration_provider_call_ceiling_insufficient" not in result.blockers
+    assert "calibration_cost_ceiling_not_frozen" not in result.blockers
+    assert result.maximum_calls == 158
+    assert result.maximum_cost_usd == 0.44
 
 
-def test_cost_hard_stop_blocker_is_unconditional():
+def test_cost_hard_stop_is_available_without_authorizing_calibration():
     result = evaluate_calibration_preflight(ROOT)
-    assert "calibration_cost_hard_stop_unavailable" in result.blockers
-    assert result.decision != "READY_TO_CALIBRATE"
+    assert "calibration_cost_hard_stop_unavailable" not in result.blockers
+    assert result.decision == "NO_GO"
 
 
 def test_guarded_calibration_never_reaches_client_while_no_go():
@@ -48,6 +51,7 @@ def test_guarded_calibration_never_reaches_client_while_no_go():
             client=ExplodingClient(),
             sdk=object(),
             contracts={},
+            budget_ledger_path=ROOT / "state" / "should-not-exist.sqlite",
         )
 
 
@@ -85,12 +89,20 @@ def test_guarded_calibration_uses_preflight_model_without_gate_reread(tmp_path, 
         return object()
 
     monkeypatch.setattr(guarded_calibration, "run_calibration", fake_run_calibration)
+    monkeypatch.setattr(
+        guarded_calibration,
+        "build_calibration_cost_guard",
+        lambda **_kwargs: SimpleNamespace(
+            spec=SimpleNamespace(model_id="jev-preflight-pin")
+        ),
+    )
 
     guarded_calibration.run_authorized_calibration(
         root=tmp_path,
         client=object(),
         sdk=object(),
         contracts=contracts,
+        budget_ledger_path=tmp_path / "budget.sqlite",
     )
 
     assert captured["requested_model"] == "jev-preflight-pin"
@@ -118,6 +130,7 @@ def test_guarded_calibration_rejects_contract_substitution_before_client(tmp_pat
             client=ExplodingClient(),
             sdk=object(),
             contracts={"continue_loop": {"type": "noul", "instructions": "Different?"}},
+            budget_ledger_path=tmp_path / "budget.sqlite",
         )
 
 

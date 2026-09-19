@@ -1,8 +1,4 @@
-"""Bounded calibration runner for JAR-EXP-0014.
-
-Network behavior is entirely delegated to the injected client. This runner adds
-no retries, writes no files, and never authorizes consequential actions.
-"""
+"""Bounded calibration runner for JAR-EXP-0014."""
 
 from dataclasses import dataclass
 from typing import Any, Mapping, Sequence
@@ -11,6 +7,7 @@ from .adapter import normalize_typesafe_answer, returned_model
 from .calibration import CalibrationDecision, ThresholdResult, select_threshold
 from .client import build_sdk_questions, invoke_system_one
 from .corpus import CalibrationCase
+from .cost_guard import PreRequestCostGuard
 from .protocol import effective_confidence
 
 
@@ -106,6 +103,7 @@ def run_calibration(
     contracts: Mapping[str, Mapping[str, Any]],
     cases: Sequence[CalibrationCase],
     maximum_calls: int,
+    cost_guard: PreRequestCostGuard,
 ) -> CalibrationRunResult:
     if maximum_calls <= 0:
         raise ValueError("maximum_calls must be positive")
@@ -120,24 +118,36 @@ def run_calibration(
             raise CalibrationRunError(
                 f"{case.case_id}: missing frozen contract {case.decision_type}"
             )
+        reservation = cost_guard.reserve_request(
+            request_id=case.case_id,
+            decision_type=case.decision_type,
+            state=case.state,
+            contract=contracts[case.decision_type],
+            requested_model=requested_model,
+        )
         questions = build_sdk_questions(
-            {case.decision_type: contracts[case.decision_type]},
+            {case.decision_type: reservation.contract},
             sdk=sdk,
         )
         response, latency_ms = invoke_system_one(
             client=client,
-            state=case.state,
+            state=reservation.projected_state,
             questions=questions,
             requested_model=requested_model,
             sdk=sdk,
         )
         model = returned_model(response)
-        returned_models.add(model)
-
         normalized = normalize_typesafe_answer(
             _answer_from_response(response, case.decision_type)
         )
         input_tokens, output_tokens = _usage_from_response(response)
+        cost_guard.complete_request(reservation, actual_input_tokens=input_tokens)
+
+        if model != requested_model:
+            raise CalibrationRunError(
+                f"{case.case_id}: returned model {model!r} != pinned {requested_model!r}"
+            )
+        returned_models.add(model)
         confidence = effective_confidence(
             answer_kind=normalized["kind"],
             answer_value=normalized["value"],
