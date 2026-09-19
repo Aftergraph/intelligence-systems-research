@@ -1,0 +1,20 @@
+[
+  {"context_id":"TRAIN-HDR-RISK-A","split":"TRAIN","risk_class":2,"failure_pressure":0.60,"latency_pressure":0.46,"cost_pressure":0.38,"min_verification":4,"min_confidence":0.89,"min_retries":2,"base_cost":1.50,"base_latency":1.38},
+  {"context_id":"TRAIN-HDR-RISK-B","split":"TRAIN","risk_class":2,"failure_pressure":0.50,"latency_pressure":0.56,"cost_pressure":0.46,"min_verification":4,"min_confidence":0.91,"min_retries":2,"base_cost":1.54,"base_latency":1.42},
+  {"context_id":"TRAIN-HDR-REC-A","split":"TRAIN","risk_class":1,"failure_pressure":0.98,"latency_pressure":0.45,"cost_pressure":0.50,"min_verification":3,"min_confidence":0.83,"min_retries":3,"base_cost":1.44,"base_latency":1.49},
+  {"context_id":"TRAIN-HDR-REC-B","split":"TRAIN","risk_class":1,"failure_pressure":0.88,"latency_pressure":0.55,"cost_pressure":0.56,"min_verification":3,"min_confidence":0.85,"min_retries":3,"base_cost":1.48,"base_latency":1.45},
+  {"context_id":"TRAIN-HDR-LAT-A","split":"TRAIN","risk_class":0,"failure_pressure":0.20,"latency_pressure":0.99,"cost_pressure":0.40,"min_verification":2,"min_confidence":0.75,"min_retries":1,"base_cost":1.04,"base_latency":1.84},
+  {"context_id":"TRAIN-HDR-LAT-B","split":"TRAIN","risk_class":0,"failure_pressure":0.26,"latency_pressure":0.91,"cost_pressure":0.50,"min_verification":2,"min_confidence":0.78,"min_retries":1,"base_cost":1.10,"base_latency":1.74},
+  {"context_id":"TRAIN-HDR-COST-A","split":"TRAIN","risk_class":0,"failure_pressure":0.17,"latency_pressure":0.40,"cost_pressure":0.99,"min_verification":2,"min_confidence":0.76,"min_retries":0,"base_cost":1.80,"base_latency":1.06},
+  {"context_id":"TRAIN-HDR-BAL-A","split":"TRAIN","risk_class":1,"failure_pressure":0.59,"latency_pressure":0.62,"cost_pressure":0.62,"min_verification":3,"min_confidence":0.83,"min_retries":2,"base_cost":1.40,"base_latency":1.38},
+
+  {"context_id":"DEV-HDR-RISK","split":"DEVELOPMENT","risk_class":2,"failure_pressure":0.64,"latency_pressure":0.66,"cost_pressure":0.44,"min_verification":4,"min_confidence":0.92,"min_retries":2,"base_cost":1.60,"base_latency":1.52},
+  {"context_id":"DEV-HDR-REC","split":"DEVELOPMENT","risk_class":1,"failure_pressure":0.99,"latency_pressure":0.52,"cost_pressure":0.66,"min_verification":3,"min_confidence":0.87,"min_retries":3,"base_cost":1.62,"base_latency":1.48},
+  {"context_id":"DEV-HDR-LAT","split":"DEVELOPMENT","risk_class":0,"failure_pressure":0.28,"latency_pressure":1.00,"cost_pressure":0.58,"min_verification":2,"min_confidence":0.80,"min_retries":1,"base_cost":1.16,"base_latency":1.86},
+  {"context_id":"DEV-HDR-BAL","split":"DEVELOPMENT","risk_class":1,"failure_pressure":0.66,"latency_pressure":0.70,"cost_pressure":0.70,"min_verification":3,"min_confidence":0.86,"min_retries":2,"base_cost":1.48,"base_latency":1.46},
+
+  {"context_id":"HELD-HDR-RISK","split":"HELD_OUT","risk_class":2,"failure_pressure":0.69,"latency_pressure":0.78,"cost_pressure":0.48,"min_verification":4,"min_confidence":0.94,"min_retries":2,"base_cost":1.66,"base_latency":1.60},
+  {"context_id":"HELD-HDR-REC","split":"HELD_OUT","risk_class":1,"failure_pressure":1.00,"latency_pressure":0.50,"cost_pressure":0.90,"min_verification":3,"min_confidence":0.89,"min_retries":3,"base_cost":1.74,"base_latency":1.44},
+  {"context_id":"HELD-HDR-LAT","split":"HELD_OUT","risk_class":0,"failure_pressure":0.31,"latency_pressure":1.00,"cost_pressure":0.66,"min_verification":2,"min_confidence":0.82,"min_retries":1,"base_cost":1.20,"base_latency":1.94},
+  {"context_id":"HELD-HDR-BAL","split":"HELD_OUT","risk_class":1,"failure_pressure":0.72,"latency_pressure":0.80,"cost_pressure":0.74,"min_verification":3,"min_confidence":0.88,"min_retries":2,"base_cost":1.56,"base_latency":1.54}
+]
