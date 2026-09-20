@@ -1,0 +1,102 @@
+name: ZCode app-server contract probe
+
+on:
+  push:
+    branches:
+      - ops/migration-readonly-probe-20260920
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    timeout-minutes: 10
+    steps:
+      - name: Verify exact controlled host
+        shell: pwsh
+        run: |
+          if ($env:COMPUTERNAME -ne 'JONAS-LENOVO') { throw "unexpected host" }
+          if ($env:RUNNER_NAME -ne 'JONAS-LENOVO-jar-exp-0013') { throw "unexpected runner" }
+
+      - name: Derive app-server transport contract without mutation
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $out=Join-Path $env:RUNNER_TEMP 'zcode-app-server-contract.json'
+          $script='C:\Program Files\ZCode\resources\glm\zcode.cjs'
+          if(-not(Test-Path -LiteralPath $script -PathType Leaf)){throw 'zcode_cjs_missing'}
+
+          $text=Get-Content -LiteralPath $script -Raw -ErrorAction Stop
+          $methods=@('session/list','session/read','session/close','session/stop','session/resume','session/send')
+          $present=@{}
+          foreach($m in $methods){$present[$m]=($text.IndexOf($m,[StringComparison]::OrdinalIgnoreCase)-ge 0)}
+
+          $transport=[ordered]@{
+            content_length=($text -match '(?i)Content-Length')
+            newline_json=($text -match '(?i)(readline|split.*\\n|JSON\.parse)')
+            stdin=($text -match '(?i)process\.stdin|stdin')
+            stdout=($text -match '(?i)process\.stdout|stdout')
+            websocket=($text -match '(?i)websocket|WebSocket')
+            socket_option=($text -match '(?i)--socket|socketPath|socket-path')
+            port_option=($text -match '(?i)--port|listenPort|port-number')
+          }
+
+          $options=@()
+          foreach($needle in @('--help','--cwd','--workspace','--session','--socket','--port','--json','--stdio','app-server')){
+            if($text.IndexOf($needle,[StringComparison]::OrdinalIgnoreCase)-ge 0){$options += $needle}
+          }
+
+          $targetPids=@(17992,26752,34156,9152)
+          $procMeta=@()
+          foreach($pidValue in $targetPids){
+            $p=Get-CimInstance Win32_Process -Filter "ProcessId=$pidValue" -ErrorAction SilentlyContinue
+            if(-not $p){$procMeta += [ordered]@{pid=$pidValue;exists=$false};continue}
+            $cmd=[string]$p.CommandLine
+            $safeFlags=@()
+            foreach($flag in @('--app-server','app-server','--cwd','--workspace','--session','--socket','--port','--stdio')){
+              if($cmd.IndexOf($flag,[StringComparison]::OrdinalIgnoreCase)-ge 0){$safeFlags += $flag}
+            }
+            $procMeta += [ordered]@{
+              pid=$pidValue
+              exists=$true
+              safe_flags=@($safeFlags|Sort-Object -Unique)
+              token_count=([regex]::Matches($cmd,'(?:"[^"]*"|\S+)')).Count
+            }
+          }
+
+          $node=$null
+          foreach($candidate in @(
+            'C:\Program Files\ZCode\resources\glm\node.exe',
+            'C:\Program Files\ZCode\resources\node.exe'
+          )){
+            if(Test-Path -LiteralPath $candidate -PathType Leaf){$node=$candidate;break}
+          }
+          if(-not $node){
+            try{$node=(Get-Command node.exe -ErrorAction Stop).Source}catch{}
+          }
+
+          $payload=[ordered]@{
+            schema='aftergraph.zcode-app-server-contract/1.0'
+            mutation_performed=$false
+            observed_utc=(Get-Date).ToUniversalTime().ToString('o')
+            script_exists=$true
+            script_sha256=(Get-FileHash -LiteralPath $script -Algorithm SHA256).Hash.ToLowerInvariant()
+            method_presence=$present
+            transport_signals=$transport
+            cli_option_signals=@($options|Sort-Object -Unique)
+            target_process_flags=$procMeta
+            node_available=($null -ne $node)
+            node_basename=if($node){[IO.Path]::GetFileName($node)}else{$null}
+          }
+          $payload|ConvertTo-Json -Depth 10|Set-Content -LiteralPath $out -Encoding UTF8
+          Get-Content -LiteralPath $out
+
+      - name: Upload sanitized evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: zcode-app-server-contract-${{ github.run_id }}
+          path: ${{ runner.temp }}/zcode-app-server-contract.json
+          if-no-files-found: error
+          retention-days: 7
