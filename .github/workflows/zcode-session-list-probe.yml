@@ -1,0 +1,146 @@
+name: ZCode session list probe
+
+on:
+  push:
+    branches:
+      - ops/migration-readonly-probe-20260920
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    timeout-minutes: 8
+    steps:
+      - name: Verify exact controlled host
+        shell: pwsh
+        run: |
+          if ($env:COMPUTERNAME -ne 'JONAS-LENOVO') { throw "unexpected host" }
+          if ($env:RUNNER_NAME -ne 'JONAS-LENOVO-jar-exp-0013') { throw "unexpected runner" }
+
+      - name: Run isolated read-only session list
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $out=Join-Path $env:RUNNER_TEMP 'zcode-session-list-probe.json'
+          $script='C:\Program Files\ZCode\resources\glm\zcode.cjs'
+          $node=(Get-Command node.exe -ErrorAction Stop).Source
+
+          $psi=[Diagnostics.ProcessStartInfo]::new()
+          $psi.FileName=$node
+          $psi.ArgumentList.Add($script)
+          $psi.ArgumentList.Add('app-server')
+          $psi.ArgumentList.Add('--stdio')
+          $psi.UseShellExecute=$false
+          $psi.RedirectStandardInput=$true
+          $psi.RedirectStandardOutput=$true
+          $psi.RedirectStandardError=$true
+          $psi.CreateNoWindow=$true
+
+          $p=[Diagnostics.Process]::new()
+          $p.StartInfo=$psi
+          if(-not $p.Start()){throw 'probe_appserver_start_failed'}
+
+          $request='{"jsonrpc":"2.0","id":1,"method":"session/list","params":{}}'
+          $p.StandardInput.WriteLine($request)
+          $p.StandardInput.Flush()
+
+          $responses=@()
+          $errors=@()
+          $deadline=[DateTime]::UtcNow.AddSeconds(12)
+          while([DateTime]::UtcNow -lt $deadline){
+            if($p.StandardOutput.Peek() -ge 0){
+              $line=$p.StandardOutput.ReadLine()
+              if($line){
+                try{
+                  $obj=$line|ConvertFrom-Json -Depth 30 -ErrorAction Stop
+                  $responses += $obj
+                  if($null -ne $obj.id){break}
+                }catch{}
+              }
+            }
+            if($p.HasExited){break}
+            Start-Sleep -Milliseconds 100
+          }
+
+          if(-not $p.HasExited){
+            $p.StandardInput.Close()
+            if(-not $p.WaitForExit(1500)){
+              # Only terminate the short-lived probe process created by this workflow.
+              $p.Kill($true)
+              $p.WaitForExit()
+            }
+          }
+
+          $stderr=$p.StandardError.ReadToEnd()
+          foreach($needle in @('error','exception','unauthorized','forbidden','invalid','initialize','method not found')){
+            if($stderr.IndexOf($needle,[StringComparison]::OrdinalIgnoreCase)-ge 0){$errors += $needle}
+          }
+
+          $safeResponses=@()
+          foreach($r in $responses){
+            $row=[ordered]@{}
+            if($null -ne $r.jsonrpc){$row.jsonrpc=[string]$r.jsonrpc}
+            if($null -ne $r.id){$row.id=$r.id}
+            if($null -ne $r.error){
+              $row.error_code=$r.error.code
+              $row.error_message=if($r.error.message){[string]$r.error.message}else{$null}
+            }
+            if($null -ne $r.result){
+              $items=@()
+              $candidate=$r.result
+              if($candidate -is [System.Collections.IEnumerable] -and $candidate -isnot [string] -and $candidate -isnot [pscustomobject]){
+                $items=@($candidate)
+              }elseif($candidate.sessions){$items=@($candidate.sessions)}
+              elseif($candidate.items){$items=@($candidate.items)}
+              elseif($candidate.results){$items=@($candidate.results)}
+
+              $safe=@()
+              foreach($s in $items){
+                if($null -eq $s){continue}
+                $x=[ordered]@{}
+                foreach($key in @('id','session_id','sessionId','title','status','state','cwd','workspace','workspacePath','projectPath','updated_at','updatedAt')){
+                  $prop=$s.PSObject.Properties[$key]
+                  if($prop -and $null -ne $prop.Value){
+                    $value=$prop.Value
+                    if($key -match '(?i)cwd|workspace|project'){
+                      $sv=[string]$value
+                      if($sv -match '(?i)splendid-hawking'){$x.location_class='fihim'}
+                      elseif($sv -match '(?i)skillport'){$x.location_class='skillport'}
+                      elseif($sv -match '(?i)\\wt\\abc(?:\\|$)'){$x.location_class='wt_abc'}
+                      else{$x.location_class='other'}
+                    }else{
+                      $x[$key]=$value
+                    }
+                  }
+                }
+                $safe += $x
+              }
+              $row.session_count=$items.Count
+              $row.sessions=$safe
+              $row.result_keys=@($candidate.PSObject.Properties.Name|Sort-Object)
+            }
+            $safeResponses += $row
+          }
+
+          $payload=[ordered]@{
+            schema='aftergraph.zcode-session-list-probe/1.0'
+            mutation_performed=$false
+            observed_utc=(Get-Date).ToUniversalTime().ToString('o')
+            probe_process_exit_code=$p.ExitCode
+            response_count=$responses.Count
+            responses=$safeResponses
+            stderr_signal_classes=@($errors|Sort-Object -Unique)
+          }
+          $payload|ConvertTo-Json -Depth 20|Set-Content -LiteralPath $out -Encoding UTF8
+          Get-Content -LiteralPath $out
+
+      - name: Upload sanitized evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: zcode-session-list-probe-${{ github.run_id }}
+          path: ${{ runner.temp }}/zcode-session-list-probe.json
+          if-no-files-found: error
+          retention-days: 7

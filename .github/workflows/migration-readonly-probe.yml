@@ -1,9 +1,6 @@
 name: Migration read-only probe
 
 on:
-  push:
-    branches:
-      - ops/migration-readonly-probe-20260920
   workflow_dispatch:
 
 permissions:
