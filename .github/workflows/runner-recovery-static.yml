@@ -1,0 +1,32 @@
+name: Runner recovery static gate
+
+on:
+  push:
+    branches:
+      - ops/migration-readonly-probe-20260920
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-recovery-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Verify recovery contract
+        shell: bash
+        run: |
+          python - <<'PY'
+          import runpy
+          ns = runpy.run_path("tests/runtime_acceleration/test_runner_recovery_script.py")
+          tests = [
+              ns["test_recovery_is_scope_bound_and_fail_closed"],
+              ns["test_recovery_only_restarts_canonical_service"],
+              ns["test_recovery_does_not_claim_remote_success_from_local_state"],
+          ]
+          for test in tests:
+              test()
+          print(f"{len(tests)}/{len(tests)} PASS")
+          PY
