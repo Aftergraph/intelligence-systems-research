@@ -65,12 +65,14 @@ print(result.ok, result.reason, result.approval_record, result.ledger_seq, resul
   tampered/out-of-scope/binding-drift. Report `reason` verbatim; do not attempt to fix
   it by editing signed artifacts. The owner re-roots via `keys/README.md`.
 
-Expected side effect after a successful sign: the governance verifier stays **GREEN**.
-Check 33 is state-coherent: before authorization it requires `NO_GO` with exactly the
-currently open human-gate blockers; after a successful sign it requires
-`READY_TO_CALIBRATE` with zero blockers. Check 34 permits calibration network authority
-only when a durable `owner_approval_ref` exists, while holdout/analysis/protocol/active
-network authority remains false and SDK retries remain disabled.
+Expected side effect after a successful sign: CI stays **GREEN without editing the
+frozen 30-path manifest**. The pinned semantic verifier is intentionally preserved as
+its pre-authorization snapshot. CI calls
+`evidence/typesafe-cross-repo/verify_jar15_semantic_review_state.py`, which runs that
+frozen verifier unchanged in a detached exact-HEAD worktree with only the excluded
+calibration gate projected to its pre-authorization view, then verifies the REAL tree's
+live Gate-B/preflight state, later-stage network closure, retry closure, and manifest pin.
+Never "fix" post-authorization CI by editing the pinned semantic verifier or pin.
 
 ## ADR ratification / escalation / dispatch scopes (declared, not executable in v1)
 
