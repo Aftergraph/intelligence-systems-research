@@ -1,0 +1,48 @@
+{
+  "schema_version": "aftergraph.owner-proxy-delegation/0.1",
+  "principal": "JonasAbde <147070826+JonasAbde@users.noreply.github.com>",
+  "delegate": "agent:owner-authority",
+  "custody": "hardware-token",
+  "not_before": "2026-09-20T00:00:00+00:00",
+  "expires_at": "2026-12-19T23:59:59+00:00",
+  "redelegate_allowed": false,
+  "max_depth": 0,
+  "scope": [
+    "SIGN_CALIBRATION_GATE",
+    "RATIFY_ADR",
+    "ANSWER_ESCALATION",
+    "DISPATCH_SUBAGENT",
+    "MERGE_BRANCH",
+    "RAISE_BUDGET",
+    "BREAK_MANIFEST_PIN",
+    "RUN_HOLDOUT_BEFORE_CALIBRATION",
+    "EDIT_FROZEN_0014_RECORD"
+  ],
+  "reserved_matters": [
+    "BRANCH_MERGE",
+    "BUDGET_RAISE",
+    "MANIFEST_PIN",
+    "HOLDOUT_ORDERING",
+    "FROZEN_0014_RECORD"
+  ],
+  "budget_ceiling_usd": 5.38,
+  "experiment_binding": {
+    "experiment_id": "JAR-EXP-0015",
+    "manifest": "dc5d7a94f333908abf09aebe1ca1dbf08f965e604eb2919d0b7a9ca70e149762",
+    "model": "jev-1.13.0",
+    "calls": 1952
+  },
+  "_draft_notice": [
+    "THIS RECORD IS UNSIGNED. It is a DRAFT for the owner to review, edit terms if",
+    "desired, and then sign out-of-band with the hardware token (see README.md).",
+    "Until owner.pub.asc + delegation_record.sig exist and verify, the spine refuses",
+    "to sign anything. The agent cannot mint that signature.",
+    "Editing any field after signing invalidates the signature (record_tampered).",
+    "scope is an ALLOWLIST of action classes; reserved_matters carves the seals out",
+    "to the per-act confirm path. An action outside scope is refused out_of_scope.",
+    "budget_ceiling_usd 5.38 is the preregistered calibration ceiling; raising it is a",
+    "re-sign (a fresh owner act), as is removing any reserved matter.",
+    "custody: set to 'same-machine-gpg' ONLY if you consciously accept the weaker",
+    "root documented in README.md; the provenance then names it truthfully."
+  ]
+}
