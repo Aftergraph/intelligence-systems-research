@@ -72,32 +72,29 @@ currently open human-gate blockers; after a successful sign it requires
 only when a durable `owner_approval_ref` exists, while holdout/analysis/protocol/active
 network authority remains false and SDK retries remain disabled.
 
-## How to ratify an ADR / answer an escalation / dispatch (routine acts)
+## ADR ratification / escalation / dispatch scopes (declared, not executable in v1)
 
-These are in the mandate's `scope` and not in `reserved_matters`, so the spine permits
-them under the standing mandate. For v1 the spine implements the calibration-gate signer
-directly; for the other routine actions, call the spine's `evaluate_mandate` to confirm
-`ALLOW_ROUTINE` before acting, and append a ledger row via `authority.owner_proxy.ledger.append_entry`
-with `tier="routine"` and the action name. If `evaluate_mandate` returns anything other
-than `ALLOW_ROUTINE`, stop.
+The signed draft declares these future routine scopes, but **v1 has no generic
+root-verified executor for them**. `evaluate_mandate(...)` is a policy evaluator only:
+calling it on a structurally valid record does NOT by itself verify the detached owner
+signature or the live revocation set. Therefore it must never be used as an execution
+authorization primitive.
 
-```python
-from datetime import datetime, timezone
-from authority.owner_proxy import load_record, evaluate_mandate, ALLOW_ROUTINE
+Until a generic action path performs the same root-signature + revocation + binding
+verification as `sign_calibration_gate`, treat `RATIFY_ADR`, `ANSWER_ESCALATION`,
+`DISPATCH_SUBAGENT`, and other non-Gate-B routine scopes as **not implemented**:
+do not perform the act and do not append a ledger row claiming it occurred.
 
-rec = load_record("keys/delegation_record.json")
-dec = evaluate_mandate(rec.raw, "RATIFY_ADR", bindings={}, now=datetime.now(timezone.utc))
-assert dec.verdict == ALLOW_ROUTINE, dec.reason
-# ... perform the act, then append the ledger row (commit point) ...
-```
+This closes an authority bypass: capability presence in the signed schema is not the
+same thing as a verified executable authority path.
 
 ## What this skill is NOT
 
 - Not a way to sign Gate B before the owner roots the mandate. The root must exist first.
 - Not a replacement for the frozen preflight, the 30-path manifest, or any preregistration
   seal. It sits upstream of the approval record and obeys every seal.
-- Not an orchestration brain in v1 — dispatch/escalation are permitted routine acts, but
-  the chief-of-staff powers (shepherding CI, periodic owner reports) are deferred (spec §10).
+- Not an orchestration brain in v1 — dispatch/escalation scopes may be declared in the
+  mandate, but remain non-executable until a generic root-verified action primitive exists.
 
 ## Verifying the root yourself (read-only)
 
