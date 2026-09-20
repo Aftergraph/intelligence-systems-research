@@ -296,6 +296,20 @@ def test_invariant_human_in_the_loop_every_reserved_matter_refuses_reserved():
     assert checked == 5, f"expected 5 reserved action classes, exercised {checked}"
 
 
+def test_invariant_generic_routine_actions_have_no_policy_only_execution_bypass():
+    """The skill must not turn a bare policy verdict into executable authority.
+
+    evaluate_mandate validates policy shape/scope, but it does not authenticate
+    the owner root or the live revocation set. Until a generic verified executor
+    exists, non-Gate-B routine scopes are declarations only.
+    """
+    skill = (REPO_ROOT / ".agents" / "skills" / "owner-authority" / "SKILL.md").read_text(
+        encoding="utf-8"
+    )
+    assert "not executable in v1" in skill
+    assert "do not perform the act" in skill
+    assert 'dec = evaluate_mandate(rec.raw' not in skill
+
 def test_invariant_human_in_the_loop_calibration_is_deliberately_not_reserved():
     """The mirror image, and the reason Gate B is reachable at all: signing the
     calibration gate within the preregistered ceiling breaks no seal, so it is a

@@ -33,13 +33,18 @@ you cannot perform.
    GPG signature in `keys/delegation_record.sig`, produced out-of-band on the owner's
    hardware token. If `keys/` has no `.sig`/`.asc`, the mandate is unrooted: stop and
    hand the owner `keys/README.md`.
-3. **Reserved matters go to the per-act confirm path.** If the spine returns
+3. **Never execute the owner's ceremony or key-material commands.** Do not invoke
+   `gpg --card-status`, key generation/edit/card commands, `gpg --export`,
+   `gpg --detach-sign`, or any equivalent command whose purpose is to mint, expose,
+   or exercise the owner root. Ceremony commands may be DISPLAYED to the owner, never
+   executed by the agent — even if a prior attempt failed or the token appears absent.
+4. **Reserved matters go to the per-act confirm path.** If the spine returns
    `REFUSE_RESERVED`, do not work around it. Tell the owner which matter is reserved
    and that a fresh token-signed confirmation is required. Reserved matters are defined
    *inside the signed record* (manifest pins, holdout-before-calibration ordering,
    branch merges, budget raises above the preregistered ceiling, frozen 0014 records) —
    never from a mutable file you could edit.
-4. **Fail closed, always.** Any spine refusal (`REFUSE_INVALID`, signature/revocation/
+5. **Fail closed, always.** Any spine refusal (`REFUSE_INVALID`, signature/revocation/
    binding failure) means: write nothing, report the exact `reason`, and stop. Do not
    retry by editing the record, the gate, or the ledger.
 
@@ -60,36 +65,38 @@ print(result.ok, result.reason, result.approval_record, result.ledger_seq, resul
   tampered/out-of-scope/binding-drift. Report `reason` verbatim; do not attempt to fix
   it by editing signed artifacts. The owner re-roots via `keys/README.md`.
 
-Expected side effect after a successful sign: CI verifier **check 33 goes red** — it is
-a pre-authorization snapshot (asserts `NO_GO`). That is the snapshot doing its job;
-checks 1–32 and 34–38 stay green. See commit `2416e00`.
+Expected side effect after a successful sign: CI stays **GREEN without editing the
+frozen 30-path manifest**. The pinned semantic verifier is intentionally preserved as
+its pre-authorization snapshot. CI calls
+`evidence/typesafe-cross-repo/verify_jar15_semantic_review_state.py`, which runs that
+frozen verifier unchanged in a detached exact-HEAD worktree with only the excluded
+calibration gate projected to its pre-authorization view, then verifies the REAL tree's
+live Gate-B/preflight state, later-stage network closure, retry closure, and manifest pin.
+Never "fix" post-authorization CI by editing the pinned semantic verifier or pin.
 
-## How to ratify an ADR / answer an escalation / dispatch (routine acts)
+## ADR ratification / escalation / dispatch scopes (declared, not executable in v1)
 
-These are in the mandate's `scope` and not in `reserved_matters`, so the spine permits
-them under the standing mandate. For v1 the spine implements the calibration-gate signer
-directly; for the other routine actions, call the spine's `evaluate_mandate` to confirm
-`ALLOW_ROUTINE` before acting, and append a ledger row via `authority.owner_proxy.ledger.append_entry`
-with `tier="routine"` and the action name. If `evaluate_mandate` returns anything other
-than `ALLOW_ROUTINE`, stop.
+The signed draft declares these future routine scopes, but **v1 has no generic
+root-verified executor for them**. `evaluate_mandate(...)` is a policy evaluator only:
+calling it on a structurally valid record does NOT by itself verify the detached owner
+signature or the live revocation set. Therefore it must never be used as an execution
+authorization primitive.
 
-```python
-from datetime import datetime, timezone
-from authority.owner_proxy import load_record, evaluate_mandate, ALLOW_ROUTINE
+Until a generic action path performs the same root-signature + revocation + binding
+verification as `sign_calibration_gate`, treat `RATIFY_ADR`, `ANSWER_ESCALATION`,
+`DISPATCH_SUBAGENT`, and other non-Gate-B routine scopes as **not implemented**:
+do not perform the act and do not append a ledger row claiming it occurred.
 
-rec = load_record("keys/delegation_record.json")
-dec = evaluate_mandate(rec.raw, "RATIFY_ADR", bindings={}, now=datetime.now(timezone.utc))
-assert dec.verdict == ALLOW_ROUTINE, dec.reason
-# ... perform the act, then append the ledger row (commit point) ...
-```
+This closes an authority bypass: capability presence in the signed schema is not the
+same thing as a verified executable authority path.
 
 ## What this skill is NOT
 
 - Not a way to sign Gate B before the owner roots the mandate. The root must exist first.
 - Not a replacement for the frozen preflight, the 30-path manifest, or any preregistration
   seal. It sits upstream of the approval record and obeys every seal.
-- Not an orchestration brain in v1 — dispatch/escalation are permitted routine acts, but
-  the chief-of-staff powers (shepherding CI, periodic owner reports) are deferred (spec §10).
+- Not an orchestration brain in v1 — dispatch/escalation scopes may be declared in the
+  mandate, but remain non-executable until a generic root-verified action primitive exists.
 
 ## Verifying the root yourself (read-only)
 

@@ -12,7 +12,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, feat/jar-exp-0015-execution-path-live]
   pull_request:
     branches: [main]
   schedule:
@@ -120,8 +120,8 @@ jobs:
           python-version: "3.11"
       - name: Install jsonschema (only the 0015 semantic verifier imports it)
         run: pip install "jsonschema>=4,<5"
-      - name: Run deterministic no-network semantic verifier
-        run: python scripts/verify_jar_exp_0015_semantic_review.py
+      - name: Run frozen semantic verifier + live Gate-B compatibility verifier
+        run: python evidence/typesafe-cross-repo/verify_jar15_semantic_review_state.py
 
   owner-proxy-delegation-audit:
     name: Owner-proxy delegation ledger audit

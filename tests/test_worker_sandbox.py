@@ -6,6 +6,7 @@ Smoke run spec: docs/sdc/b0/2026-09-09-smoke-run-specification.md
 from __future__ import annotations
 
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -72,7 +73,14 @@ class TestHermesWorktreeSandboxGreen:
         sandbox = HermesWorktreeSandbox(repo, wt_root)
         sandbox.create("task-003", base_sha)
 
-        result = sandbox.execute("task-003", "echo err-msg >&2; exit 1")
+        # Validate stderr/exit-code capture without assuming POSIX shell grammar.
+        # shell=True is host-native (cmd.exe on Windows, /bin/sh on POSIX), so
+        # a semicolon command chain is not a portable test vector.
+        command = (
+            f'"{sys.executable}" -c '
+            '"import sys; sys.stderr.write(\'err-msg\\\\n\'); raise SystemExit(1)"'
+        )
+        result = sandbox.execute("task-003", command)
 
         assert result.exit_code == 1
         assert "err-msg" in result.stderr
