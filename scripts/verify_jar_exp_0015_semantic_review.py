@@ -619,19 +619,40 @@ def main() -> None:
         raise SystemExit("FAIL[32_receipt_binds_corpus]")
 
     # ---- Group 8: governance / fail-closed --------------------------------
+    # This verifier is valid on BOTH sides of the legitimate Gate-B transition.
+    # It must not encode a stale pre-authorization snapshot that intentionally
+    # turns CI red once the owner-authority path succeeds.
     preflight = evaluate_jar15_calibration_preflight(ROOT)
-    human_gate = {"jar15_approval_not_recorded", "jar15_network_calls_not_authorized"}
-    allowed_extra = {"jar15_semantic_review_not_recorded"}
+    open_human_gates: set[str] = set()
+    if not gate.get("semantic_review_ref"):
+        open_human_gates.add("jar15_semantic_review_not_recorded")
+    if not gate.get("owner_approval_ref"):
+        open_human_gates.add("jar15_approval_not_recorded")
+    if gate.get("network_calls_authorized") is not True:
+        open_human_gates.add("jar15_network_calls_not_authorized")
+
+    expected_decision = "NO_GO" if open_human_gates else "READY_TO_CALIBRATE"
     require(
-        "33_preflight_fail_closed_human_gated",
-        preflight.decision == "NO_GO"
-        and human_gate.issubset(set(preflight.blockers))
-        and set(preflight.blockers).issubset(human_gate | allowed_extra),
-        detail="blockers=" + ",".join(sorted(preflight.blockers)),
+        "33_preflight_governance_state_coherent",
+        preflight.decision == expected_decision
+        and set(preflight.blockers) == open_human_gates,
+        detail=(
+            f"expected={expected_decision} actual={preflight.decision} "
+            + "open=" + ",".join(sorted(open_human_gates))
+            + " blockers=" + ",".join(sorted(preflight.blockers))
+        ),
+    )
+
+    # Calibration network authority may become true only together with a durable
+    # owner approval ref. Every later stage remains closed; retries remain disabled.
+    approval_present = bool(gate.get("owner_approval_ref"))
+    calibration_authority_coherent = (
+        (approval_present and gate.get("network_calls_authorized") is True)
+        or (not approval_present and gate.get("network_calls_authorized") is False)
     )
     require(
-        "34_gates_network_false",
-        gate["network_calls_authorized"] is False
+        "34_network_authority_stage_scoped_and_coherent",
+        calibration_authority_coherent
         and holdout_gate["network_calls_authorized"] is False
         and analysis_gate["network_calls_authorized"] is False
         and protocol["network_calls_authorized"] is False

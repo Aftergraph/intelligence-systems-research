@@ -33,13 +33,18 @@ you cannot perform.
    GPG signature in `keys/delegation_record.sig`, produced out-of-band on the owner's
    hardware token. If `keys/` has no `.sig`/`.asc`, the mandate is unrooted: stop and
    hand the owner `keys/README.md`.
-3. **Reserved matters go to the per-act confirm path.** If the spine returns
+3. **Never execute the owner's ceremony or key-material commands.** Do not invoke
+   `gpg --card-status`, key generation/edit/card commands, `gpg --export`,
+   `gpg --detach-sign`, or any equivalent command whose purpose is to mint, expose,
+   or exercise the owner root. Ceremony commands may be DISPLAYED to the owner, never
+   executed by the agent — even if a prior attempt failed or the token appears absent.
+4. **Reserved matters go to the per-act confirm path.** If the spine returns
    `REFUSE_RESERVED`, do not work around it. Tell the owner which matter is reserved
    and that a fresh token-signed confirmation is required. Reserved matters are defined
    *inside the signed record* (manifest pins, holdout-before-calibration ordering,
    branch merges, budget raises above the preregistered ceiling, frozen 0014 records) —
    never from a mutable file you could edit.
-4. **Fail closed, always.** Any spine refusal (`REFUSE_INVALID`, signature/revocation/
+5. **Fail closed, always.** Any spine refusal (`REFUSE_INVALID`, signature/revocation/
    binding failure) means: write nothing, report the exact `reason`, and stop. Do not
    retry by editing the record, the gate, or the ledger.
 
@@ -60,9 +65,12 @@ print(result.ok, result.reason, result.approval_record, result.ledger_seq, resul
   tampered/out-of-scope/binding-drift. Report `reason` verbatim; do not attempt to fix
   it by editing signed artifacts. The owner re-roots via `keys/README.md`.
 
-Expected side effect after a successful sign: CI verifier **check 33 goes red** — it is
-a pre-authorization snapshot (asserts `NO_GO`). That is the snapshot doing its job;
-checks 1–32 and 34–38 stay green. See commit `2416e00`.
+Expected side effect after a successful sign: the governance verifier stays **GREEN**.
+Check 33 is state-coherent: before authorization it requires `NO_GO` with exactly the
+currently open human-gate blockers; after a successful sign it requires
+`READY_TO_CALIBRATE` with zero blockers. Check 34 permits calibration network authority
+only when a durable `owner_approval_ref` exists, while holdout/analysis/protocol/active
+network authority remains false and SDK retries remain disabled.
 
 ## How to ratify an ADR / answer an escalation / dispatch (routine acts)
 

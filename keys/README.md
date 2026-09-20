@@ -18,6 +18,10 @@ design (spec §1, decisions 2 + 5).
 `delegation_record.json` is committed **unsigned** as a draft. Read it, edit the
 terms if you want (expiry, budget ceiling, the reserved list), then sign.
 
+> **OWNER-ONLY CEREMONY.** Agents may print the commands below, but must never run
+> card-status, key-generation/export, detached-signing, or equivalent key-material
+> commands on the owner's behalf. A failed attempt is not permission to retry.
+
 ---
 
 ## Recommended: hardware token (GPG mode)
@@ -59,6 +63,26 @@ After step 6 the spine is rooted. The agent (the `owner-authority` face) can the
 `sign_calibration_gate` and Gate B closes with truthful provenance — `approved_by`
 naming your authority, `signed_by_hand` naming the agent's hand, `delegation_ref`
 naming this record.
+
+---
+
+### Windows troubleshooting: `OpenPGP card not available: Service is not running`
+
+On Windows/Gpg4win, do **not** translate that message into a Linux `pcscd` diagnosis.
+The relevant OS service is Windows Smart Card (`SCardSvr`) plus GnuPG's `scdaemon`.
+The owner can inspect/restart them from an owner-controlled shell (administrator rights
+may be required to start the Windows service):
+
+```powershell
+Get-Service SCardSvr
+Start-Service SCardSvr
+gpgconf --kill scdaemon
+gpgconf --launch scdaemon
+gpg --card-status
+```
+
+If the token is still unavailable, sign on another owner-controlled machine and copy
+only `owner.pub.asc` and `delegation_record.sig` back. Never copy the private key.
 
 ---
 

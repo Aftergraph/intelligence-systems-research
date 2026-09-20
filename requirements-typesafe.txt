@@ -1,3 +1,4 @@
-# Optional dependency for JAR-EXP-0014 only.
-# Not installed by the repository's default CI/runtime.
+# Optional live-provider dependency for JAR-EXP-0014 and JAR-EXP-0015.
+# Intentionally excluded from default zero-network CI/runtime; install explicitly
+# in the authorized live-calibration environment only.
 typesafe-sdk==0.7.0
