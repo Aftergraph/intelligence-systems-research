@@ -1,0 +1,181 @@
+name: Migration read-only probe
+
+on:
+  push:
+    branches:
+      - ops/migration-readonly-probe-20260920
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: migration-readonly-probe-20260920
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    timeout-minutes: 10
+    steps:
+      - name: Inspect migration state without mutation
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $root = "C:\Users\empir\Aftergraph\_migration"
+          $summaryPath = Join-Path $env:RUNNER_TEMP "migration-readonly-summary.json"
+          $verifyOut = Join-Path $env:RUNNER_TEMP "migration-verify-phase3.txt"
+
+          function Describe-Path([string]$Path) {
+            if (-not (Test-Path -LiteralPath $Path)) {
+              return [ordered]@{ exists = $false; path = $Path }
+            }
+            $item = Get-Item -LiteralPath $Path -Force
+            return [ordered]@{
+              exists = $true
+              path = $Path
+              attributes = [string]$item.Attributes
+              link_type = [string]$item.LinkType
+              target = @($item.Target)
+              last_write_utc = $item.LastWriteTimeUtc.ToString("o")
+            }
+          }
+
+          function Describe-File([string]$Path) {
+            if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
+              return [ordered]@{ exists = $false; path = $Path }
+            }
+            $item = Get-Item -LiteralPath $Path -Force
+            return [ordered]@{
+              exists = $true
+              path = $Path
+              size = $item.Length
+              sha256 = (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant()
+              last_write_utc = $item.LastWriteTimeUtc.ToString("o")
+            }
+          }
+
+          $summary = [ordered]@{
+            probe_version = "migration-readonly/1.0"
+            mutation_performed = $false
+            machine = [ordered]@{
+              computer_name = $env:COMPUTERNAME
+              user_name = $env:USERNAME
+              runner_name = $env:RUNNER_NAME
+              runner_os = $env:RUNNER_OS
+              runner_arch = $env:RUNNER_ARCH
+            }
+            migration_root = Describe-Path $root
+            files = [ordered]@{}
+            inventory = [ordered]@{}
+            paths = [ordered]@{}
+            processes = @()
+            verify_phase3 = [ordered]@{
+              attempted = $false
+              exit_code = $null
+              bash = $null
+              output_file = $verifyOut
+            }
+          }
+
+          foreach ($name in @(
+            "HANDOFF.md",
+            "README.md",
+            "inventory.json",
+            "phase3-manifest.json",
+            "archive-manifest.json",
+            "junction-pairs.tsv",
+            "canonical.tsv",
+            "secondary.tsv",
+            "lease",
+            "finish-consolidation.py",
+            "verify-phase3.sh",
+            "prune-exec-log.txt",
+            "repair-log.txt"
+          )) {
+            $summary.files[$name] = Describe-File (Join-Path $root $name)
+          }
+
+          $inventoryPath = Join-Path $root "inventory.json"
+          if (Test-Path -LiteralPath $inventoryPath -PathType Leaf) {
+            $raw = Get-Content -LiteralPath $inventoryPath -Raw
+            $canonical = @(
+              "afm","after-graph-governance","aftergraph-cron-fabric","aftergraph.org","aie",
+              "autonomous-venture-company","brand","business-ops","context-continuity","continuum",
+              "docs","fihim","intelligence-systems-research","llm-research-development","model-registry",
+              "relay","rendetalje","renos","runtime","sentinel","skill-abi","skillport","skills-vault",
+              "studio","trust-gateway","veranza","war-room","wi-backend","wi-frontend","works-execution"
+            )
+            $exceptions = @(".github","sentinel-firetest","sentinel-firetest2")
+            $present = @($canonical | Where-Object { $raw -match [regex]::Escape($_) })
+            $missing = @($canonical | Where-Object { $raw -notmatch [regex]::Escape($_) })
+            $exceptionPresent = @($exceptions | Where-Object { $raw -match [regex]::Escape($_) })
+            $summary.inventory = [ordered]@{
+              canonical_expected = $canonical.Count
+              canonical_present_by_name_scan = $present.Count
+              canonical_missing_by_name_scan = $missing
+              exception_names_present = $exceptionPresent
+            }
+          }
+
+          $summary.paths = [ordered]@{
+            canonical_fihim = Describe-Path "C:\Users\empir\Aftergraph\repos\fihim"
+            legacy_fihim = Describe-Path "C:\Users\empir\Documents\antigravity\splendid-hawking"
+            canonical_skillport = Describe-Path "C:\Users\empir\Aftergraph\repos\skillport"
+            legacy_skillport = Describe-Path "C:\Users\empir\workspace\skillport"
+            wt_abc = Describe-Path "C:\Users\empir\Aftergraph\wt\abc"
+          }
+
+          foreach ($procId in @(17992,26752,10016,34156,9152)) {
+            $p = Get-CimInstance Win32_Process -Filter "ProcessId = $procId" -ErrorAction SilentlyContinue
+            if ($null -eq $p) {
+              $summary.processes += [ordered]@{ pid = $procId; exists = $false }
+              continue
+            }
+            $cmd = [string]$p.CommandLine
+            $summary.processes += [ordered]@{
+              pid = $procId
+              exists = $true
+              name = [string]$p.Name
+              executable = [string]$p.ExecutablePath
+              mentions_zcode = $cmd -match "(?i)zcode"
+              mentions_hermes = $cmd -match "(?i)hermes"
+              mentions_splendid_hawking = $cmd -match "(?i)splendid-hawking"
+              mentions_skillport = $cmd -match "(?i)skillport"
+              mentions_resume_marker = $cmd -match "20260917_133857"
+              mentions_worktrees = $cmd -match "(?i)\.worktrees"
+            }
+          }
+
+          $verifyScript = Join-Path $root "verify-phase3.sh"
+          if (Test-Path -LiteralPath $verifyScript -PathType Leaf) {
+            $bash = $null
+            $bashCommand = Get-Command bash.exe -ErrorAction SilentlyContinue
+            if ($null -ne $bashCommand) { $bash = $bashCommand.Source }
+            if (-not $bash -and (Test-Path -LiteralPath "C:\Program Files\Git\bin\bash.exe")) {
+              $bash = "C:\Program Files\Git\bin\bash.exe"
+            }
+            if ($bash) {
+              $summary.verify_phase3.attempted = $true
+              $summary.verify_phase3.bash = $bash
+              & $bash "C:/Users/empir/Aftergraph/_migration/verify-phase3.sh" 2>&1 |
+                Tee-Object -FilePath $verifyOut
+              $summary.verify_phase3.exit_code = $LASTEXITCODE
+            }
+          }
+
+          $summary | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $summaryPath -Encoding UTF8
+          Write-Host "=== MIGRATION READ-ONLY SUMMARY ==="
+          Get-Content -LiteralPath $summaryPath
+          Write-Host "=== END SUMMARY ==="
+
+      - name: Upload read-only evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: migration-readonly-probe-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/migration-readonly-summary.json
+            ${{ runner.temp }}/migration-verify-phase3.txt
+          if-no-files-found: warn
+          retention-days: 7
