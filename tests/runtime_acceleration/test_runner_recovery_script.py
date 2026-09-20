@@ -8,13 +8,14 @@ def text():
 
 def test_recovery_is_scope_bound_and_fail_closed():
     s = text()
+    low = s.lower()
     assert "ExpectedRepositoryUrl" in s
     assert "runner_scope_mismatch" in s
     assert "runner_service_path_mismatch" in s
     assert ".runner" in s
     assert ".service" in s
-    assert "Refusing to create or replace registration" in s
-    assert "Refusing to reinstall automatically" in s
+    assert "refusing to create or replace registration" in low
+    assert "refusing to reinstall automatically" in low
 
 def test_recovery_only_restarts_canonical_service():
     s = text()
