@@ -1,0 +1,137 @@
+name: ZCode parent runtime probe
+
+on:
+  push:
+    branches:
+      - ops/migration-readonly-probe-20260920
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    timeout-minutes: 12
+    steps:
+      - name: Verify exact controlled host
+        shell: pwsh
+        run: |
+          if ($env:COMPUTERNAME -ne 'JONAS-LENOVO') { throw "unexpected host" }
+          if ($env:RUNNER_NAME -ne 'JONAS-LENOVO-jar-exp-0013') { throw "unexpected runner" }
+
+      - name: Inspect ZCode parent tree and runtime protocol
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $out=Join-Path $env:RUNNER_TEMP 'zcode-parent-runtime-probe.json'
+          $parentPid=33828
+          $all=@(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue)
+          $byPid=@{}
+          foreach($p in $all){$byPid[[int]$p.ProcessId]=$p}
+
+          $tree=@($parentPid)
+          $changed=$true
+          while($changed){
+            $changed=$false
+            foreach($p in $all){
+              if(($tree -contains [int]$p.ParentProcessId) -and -not($tree -contains [int]$p.ProcessId)){
+                $tree += [int]$p.ProcessId
+                $changed=$true
+              }
+            }
+          }
+
+          $procs=@()
+          foreach($pidValue in $tree){
+            $p=$byPid[$pidValue]
+            if(-not $p){continue}
+            $exe=[string]$p.ExecutablePath
+            $cmd=[string]$p.CommandLine
+            $procs += [ordered]@{
+              pid=[int]$p.ProcessId
+              parent_pid=[int]$p.ParentProcessId
+              name=[string]$p.Name
+              executable_basename=if($exe){[IO.Path]::GetFileName($exe)}else{$null}
+              executable_parent_basename=if($exe){[IO.Path]::GetFileName([IO.Path]::GetDirectoryName($exe))}else{$null}
+              command_flags=[ordered]@{
+                appserver=($cmd -match '(?i)appserver|app-server')
+                socket=($cmd -match '(?i)socket')
+                pipe=($cmd -match '(?i)(?:named[-_ ]?pipe|pipe[-_ ]?name|\\\\\.\\pipe)')
+                port=($cmd -match '(?i)(?:--port|localhost|127\.0\.0\.1)')
+                resume=($cmd -match '(?i)--resume')
+                session=($cmd -match '(?i)--session')
+              }
+            }
+          }
+
+          $listeners=@()
+          try{
+            foreach($c in @(Get-NetTCPConnection -State Listen -ErrorAction Stop)){
+              if($tree -contains [int]$c.OwningProcess){
+                $p=$byPid[[int]$c.OwningProcess]
+                $listeners += [ordered]@{
+                  pid=[int]$c.OwningProcess
+                  process_name=if($p){[string]$p.Name}else{$null}
+                  local_address=[string]$c.LocalAddress
+                  local_port=[int]$c.LocalPort
+                }
+              }
+            }
+          }catch{}
+
+          $parent=$byPid[$parentPid]
+          $runtimeRoot=$null
+          if($parent -and $parent.ExecutablePath){$runtimeRoot=Split-Path -Parent ([string]$parent.ExecutablePath)}
+
+          $protocol=@()
+          if($runtimeRoot -and (Test-Path -LiteralPath $runtimeRoot -PathType Container)){
+            $needles=@(
+              'session/close','session/stop','session/resume','session/send','session/list',
+              'appserver','app-server','jsonrpc','json-rpc','websocket',
+              'namedPipe','named_pipe','pipeName','pipe_name'
+            )
+            $files=@()
+            try{
+              $files=@(Get-ChildItem -LiteralPath $runtimeRoot -File -Recurse -ErrorAction SilentlyContinue |
+                Where-Object {$_.Length -le 16MB} | Select-Object -First 2000)
+            }catch{}
+            foreach($f in $files){
+              $txt=$null
+              try{$txt=Get-Content -LiteralPath $f.FullName -Raw -ErrorAction Stop}catch{}
+              if($null -eq $txt){continue}
+              $hits=@()
+              foreach($needle in $needles){
+                if($txt.IndexOf($needle,[StringComparison]::OrdinalIgnoreCase)-ge 0){$hits += $needle}
+              }
+              if($hits.Count){
+                $protocol += [ordered]@{
+                  relative_path=$f.FullName.Substring($runtimeRoot.Length).TrimStart('\')
+                  matches=@($hits|Sort-Object -Unique)
+                }
+              }
+              if($protocol.Count -ge 120){break}
+            }
+          }
+
+          $payload=[ordered]@{
+            schema='aftergraph.zcode-parent-runtime-probe/1.1'
+            mutation_performed=$false
+            observed_utc=(Get-Date).ToUniversalTime().ToString('o')
+            parent_pid=$parentPid
+            parent_exists=($null -ne $parent)
+            runtime_root_basename=if($runtimeRoot){[IO.Path]::GetFileName($runtimeRoot)}else{$null}
+            process_tree=$procs
+            listener_ports=$listeners
+            runtime_protocol_matches=$protocol
+          }
+          $payload|ConvertTo-Json -Depth 14|Set-Content -LiteralPath $out -Encoding UTF8
+          Get-Content -LiteralPath $out
+
+      - name: Upload sanitized evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: zcode-parent-runtime-probe-${{ github.run_id }}
+          path: ${{ runner.temp }}/zcode-parent-runtime-probe.json
+          if-no-files-found: error
+          retention-days: 7
