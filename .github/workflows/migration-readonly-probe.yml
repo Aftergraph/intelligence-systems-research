@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: migration-readonly-probe-20260920
+  group: migration-readonly-probe-${{ github.sha }}
   cancel-in-progress: false
 
 jobs:
