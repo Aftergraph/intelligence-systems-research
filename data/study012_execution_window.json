@@ -1,6 +1,6 @@
 {
-  "_notice": "G12-10 execution window artifact. Records the authorized execution parameters for ICT-EXP-001. This artifact DOES NOT grant execution authority — that requires separate human approval at G12-8 clearance (currently NOT_GRANTED). Window defines WHEN and HOW execution may proceed once clearance is granted.",
-  "experiment_id": "ICT-EXP-001",
+  "_notice": "G12-10 execution window artifact. Records the authorized execution parameters for ICT-EXP-0001. This artifact DOES NOT grant execution authority — that requires separate human approval at G12-8 clearance (currently NOT_GRANTED). Window defines WHEN and HOW execution may proceed once clearance is granted.",
+  "experiment_id": "ICT-EXP-0001",
   "execution_window": {
     "authorized": false,
     "clearance_prerequisite": "G12-8 destructive_test_clearance must transition from NOT_GRANTED to GRANTED before any execution",
