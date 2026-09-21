@@ -3,7 +3,10 @@ name: Bootstrap Lenovo WORKS Native
 on:
   push:
     branches:
-      - bootstrap/lenovo-works-native
+      - main
+    paths:
+      - experiments/runtime_acceleration/bootstrap-trigger-20260921.txt
+      - .github/workflows/bootstrap-lenovo-works-native.yml
 
 permissions:
   contents: read
