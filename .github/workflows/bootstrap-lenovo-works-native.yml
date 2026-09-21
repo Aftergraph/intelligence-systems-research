@@ -114,16 +114,20 @@ jobs:
           gh auth status 2>&1 | ForEach-Object { Write-Host $_ }
           foreach ($target in @('Aftergraph/intelligence-systems-research','Aftergraph/works-execution','Aftergraph/aie')) {
             Write-Host ("repo_secret_names_target=" + $target)
-            gh secret list --repo $target 2>$null | ForEach-Object {
-              $name = ($_ -split "\\s+")[0]
+            $rows = @(& gh secret list --repo $target 2>$null)
+            foreach ($row in $rows) {
+              $name = ($row -split "\s+")[0]
               if ($name -match 'WORKS|ENROLL') { Write-Host ("secret_name=" + $name) }
             }
           }
           Write-Host 'org_secret_names_target=Aftergraph'
-          gh secret list --org Aftergraph 2>$null | ForEach-Object {
-            $name = ($_ -split "\\s+")[0]
+          $orgRows = @(& gh secret list --org Aftergraph 2>$null)
+          foreach ($row in $orgRows) {
+            $name = ($row -split "\s+")[0]
             if ($name -match 'WORKS|ENROLL') { Write-Host ("secret_name=" + $name) }
           }
+          $global:LASTEXITCODE = 0
+          exit 0
 
       - name: Probe verified Lenovo to production VDS SSH path
         shell: powershell
