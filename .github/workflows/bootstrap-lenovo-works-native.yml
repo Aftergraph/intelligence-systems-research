@@ -113,6 +113,85 @@ jobs:
           Write-Host ("worker_binary_present=" + (Test-Path (Join-Path $root 'works-worker.exe')))
           Write-Host ("installer_present=" + (Test-Path (Join-Path $src 'ops\windows\install-works-worker.ps1')))
 
+      - name: Prove OIDC enrollment E2E locally on physical Lenovo
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = Join-Path $env:LOCALAPPDATA 'Aftergraph\WORKS\oidc-e2e'
+          $src = Join-Path $root 'src'
+          New-Item -ItemType Directory -Force -Path $root | Out-Null
+          $oidcHead = 'c0721019725f29c9a2c7e0556c6ec749c4d77bd2'
+          if (-not (Test-Path (Join-Path $src '.git'))) {
+            git clone --no-checkout https://github.com/Aftergraph/works-execution.git $src
+          }
+          git -C $src fetch --depth 1 origin $oidcHead
+          git -C $src checkout --force $oidcHead
+
+          $toolGo = Get-ChildItem -Path (Join-Path $env:RUNNER_TOOL_CACHE 'go\1.25.0\x64\bin\go.exe') -ErrorAction Stop | Select-Object -First 1
+          $env:GOROOT = Split-Path -Parent (Split-Path -Parent $toolGo.FullName)
+          $env:GOPATH = Join-Path $root 'gopath'
+          $env:PATH = (Join-Path $env:GOROOT 'bin') + ';' + $env:PATH
+          $env:GOTOOLCHAIN = 'local'
+          Push-Location $src
+          try {
+            go test ./services/api -run 'TestGitHubOIDCEnrollment' -count=1
+            if ($LASTEXITCODE -ne 0) { throw 'oidc_unit_boundary_failed' }
+            go build -trimpath -o (Join-Path $root 'works-api-oidc.exe') ./cmd/works-api
+            if ($LASTEXITCODE -ne 0) { throw 'oidc_api_build_failed' }
+          } finally { Pop-Location }
+
+          $env:WORKS_ADDR = '127.0.0.1:18192'
+          $env:WORKS_DB = Join-Path $root 'oidc-e2e.db'
+          $env:WORKS_POLICY_BUNDLE = ''
+          $env:WORKS_GITHUB_OIDC_AUDIENCE = 'aftergraph-works'
+          $env:WORKS_GITHUB_OIDC_REPOSITORY = 'Aftergraph/intelligence-systems-research'
+          $env:WORKS_GITHUB_OIDC_REPOSITORY_ID = '1356862124'
+          $env:WORKS_GITHUB_OIDC_REF = 'refs/heads/bootstrap/lenovo-works-native'
+          $env:WORKS_GITHUB_OIDC_WORKFLOW_REF = 'Aftergraph/intelligence-systems-research/.github/workflows/bootstrap-lenovo-works-native.yml@refs/heads/bootstrap/lenovo-works-native'
+          Remove-Item $env:WORKS_DB -ErrorAction SilentlyContinue
+          $api = Start-Process -FilePath (Join-Path $root 'works-api-oidc.exe') -PassThru -WindowStyle Hidden
+          try {
+            $ready = $false
+            for ($i=0; $i -lt 20; $i++) {
+              Start-Sleep -Milliseconds 250
+              try {
+                $h = Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:18192/healthz' -TimeoutSec 2
+                if ($h.StatusCode -eq 200) { $ready = $true; break }
+              } catch {}
+            }
+            if (-not $ready) { throw 'oidc_e2e_api_not_ready' }
+
+            function Get-OIDCToken([string]$audience) {
+              $sep = if ($env:ACTIONS_ID_TOKEN_REQUEST_URL.Contains('?')) { '&' } else { '?' }
+              $uri = $env:ACTIONS_ID_TOKEN_REQUEST_URL + $sep + 'audience=' + [Uri]::EscapeDataString($audience)
+              $headers = @{ Authorization = ('Bearer ' + $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN) }
+              return (Invoke-RestMethod -Uri $uri -Headers $headers -Method Get).value
+            }
+
+            $good = Get-OIDCToken 'aftergraph-works'
+            $body = @{ worker_id='wrkr_jonas_lenovo'; oidc_token=$good; ttl_seconds=300 } | ConvertTo-Json -Compress
+            $enrolled = Invoke-RestMethod -Method Post -Uri 'http://127.0.0.1:18192/v1/workers/enroll/github-actions' -ContentType 'application/json' -Body $body
+            if ([string]::IsNullOrWhiteSpace($enrolled.token)) { throw 'oidc_e2e_worker_token_missing' }
+            if ($enrolled.worker_id -ne 'wrkr_jonas_lenovo') { throw 'oidc_e2e_worker_id_mismatch' }
+            Write-Host 'oidc_e2e_exact_identity_http=200'
+            Write-Host 'oidc_e2e_worker_token_minted=true'
+
+            $bad = Get-OIDCToken 'wrong-audience'
+            $badBody = @{ worker_id='wrkr_jonas_lenovo'; oidc_token=$bad; ttl_seconds=300 } | ConvertTo-Json -Compress
+            $badCode = 0
+            try {
+              Invoke-WebRequest -UseBasicParsing -Method Post -Uri 'http://127.0.0.1:18192/v1/workers/enroll/github-actions' -ContentType 'application/json' -Body $badBody | Out-Null
+              $badCode = 200
+            } catch {
+              if ($_.Exception.Response) { $badCode = [int]$_.Exception.Response.StatusCode }
+            }
+            Write-Host ('oidc_e2e_wrong_audience_http=' + $badCode)
+            if ($badCode -ne 401) { throw 'oidc_e2e_wrong_audience_not_rejected' }
+          } finally {
+            Stop-Process -Id $api.Id -Force -ErrorAction SilentlyContinue
+            Remove-Item $env:WORKS_DB -ErrorAction SilentlyContinue
+          }
+
       - name: Prove Lenovo to canonical WORKS edge
         shell: powershell
         run: |
