@@ -120,7 +120,7 @@ jobs:
           $root = Join-Path $env:LOCALAPPDATA 'Aftergraph\WORKS\oidc-e2e'
           $src = Join-Path $root 'src'
           New-Item -ItemType Directory -Force -Path $root | Out-Null
-          $oidcHead = 'df55f77ff70d41e12a78322b209061418007cacb'
+          $oidcHead = '55acf59db71aec04d4f90c3ebb0f1f6dcfb6e04f'
           if (-not (Test-Path (Join-Path $src '.git'))) {
             git clone --no-checkout https://github.com/Aftergraph/works-execution.git $src
           }
