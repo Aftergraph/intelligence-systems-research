@@ -142,14 +142,16 @@ jobs:
 
           $env:WORKS_ADDR = '127.0.0.1:18192'
           $env:WORKS_DB = Join-Path $root 'oidc-e2e.db'
-          $env:WORKS_POLICY_BUNDLE = ''
+          $env:WORKS_POLICY_BUNDLE = Join-Path $src 'policies\lease_grant.rego'
           $env:WORKS_GITHUB_OIDC_AUDIENCE = 'aftergraph-works'
           $env:WORKS_GITHUB_OIDC_REPOSITORY = 'Aftergraph/intelligence-systems-research'
           $env:WORKS_GITHUB_OIDC_REPOSITORY_ID = '1356862124'
           $env:WORKS_GITHUB_OIDC_REF = 'refs/heads/bootstrap/lenovo-works-native'
           $env:WORKS_GITHUB_OIDC_WORKFLOW_REF = 'Aftergraph/intelligence-systems-research/.github/workflows/bootstrap-lenovo-works-native.yml@refs/heads/bootstrap/lenovo-works-native'
           Remove-Item $env:WORKS_DB -ErrorAction SilentlyContinue
-          $api = Start-Process -FilePath (Join-Path $root 'works-api-oidc.exe') -PassThru -WindowStyle Hidden
+          $apiLog = Join-Path $root 'works-api-oidc.log'
+          Remove-Item $apiLog -ErrorAction SilentlyContinue
+          $api = Start-Process -FilePath (Join-Path $root 'works-api-oidc.exe') -PassThru -WindowStyle Hidden -RedirectStandardOutput $apiLog -RedirectStandardError (Join-Path $root 'works-api-oidc.err.log')
           try {
             $ready = $false
             for ($i=0; $i -lt 20; $i++) {
@@ -159,7 +161,10 @@ jobs:
                 if ($h.StatusCode -eq 200) { $ready = $true; break }
               } catch {}
             }
-            if (-not $ready) { throw 'oidc_e2e_api_not_ready' }
+            if (-not $ready) {
+              if (Test-Path $apiLog) { Get-Content $apiLog | Select-Object -Last 20 | ForEach-Object { Write-Host ('api_log=' + $_) } }
+              throw 'oidc_e2e_api_not_ready'
+            }
 
             function Get-OIDCToken([string]$audience) {
               $sep = if ($env:ACTIONS_ID_TOKEN_REQUEST_URL.Contains('?')) { '&' } else { '?' }
