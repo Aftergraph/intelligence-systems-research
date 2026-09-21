@@ -1,0 +1,295 @@
+name: Bootstrap Lenovo WORKS Native
+
+on:
+  push:
+    branches:
+      - bootstrap/lenovo-works-native
+    paths:
+      - experiments/runtime_acceleration/bootstrap-trigger-20260921.txt
+      - .github/workflows/bootstrap-lenovo-works-native.yml
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  bootstrap:
+    runs-on: self-hosted
+    timeout-minutes: 15
+    steps:
+      - name: Prove physical host
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Write-Host ("host=" + [Environment]::MachineName)
+          Write-Host ("runner_name=" + $env:RUNNER_NAME)
+          Write-Host ("runner_os=" + $env:RUNNER_OS)
+          Write-Host ("runner_arch=" + $env:RUNNER_ARCH)
+          if ([Environment]::MachineName -ne 'JONAS-LENOVO') { throw "wrong_host" }
+
+      - name: Prove GitHub OIDC identity on physical Lenovo
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ([string]::IsNullOrWhiteSpace($env:ACTIONS_ID_TOKEN_REQUEST_URL) -or [string]::IsNullOrWhiteSpace($env:ACTIONS_ID_TOKEN_REQUEST_TOKEN)) { throw 'github_oidc_request_channel_missing' }
+          $sep = if ($env:ACTIONS_ID_TOKEN_REQUEST_URL.Contains('?')) { '&' } else { '?' }
+          $uri = $env:ACTIONS_ID_TOKEN_REQUEST_URL + $sep + 'audience=aftergraph-works'
+          $headers = @{ Authorization = ('Bearer ' + $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN) }
+          $oidc = Invoke-RestMethod -Uri $uri -Headers $headers -Method Get
+          if ([string]::IsNullOrWhiteSpace($oidc.value)) { throw 'github_oidc_token_missing' }
+          $parts = $oidc.value.Split('.')
+          if ($parts.Count -ne 3) { throw 'github_oidc_token_malformed' }
+          $payload = $parts[1].Replace('-','+').Replace('_','/')
+          switch ($payload.Length % 4) { 2 { $payload += '==' }; 3 { $payload += '=' } }
+          $claims = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($payload)) | ConvertFrom-Json
+          Write-Host ('oidc_iss=' + $claims.iss)
+          Write-Host ('oidc_aud=' + $claims.aud)
+          Write-Host ('oidc_repository=' + $claims.repository)
+          Write-Host ('oidc_ref=' + $claims.ref)
+          Write-Host ('oidc_workflow_ref=' + $claims.workflow_ref)
+          Write-Host ('oidc_runner_environment=' + $claims.runner_environment)
+          if ($claims.iss -ne 'https://token.actions.githubusercontent.com') { throw 'oidc_issuer_mismatch' }
+          if ($claims.aud -ne 'aftergraph-works') { throw 'oidc_audience_mismatch' }
+          if ($claims.repository -ne 'Aftergraph/intelligence-systems-research') { throw 'oidc_repository_mismatch' }
+          if ($claims.ref -ne 'refs/heads/bootstrap/lenovo-works-native') { throw 'oidc_ref_mismatch' }
+          if ($claims.runner_environment -ne 'self-hosted') { throw 'oidc_runner_environment_mismatch' }
+          if ($claims.workflow_ref -ne 'Aftergraph/intelligence-systems-research/.github/workflows/bootstrap-lenovo-works-native.yml@refs/heads/bootstrap/lenovo-works-native') { throw 'oidc_workflow_ref_mismatch' }
+          Write-Host 'github_oidc_identity=verified_claim_shape'
+
+      - name: Install canonical Go toolchain
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version: '1.25.0'
+          cache: false
+
+      - name: Bootstrap WORKS source and worker binary
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = Join-Path $env:LOCALAPPDATA 'Aftergraph\WORKS'
+          $src = Join-Path $root 'src'
+          New-Item -ItemType Directory -Force -Path $root | Out-Null
+
+          $worksSha = '344dfa0e86b8f272398322740a4b57cf7ce6faa6'
+          if (-not (Test-Path (Join-Path $src '.git'))) {
+            git clone --no-checkout https://github.com/Aftergraph/works-execution.git $src
+          }
+          git -C $src fetch --depth 1 origin $worksSha
+          git -C $src checkout --force $worksSha
+
+          $releaseApi = 'https://api.github.com/repos/Aftergraph/works-execution/releases/latest'
+          $headers = @{ 'User-Agent' = 'Aftergraph-Lenovo-Bootstrap' }
+          $release = Invoke-RestMethod -Headers $headers -Uri $releaseApi
+          $asset = $release.assets | Where-Object { $_.name -match '(?i)works-worker.*windows.*(amd64|x64).*\.exe$|(?i)works-worker.*\.exe$' } | Select-Object -First 1
+          if ($asset) {
+            Invoke-WebRequest -Headers $headers -Uri $asset.browser_download_url -OutFile (Join-Path $root 'works-worker.exe')
+            Write-Host ("worker_source=release:" + $asset.name)
+          } else {
+            Write-Host 'worker_source=local_canonical_build'
+            $toolGo = Get-ChildItem -Path (Join-Path $env:RUNNER_TOOL_CACHE 'go\1.25.0\x64\bin\go.exe') -ErrorAction Stop | Select-Object -First 1
+            $env:GOROOT = Split-Path -Parent (Split-Path -Parent $toolGo.FullName)
+            $env:GOPATH = Join-Path $root 'gopath'
+            $env:PATH = (Join-Path $env:GOROOT 'bin') + ';' + $env:PATH
+            $env:GOTOOLCHAIN = 'local'
+            Write-Host ("go_version=" + (& $toolGo.FullName version))
+            Push-Location $src
+            try {
+              go test ./internal/worker -run 'TestRunCommandWindows|TestSanitizedWorkerProcessEnv|TestCommandShellWindows' -count=1
+              if ($LASTEXITCODE -ne 0) { throw 'windows_worker_boundary_tests_failed' }
+              go build -trimpath -o (Join-Path $root 'works-worker.exe') ./cmd/works-worker
+              if ($LASTEXITCODE -ne 0) { throw 'works_worker_build_failed' }
+            } finally { Pop-Location }
+          }
+
+          $workerExe = Join-Path $root 'works-worker.exe'
+          if (-not (Test-Path -LiteralPath $workerExe -PathType Leaf)) { throw 'worker_binary_missing_after_bootstrap' }
+          $sha256 = [System.Security.Cryptography.SHA256]::Create()
+          try {
+            $stream = [System.IO.File]::OpenRead($workerExe)
+            try { $workerSha = ([BitConverter]::ToString($sha256.ComputeHash($stream))).Replace('-','').ToLowerInvariant() } finally { $stream.Dispose() }
+          } finally { $sha256.Dispose() }
+          Write-Host ("works_source_head=" + (git -C $src rev-parse HEAD))
+          Write-Host ("worker_sha256=" + $workerSha)
+          Write-Host ("worker_binary_present=" + (Test-Path (Join-Path $root 'works-worker.exe')))
+          Write-Host ("installer_present=" + (Test-Path (Join-Path $src 'ops\windows\install-works-worker.ps1')))
+
+      - name: Prove OIDC enrollment E2E locally on physical Lenovo
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = Join-Path $env:LOCALAPPDATA 'Aftergraph\WORKS\oidc-e2e'
+          $src = Join-Path $root 'src'
+          New-Item -ItemType Directory -Force -Path $root | Out-Null
+          $oidcHead = '5dd0372e3e425eacdee396c6bfef40c37edc4892'
+          if (-not (Test-Path (Join-Path $src '.git'))) {
+            git clone --no-checkout https://github.com/Aftergraph/works-execution.git $src
+          }
+          git -C $src fetch --depth 1 origin $oidcHead
+          git -C $src checkout --force $oidcHead
+
+          $toolGo = Get-ChildItem -Path (Join-Path $env:RUNNER_TOOL_CACHE 'go\1.25.0\x64\bin\go.exe') -ErrorAction Stop | Select-Object -First 1
+          $env:GOROOT = Split-Path -Parent (Split-Path -Parent $toolGo.FullName)
+          $env:GOPATH = Join-Path $root 'gopath'
+          $env:PATH = (Join-Path $env:GOROOT 'bin') + ';' + $env:PATH
+          $env:GOTOOLCHAIN = 'local'
+          Push-Location $src
+          try {
+            go test ./services/api -run 'TestGitHubOIDCEnrollment' -count=1
+            if ($LASTEXITCODE -ne 0) { throw 'oidc_unit_boundary_failed' }
+            go build -trimpath -o (Join-Path $root 'works-api-oidc.exe') ./cmd/works-api
+            if ($LASTEXITCODE -ne 0) { throw 'oidc_api_build_failed' }
+            go build -trimpath -o (Join-Path $root 'works-worker-oidc.exe') ./cmd/works-worker
+            if ($LASTEXITCODE -ne 0) { throw 'oidc_worker_build_failed' }
+          } finally { Pop-Location }
+
+          $env:WORKS_ADDR = '127.0.0.1:18192'
+          $env:WORKS_DB = Join-Path $root 'oidc-e2e.db'
+          $env:WORKS_POLICY_BUNDLE = Join-Path $src 'policies\lease_grant.rego'
+          $env:WORKS_GITHUB_OIDC_AUDIENCE = 'aftergraph-works'
+          $env:WORKS_GITHUB_OIDC_REPOSITORY = 'Aftergraph/intelligence-systems-research'
+          $env:WORKS_GITHUB_OIDC_REPOSITORY_ID = '1356862124'
+          $env:WORKS_GITHUB_OIDC_REF = 'refs/heads/bootstrap/lenovo-works-native'
+          $env:WORKS_GITHUB_OIDC_WORKFLOW_REF = 'Aftergraph/intelligence-systems-research/.github/workflows/bootstrap-lenovo-works-native.yml@refs/heads/bootstrap/lenovo-works-native'
+          $env:WORKS_GITHUB_OIDC_WORKFLOW_SHA = $env:GITHUB_SHA
+          Remove-Item $env:WORKS_DB -ErrorAction SilentlyContinue
+          $apiLog = Join-Path $root 'works-api-oidc.log'
+          Remove-Item $apiLog -ErrorAction SilentlyContinue
+          $api = Start-Process -FilePath (Join-Path $root 'works-api-oidc.exe') -PassThru -WindowStyle Hidden -RedirectStandardOutput $apiLog -RedirectStandardError (Join-Path $root 'works-api-oidc.err.log')
+          try {
+            $ready = $false
+            for ($i=0; $i -lt 20; $i++) {
+              Start-Sleep -Milliseconds 250
+              try {
+                $h = Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:18192/healthz' -TimeoutSec 2
+                if ($h.StatusCode -eq 200) { $ready = $true; break }
+              } catch {}
+            }
+            if (-not $ready) {
+              if (Test-Path $apiLog) { Get-Content $apiLog | Select-Object -Last 20 | ForEach-Object { Write-Host ('api_log=' + $_) } }
+              throw 'oidc_e2e_api_not_ready'
+            }
+
+            function Get-OIDCToken([string]$audience) {
+              $sep = if ($env:ACTIONS_ID_TOKEN_REQUEST_URL.Contains('?')) { '&' } else { '?' }
+              $uri = $env:ACTIONS_ID_TOKEN_REQUEST_URL + $sep + 'audience=' + [Uri]::EscapeDataString($audience)
+              $headers = @{ Authorization = ('Bearer ' + $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN) }
+              return (Invoke-RestMethod -Uri $uri -Headers $headers -Method Get).value
+            }
+
+            $good = Get-OIDCToken 'aftergraph-works'
+            $body = @{ worker_id='wrkr_jonas_lenovo'; oidc_token=$good; ttl_seconds=300 } | ConvertTo-Json -Compress
+            $enrolled = Invoke-RestMethod -Method Post -Uri 'http://127.0.0.1:18192/v1/workers/enroll/github-actions' -ContentType 'application/json' -Body $body
+            if ([string]::IsNullOrWhiteSpace($enrolled.token)) { throw 'oidc_e2e_worker_token_missing' }
+            if ($enrolled.worker_id -ne 'wrkr_jonas_lenovo') { throw 'oidc_e2e_worker_id_mismatch' }
+            Write-Host 'oidc_e2e_exact_identity_http=200'
+            Write-Host 'oidc_e2e_worker_token_minted=true'
+
+            $env:WORKS_API = 'http://127.0.0.1:18192'
+            $env:WORKS_WORKER_ID = 'wrkr_jonas_lenovo'
+            $env:WORKS_POOL = 'jonas-lenovo'
+            $env:WORKS_TRUST_CLASS = 'standard'
+            $env:WORKS_TOKEN = $enrolled.token
+            $workerLog = Join-Path $root 'works-worker-oidc.log'
+            Remove-Item $workerLog -ErrorAction SilentlyContinue
+            $worker = Start-Process -FilePath (Join-Path $root 'works-worker-oidc.exe') -ArgumentList @('-poll','500ms','-heartbeat','1s') -PassThru -WindowStyle Hidden -RedirectStandardOutput $workerLog -RedirectStandardError (Join-Path $root 'works-worker-oidc.err.log')
+            try {
+              Start-Sleep -Seconds 3
+              if (-not (Test-Path $workerLog)) { throw 'oidc_e2e_worker_log_missing' }
+              $workerText = Get-Content $workerLog -Raw
+              if ($workerText -notmatch 'runner registered: id=wrkr_jonas_lenovo' -or $workerText -notmatch 'pool:jonas-lenovo') { throw 'oidc_e2e_runner_registration_missing' }
+              Write-Host 'oidc_e2e_runner_registration=alive'
+              Write-Host 'oidc_e2e_pool=jonas-lenovo'
+            } finally {
+              Stop-Process -Id $worker.Id -Force -ErrorAction SilentlyContinue
+              Remove-Item Env:WORKS_TOKEN -ErrorAction SilentlyContinue
+            }
+
+            $bad = Get-OIDCToken 'wrong-audience'
+            $badBody = @{ worker_id='wrkr_jonas_lenovo'; oidc_token=$bad; ttl_seconds=300 } | ConvertTo-Json -Compress
+            $badCode = 0
+            try {
+              Invoke-WebRequest -UseBasicParsing -Method Post -Uri 'http://127.0.0.1:18192/v1/workers/enroll/github-actions' -ContentType 'application/json' -Body $badBody | Out-Null
+              $badCode = 200
+            } catch {
+              if ($_.Exception.Response) { $badCode = [int]$_.Exception.Response.StatusCode }
+            }
+            Write-Host ('oidc_e2e_wrong_audience_http=' + $badCode)
+            if ($badCode -ne 401) { throw 'oidc_e2e_wrong_audience_not_rejected' }
+          } finally {
+            Stop-Process -Id $api.Id -Force -ErrorAction SilentlyContinue
+            Remove-Item $env:WORKS_DB -ErrorAction SilentlyContinue
+          }
+
+      - name: Prove Lenovo to canonical WORKS edge
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $base = 'https://works.rendetalje.dk'
+          try {
+            $health = Invoke-WebRequest -UseBasicParsing -Uri ($base + '/healthz') -TimeoutSec 10
+            Write-Host ("works_edge_health_http=" + [int]$health.StatusCode)
+          } catch {
+            $code = if ($_.Exception.Response) { [int]$_.Exception.Response.StatusCode } else { 0 }
+            Write-Host ("works_edge_health_http=" + $code)
+            if ($code -eq 0) { throw 'works_edge_unreachable' }
+          }
+
+          $body = @{ worker_id = 'wrkr_probe_only'; challenge = 'deliberately-wrong-enrollment-challenge' } | ConvertTo-Json -Compress
+          try {
+            $resp = Invoke-WebRequest -UseBasicParsing -Method Post -Uri ($base + '/v1/workers/enroll') -ContentType 'application/json' -Body $body -TimeoutSec 10
+            $enrollCode = [int]$resp.StatusCode
+          } catch {
+            $enrollCode = if ($_.Exception.Response) { [int]$_.Exception.Response.StatusCode } else { 0 }
+          }
+          Write-Host ("works_edge_wrong_enrollment_http=" + $enrollCode)
+          if ($enrollCode -ne 401) { throw ("works_enrollment_not_fail_closed_http_" + $enrollCode) }
+
+      - name: Verify local GitHub credential broker without enumerating secrets
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $auth = (& gh auth status 2>&1 | Out-String)
+          if ($LASTEXITCODE -ne 0) { throw 'github_cli_not_authenticated' }
+          if ($auth -notmatch 'JonasAbde') { throw 'github_cli_wrong_identity' }
+          Write-Host 'github_credential_broker=authenticated'
+          Write-Host 'secret_values_enumerated=false'
+
+      - name: Probe optional Lenovo to production VDS SSH path
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Continue'
+          $hostName = (& ssh.exe -o BatchMode=yes -o ConnectTimeout=8 -o StrictHostKeyChecking=yes root@169.58.199.34 hostname 2>$null | Out-String).Trim()
+          if ($LASTEXITCODE -eq 0 -and $hostName -eq 'vmi3517816') {
+            Write-Host 'lenovo_to_vds_ssh=verified'
+          } else {
+            Write-Host 'lenovo_to_vds_ssh=not_authorized_noncanonical'
+            Write-Host 'credential_transport=canonical_https_edge_required'
+          }
+          $global:LASTEXITCODE = 0
+          exit 0
+
+      - name: Diagnose protected WORKS merge state
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          gh pr view 131 --repo Aftergraph/works-execution --json number,state,isDraft,mergeStateStatus,reviewDecision,autoMergeRequest,statusCheckRollup
+          Write-Host 'merge_state_diagnostic=complete'
+
+      - name: Enqueue verified WORKS fix through protected merge queue
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          gh pr merge 131 --repo Aftergraph/works-execution --auto --squash
+          Write-Host 'works_pr_131_merge_queue=requested'
+
+      - name: Discover existing Aftergraph control-plane configuration without exposing values
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = Join-Path $env:LOCALAPPDATA 'Aftergraph\WORKS'
+          $secretFile = Join-Path $root 'worker.secrets.json'
+          Write-Host ("secret_file_present=" + (Test-Path $secretFile))
+          Write-Host ("env_WORKS_ENROLL_SECRET_present=" + (-not [string]::IsNullOrWhiteSpace($env:WORKS_ENROLL_SECRET)))
+          Write-Host ("env_WORKS_API_present=" + (-not [string]::IsNullOrWhiteSpace($env:WORKS_API)))
+          Write-Host ("gh_present=" + [bool](Get-Command gh.exe -ErrorAction SilentlyContinue))
+          Write-Host ("git_present=" + [bool](Get-Command git.exe -ErrorAction SilentlyContinue))
