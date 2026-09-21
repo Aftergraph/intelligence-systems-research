@@ -170,3 +170,11 @@ jobs:
       - name: Pre-execution gate
         run: |
           python -c "import os, sys; sys.path.insert(0, 'experiments/live_benchmark'); from study011_analyze import classify_execution; n = sum(1 for f in os.listdir('data/live_benchmark_dry_runs') if f.endswith('.json')); print(f'Found {n} dry-run files; LIVE_ONLY invariant preserved.'); print('PASS: pre-execution gate')"
+
+  lenovo-runner-discovery:
+    name: Lenovo self-hosted runner discovery
+    runs-on: self-hosted
+    timeout-minutes: 3
+    steps:
+      - name: Report assigned host
+        run: hostname
