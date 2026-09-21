@@ -138,6 +138,8 @@ jobs:
             if ($LASTEXITCODE -ne 0) { throw 'oidc_unit_boundary_failed' }
             go build -trimpath -o (Join-Path $root 'works-api-oidc.exe') ./cmd/works-api
             if ($LASTEXITCODE -ne 0) { throw 'oidc_api_build_failed' }
+            go build -trimpath -o (Join-Path $root 'works-worker-oidc.exe') ./cmd/works-worker
+            if ($LASTEXITCODE -ne 0) { throw 'oidc_worker_build_failed' }
           } finally { Pop-Location }
 
           $env:WORKS_ADDR = '127.0.0.1:18192'
@@ -180,6 +182,26 @@ jobs:
             if ($enrolled.worker_id -ne 'wrkr_jonas_lenovo') { throw 'oidc_e2e_worker_id_mismatch' }
             Write-Host 'oidc_e2e_exact_identity_http=200'
             Write-Host 'oidc_e2e_worker_token_minted=true'
+
+            $env:WORKS_API = 'http://127.0.0.1:18192'
+            $env:WORKS_WORKER_ID = 'wrkr_jonas_lenovo'
+            $env:WORKS_POOL = 'jonas-lenovo'
+            $env:WORKS_TRUST_CLASS = 'standard'
+            $env:WORKS_TOKEN = $enrolled.token
+            $workerLog = Join-Path $root 'works-worker-oidc.log'
+            Remove-Item $workerLog -ErrorAction SilentlyContinue
+            $worker = Start-Process -FilePath (Join-Path $root 'works-worker-oidc.exe') -ArgumentList @('-poll','500ms','-heartbeat','1s') -PassThru -WindowStyle Hidden -RedirectStandardOutput $workerLog -RedirectStandardError (Join-Path $root 'works-worker-oidc.err.log')
+            try {
+              Start-Sleep -Seconds 3
+              $runners = Invoke-RestMethod -Uri 'http://127.0.0.1:18192/v1/ui/runners' -Method Get
+              $json = $runners | ConvertTo-Json -Depth 8 -Compress
+              if ($json -notmatch 'wrkr_jonas_lenovo' -or $json -notmatch 'pool:jonas-lenovo') { throw 'oidc_e2e_runner_registration_missing' }
+              Write-Host 'oidc_e2e_runner_registration=alive'
+              Write-Host 'oidc_e2e_pool=jonas-lenovo'
+            } finally {
+              Stop-Process -Id $worker.Id -Force -ErrorAction SilentlyContinue
+              Remove-Item Env:WORKS_TOKEN -ErrorAction SilentlyContinue
+            }
 
             $bad = Get-OIDCToken 'wrong-audience'
             $badBody = @{ worker_id='wrkr_jonas_lenovo'; oidc_token=$bad; ttl_seconds=300 } | ConvertTo-Json -Compress
