@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   bootstrap:
@@ -25,6 +26,35 @@ jobs:
           Write-Host ("runner_os=" + $env:RUNNER_OS)
           Write-Host ("runner_arch=" + $env:RUNNER_ARCH)
           if ([Environment]::MachineName -ne 'JONAS-LENOVO') { throw "wrong_host" }
+
+      - name: Prove GitHub OIDC identity on physical Lenovo
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ([string]::IsNullOrWhiteSpace($env:ACTIONS_ID_TOKEN_REQUEST_URL) -or [string]::IsNullOrWhiteSpace($env:ACTIONS_ID_TOKEN_REQUEST_TOKEN)) { throw 'github_oidc_request_channel_missing' }
+          $sep = if ($env:ACTIONS_ID_TOKEN_REQUEST_URL.Contains('?')) { '&' } else { '?' }
+          $uri = $env:ACTIONS_ID_TOKEN_REQUEST_URL + $sep + 'audience=aftergraph-works'
+          $headers = @{ Authorization = ('Bearer ' + $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN) }
+          $oidc = Invoke-RestMethod -Uri $uri -Headers $headers -Method Get
+          if ([string]::IsNullOrWhiteSpace($oidc.value)) { throw 'github_oidc_token_missing' }
+          $parts = $oidc.value.Split('.')
+          if ($parts.Count -ne 3) { throw 'github_oidc_token_malformed' }
+          $payload = $parts[1].Replace('-','+').Replace('_','/')
+          switch ($payload.Length % 4) { 2 { $payload += '==' }; 3 { $payload += '=' } }
+          $claims = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($payload)) | ConvertFrom-Json
+          Write-Host ('oidc_iss=' + $claims.iss)
+          Write-Host ('oidc_aud=' + $claims.aud)
+          Write-Host ('oidc_repository=' + $claims.repository)
+          Write-Host ('oidc_ref=' + $claims.ref)
+          Write-Host ('oidc_workflow_ref=' + $claims.workflow_ref)
+          Write-Host ('oidc_runner_environment=' + $claims.runner_environment)
+          if ($claims.iss -ne 'https://token.actions.githubusercontent.com') { throw 'oidc_issuer_mismatch' }
+          if ($claims.aud -ne 'aftergraph-works') { throw 'oidc_audience_mismatch' }
+          if ($claims.repository -ne 'Aftergraph/intelligence-systems-research') { throw 'oidc_repository_mismatch' }
+          if ($claims.ref -ne 'refs/heads/bootstrap/lenovo-works-native') { throw 'oidc_ref_mismatch' }
+          if ($claims.runner_environment -ne 'self-hosted') { throw 'oidc_runner_environment_mismatch' }
+          if ($claims.workflow_ref -ne 'Aftergraph/intelligence-systems-research/.github/workflows/bootstrap-lenovo-works-native.yml@refs/heads/bootstrap/lenovo-works-native') { throw 'oidc_workflow_ref_mismatch' }
+          Write-Host 'github_oidc_identity=verified_claim_shape'
 
       - name: Install canonical Go toolchain
         uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
