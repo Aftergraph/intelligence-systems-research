@@ -1,0 +1,23 @@
+name: Cancel redundant Codex restore run
+
+on:
+  push:
+    branches:
+      - ops/codex-nexum-jonas-lenovo-20260921
+    paths:
+      - .github/workflows/cancel-redundant-codex-restore.yml
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  cancel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Cancel redundant queued restore
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --method POST repos/${{ github.repository }}/actions/runs/35603690277/cancel
