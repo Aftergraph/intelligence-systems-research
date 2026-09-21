@@ -194,9 +194,9 @@ jobs:
             $worker = Start-Process -FilePath (Join-Path $root 'works-worker-oidc.exe') -ArgumentList @('-poll','500ms','-heartbeat','1s') -PassThru -WindowStyle Hidden -RedirectStandardOutput $workerLog -RedirectStandardError (Join-Path $root 'works-worker-oidc.err.log')
             try {
               Start-Sleep -Seconds 3
-              $runners = Invoke-RestMethod -Uri 'http://127.0.0.1:18192/v1/ui/runners' -Method Get
-              $json = $runners | ConvertTo-Json -Depth 8 -Compress
-              if ($json -notmatch 'wrkr_jonas_lenovo' -or $json -notmatch 'pool:jonas-lenovo') { throw 'oidc_e2e_runner_registration_missing' }
+              if (-not (Test-Path $workerLog)) { throw 'oidc_e2e_worker_log_missing' }
+              $workerText = Get-Content $workerLog -Raw
+              if ($workerText -notmatch 'runner registered: id=wrkr_jonas_lenovo' -or $workerText -notmatch 'pool:jonas-lenovo') { throw 'oidc_e2e_runner_registration_missing' }
               Write-Host 'oidc_e2e_runner_registration=alive'
               Write-Host 'oidc_e2e_pool=jonas-lenovo'
             } finally {
