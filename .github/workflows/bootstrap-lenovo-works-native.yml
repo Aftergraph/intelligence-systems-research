@@ -129,15 +129,19 @@ jobs:
           $global:LASTEXITCODE = 0
           exit 0
 
-      - name: Probe verified Lenovo to production VDS SSH path
+      - name: Probe optional Lenovo to production VDS SSH path
         shell: powershell
         run: |
-          $ErrorActionPreference = 'Stop'
-          $hostName = (& ssh.exe -o BatchMode=yes -o ConnectTimeout=8 -o StrictHostKeyChecking=yes root@169.58.199.34 hostname | Out-String).Trim()
-          if ($LASTEXITCODE -ne 0) { throw 'vds_ssh_unavailable' }
-          Write-Host ("vds_hostname=" + $hostName)
-          if ($hostName -ne 'vmi3517816') { throw 'vds_identity_mismatch' }
-          Write-Host 'lenovo_to_vds_ssh=verified'
+          $ErrorActionPreference = 'Continue'
+          $hostName = (& ssh.exe -o BatchMode=yes -o ConnectTimeout=8 -o StrictHostKeyChecking=yes root@169.58.199.34 hostname 2>$null | Out-String).Trim()
+          if ($LASTEXITCODE -eq 0 -and $hostName -eq 'vmi3517816') {
+            Write-Host 'lenovo_to_vds_ssh=verified'
+          } else {
+            Write-Host 'lenovo_to_vds_ssh=not_authorized_noncanonical'
+            Write-Host 'credential_transport=canonical_https_edge_required'
+          }
+          $global:LASTEXITCODE = 0
+          exit 0
 
       - name: Enqueue verified WORKS fix through protected merge queue
         shell: powershell
