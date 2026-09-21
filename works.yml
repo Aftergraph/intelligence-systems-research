@@ -1,0 +1,21 @@
+# Canonical Aftergraph-native physical Lenovo acceptance path.
+# GitHub self-hosted Actions remains a fallback evidence vehicle only.
+version: 1
+
+work:
+  lenovo-computer-node-acceptance:
+    triggers:
+      - push
+      - pull_request
+
+    requirements:
+      confidence: development
+      os: windows
+      arch: amd64
+      pool: jonas-lenovo
+
+    nodes:
+      physical-acceptance:
+        run: powershell.exe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File experiments/computer_node/lenovo_works_acceptance.ps1
+        cache: false
+        timeout_s: 1200
