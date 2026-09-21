@@ -70,7 +70,7 @@ jobs:
           $src = Join-Path $root 'src'
           New-Item -ItemType Directory -Force -Path $root | Out-Null
 
-          $worksSha = '6e3d5b53f30fc7d5dcb1d8e3b3243b1b75b8e3de'
+          $worksSha = '344dfa0e86b8f272398322740a4b57cf7ce6faa6'
           if (-not (Test-Path (Join-Path $src '.git'))) {
             git clone --no-checkout https://github.com/Aftergraph/works-execution.git $src
           }
@@ -120,7 +120,7 @@ jobs:
           $root = Join-Path $env:LOCALAPPDATA 'Aftergraph\WORKS\oidc-e2e'
           $src = Join-Path $root 'src'
           New-Item -ItemType Directory -Force -Path $root | Out-Null
-          $oidcHead = 'c0721019725f29c9a2c7e0556c6ec749c4d77bd2'
+          $oidcHead = '842e5df33c8ff7c07e2d58ad592b515913d9c6ac'
           if (-not (Test-Path (Join-Path $src '.git'))) {
             git clone --no-checkout https://github.com/Aftergraph/works-execution.git $src
           }
