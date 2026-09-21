@@ -29,7 +29,7 @@ jobs:
       - name: Install canonical Go toolchain
         uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
         with:
-          go-version: '1.23'
+          go-version: '1.25.0'
           cache: false
 
       - name: Bootstrap WORKS source and worker binary
@@ -56,9 +56,12 @@ jobs:
             Write-Host ("worker_source=release:" + $asset.name)
           } else {
             Write-Host 'worker_source=local_canonical_build'
-            Remove-Item Env:GOROOT -ErrorAction SilentlyContinue
+            $toolGo = Get-ChildItem -Path (Join-Path $env:RUNNER_TOOL_CACHE 'go\1.25.0\x64\bin\go.exe') -ErrorAction Stop | Select-Object -First 1
+            $env:GOROOT = Split-Path -Parent (Split-Path -Parent $toolGo.FullName)
             $env:GOPATH = Join-Path $root 'gopath'
-            Write-Host ("go_version=" + (& go version))
+            $env:PATH = (Join-Path $env:GOROOT 'bin') + ';' + $env:PATH
+            $env:GOTOOLCHAIN = 'local'
+            Write-Host ("go_version=" + (& $toolGo.FullName version))
             Push-Location $src
             try {
               go test ./internal/worker -run 'TestRunCommandWindows|TestSanitizedWorkerProcessEnv|TestCommandShellWindows' -count=1
