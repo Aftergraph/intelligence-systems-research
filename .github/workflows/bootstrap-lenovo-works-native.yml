@@ -120,7 +120,7 @@ jobs:
           $root = Join-Path $env:LOCALAPPDATA 'Aftergraph\WORKS\oidc-e2e'
           $src = Join-Path $root 'src'
           New-Item -ItemType Directory -Force -Path $root | Out-Null
-          $oidcHead = 'b63f6986cc0531188989611f9c39ee72cd3bc266'
+          $oidcHead = '30e55579bc00203c4301db93d465770bbfa0e4c7'
           if (-not (Test-Path (Join-Path $src '.git'))) {
             git clone --no-checkout https://github.com/Aftergraph/works-execution.git $src
           }
@@ -150,6 +150,7 @@ jobs:
           $env:WORKS_GITHUB_OIDC_REPOSITORY_ID = '1356862124'
           $env:WORKS_GITHUB_OIDC_REF = 'refs/heads/bootstrap/lenovo-works-native'
           $env:WORKS_GITHUB_OIDC_WORKFLOW_REF = 'Aftergraph/intelligence-systems-research/.github/workflows/bootstrap-lenovo-works-native.yml@refs/heads/bootstrap/lenovo-works-native'
+          $env:WORKS_GITHUB_OIDC_WORKFLOW_SHA = $env:GITHUB_SHA
           Remove-Item $env:WORKS_DB -ErrorAction SilentlyContinue
           $apiLog = Join-Path $root 'works-api-oidc.log'
           Remove-Item $apiLog -ErrorAction SilentlyContinue
