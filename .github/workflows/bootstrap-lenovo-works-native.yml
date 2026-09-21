@@ -161,6 +161,13 @@ jobs:
           $global:LASTEXITCODE = 0
           exit 0
 
+      - name: Diagnose protected WORKS merge state
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          gh pr view 131 --repo Aftergraph/works-execution --json number,state,isDraft,mergeStateStatus,reviewDecision,autoMergeRequest,statusCheckRollup
+          Write-Host 'merge_state_diagnostic=complete'
+
       - name: Enqueue verified WORKS fix through protected merge queue
         shell: powershell
         run: |
