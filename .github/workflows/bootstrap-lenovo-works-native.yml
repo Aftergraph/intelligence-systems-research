@@ -125,6 +125,13 @@ jobs:
             if ($name -match 'WORKS|ENROLL') { Write-Host ("secret_name=" + $name) }
           }
 
+      - name: Enqueue verified WORKS fix through protected merge queue
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          gh pr merge 131 --repo Aftergraph/works-execution --auto --squash
+          Write-Host 'works_pr_131_merge_queue=requested'
+
       - name: Discover existing Aftergraph control-plane configuration without exposing values
         shell: powershell
         run: |
