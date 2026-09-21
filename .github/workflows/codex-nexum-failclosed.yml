@@ -1,0 +1,159 @@
+name: Aftergraph Codex NEXUM fail-closed handoff
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/codex-nexum-failclosed.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: codex-nexum-failclosed
+  cancel-in-progress: false
+
+jobs:
+  failclosed:
+    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Restore native Codex and install explicit activation path
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $evidencePath = Join-Path $env:GITHUB_WORKSPACE 'codex-nexum-failclosed-evidence.json'
+          $e = [ordered]@{
+            schema = 'aftergraph.codex-nexum-failclosed.evidence.v1'
+            timestamp_utc = [DateTime]::UtcNow.ToString('o')
+            node = $env:COMPUTERNAME
+            runner = $env:RUNNER_NAME
+            bridge_install_detected = $false
+            native_codex_restored = $false
+            proxy_stopped = $false
+            startup_removed = $false
+            activate_script_written = $false
+            deactivate_script_written = $false
+            mode = 'blocked'
+            blocker = $null
+          }
+          function Save-Evidence {
+            $e | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $evidencePath -Encoding utf8
+          }
+          try {
+            $profiles = @(Get-CimInstance Win32_UserProfile | Where-Object {
+              -not $_.Special -and $_.Loaded -and $_.LocalPath -like 'C:\Users\*'
+            })
+            $target = $profiles | Where-Object {
+              Test-Path -LiteralPath (Join-Path $_.LocalPath '.codex-proxy\config.json')
+            } | Select-Object -First 1
+            if (-not $target) { throw 'bridge_profile_not_found' }
+            $profile = $target.LocalPath
+            $sid = $target.SID
+            $proxyHome = Join-Path $profile '.codex-proxy'
+            $proxyConfig = Join-Path $proxyHome 'config.json'
+            $codexHome = Join-Path $profile '.codex'
+            $src = 'C:\Aftergraph\CodexNexum\codex-proxy'
+            if (-not (Test-Path -LiteralPath $proxyConfig)) { throw 'proxy_config_missing' }
+            if (-not (Test-Path -LiteralPath (Join-Path $src '.git'))) { throw 'proxy_source_missing' }
+            Push-Location $src
+            try { $head = (git rev-parse HEAD).Trim() } finally { Pop-Location }
+            if ($head -ne 'dac2f3ecf48243f425ea2db0619834e33a7d76b5') { throw 'proxy_pin_mismatch' }
+            $e.bridge_install_detected = $true
+
+            $bunCandidates = @(
+              (Join-Path $profile '.bun\bin\bun.exe'),
+              'C:\Program Files\Bun\bun.exe'
+            )
+            $bun = $bunCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+            if (-not $bun) {
+              $cmd = Get-Command bun -ErrorAction SilentlyContinue
+              if ($cmd) { $bun = $cmd.Source }
+            }
+            if (-not $bun) { throw 'bun_not_found' }
+
+            Push-Location $src
+            try {
+              & $bun run src/cli.ts stop --config $proxyConfig --codex-home $codexHome
+              if ($LASTEXITCODE -ne 0) { throw 'proxy_stop_or_unwire_failed' }
+            } finally { Pop-Location }
+            $e.proxy_stopped = $true
+
+            $codexConfig = Join-Path $codexHome 'config.toml'
+            if (Test-Path -LiteralPath $codexConfig) {
+              $codexText = Get-Content -LiteralPath $codexConfig -Raw
+              if ($codexText -match '# --- codex-proxy:begin ---') {
+                throw 'codex_proxy_marker_still_present'
+              }
+            }
+            $e.native_codex_restored = $true
+
+            $runKey = "Registry::HKEY_USERS\$sid\Software\Microsoft\Windows\CurrentVersion\Run"
+            if (Test-Path -LiteralPath $runKey) {
+              Remove-ItemProperty -LiteralPath $runKey -Name 'AftergraphCodexNexumBridge' -ErrorAction SilentlyContinue
+            }
+            $e.startup_removed = $true
+
+            $root = 'C:\Aftergraph\CodexNexum'
+            $activate = Join-Path $root 'activate-nexum-codex.ps1'
+            $deactivate = Join-Path $root 'deactivate-nexum-codex.ps1'
+
+            $activateLines = @(
+              "[CmdletBinding()]"
+              "param()"
+              '$ErrorActionPreference = "Stop"'
+              'if (-not $env:NEXUM_API_KEY -or -not $env:NEXUM_API_KEY.StartsWith("nxr-")) { throw "Set NEXUM_API_KEY to your Nexum nxr- API key first." }'
+              (' $bun = "' + ($bun -replace '\\','\\') + '"').TrimStart()
+              (' $src = "' + ($src -replace '\\','\\') + '"').TrimStart()
+              (' $proxyConfig = "' + ($proxyConfig -replace '\\','\\') + '"').TrimStart()
+              (' $codexHome = "' + ($codexHome -replace '\\','\\') + '"').TrimStart()
+              '& $bun run (Join-Path $src "src\cli.ts") wire --config $proxyConfig --codex-home $codexHome'
+              'if ($LASTEXITCODE -ne 0) { throw "Codex wiring failed." }'
+              '$runKey = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run"'
+              'New-Item -Path $runKey -Force | Out-Null'
+              '$startup = (''"{0}" run "{1}" serve --config "{2}" --codex-home "{3}"'' -f $bun, (Join-Path $src "src\cli.ts"), $proxyConfig, $codexHome)'
+              'New-ItemProperty -Path $runKey -Name "AftergraphCodexNexumBridge" -Value $startup -PropertyType String -Force | Out-Null'
+              '$args = @("run", (Join-Path $src "src\cli.ts"), "serve", "--config", $proxyConfig, "--codex-home", $codexHome)'
+              'Start-Process -FilePath $bun -ArgumentList $args -WorkingDirectory $src -WindowStyle Hidden'
+              'Start-Sleep -Seconds 2'
+              '$health = Invoke-RestMethod -Uri "http://127.0.0.1:18789/healthz" -TimeoutSec 5'
+              'if ($health.status -ne "ok") { throw "Nexum Codex bridge health check failed." }'
+              'Write-Output "NEXUM_CODEX_BRIDGE=ACTIVE"'
+              'Write-Output "Fully quit and reopen ChatGPT/Codex Desktop to reload the model catalog."'
+            )
+            $activateLines | Set-Content -LiteralPath $activate -Encoding utf8
+            $e.activate_script_written = $true
+
+            $deactivateLines = @(
+              "[CmdletBinding()]"
+              "param()"
+              '$ErrorActionPreference = "Stop"'
+              (' $bun = "' + ($bun -replace '\\','\\') + '"').TrimStart()
+              (' $src = "' + ($src -replace '\\','\\') + '"').TrimStart()
+              (' $proxyConfig = "' + ($proxyConfig -replace '\\','\\') + '"').TrimStart()
+              (' $codexHome = "' + ($codexHome -replace '\\','\\') + '"').TrimStart()
+              '& $bun run (Join-Path $src "src\cli.ts") stop --config $proxyConfig --codex-home $codexHome'
+              'Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -Name "AftergraphCodexNexumBridge" -ErrorAction SilentlyContinue'
+              'Write-Output "NEXUM_CODEX_BRIDGE=INACTIVE"'
+            )
+            $deactivateLines | Set-Content -LiteralPath $deactivate -Encoding utf8
+            $e.deactivate_script_written = $true
+            $e.mode = 'native_restored_activation_ready'
+          } catch {
+            $e.mode = 'blocked'
+            $e.blocker = ('failclosed_exception:' + $_.Exception.Message)
+          } finally {
+            Save-Evidence
+          }
+
+      - name: Upload sanitized fail-closed evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: codex-nexum-failclosed
+          path: codex-nexum-failclosed-evidence.json
+          if-no-files-found: error
+          retention-days: 7
