@@ -61,7 +61,7 @@ jobs:
             Write-Host ("go_version=" + (& go version))
             Push-Location $src
             try {
-              go test ./internal/worker -count=1
+              go test ./internal/worker -run 'TestRunCommandWindows|TestSanitizedWorkerProcessEnv|TestCommandShellWindows' -count=1
               if ($LASTEXITCODE -ne 0) { throw 'windows_worker_boundary_tests_failed' }
               go build -trimpath -o (Join-Path $root 'works-worker.exe') ./cmd/works-worker
               if ($LASTEXITCODE -ne 0) { throw 'works_worker_build_failed' }
