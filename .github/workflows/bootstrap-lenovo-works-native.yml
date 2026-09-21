@@ -3,7 +3,7 @@ name: Bootstrap Lenovo WORKS Native
 on:
   push:
     branches:
-      - main
+      - bootstrap/lenovo-works-native
     paths:
       - experiments/runtime_acceleration/bootstrap-trigger-20260921.txt
       - .github/workflows/bootstrap-lenovo-works-native.yml
@@ -12,9 +12,9 @@ permissions:
   contents: read
 
 jobs:
-  probe:
+  bootstrap:
     runs-on: self-hosted
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Prove physical host
         shell: powershell
@@ -24,25 +24,46 @@ jobs:
           Write-Host ("runner_name=" + $env:RUNNER_NAME)
           Write-Host ("runner_os=" + $env:RUNNER_OS)
           Write-Host ("runner_arch=" + $env:RUNNER_ARCH)
-          if ([Environment]::MachineName -ne 'JONAS-LENOVO') {
-            throw "wrong_host"
-          }
+          if ([Environment]::MachineName -ne 'JONAS-LENOVO') { throw "wrong_host" }
 
-      - name: Inspect bootstrap prerequisites without exposing secrets
+      - name: Bootstrap WORKS source and worker binary
         shell: powershell
         run: |
           $ErrorActionPreference = 'Stop'
-          $paths = @(
-            "$env:LOCALAPPDATA\Aftergraph\WORKS\worker.secrets.json",
-            "$env:LOCALAPPDATA\Aftergraph\WORKS\works-worker.exe",
-            "C:\Aftergraph\WORKS\worker.secrets.json",
-            "C:\Aftergraph\WORKS\works-worker.exe"
-          )
-          foreach ($p in $paths) {
-            Write-Host ("exists " + $p + "=" + (Test-Path -LiteralPath $p))
+          $root = Join-Path $env:LOCALAPPDATA 'Aftergraph\WORKS'
+          $src = Join-Path $root 'src'
+          New-Item -ItemType Directory -Force -Path $root | Out-Null
+
+          if (-not (Test-Path (Join-Path $src '.git'))) {
+            git clone --depth 1 https://github.com/Aftergraph/works-execution.git $src
+          } else {
+            git -C $src fetch --depth 1 origin main
+            git -C $src checkout --force origin/main
           }
+
+          $releaseApi = 'https://api.github.com/repos/Aftergraph/works-execution/releases/latest'
+          $headers = @{ 'User-Agent' = 'Aftergraph-Lenovo-Bootstrap' }
+          $release = Invoke-RestMethod -Headers $headers -Uri $releaseApi
+          $asset = $release.assets | Where-Object { $_.name -match '(?i)works-worker.*windows.*(amd64|x64).*\.exe$|(?i)works-worker.*\.exe$' } | Select-Object -First 1
+          if ($asset) {
+            Invoke-WebRequest -Headers $headers -Uri $asset.browser_download_url -OutFile (Join-Path $root 'works-worker.exe')
+            Write-Host ("worker_source=release:" + $asset.name)
+          } else {
+            Write-Host 'worker_source=no_windows_release_asset'
+          }
+
+          Write-Host ("works_source_head=" + (git -C $src rev-parse HEAD))
+          Write-Host ("worker_binary_present=" + (Test-Path (Join-Path $root 'works-worker.exe')))
+          Write-Host ("installer_present=" + (Test-Path (Join-Path $src 'ops\windows\install-works-worker.ps1')))
+
+      - name: Discover existing Aftergraph control-plane configuration without exposing values
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = Join-Path $env:LOCALAPPDATA 'Aftergraph\WORKS'
+          $secretFile = Join-Path $root 'worker.secrets.json'
+          Write-Host ("secret_file_present=" + (Test-Path $secretFile))
           Write-Host ("env_WORKS_ENROLL_SECRET_present=" + (-not [string]::IsNullOrWhiteSpace($env:WORKS_ENROLL_SECRET)))
           Write-Host ("env_WORKS_API_present=" + (-not [string]::IsNullOrWhiteSpace($env:WORKS_API)))
-          Write-Host ("git_present=" + [bool](Get-Command git.exe -ErrorAction SilentlyContinue))
-          Write-Host ("go_present=" + [bool](Get-Command go.exe -ErrorAction SilentlyContinue))
           Write-Host ("gh_present=" + [bool](Get-Command gh.exe -ErrorAction SilentlyContinue))
+          Write-Host ("git_present=" + [bool](Get-Command git.exe -ErrorAction SilentlyContinue))
