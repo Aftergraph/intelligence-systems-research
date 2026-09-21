@@ -1,0 +1,126 @@
+name: Final restore native Codex after NEXUM bootstrap
+
+on:
+  push:
+    branches:
+      - ops/codex-nexum-jonas-lenovo-20260921
+    paths:
+      - .github/workflows/codex-nexum-final-restore.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: codex-nexum-final-restore
+  cancel-in-progress: false
+
+jobs:
+  restore:
+    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 1
+
+      - name: Restore fail-closed native Codex state
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $out = Join-Path $env:GITHUB_WORKSPACE 'final-state.json'
+          $e = [ordered]@{
+            schema = 'aftergraph.codex-nexum.final-state.v1'
+            timestamp_utc = [DateTime]::UtcNow.ToString('o')
+            node = $env:COMPUTERNAME
+            runner = $env:RUNNER_NAME
+            bridge_source_preserved = $false
+            bridge_config_preserved = $false
+            proxy_stopped = $false
+            native_codex_restored = $false
+            startup_removed = $false
+            activate_script_present = $false
+            deactivate_script_present = $false
+            mode = 'blocked'
+            blocker = $null
+          }
+          function Save-State { $e | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $out -Encoding utf8 }
+          try {
+            $profiles = @(Get-CimInstance Win32_UserProfile | Where-Object {
+              -not $_.Special -and $_.Loaded -and $_.LocalPath -like 'C:\Users\*'
+            })
+            $target = $profiles | Where-Object {
+              Test-Path -LiteralPath (Join-Path $_.LocalPath '.codex-proxy\config.json')
+            } | Select-Object -First 1
+            if (-not $target) { throw 'bridge_profile_not_found' }
+            $profile = $target.LocalPath
+            $sid = $target.SID
+            $proxyHome = Join-Path $profile '.codex-proxy'
+            $proxyConfig = Join-Path $proxyHome 'config.json'
+            $codexHome = Join-Path $profile '.codex'
+            $src = 'C:\Aftergraph\CodexNexum\codex-proxy'
+            if (-not (Test-Path -LiteralPath (Join-Path $src '.git'))) { throw 'bridge_source_missing' }
+            $e.bridge_source_preserved = $true
+            if (-not (Test-Path -LiteralPath $proxyConfig)) { throw 'bridge_config_missing' }
+            $e.bridge_config_preserved = $true
+
+            $bunCandidates = @(
+              (Join-Path $profile '.bun\bin\bun.exe'),
+              'C:\Program Files\Bun\bun.exe'
+            )
+            $bun = $bunCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+            if (-not $bun) {
+              $cmd = Get-Command bun -ErrorAction SilentlyContinue
+              if ($cmd) { $bun = $cmd.Source }
+            }
+            if (-not $bun) { throw 'bun_not_found' }
+
+            Push-Location $src
+            try {
+              & $bun run src/cli.ts stop --config $proxyConfig --codex-home $codexHome
+              if ($LASTEXITCODE -ne 0) { throw 'proxy_stop_failed' }
+            } finally { Pop-Location }
+            $e.proxy_stopped = $true
+
+            $codexConfig = Join-Path $codexHome 'config.toml'
+            if (Test-Path -LiteralPath $codexConfig) {
+              $text = Get-Content -LiteralPath $codexConfig -Raw
+              if ($text -match '# --- codex-proxy:begin ---') { throw 'proxy_marker_remains' }
+            }
+            $e.native_codex_restored = $true
+
+            $runKey = "Registry::HKEY_USERS\$sid\Software\Microsoft\Windows\CurrentVersion\Run"
+            if (Test-Path -LiteralPath $runKey) {
+              Remove-ItemProperty -LiteralPath $runKey -Name 'AftergraphCodexNexumBridge' -ErrorAction SilentlyContinue
+              $left = Get-ItemProperty -LiteralPath $runKey -Name 'AftergraphCodexNexumBridge' -ErrorAction SilentlyContinue
+              if ($left) { throw 'startup_entry_remains' }
+            }
+            $e.startup_removed = $true
+
+            $root = 'C:\Aftergraph\CodexNexum'
+            $e.activate_script_present = Test-Path -LiteralPath (Join-Path $root 'activate-nexum-codex.ps1')
+            $e.deactivate_script_present = Test-Path -LiteralPath (Join-Path $root 'deactivate-nexum-codex.ps1')
+            if (-not $e.activate_script_present -or -not $e.deactivate_script_present) {
+              throw 'activation_handoff_scripts_missing'
+            }
+
+            $e.mode = 'native_restored_activation_ready'
+          } catch {
+            $e.mode = 'blocked'
+            $e.blocker = ('final_restore_exception:' + $_.Exception.Message)
+          } finally {
+            Save-State
+          }
+
+      - name: Commit sanitized final-state receipt
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force -Path 'evidence/ops' | Out-Null
+          Copy-Item 'final-state.json' 'evidence/ops/codex-nexum-final-state.json' -Force
+          git config user.name "Aftergraph Runner"
+          git config user.email "runner@aftergraph.local"
+          git add evidence/ops/codex-nexum-final-state.json
+          if (-not (git diff --cached --quiet)) {
+            git commit -m "chore(ops): record final Codex NEXUM state"
+            git push origin "HEAD:$env:GITHUB_REF_NAME"
+          }
