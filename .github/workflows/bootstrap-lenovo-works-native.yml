@@ -107,27 +107,15 @@ jobs:
           Write-Host ("works_edge_wrong_enrollment_http=" + $enrollCode)
           if ($enrollCode -ne 401) { throw ("works_enrollment_not_fail_closed_http_" + $enrollCode) }
 
-      - name: Discover credential brokers without reading secret values
+      - name: Verify local GitHub credential broker without enumerating secrets
         shell: powershell
         run: |
-          $ErrorActionPreference = 'Continue'
-          gh auth status 2>&1 | ForEach-Object { Write-Host $_ }
-          foreach ($target in @('Aftergraph/intelligence-systems-research','Aftergraph/works-execution','Aftergraph/aie')) {
-            Write-Host ("repo_secret_names_target=" + $target)
-            $rows = @(& gh secret list --repo $target 2>$null)
-            foreach ($row in $rows) {
-              $name = ($row -split "\s+")[0]
-              if ($name -match 'WORKS|ENROLL') { Write-Host ("secret_name=" + $name) }
-            }
-          }
-          Write-Host 'org_secret_names_target=Aftergraph'
-          $orgRows = @(& gh secret list --org Aftergraph 2>$null)
-          foreach ($row in $orgRows) {
-            $name = ($row -split "\s+")[0]
-            if ($name -match 'WORKS|ENROLL') { Write-Host ("secret_name=" + $name) }
-          }
-          $global:LASTEXITCODE = 0
-          exit 0
+          $ErrorActionPreference = 'Stop'
+          $auth = (& gh auth status 2>&1 | Out-String)
+          if ($LASTEXITCODE -ne 0) { throw 'github_cli_not_authenticated' }
+          if ($auth -notmatch 'JonasAbde') { throw 'github_cli_wrong_identity' }
+          Write-Host 'github_credential_broker=authenticated'
+          Write-Host 'secret_values_enumerated=false'
 
       - name: Probe optional Lenovo to production VDS SSH path
         shell: powershell
