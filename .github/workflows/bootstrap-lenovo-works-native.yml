@@ -104,6 +104,24 @@ jobs:
           Write-Host ("works_edge_wrong_enrollment_http=" + $enrollCode)
           if ($enrollCode -ne 401) { throw ("works_enrollment_not_fail_closed_http_" + $enrollCode) }
 
+      - name: Discover credential brokers without reading secret values
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Continue'
+          gh auth status 2>&1 | ForEach-Object { Write-Host $_ }
+          foreach ($target in @('Aftergraph/intelligence-systems-research','Aftergraph/works-execution','Aftergraph/aie')) {
+            Write-Host ("repo_secret_names_target=" + $target)
+            gh secret list --repo $target 2>$null | ForEach-Object {
+              $name = ($_ -split "\\s+")[0]
+              if ($name -match 'WORKS|ENROLL') { Write-Host ("secret_name=" + $name) }
+            }
+          }
+          Write-Host 'org_secret_names_target=Aftergraph'
+          gh secret list --org Aftergraph 2>$null | ForEach-Object {
+            $name = ($_ -split "\\s+")[0]
+            if ($name -match 'WORKS|ENROLL') { Write-Host ("secret_name=" + $name) }
+          }
+
       - name: Discover existing Aftergraph control-plane configuration without exposing values
         shell: powershell
         run: |
