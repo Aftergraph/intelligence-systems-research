@@ -80,6 +80,30 @@ jobs:
           Write-Host ("worker_binary_present=" + (Test-Path (Join-Path $root 'works-worker.exe')))
           Write-Host ("installer_present=" + (Test-Path (Join-Path $src 'ops\windows\install-works-worker.ps1')))
 
+      - name: Prove Lenovo to canonical WORKS edge
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $base = 'https://works.rendetalje.dk'
+          try {
+            $health = Invoke-WebRequest -UseBasicParsing -Uri ($base + '/healthz') -TimeoutSec 10
+            Write-Host ("works_edge_health_http=" + [int]$health.StatusCode)
+          } catch {
+            $code = if ($_.Exception.Response) { [int]$_.Exception.Response.StatusCode } else { 0 }
+            Write-Host ("works_edge_health_http=" + $code)
+            if ($code -eq 0) { throw 'works_edge_unreachable' }
+          }
+
+          $body = @{ worker_id = 'wrkr_probe_only'; challenge = 'deliberately-wrong-enrollment-challenge' } | ConvertTo-Json -Compress
+          try {
+            $resp = Invoke-WebRequest -UseBasicParsing -Method Post -Uri ($base + '/v1/workers/enroll') -ContentType 'application/json' -Body $body -TimeoutSec 10
+            $enrollCode = [int]$resp.StatusCode
+          } catch {
+            $enrollCode = if ($_.Exception.Response) { [int]$_.Exception.Response.StatusCode } else { 0 }
+          }
+          Write-Host ("works_edge_wrong_enrollment_http=" + $enrollCode)
+          if ($enrollCode -ne 401) { throw ("works_enrollment_not_fail_closed_http_" + $enrollCode) }
+
       - name: Discover existing Aftergraph control-plane configuration without exposing values
         shell: powershell
         run: |
