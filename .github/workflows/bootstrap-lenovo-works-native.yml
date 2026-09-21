@@ -1,0 +1,45 @@
+name: Bootstrap Lenovo WORKS Native
+
+on:
+  push:
+    branches:
+      - bootstrap/lenovo-works-native
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: self-hosted
+    timeout-minutes: 10
+    steps:
+      - name: Prove physical host
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Write-Host ("host=" + [Environment]::MachineName)
+          Write-Host ("runner_name=" + $env:RUNNER_NAME)
+          Write-Host ("runner_os=" + $env:RUNNER_OS)
+          Write-Host ("runner_arch=" + $env:RUNNER_ARCH)
+          if ([Environment]::MachineName -ne 'JONAS-LENOVO') {
+            throw "wrong_host"
+          }
+
+      - name: Inspect bootstrap prerequisites without exposing secrets
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $paths = @(
+            "$env:LOCALAPPDATA\Aftergraph\WORKS\worker.secrets.json",
+            "$env:LOCALAPPDATA\Aftergraph\WORKS\works-worker.exe",
+            "C:\Aftergraph\WORKS\worker.secrets.json",
+            "C:\Aftergraph\WORKS\works-worker.exe"
+          )
+          foreach ($p in $paths) {
+            Write-Host ("exists " + $p + "=" + (Test-Path -LiteralPath $p))
+          }
+          Write-Host ("env_WORKS_ENROLL_SECRET_present=" + (-not [string]::IsNullOrWhiteSpace($env:WORKS_ENROLL_SECRET)))
+          Write-Host ("env_WORKS_API_present=" + (-not [string]::IsNullOrWhiteSpace($env:WORKS_API)))
+          Write-Host ("git_present=" + [bool](Get-Command git.exe -ErrorAction SilentlyContinue))
+          Write-Host ("go_present=" + [bool](Get-Command go.exe -ErrorAction SilentlyContinue))
+          Write-Host ("gh_present=" + [bool](Get-Command gh.exe -ErrorAction SilentlyContinue))
