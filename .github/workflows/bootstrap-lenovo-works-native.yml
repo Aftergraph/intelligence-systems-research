@@ -26,6 +26,12 @@ jobs:
           Write-Host ("runner_arch=" + $env:RUNNER_ARCH)
           if ([Environment]::MachineName -ne 'JONAS-LENOVO') { throw "wrong_host" }
 
+      - name: Install canonical Go toolchain
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version: '1.23'
+          cache: false
+
       - name: Bootstrap WORKS source and worker binary
         shell: powershell
         run: |
@@ -49,10 +55,19 @@ jobs:
             Invoke-WebRequest -Headers $headers -Uri $asset.browser_download_url -OutFile (Join-Path $root 'works-worker.exe')
             Write-Host ("worker_source=release:" + $asset.name)
           } else {
-            Write-Host 'worker_source=no_windows_release_asset'
+            Write-Host 'worker_source=local_canonical_build'
+            Push-Location $src
+            try {
+              go build -trimpath -o (Join-Path $root 'works-worker.exe') ./cmd/works-worker
+              if ($LASTEXITCODE -ne 0) { throw 'works_worker_build_failed' }
+            } finally { Pop-Location }
           }
 
+          $workerExe = Join-Path $root 'works-worker.exe'
+          if (-not (Test-Path -LiteralPath $workerExe -PathType Leaf)) { throw 'worker_binary_missing_after_bootstrap' }
+          $workerSha = (Get-FileHash -Algorithm SHA256 -LiteralPath $workerExe).Hash.ToLowerInvariant()
           Write-Host ("works_source_head=" + (git -C $src rev-parse HEAD))
+          Write-Host ("worker_sha256=" + $workerSha)
           Write-Host ("worker_binary_present=" + (Test-Path (Join-Path $root 'works-worker.exe')))
           Write-Host ("installer_present=" + (Test-Path (Join-Path $src 'ops\windows\install-works-worker.ps1')))
 
