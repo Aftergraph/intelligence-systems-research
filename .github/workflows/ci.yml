@@ -201,13 +201,13 @@ jobs:
   jev-runner-probe:
     name: Jev Aftergraph runner probe
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: [self-hosted, linux, x64, aftergraph-ci]
+    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
     timeout-minutes: 5
     steps:
       - name: Runner identity probe
-        shell: bash
+        shell: pwsh
         run: |
-          set -euo pipefail
-          echo "AFTERGRAPH_RUNNER_PROBE=PASS"
-          uname -a
-          python3 --version
+          $ErrorActionPreference = "Stop"
+          Write-Output "AFTERGRAPH_RUNNER_PROBE=PASS"
+          Write-Output $env:COMPUTERNAME
+          python --version
