@@ -1,0 +1,92 @@
+name: STUDY-015 Cross-Repo Probe Fabric
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe-fabric:
+    name: Exact-head black-box composition probe
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout ISR
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Checkout AIE exact probe head
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: Aftergraph/aie
+          ref: e59547e8f565c4eab857d0171122effd283726d4
+          path: components/aie
+
+      - name: Checkout Trust Gateway exact probe head
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: Aftergraph/trust-gateway
+          ref: 9fe0342f5bcb314383daa4842e4655d6e9eb1418
+          path: components/trust-gateway
+
+      - name: Checkout WORKS exact probe head
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: Aftergraph/works-execution
+          ref: 083674ea2d6bdecd0d5d5585e0e8684f5e43b399
+          path: components/works-execution
+
+      - name: Checkout Runtime exact probe head
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: Aftergraph/runtime
+          ref: 368cedbe5dd6c662bb7db0aec916c71967a5bd3a
+          path: components/runtime
+
+      - name: Checkout Sentinel exact probe head
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: Aftergraph/sentinel
+          ref: 6625237ec9e44c1c87548b10b4e655911938378a
+          path: components/sentinel
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.11"
+
+      - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v5
+        with:
+          go-version: "1.24.x"
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "24"
+
+      - name: Enable pnpm
+        run: corepack enable
+
+      - name: Install ISR validation dependencies
+        run: pip install -r requirements-test.txt
+
+      - name: Install Runtime locked dependencies
+        working-directory: components/runtime
+        run: pnpm install --frozen-lockfile
+
+      - name: Run cross-repo exact-head probe fabric
+        run: |
+          python -m experiments.study015.probe_fabric             --component-root aie=components/aie             --component-root trust-gateway=components/trust-gateway             --component-root works-execution=components/works-execution             --component-root runtime=components/runtime             --component-root sentinel=components/sentinel             --output study015-composition-probe.json
+
+      - name: Verify composition receipt
+        run: |
+          python - <<'PY'
+          import json
+          p = json.load(open("study015-composition-probe.json", encoding="utf-8"))
+          assert p["schema"] == "study015.composition-probe/1.0"
+          assert p["component_count"] == 5
+          assert len(p["probe_root_sha256"]) == 64
+          assert p["network_used_by_component_probes"] is False
+          print("STUDY015_COMPOSITION_PROBE=PASS")
+          print("probe_root_sha256=" + p["probe_root_sha256"])
+          PY
