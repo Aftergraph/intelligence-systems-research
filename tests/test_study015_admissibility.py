@@ -35,7 +35,7 @@ def freeze(row):
     return {
         "status":"FROZEN",
         "implementation_fingerprint":row["implementation_fingerprint"],
-        "source_heads":row["source_heads"],
+        "source_heads":copy.deepcopy(row["source_heads"]),
     }
 
 
