@@ -1,0 +1,22 @@
+{
+  "schema": "study015.source-head-manifest/0.1.0",
+  "study_id": "STUDY-015",
+  "status": "DISCOVERY_SNAPSHOT_NOT_FROZEN",
+  "observed_date": "2026-09-25",
+  "heads": {
+    "after-graph-governance": "84d3cda4c3ce669ce4d6fbb031edbd3f514a3527",
+    "aie": "4c8b871478183557d147a6670a57c5b5e7b15024",
+    "trust-gateway": "ba5027241555393c81f71cdf63ded50093bc87d2",
+    "runtime": "e5630bd3d23da9ea9026713b20b5306b61162926",
+    "works-execution": "7ea30cfe8550b280d96b25191774de15d9904e64",
+    "sentinel": "eb51f824af2279ee3eee5daa8572bd54a34b3ca8",
+    "continuum": "2e409acdbc329a621ecc3623af391b065a1f8061",
+    "context-continuity": "f9256490358e416c7e2556587042f2e250d4b032",
+    "skills-vault": "c99a9f74855923e7aa6e8efb2c74574049a780dc",
+    "model-registry": "6da2ee23b4b6c90bf348df9dc7ad9f8273a31053",
+    "STEWARD-by-Aftergraph": "c22524d890952fa554693da3a011e5a92dbd2e9d",
+    "fihim": "9b579c8c855d762cd5edce7b4e19c25e598f1163",
+    "war-room": "5c0baed576dda766560d2b471cd303c2b02d847a"
+  },
+  "freeze_rule": "At G15-3 freeze, refresh every head from canonical default branch, compute canonical fingerprint, and disallow confirmatory observations whose source_heads differ."
+}
