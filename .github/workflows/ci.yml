@@ -197,3 +197,17 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m jev_engineering.cli benchmark-preflight benchmarks/hermes_qwen_control_plane_ablation.yaml
+
+  jev-runner-probe:
+    name: Jev Aftergraph runner probe
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, linux, x64, aftergraph-ci]
+    timeout-minutes: 5
+    steps:
+      - name: Runner identity probe
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "AFTERGRAPH_RUNNER_PROBE=PASS"
+          uname -a
+          python3 --version
