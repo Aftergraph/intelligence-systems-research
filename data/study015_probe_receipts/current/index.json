@@ -1,0 +1,63 @@
+{
+  "schema": "study015.probe-bundle-index/1.0",
+  "study_id": "STUDY-015",
+  "status": "EXACT_HEAD_COMPONENT_PROBE_BUNDLE",
+  "created_utc": "2026-09-25T01:25:00Z",
+  "receipts": [
+    {
+      "component": "aie",
+      "repository": "Aftergraph/aie",
+      "source_head": "c340d7a3fcf23a84b03ba493ca8fc938ea581db6",
+      "workflow_run_id": 36081669099,
+      "artifact_id": 10841699862,
+      "artifact_name": "study015-probe-aie-c340d7a3fcf23a84b03ba493ca8fc938ea581db6",
+      "artifact_digest": "sha256:3adf27635bb0358eddea4a928469fbf2ca46d0aff0cc56e40fba5fc6d699723d",
+      "receipt_path": "aie.json",
+      "receipt_sha256": "4c1eb400c0b1e158c13f198d916881f1978ec04daae3711315bceb68277b2ab3"
+    },
+    {
+      "component": "trust-gateway",
+      "repository": "Aftergraph/trust-gateway",
+      "source_head": "0b4030751d04f1b31bc2cc8d4a5e584729e9be02",
+      "workflow_run_id": 36081672286,
+      "artifact_id": 10841714654,
+      "artifact_name": "study015-probe-trust-gateway-0b4030751d04f1b31bc2cc8d4a5e584729e9be02",
+      "artifact_digest": "sha256:aaaf52f3f01f9c69bfc3975d87b28aa3a8cf041900ac73af47459195b1054b10",
+      "receipt_path": "trust-gateway.json",
+      "receipt_sha256": "fb73eeab4a250a83d1206d2c6d674271c3c5ce618dcdd494171cc665d8df3a0d"
+    },
+    {
+      "component": "works-execution",
+      "repository": "Aftergraph/works-execution",
+      "source_head": "be0295155ac3ba357e4a60ece15eee1387847def",
+      "workflow_run_id": 36081675999,
+      "artifact_id": 10842500014,
+      "artifact_name": "study015-probe-works-execution-be0295155ac3ba357e4a60ece15eee1387847def",
+      "artifact_digest": "sha256:67678d108aa02135375ee8f84ded62aea5269be9886c3dac30411a57d064cc08",
+      "receipt_path": "works-execution.json",
+      "receipt_sha256": "2220df47cc4a1a74d78a0bc4527e1a118f1e5044bd588d73993dca90ad6d54b4"
+    },
+    {
+      "component": "runtime",
+      "repository": "Aftergraph/runtime",
+      "source_head": "7dc0a336e06e7528f471bbd5676ddb50df6e9046",
+      "workflow_run_id": 36081679652,
+      "artifact_id": 10842341728,
+      "artifact_name": "study015-probe-runtime-7dc0a336e06e7528f471bbd5676ddb50df6e9046",
+      "artifact_digest": "sha256:e863a26d543af11de8a82bb21b26f65cb10b3c4f4b01229c4705d84a86dee3a1",
+      "receipt_path": "runtime.json",
+      "receipt_sha256": "bf1116360010847cb7b24c7facbaf0937a3fc4d4f23919ae2a70ea3b2639f86a"
+    },
+    {
+      "component": "sentinel",
+      "repository": "Aftergraph/sentinel",
+      "source_head": "4125f66b0c6d476966feb017ec7ddf3e22ec9459",
+      "workflow_run_id": 36081684289,
+      "artifact_id": 10842326636,
+      "artifact_name": "study015-probe-sentinel-4125f66b0c6d476966feb017ec7ddf3e22ec9459",
+      "artifact_digest": "sha256:2952b5965673850fec09e22dda8907a27df3aae16d72473762fa575d6223e210",
+      "receipt_path": "sentinel.json",
+      "receipt_sha256": "6bcd8861c3c745759a515601c736e2ae62fe9462526893ad102b8a7801946344"
+    }
+  ]
+}
