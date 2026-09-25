@@ -1,0 +1,58 @@
+name: Materialize Jev v2.11.1 canonical source
+
+on:
+  push:
+    paths:
+      - "research/jev/import/v2.11.1/READY"
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: ${{ github.event.head_commit.message != 'research: materialize Jev v2.11.1 canonical source' }}
+    runs-on: [self-hosted, linux, x64, aftergraph-ci]
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+      - name: Reconstruct capsule
+        shell: bash
+        run: |
+          set -euo pipefail
+          IMPORT="research/jev/import/v2.11.1"
+          cat "$IMPORT"/chunk-*.b64 > "$RUNNER_TEMP/jev-v2.11.1-source.b64"
+          base64 --decode "$RUNNER_TEMP/jev-v2.11.1-source.b64" > "$RUNNER_TEMP/jev-v2.11.1-source.tar.gz"
+          printf '%s  %s\n' "2b8e9ecc870d5d0b6829bcb57afc2ff72a76d1dbb71da3a9332f9c900a169793" "$RUNNER_TEMP/jev-v2.11.1-source.tar.gz" | sha256sum -c -
+      - name: Materialize canonical source tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          TARGET="research/jev/source"
+          rm -rf "$TARGET"
+          mkdir -p "$TARGET"
+          tar -xzf "$RUNNER_TEMP/jev-v2.11.1-source.tar.gz" -C "$TARGET"
+          test ! -e "$TARGET/CHANGELOG.md.tmp"
+          test ! -d "$TARGET/dist"
+          grep -q 'version = "2.11.1"' "$TARGET/pyproject.toml"
+      - name: Source safety gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 research/jev/source/scripts/verify_no_secrets.py research/jev/source
+          python3 research/jev/source/scripts/verify_release_relocatable.py research/jev/source
+          python3 -m compileall -q research/jev/source/src
+      - name: Commit exact materialized source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "aftergraph-ci"
+          git config user.email "aftergraph-ci@users.noreply.github.com"
+          git add research/jev/source
+          if git diff --cached --quiet; then
+            echo "Source already materialized; nothing to commit."
+            exit 0
+          fi
+          git commit -m "research: materialize Jev v2.11.1 canonical source"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
