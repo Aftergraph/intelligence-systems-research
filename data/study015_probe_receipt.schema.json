@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/study015-probe/1.0",
+  "title": "STUDY-015 Component Probe Receipt",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "component",
+    "source_head",
+    "execution_class",
+    "network_used",
+    "mechanisms",
+    "observations"
+  ],
+  "properties": {
+    "schema": { "const": "study015.probe/1.0" },
+    "component": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "source_head": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "execution_class": { "const": "LOCAL_IMPLEMENTATION_PROBE" },
+    "network_used": { "const": false },
+    "mechanisms": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "type": "boolean" }
+    },
+    "observations": {
+      "type": "object"
+    }
+  }
+}
