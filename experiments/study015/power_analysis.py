@@ -19,7 +19,7 @@ def norm_ppf(p: float) -> float:
         t = math.sqrt(-2 * math.log(1 - p))
         sign = 1
     num = a[0] + a[1] * t + a[2] * t * t
-    den = 1 + b[0] * t + b[1] * t + b[2] * t * t * t
+    den = 1 + b[0] * t + b[1] * t * t + b[2] * t * t * t
     return sign * (t - num / den)
 
 
