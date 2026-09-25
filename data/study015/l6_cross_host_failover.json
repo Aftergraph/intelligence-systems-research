@@ -1,0 +1,132 @@
+{
+  "schema": "study015.evidence-checkpoint/1.0",
+  "study_id": "STUDY-015",
+  "checkpoint": "L6_CROSS_HOST_CAUSAL_FAILOVER",
+  "run_completed_at": "2026-09-25T20:00:45Z",
+  "status": "VERIFIED_L6_CROSS_HOST_CAUSAL_FAILOVER",
+  "provenance": {
+    "repository": "Aftergraph/runtime",
+    "runner_pr": 212,
+    "phase_a_runner_head": "9d3afa2a08050301a725fff38686bb004093a043",
+    "phase_a_workflow_run_id": 36180579530,
+    "phase_a_job_id": 108221643076,
+    "phase_a_artifact_id": 10884830989,
+    "phase_a_artifact_name": "study015-l6-cross-host-handoff",
+    "phase_a_artifact_size_bytes": 850080,
+    "phase_a_artifact_zip_sha256": "56b4ede8036424e063e5259ad9663175a3ae404cb5939752939a859c3151f2fc",
+    "phase_a_handoff_tar_sha256": "27704eee7a694fbafb4bbbd4f4e150907b4c953c087c55e45946ed6950c21db1",
+    "phase_a_manifest_sha256": "0f1acd4e1ebabe9571ddffbcf018ef2db948862c87d38eef4b49e072ddc0a6ea",
+    "phase_b_runner_head": "1bba444000daa17cd05f56aac46fc6c996d52016",
+    "phase_b_workflow_run_id": 36182956767,
+    "phase_b_job_id": 108229711916,
+    "phase_b_artifact_id": 10885480591,
+    "phase_b_artifact_name": "study015-l6-cross-host-resume",
+    "phase_b_artifact_size_bytes": 1553,
+    "phase_b_artifact_zip_sha256": "e82ce37407c33351c5e37f394cd6ce87676b386191406f26fa75d57532d8a127",
+    "steward_pr": 47,
+    "steward_head": "0dc07504bd926d765ea71467bfd2f8177d40cb0c",
+    "works_pr": 153,
+    "works_head": "d7b78a232c6dca330181643bd1a73aa24b4c31b2",
+    "trust_gateway_pr": 136,
+    "trust_gateway_head": "55e734f826fcf6721c0f8f698a7776fa2154a38a",
+    "proof_target_pr": 211,
+    "proof_target_head": "0c280233565ba5c98d259679ba5ef6a2663b8283",
+    "superseded_phase_b_job_id": 108224114332,
+    "superseded_phase_b_conclusion": "cancelled",
+    "scheduling_note": "The first Host B job was queued with the repo-scoped aie-interop label and was later cancelled. The canonical Host B resume consumed the exact immutable Phase A artifact through the existing Runtime trusted generic Linux pool."
+  },
+  "receipt": {
+    "schema": "study015.l6-cross-host-failover/1.0",
+    "execution_class": "LIVE_INTEGRATION_CONFORMANCE",
+    "evidence_class": "L6_CROSS_HOST_CAUSAL_FAILOVER_CANDIDATE",
+    "performance_claim": false,
+    "g15_9_authorized": false,
+    "production_deployment": false,
+    "network_used": true,
+    "heads": {
+      "aie": "bdb36512e57e1bb1f2ec05312d725827267eafc1",
+      "runtime": "7dc0a336e06e7528f471bbd5676ddb50df6e9046",
+      "sentinel": "4125f66b0c6d476966feb017ec7ddf3e22ec9459",
+      "trust_gateway": "55e734f826fcf6721c0f8f698a7776fa2154a38a",
+      "works": "d7b78a232c6dca330181643bd1a73aa24b4c31b2"
+    },
+    "host_a": {
+      "hostname": "vmi3517816",
+      "machine_id_sha256": "f39a48b5cd616819f99f80e274f00fc46ac548d8c9ef83537f8e1b6e66644adc",
+      "runner_name": "vds-aftergraph-ci-runtime"
+    },
+    "host_b": {
+      "hostname": "vps-70333b3c",
+      "machine_id_sha256": "f24637e0fe93a44ef6be6cb3fda4ea96855497c4e6b73fe5b1b95754cb1228db",
+      "runner_name": "vps-ci-01"
+    },
+    "proof_target": {
+      "branch": "study015/l6-cross-host-proof-target",
+      "pull_request": 211,
+      "remote_readback": "0c280233565ba5c98d259679ba5ef6a2663b8283",
+      "repository": "Aftergraph/runtime",
+      "sha_a": "efc536b1095715124e2a5455161792f030c974a6",
+      "sha_b": "0c280233565ba5c98d259679ba5ef6a2663b8283"
+    },
+    "identity": {
+      "action_id": "act_dddddddddddddddddddddddddddddddd",
+      "admission_decision_id": "pdr_88888888888888888888888888888888",
+      "attempt_id": "attempt/study015/live-4",
+      "causal_id": "causal/study015/live-4",
+      "effect_id": "effect/study015/live-4",
+      "exact_subject": "git:Aftergraph/runtime@0c280233565ba5c98d259679ba5ef6a2663b8283",
+      "execution_context_id": "ctx_45a494a4d6bdf6897ac0f56d8ee55f14",
+      "execution_pdr_id": "pdr_2bd82f02ee0eb50f06b97f174f22afd3",
+      "mission_id": "mis_study015_l6_cross_host",
+      "runtime_dispatch_id": "rdisp/21e8155383f3a465",
+      "sentinel_receipt_id": "2e753bc026351d09a7e524a4cfad7a7db1e25fd250e5165ba565762390c56454",
+      "trace_id": "trc_e4371a67c117ea5a4701f69db4fb364e",
+      "work_id": "wrk_0fb3186b1ce15c36fd7ca3add10c5df6",
+      "worker_lease_id": "lse_31b852e8ec2032714e563fcf1893215a",
+      "works_execution_id": "wexec/idem/study015/live-4"
+    },
+    "handoff": {
+      "files_verified": true,
+      "fresh_host_b_secrets": true,
+      "phase_a_sha256": "0f1acd4e1ebabe9571ddffbcf018ef2db948862c87d38eef4b49e072ddc0a6ea",
+      "secrets_transferred": false,
+      "tg_audit_chain_transferred": true,
+      "works_relocated": true
+    },
+    "cross_host": {
+      "durable_verified_outcome": true,
+      "hostname_changed": true,
+      "machine_identity_changed": true,
+      "same_execution_context": true,
+      "same_trace": true,
+      "same_work": true,
+      "same_works_execution": true,
+      "single_external_effect": true
+    },
+    "hostile": {
+      "prior_l5_execution_context_rejected": true,
+      "revoked_authority_rejected_before_egress": true,
+      "stale_verification_head_rejected": true,
+      "wrong_pdr_rejected": true
+    },
+    "prior_l5_receipt_sha256": "9bb6d0ed6833d09f7b5e9e0d2b70b3eeb7c3aba922fd887eed3c1e91fced7178",
+    "causal_slice_sha256": "0a1cc344c21becf0276cf41598943b6abd72ffd58bfb95f9e6c7369e1af3a8ff"
+  },
+  "claim_boundary": {
+    "performance_claim": false,
+    "g15_9_authorized": false,
+    "production_deployment": false,
+    "world_first_claim": false,
+    "industry_superiority_claim": false
+  },
+  "predecessor": {
+    "checkpoint": "L5_DURABLE_CAUSAL_RECOVERY",
+    "receipt_sha256": "9bb6d0ed6833d09f7b5e9e0d2b70b3eeb7c3aba922fd887eed3c1e91fced7178"
+  },
+  "next_gate_candidate": {
+    "name": "L7_INDETERMINATE_EFFECT_RECONCILIATION",
+    "purpose": "Inject failure after the remote system may have committed the effect but before the local completion receipt is durable. Recover on another host by reconciling exact remote state before any retry, so an indeterminate effect is neither duplicated nor falsely declared absent.",
+    "performance_study": false,
+    "authorizes_g15_9": false
+  }
+}
