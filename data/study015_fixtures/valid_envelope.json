@@ -63,5 +63,7 @@
     "verification_cost_usd": 0.003,
     "control_plane_cost_usd": 0.002
   },
-  "recorded_at": "2026-09-25T00:00:00Z"
+  "recorded_at": "2026-09-25T00:00:00Z",
+  "execution_class": "DRY_RUN",
+  "is_live": false
 }
