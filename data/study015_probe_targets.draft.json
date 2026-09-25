@@ -1,0 +1,85 @@
+{
+  "schema": "study015.probe-targets/0.1.0",
+  "study_id": "STUDY-015",
+  "status": "DRAFT_FRONTIER_INTEGRATION",
+  "targets": [
+    {
+      "component": "aie",
+      "repository": "Aftergraph/aie",
+      "ref": "research/study015-probe-v1",
+      "expected_head": "e59547e8f565c4eab857d0171122effd283726d4",
+      "command": ["python", "scripts/study015_probe.py"],
+      "required_mechanisms": [
+        "authority_admission",
+        "execution_time_revalidation",
+        "delegation_attenuation",
+        "budget_conservation",
+        "cascading_revocation",
+        "revoked_execution_fails_closed"
+      ]
+    },
+    {
+      "component": "trust-gateway",
+      "repository": "Aftergraph/trust-gateway",
+      "ref": "research/study015-probe-v1",
+      "expected_head": "9fe0342f5bcb314383daa4842e4655d6e9eb1418",
+      "command": ["node", "scripts/study015-probe.js"],
+      "required_mechanisms": [
+        "capability_policy_enforcement",
+        "destructive_requires_approval",
+        "worker_cannot_self_approve",
+        "operator_approval_executes_once",
+        "invalid_identity_fails_closed",
+        "tamper_evident_audit_verifies"
+      ]
+    },
+    {
+      "component": "works-execution",
+      "repository": "Aftergraph/works-execution",
+      "ref": "research/study015-probe-v1",
+      "expected_head": "083674ea2d6bdecd0d5d5585e0e8684f5e43b399",
+      "command": ["go", "run", "./cmd/study015-probe"],
+      "required_mechanisms": [
+        "durable_dispatch_acceptance",
+        "stable_replay_correlation",
+        "stale_authority_rejected",
+        "budget_ceiling_fail_closed",
+        "effect_exactly_once",
+        "unknown_effect_is_indeterminate",
+        "completion_not_verification",
+        "self_verification_rejected",
+        "independent_evidence_bound_verdict",
+        "revocation_fences_effects"
+      ]
+    },
+    {
+      "component": "runtime",
+      "repository": "Aftergraph/runtime",
+      "ref": "research/study015-probe-v1",
+      "expected_head": "368cedbe5dd6c662bb7db0aec916c71967a5bd3a",
+      "command": ["pnpm", "probe:study015"],
+      "required_mechanisms": [
+        "governed_graph_rewrite",
+        "rewrite_authority_required",
+        "rewrite_idempotency",
+        "risk_escalation_rejected",
+        "topology_selection",
+        "topology_policy_validation"
+      ]
+    },
+    {
+      "component": "sentinel",
+      "repository": "Aftergraph/sentinel",
+      "ref": "research/study015-probe-v1",
+      "expected_head": "6625237ec9e44c1c87548b10b4e655911938378a",
+      "command": ["npm", "run", "probe:study015", "--silent"],
+      "required_mechanisms": [
+        "independent_verification_pipeline",
+        "exact_subject_sha_binding",
+        "sealed_evidence",
+        "sha_mismatch_fails_before_execution",
+        "zero_evidence_cannot_confirm"
+      ]
+    }
+  ]
+}
