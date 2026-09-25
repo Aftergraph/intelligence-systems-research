@@ -3,10 +3,10 @@ name: STUDY-015 Evidence Integrity
 on:
   pull_request:
     branches:
-      - research/study015-live-causal-l3-evidence-v1
+      - research/study015-l4-repeatability-evidence-v1
   push:
     branches:
-      - research/study015-l4-repeatability-evidence-v1
+      - research/study015-l5-durable-recovery-evidence-v1
   workflow_dispatch:
 
 permissions:
@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   evidence:
-    name: L3 + L4 receipt integrity and claim boundary
+    name: L3 + L4 + L5 receipt integrity and claim boundary
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -25,4 +25,4 @@ jobs:
       - name: Run STUDY-015 evidence-only tests
         run: |
           python -m pip install -q pytest
-          python -m pytest -q             tests/test_study015_live_causal_evidence.py             tests/test_study015_l4_repeatability_evidence.py
+          python -m pytest -q             tests/test_study015_live_causal_evidence.py             tests/test_study015_l4_repeatability_evidence.py             tests/test_study015_l5_durable_recovery_evidence.py
