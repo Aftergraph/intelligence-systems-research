@@ -1,0 +1,112 @@
+{
+  "schema": "study015.evidence-checkpoint/1.0",
+  "study_id": "STUDY-015",
+  "checkpoint": "L4_INDEPENDENT_REPEATABILITY",
+  "recorded_at": "2026-09-25T17:24:30Z",
+  "status": "VERIFIED_L4_INDEPENDENT_REPEATABILITY",
+  "provenance": {
+    "repository": "Aftergraph/runtime",
+    "runner_pr": 205,
+    "runner_head": "67845eaa6dd0c1a84726d784fed779e663c37187",
+    "workflow_run_id": 36166670115,
+    "artifact_id": 10877243342,
+    "artifact_name": "study015-l4-repeatability",
+    "artifact_size_bytes": 1435,
+    "artifact_zip_sha256": "5be5f38d76e6a25255a2893fa59703b234fc6dab01432e51fe12a515465133ee",
+    "steward_pr": 45,
+    "steward_head": "8d0fc1141f75436fc2f969d0f2e8359807c7b130",
+    "proof_target_pr": 204
+  },
+  "receipt": {
+    "schema": "study015.l4-repeatability/1.0",
+    "execution_class": "LIVE_INTEGRATION_CONFORMANCE",
+    "evidence_class": "L4_INDEPENDENT_REPEATABILITY_CANDIDATE",
+    "performance_claim": false,
+    "g15_9_authorized": false,
+    "production_deployment": false,
+    "network_used": true,
+    "heads": {
+      "aie": "bdb36512e57e1bb1f2ec05312d725827267eafc1",
+      "runtime": "7dc0a336e06e7528f471bbd5676ddb50df6e9046",
+      "sentinel": "4125f66b0c6d476966feb017ec7ddf3e22ec9459",
+      "trust_gateway": "bb224848cd540db701de783f44101aa95e914563",
+      "works": "ee04809f041cbc328ba024400f0f538cf48239c1"
+    },
+    "hostile": {
+      "prior_l3_execution_context_rejected": true,
+      "revoked_authority_rejected_before_egress": true,
+      "stale_verification_head_rejected": true,
+      "wrong_pdr_rejected": true
+    },
+    "identity": {
+      "action_id": "act_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "admission_decision_id": "pdr_66666666666666666666666666666666",
+      "attempt_id": "attempt/study015/live-2",
+      "causal_id": "causal/study015/live-2",
+      "effect_id": "effect/study015/live-2",
+      "exact_subject": "git:Aftergraph/runtime@92cc08482d91d70140db4916f1a11fc43b6318f6",
+      "execution_context_id": "ctx_243e1bc1627b3ce8167df39c791e3f6e",
+      "execution_pdr_id": "pdr_0610444fd035d6c72b5a310b3798418f",
+      "mission_id": "mis_study015_l4_repeatability",
+      "runtime_dispatch_id": "rdisp/e7103c6b18918486",
+      "sentinel_receipt_id": "e465f1b0757c00ff671c5a39c5e95f9c2e096093722d604e57ab20411c946d7c",
+      "trace_id": "trc_ce36d2c69d76c07f8b6a21c8c22e05ac",
+      "work_id": "wrk_9afa96093d0fac89bd0b26bb1ffbecf0",
+      "worker_lease_id": "lse_ffb4c3984e8be1f17b53fde141832b9f",
+      "works_execution_id": "wexec/idem/study015/live-2"
+    },
+    "prior_l3": {
+      "causal_slice_sha256": "39a4e862030476ad4585fd70038056c8ad3e2b719e645ca64b86a477cdfb230d",
+      "exact_subject": "git:Aftergraph/runtime@9c781f624bae36ee35aa23df57060e934d3a634c",
+      "execution_context_id": "ctx_c25bcc01cd7b21ed26826f1666847208"
+    },
+    "proof_target": {
+      "branch": "study015/l4-repeatability-proof-target",
+      "pull_request": 204,
+      "remote_readback": "92cc08482d91d70140db4916f1a11fc43b6318f6",
+      "repository": "Aftergraph/runtime",
+      "sha_a": "9c781f624bae36ee35aa23df57060e934d3a634c",
+      "sha_b": "92cc08482d91d70140db4916f1a11fc43b6318f6"
+    },
+    "repeatability": {
+      "fresh_action_id": true,
+      "fresh_causal_id": true,
+      "fresh_effect_id": true,
+      "fresh_exact_subject": true,
+      "fresh_execution_context": true,
+      "fresh_mission_id": true,
+      "prior_l3_execution_context_rejected": true
+    },
+    "seams": {
+      "aie_revalidation_subprocess": true,
+      "durable_verified_outcome": true,
+      "governed_remote_git_effect": true,
+      "human_approval_boundary": true,
+      "remote_exact_sha_readback": true,
+      "runtime_process_cli": true,
+      "runtime_works_subject_binding": true,
+      "sentinel_process_exact_head": true,
+      "tg_process_http": true,
+      "works_mission_acceptance": true,
+      "works_process_http": true
+    },
+    "causal_slice_sha256": "3ae010a18e036d7978b06f85c783b21be724776ce9c2947fee93813d17d47e4c"
+  },
+  "claim_boundary": {
+    "performance_claim": false,
+    "g15_9_authorized": false,
+    "production_deployment": false,
+    "world_first_claim": false,
+    "industry_superiority_claim": false
+  },
+  "predecessor": {
+    "checkpoint": "LIVE_CAUSAL_SLICE_L3",
+    "receipt_sha256": "39a4e862030476ad4585fd70038056c8ad3e2b719e645ca64b86a477cdfb230d"
+  },
+  "next_gate_candidate": {
+    "name": "L5_DURABLE_CAUSAL_RECOVERY",
+    "purpose": "Prove that the same exact-subject causal chain survives a controlled process failure/restart between remote effect and verification/acceptance without duplicate effect, identity rebinding, authority widening, or self-verification.",
+    "performance_study": false,
+    "authorizes_g15_9": false
+  }
+}
