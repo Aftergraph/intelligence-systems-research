@@ -8,21 +8,22 @@
 
 ## Result
 
-A second bounded live composition completed successfully using the same pinned owner implementations but **fresh causal identity and a fresh exact verification subject**.
+A second bounded live composition completed successfully using the same pinned owner implementations as L3 but with **fresh causal identity and a fresh exact verification subject**.
 
-The final type-strict run was GitHub Actions run `36112014456` from Runtime PR `#205`. The earlier L4 run was superseded and is not the canonical checkpoint.
+The canonical run is GitHub Actions run `36166670115` from Runtime PR `#205`. Earlier L4 runs are superseded and are not canonical evidence.
 
 ## Frozen provenance
 
 - Runtime runner PR: `#205`
-- Runtime runner head: `54c2e69d6ee81df51b5ab451dfbf16b8be86acb3`
+- Runtime runner head: `67845eaa6dd0c1a84726d784fed779e663c37187`
 - STEWARD L4 PR: `#45`
-- STEWARD L4 head: `16f1a2a26d5cdd37937b5c25d113f1f6e9ba07c9`
+- STEWARD L4 head: `8d0fc1141f75436fc2f969d0f2e8359807c7b130`
 - Proof-target PR: `#204`
-- Workflow run: `36112014456`
-- Artifact ID: `10853881273`
-- Artifact ZIP SHA-256: `048d09bc8c2193b2ef208b5360f6fd78768cda5ef4eb3f8f9cc558a9be29801b`
-- L4 causal receipt SHA-256: `31d734b5a958f13a4a9db8306f8fefa4e147dc26a066d78df4fea1ed0fd28e96`
+- Workflow run: `36166670115`
+- Artifact ID: `10877243342`
+- Artifact size: `1435` bytes
+- Artifact ZIP SHA-256: `5be5f38d76e6a25255a2893fa59703b234fc6dab01432e51fe12a515465133ee`
+- L4 causal receipt SHA-256: `3ae010a18e036d7978b06f85c783b21be724776ce9c2947fee93813d17d47e4c`
 
 The machine-readable source of truth is `data/study015/l4_repeatability.json`.
 
@@ -31,79 +32,71 @@ The machine-readable source of truth is `data/study015/l4_repeatability.json`.
 L4 deliberately did not reuse the L3 causal identity:
 
 - mission: `mis_study015_l4_repeatability`
-- work: `wrk_2dc7e8b8d0da70116bcf321c3f5f6dac`
-- worker lease: `lse_36f8504ef3da15e61d9915f3bf7b0a65`
+- work: `wrk_9afa96093d0fac89bd0b26bb1ffbecf0`
+- worker lease: `lse_ffb4c3984e8be1f17b53fde141832b9f`
 - runtime dispatch: `rdisp/e7103c6b18918486`
 - WORKS execution: `wexec/idem/study015/live-2`
-- execution context: `ctx_702c5632e8329dff16124ffe514b1367`
-- trace: `trc_3df32192693662c44a94dc61bdc78ce0`
+- execution context: `ctx_243e1bc1627b3ce8167df39c791e3f6e`
+- trace: `trc_ce36d2c69d76c07f8b6a21c8c22e05ac`
 - action: `act_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb`
-- execution PDR: `pdr_e64f5e97ee7668fec63ef8dfb3f1e944`
+- execution PDR: `pdr_0610444fd035d6c72b5a310b3798418f`
 - effect: `effect/study015/live-2`
 - causal ID: `causal/study015/live-2`
-- exact verification subject: `git:Aftergraph/runtime@7dc0a336e06e7528f471bbd5676ddb50df6e9046`
+- exact verification subject: `git:Aftergraph/runtime@92cc08482d91d70140db4916f1a11fc43b6318f6`
 
-The Runtime proof target was independently read back at exactly the same SHA.
+The L4 proof target was independently read back at exactly `92cc08482d91d70140db4916f1a11fc43b6318f6`.
 
 ## Repeatability falsification
 
-The final runner required each `fresh_*` value to be the boolean value `true`, not merely truthy.
-
-Verified fresh dimensions:
-
-1. action identity;
-2. causal identity;
-3. effect identity;
-4. exact verification subject;
-5. execution context;
-6. mission identity.
-
-The receipt also binds its predecessor to:
+L4 was pinned to the verified L3 predecessor:
 
 - L3 causal receipt: `39a4e862030476ad4585fd70038056c8ad3e2b719e645ca64b86a477cdfb230d`
 - L3 execution context: `ctx_c25bcc01cd7b21ed26826f1666847208`
+- L3 exact subject: `git:Aftergraph/runtime@9c781f624bae36ee35aa23df57060e934d3a634c`
 
-A deliberate attempt to use that frozen L3 execution context in the L4 MissionAcceptance was rejected.
+The final workflow required every repeatability flag to be strict boolean `true`:
+
+1. fresh action ID;
+2. fresh causal ID;
+3. fresh effect ID;
+4. fresh exact subject;
+5. fresh execution context;
+6. fresh mission ID;
+7. rejection of the prior L3 execution context.
+
+A deliberate attempt to bind the frozen L3 execution context into the L4 MissionAcceptance returned the expected fail-closed conflict.
 
 ## Hostile checks
 
-All L4 hostile paths passed:
+All hostile paths passed:
 
 - prior L3 execution-context replay rejected;
 - wrong execution PDR rejected;
 - stale verifier head rejected;
 - revoked authority rejected before Git egress.
 
-All eleven L3 composition seams also remained true in L4.
-
-## What L4 establishes
-
-L4 provides stronger evidence than L3 that the composition result was not dependent on reusing the first run's execution identity or proof subject.
-
-It demonstrates repeatability for the tested pinned implementation and environment. It does **not** establish statistical repeatability, generalization to arbitrary implementations, production correctness, or comparative performance.
+All eleven L3 composition seams remained true in L4.
 
 ## Claim boundary
 
-L4 still explicitly records:
+L4 supports a narrow repeatability claim for the tested pinned implementation and environment. It does **not** establish statistical performance, arbitrary-environment correctness, production readiness, industry superiority, uniqueness, or external reproduction.
+
+The receipt explicitly records:
 
 - `performance_claim = false`
 - `g15_9_authorized = false`
 - `production_deployment = false`
-- no world-first claim
-- no industry-superiority claim
 
 ## Next frontier candidate — L5 durable causal recovery
 
-The next systems gate should test causal continuity across controlled failure rather than immediately benchmarking speed.
+The next systems gate should interrupt the verified chain **after the governed remote effect but before independent verification/MissionAcceptance**, restart the relevant process boundary, and require:
 
-A useful L5 experiment would interrupt the chain after the governed remote effect but before independent verification/MissionAcceptance, restart the relevant process boundary, and require:
-
-1. recovery of the exact execution context and exact effect subject from durable state;
+1. recovery of the exact execution context and effect subject from durable state;
 2. no duplicate remote effect;
 3. fresh authority revalidation after restart;
-4. exact-head independent verification against the original effect;
+4. exact-head verification against the original effect;
 5. idempotent MissionAcceptance retry;
 6. rejection of stale/prior causal identity;
-7. preservation of the no-authority-expansion and no-self-verification invariants.
+7. no authority widening and no self-verification.
 
-This remains a conformance/durability frontier. It does not authorize G15-9.
+L5 remains conformance/durability research. It does not authorize G15-9.
