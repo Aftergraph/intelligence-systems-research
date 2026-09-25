@@ -7,8 +7,11 @@
       "component": "aie",
       "repository": "Aftergraph/aie",
       "ref": "research/study015-probe-v1",
-      "expected_head": "e59547e8f565c4eab857d0171122effd283726d4",
-      "command": ["python", "scripts/study015_probe.py"],
+      "expected_head": "c340d7a3fcf23a84b03ba493ca8fc938ea581db6",
+      "command": [
+        "python",
+        "scripts/study015_probe.py"
+      ],
       "required_mechanisms": [
         "authority_admission",
         "execution_time_revalidation",
@@ -22,8 +25,11 @@
       "component": "trust-gateway",
       "repository": "Aftergraph/trust-gateway",
       "ref": "research/study015-probe-v1",
-      "expected_head": "9fe0342f5bcb314383daa4842e4655d6e9eb1418",
-      "command": ["node", "scripts/study015-probe.js"],
+      "expected_head": "0b4030751d04f1b31bc2cc8d4a5e584729e9be02",
+      "command": [
+        "node",
+        "scripts/study015-probe.js"
+      ],
       "required_mechanisms": [
         "capability_policy_enforcement",
         "destructive_requires_approval",
@@ -37,8 +43,12 @@
       "component": "works-execution",
       "repository": "Aftergraph/works-execution",
       "ref": "research/study015-probe-v1",
-      "expected_head": "083674ea2d6bdecd0d5d5585e0e8684f5e43b399",
-      "command": ["go", "run", "./cmd/study015-probe"],
+      "expected_head": "be0295155ac3ba357e4a60ece15eee1387847def",
+      "command": [
+        "go",
+        "run",
+        "./cmd/study015-probe"
+      ],
       "required_mechanisms": [
         "durable_dispatch_acceptance",
         "stable_replay_correlation",
@@ -56,8 +66,11 @@
       "component": "runtime",
       "repository": "Aftergraph/runtime",
       "ref": "research/study015-probe-v1",
-      "expected_head": "368cedbe5dd6c662bb7db0aec916c71967a5bd3a",
-      "command": ["pnpm", "probe:study015"],
+      "expected_head": "7dc0a336e06e7528f471bbd5676ddb50df6e9046",
+      "command": [
+        "pnpm",
+        "probe:study015"
+      ],
       "required_mechanisms": [
         "governed_graph_rewrite",
         "rewrite_authority_required",
@@ -71,8 +84,13 @@
       "component": "sentinel",
       "repository": "Aftergraph/sentinel",
       "ref": "research/study015-probe-v1",
-      "expected_head": "6625237ec9e44c1c87548b10b4e655911938378a",
-      "command": ["npm", "run", "probe:study015", "--silent"],
+      "expected_head": "4125f66b0c6d476966feb017ec7ddf3e22ec9459",
+      "command": [
+        "npm",
+        "run",
+        "probe:study015",
+        "--silent"
+      ],
       "required_mechanisms": [
         "independent_verification_pipeline",
         "exact_subject_sha_binding",
