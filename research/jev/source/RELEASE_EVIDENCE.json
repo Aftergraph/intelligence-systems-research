@@ -19,16 +19,17 @@
     "modeled_only": true,
     "modeled_ratio": 11.864406779661017
   },
-  "release": "2.10.0",
-  "truth_boundary": "v2.10 implements and verifies provider-request lineage sealing over the real coding benchmark, but this container has no provider credentials, so no provider-backed v2.10 campaign was executed and no measured 10x claim is made",
+  "release": "2.11.1",
+  "truth_boundary": "v2.11.1 is the clean canonical-source adoption patch: release portability and provider-request lineage are implemented and verified, but no authenticated provider-backed campaign was executed in this build environment; no measured 10x claim is made.",
   "verification": {
     "compileall": "PASS",
-    "installed_wheel_v29_demo": "PASS",
-    "pytest": "288 collected; 288 PASS across 6 isolated invocations (33, 41, 59, 55, 47, 53)",
-    "ruff": "UNVERIFIED \u2014 ruff is not installed in this execution container",
+    "installed_wheel_v29_demo": "PASS (authenticated_live_ab_executed=false; live_provider_measurement=false)",
+    "pytest": "290 collected; 290 PASS across 6 isolated invocations (31, 41, 50, 59, 41, 68)",
+    "release_relocatability": "PASS",
+    "ruff": "UNVERIFIED — ruff is not installed in this execution container",
     "secret_scan": "PASS",
-    "wheel_build": "PASS (local --no-build-isolation; container has no network)",
-    "wheel_import": "PASS"
+    "wheel_build": "PASS (local --no-build-isolation)",
+    "wheel_import": "PASS (isolated --target smoke)"
   },
-  "wheel_sha256": "f58b35724446c8c189e992a478d9d7c61087b05c38715adb13ac653c55a8d433"
+  "wheel_sha256": "c1dc4a9376e62b7b646b8f618d001a45d86cfeddcb981598d61a10c4e7a8e430"
 }

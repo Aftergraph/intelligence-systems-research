@@ -6,12 +6,13 @@ This adoption record does **not** transfer authority, admission, durable executi
 
 ## Current release
 
-- Release: `2.11.0`
-- Release ZIP SHA-256: `fd0a357349d54c8670d9d2d8a4b872fecba924ba64758b1b43a70adac3c6ac12`
-- Wheel SHA-256: `44e733b922796c8a10b5345d7bedab01a8c95cf789763f4a7095a5c4c7de76ed`
+- Release: `2.11.1`
+- Release ZIP SHA-256: `bdc7889921b109d2911e75d849fd9874b36c18b55e14fd2bd3f2afcbbbeff981`
+- Wheel SHA-256: `c1dc4a9376e62b7b646b8f618d001a45d86cfeddcb981598d61a10c4e7a8e430`
 - Tests: `290/290 PASS`
 - Release relocatability gate: `PASS`
 - Secret scan: `PASS`
+- Canonical source: `research/jev/source`
 
 ## Claim boundary
 
@@ -28,4 +29,4 @@ A future performance result is admissible only when provider request lineage is 
 
 ## Adoption state
 
-The v2.11 archive is the current handoff artifact. Source import into this canonical repository remains a separate mechanical migration step; this record establishes ownership, exact artifact identity, and claim boundaries without pretending the archive has already been imported.
+v2.11.1 is mechanically materialized in this repository as canonical research source. The import evidence is recorded under `research/jev/import/v2.11.1/evidence.json`. The release artifact remains separately sealed by the exact ZIP and wheel hashes above.

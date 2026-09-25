@@ -5,7 +5,7 @@
   "provider_credentials_in_release": false,
   "provider_request_lineage_implemented": true,
   "real_benchmark_bridge_implemented": true,
-  "release": "2.10.0",
+  "release": "2.11.1",
   "signed_receipt_pipeline_implemented": true,
-  "truth_boundary": "No provider-backed v2.10 campaign was executed in this build environment because provider credentials are absent."
+  "truth_boundary": "No provider-backed v2.11.1 campaign was executed in this build environment because provider credentials are absent."
 }
