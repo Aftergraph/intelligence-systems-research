@@ -1,0 +1,10 @@
+{
+  "schema": "study015.owner-gate/0.1.0",
+  "study_id": "STUDY-015",
+  "status": "NOT_APPROVED",
+  "authorize_confirmatory_execution": false,
+  "approved_by": null,
+  "approved_at": null,
+  "protocol_sha256": null,
+  "note": "This file is intentionally NOT_APPROVED while G15 technical gates are under construction. Approval must be an explicit owner action after frozen protocol review."
+}
