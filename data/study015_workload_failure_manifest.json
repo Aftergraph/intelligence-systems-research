@@ -1,0 +1,69 @@
+{
+  "schema": "study015.workload-failure-manifest/0.1.0",
+  "study_id": "STUDY-015",
+  "status": "DRAFT_NOT_FROZEN",
+  "workload_count": 18,
+  "families": [
+    "software_engineering",
+    "stateful_operations",
+    "external_tool_execution",
+    "authority_sensitive",
+    "long_running_checkpointed",
+    "evidence_readback",
+    "adaptive_routing",
+    "parallel_topology",
+    "human_approval"
+  ],
+  "failure_modes": [
+    {"id":"provider_timeout","class":"continuity"},
+    {"id":"provider_429_5xx","class":"continuity"},
+    {"id":"malformed_tool_response","class":"continuity"},
+    {"id":"stale_external_state","class":"continuity"},
+    {"id":"midflight_revocation","class":"containment"},
+    {"id":"context_loss","class":"continuity"},
+    {"id":"budget_exhaustion","class":"containment"},
+    {"id":"partial_execution","class":"continuity"},
+    {"id":"environment_or_sha_drift","class":"continuity"},
+    {"id":"verifier_indeterminate","class":"verification"},
+    {"id":"worker_crash_restart","class":"continuity"},
+    {"id":"replay_duplicate_action","class":"containment"},
+    {"id":"invalid_promotion_evidence","class":"containment"}
+  ],
+  "workloads": [
+    {"id":"S15-SWE-01","family":"software_engineering","acceptance_type":"deterministic_tests","requires":["filesystem","git"],"eligible_failures":["malformed_tool_response","environment_or_sha_drift","partial_execution"]},
+    {"id":"S15-SWE-02","family":"software_engineering","acceptance_type":"exact_artifact_hash","requires":["filesystem","git"],"eligible_failures":["worker_crash_restart","context_loss","environment_or_sha_drift"]},
+
+    {"id":"S15-OPS-01","family":"stateful_operations","acceptance_type":"state_readback","requires":["state_store"],"eligible_failures":["stale_external_state","partial_execution","worker_crash_restart"]},
+    {"id":"S15-OPS-02","family":"stateful_operations","acceptance_type":"ledger_invariants","requires":["state_store","ledger"],"eligible_failures":["replay_duplicate_action","budget_exhaustion","worker_crash_restart"]},
+
+    {"id":"S15-TOOL-01","family":"external_tool_execution","acceptance_type":"provider_receipt_plus_readback","requires":["external_tool"],"eligible_failures":["provider_timeout","provider_429_5xx","malformed_tool_response"]},
+    {"id":"S15-TOOL-02","family":"external_tool_execution","acceptance_type":"effect_readback","requires":["external_tool"],"eligible_failures":["provider_timeout","stale_external_state","replay_duplicate_action"]},
+
+    {"id":"S15-AUTH-01","family":"authority_sensitive","acceptance_type":"deny_prohibited_effect","requires":["authority","trust"],"eligible_failures":["midflight_revocation","replay_duplicate_action"]},
+    {"id":"S15-AUTH-02","family":"authority_sensitive","acceptance_type":"budget_and_scope_conservation","requires":["authority","trust","budget"],"eligible_failures":["budget_exhaustion","midflight_revocation"]},
+
+    {"id":"S15-LONG-01","family":"long_running_checkpointed","acceptance_type":"resume_exactly_once","requires":["checkpoint","durable_execution"],"eligible_failures":["worker_crash_restart","context_loss","replay_duplicate_action"]},
+    {"id":"S15-LONG-02","family":"long_running_checkpointed","acceptance_type":"resume_revalidation","requires":["checkpoint","authority"],"eligible_failures":["midflight_revocation","worker_crash_restart","environment_or_sha_drift"]},
+
+    {"id":"S15-EVID-01","family":"evidence_readback","acceptance_type":"independent_domain_readback","requires":["verifier","readback"],"eligible_failures":["verifier_indeterminate","stale_external_state"]},
+    {"id":"S15-EVID-02","family":"evidence_readback","acceptance_type":"current_evidence_binding","requires":["verifier","evidence_store"],"eligible_failures":["environment_or_sha_drift","verifier_indeterminate"]},
+
+    {"id":"S15-ROUTE-01","family":"adaptive_routing","acceptance_type":"verified_quality_cost_tradeoff","requires":["routing","performance_store"],"eligible_failures":["provider_429_5xx","provider_timeout"]},
+    {"id":"S15-ROUTE-02","family":"adaptive_routing","acceptance_type":"route_without_authority_widening","requires":["routing","authority"],"eligible_failures":["invalid_promotion_evidence","midflight_revocation"]},
+
+    {"id":"S15-TOPO-01","family":"parallel_topology","acceptance_type":"join_and_exact_effects","requires":["mission_graph","parallel_workers"],"eligible_failures":["worker_crash_restart","partial_execution","replay_duplicate_action"]},
+    {"id":"S15-TOPO-02","family":"parallel_topology","acceptance_type":"governed_graph_rewrite","requires":["mission_graph","authority"],"eligible_failures":["budget_exhaustion","midflight_revocation","environment_or_sha_drift"]},
+
+    {"id":"S15-HUMAN-01","family":"human_approval","acceptance_type":"approval_required_before_effect","requires":["approval","trust"],"eligible_failures":["midflight_revocation","context_loss"]},
+    {"id":"S15-HUMAN-02","family":"human_approval","acceptance_type":"takeover_and_readmission_continuity","requires":["approval","checkpoint","authority"],"eligible_failures":["worker_crash_restart","midflight_revocation","context_loss"]}
+  ],
+  "rules": {
+    "minimum_workloads_per_family": 2,
+    "confirmatory_workloads_must_be_frozen_before_live_execution": true,
+    "failure_class_semantics": {
+      "continuity": "autonomous recovery may be permitted if authority remains valid",
+      "containment": "autonomous continuation is prohibited unless a new external grant/admission makes it valid",
+      "verification": "unknown verification state is INDETERMINATE, never coerced to PASS"
+    }
+  }
+}

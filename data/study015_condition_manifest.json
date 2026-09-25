@@ -1,0 +1,112 @@
+{
+  "schema": "study015.condition-manifest/0.1.0",
+  "study_id": "STUDY-015",
+  "status": "DRAFT_NOT_FROZEN",
+  "mechanisms": {
+    "mission_semantics": {
+      "canonical_owner": "after-graph-governance",
+      "implementation_owner": "runtime"
+    },
+    "authority_admission": {
+      "canonical_owner": "aie",
+      "implementation_owner": "aie"
+    },
+    "trust_revalidation": {
+      "canonical_owner": "trust-gateway",
+      "implementation_owner": "trust-gateway"
+    },
+    "independent_verification": {
+      "canonical_owner": "sentinel",
+      "implementation_owner": "sentinel"
+    },
+    "evidence_currentness": {
+      "canonical_owner": "works-execution",
+      "implementation_owner": "runtime"
+    },
+    "governed_recovery": {
+      "canonical_owner": "runtime",
+      "implementation_owner": "runtime"
+    },
+    "graph_topology_rewrite": {
+      "canonical_owner": "runtime",
+      "implementation_owner": "runtime"
+    },
+    "verified_performance_routing": {
+      "canonical_owner": "runtime",
+      "implementation_owner": "runtime"
+    },
+    "governed_learning_proposals": {
+      "canonical_owner": "runtime",
+      "implementation_owner": "runtime"
+    },
+    "promotion_gates": {
+      "canonical_owner": "after-graph-governance",
+      "implementation_owner": "runtime"
+    }
+  },
+  "conditions": [
+    {
+      "id": "S0",
+      "enabled": [],
+      "purpose": "minimal execution baseline"
+    },
+    {
+      "id": "S1",
+      "enabled": ["mission_semantics"],
+      "purpose": "structured mission semantics"
+    },
+    {
+      "id": "S2",
+      "enabled": ["mission_semantics","authority_admission","trust_revalidation"],
+      "purpose": "authority + trust admission/revalidation"
+    },
+    {
+      "id": "S3",
+      "enabled": ["mission_semantics","authority_admission","trust_revalidation","independent_verification"],
+      "purpose": "independent verification boundary"
+    },
+    {
+      "id": "S4",
+      "enabled": ["mission_semantics","authority_admission","trust_revalidation","independent_verification","evidence_currentness"],
+      "purpose": "evidence freshness/currentness"
+    },
+    {
+      "id": "S5",
+      "enabled": ["mission_semantics","authority_admission","trust_revalidation","independent_verification","evidence_currentness","governed_recovery"],
+      "purpose": "governed recovery"
+    },
+    {
+      "id": "S6",
+      "enabled": ["mission_semantics","authority_admission","trust_revalidation","independent_verification","evidence_currentness","governed_recovery","graph_topology_rewrite"],
+      "purpose": "adaptive graph/topology rewrite"
+    },
+    {
+      "id": "S7",
+      "enabled": ["mission_semantics","authority_admission","trust_revalidation","independent_verification","evidence_currentness","governed_recovery","graph_topology_rewrite","verified_performance_routing"],
+      "purpose": "verified-performance routing"
+    },
+    {
+      "id": "S8",
+      "enabled": ["mission_semantics","authority_admission","trust_revalidation","independent_verification","evidence_currentness","governed_recovery","graph_topology_rewrite","verified_performance_routing","governed_learning_proposals"],
+      "purpose": "governed learning proposals"
+    },
+    {
+      "id": "S9",
+      "enabled": ["mission_semantics","authority_admission","trust_revalidation","independent_verification","evidence_currentness","governed_recovery","graph_topology_rewrite","verified_performance_routing","governed_learning_proposals","promotion_gates"],
+      "purpose": "promotion-gated adaptive system"
+    },
+    {
+      "id": "FULL",
+      "enabled": ["mission_semantics","authority_admission","trust_revalidation","independent_verification","evidence_currentness","governed_recovery","graph_topology_rewrite","verified_performance_routing","governed_learning_proposals","promotion_gates"],
+      "purpose": "current composed architecture; exact heads supplied by freeze manifest"
+    }
+  ],
+  "isolation_rules": [
+    "each cumulative condition must be a strict superset of the prior condition except FULL, which may equal S9",
+    "provider, exact model, workload, replicate seed, budget and acceptance criteria must remain matched across paired conditions unless explicitly frozen otherwise",
+    "disabled mechanisms must not influence prompts, routing state, memory state, verifier state or learned performance stores",
+    "learning/performance stores must be reset or restored from a frozen snapshot at condition boundaries",
+    "FULL_MINUS variants must remove exactly the declared mechanism from FULL unless a preregistered dependency requires a named coupled removal",
+    "condition identity must be emitted in every performance envelope"
+  ]
+}

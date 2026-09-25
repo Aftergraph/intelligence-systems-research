@@ -1,0 +1,17 @@
+{
+  "schema": "study015.causal-bundle-index/1.0",
+  "study_id": "STUDY-015",
+  "status": "EXACT_HEAD_CAUSAL_COMPOSITION_BUNDLE",
+  "component_probe_root_sha256": "e9b5e00ca523a5c294406bf2c871630e75d150f65953561092ccb8ef52fd55d7",
+  "causal_root_sha256": "30e2d91a343418c34c703333d1d5a3cb5e605e6c8c926e0d6c37d010a71c56f1",
+  "steward": {
+    "repository": "Aftergraph/STEWARD-by-Aftergraph",
+    "source_head": "8427d56c8e1ce902486512e219017475a701fe21",
+    "workflow_run_id": 36082375284,
+    "artifact_id": 10842078759,
+    "artifact_name": "study015-causal-composition-8427d56c8e1ce902486512e219017475a701fe21",
+    "artifact_digest": "sha256:6fc11cf95da4d9ade969f95e1412c1d407d1f7b2e88682276600a7a49552f134",
+    "receipt_path": "steward-composition.json",
+    "receipt_sha256": "66bbe704902f05d4908d0eb039522031f0d7c1ab4b6895b12e209d527514fe64"
+  }
+}

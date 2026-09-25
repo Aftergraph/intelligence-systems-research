@@ -1,0 +1,26 @@
+{
+  "schema": "study015.power-plan/0.1.0",
+  "study_id": "STUDY-015",
+  "status": "DRAFT_NOT_FROZEN",
+  "familywise_alpha": 0.05,
+  "planning_primary_contrasts": 8,
+  "planning_method": "Conservative Bonferroni alpha for N planning; final confirmatory family candidate is Holm-Bonferroni.",
+  "target_power": 0.8,
+  "binary_planning_scenarios": [
+    {"name":"medium","net_paired_difference":0.15,"discordant_rate":0.30},
+    {"name":"small","net_paired_difference":0.10,"discordant_rate":0.30}
+  ],
+  "continuous_planning_scenarios": [
+    {"name":"moderate","paired_standardized_effect_dz":0.35}
+  ],
+  "freeze_requirements": [
+    "condition feasibility complete",
+    "final primary contrast family selected",
+    "smallest effects of interest declared",
+    "provider/model strata declared",
+    "replication count declared",
+    "attempt ceiling declared",
+    "missing-data rules declared",
+    "exact or simulation-based power sensitivity checked"
+  ]
+}
