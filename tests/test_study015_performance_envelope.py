@@ -90,3 +90,26 @@ def test_duplicate_or_unknown_fields_fail_closed():
     record["surprise"] = "not admitted"
     with pytest.raises(jsonschema.ValidationError):
         validate_envelope(record)
+
+
+def test_dry_run_is_never_live():
+    record = fixture()
+    record["execution_class"] = "DRY_RUN"
+    record["is_live"] = True
+    with pytest.raises(jsonschema.ValidationError):
+        validate_envelope(record)
+
+
+def test_live_valid_must_be_live():
+    record = fixture()
+    record["execution_class"] = "LIVE_VALID"
+    record["is_live"] = False
+    with pytest.raises(jsonschema.ValidationError):
+        validate_envelope(record)
+
+
+def test_live_valid_fixture_variant_passes():
+    record = fixture()
+    record["execution_class"] = "LIVE_VALID"
+    record["is_live"] = True
+    assert validate_envelope(record)["execution_class"] == "LIVE_VALID"
