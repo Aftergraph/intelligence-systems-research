@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/decision-request.v1.schema.json",
+  "title": "Aftergraph DecisionRequest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["request_id", "capability", "required_vsr", "authority_granted"],
+  "properties": {
+    "request_id": {"type": "string", "minLength": 1},
+    "capability": {"type": "string", "minLength": 1},
+    "required_vsr": {"type": "number", "minimum": 0, "maximum": 1},
+    "risk_class": {"type": "string", "minLength": 1},
+    "authority_granted": {"type": "boolean"},
+    "state_features": {"type": "object"}
+  }
+}

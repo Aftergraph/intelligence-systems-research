@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/paired-holdout-execution.v1.schema.json",
+  "title": "Paired Holdout Execution v1",
+  "type": "object",
+  "required": ["version", "records", "pair_execution_order", "phase_allocation", "seed", "live_provider_measurement", "truth_boundary"],
+  "properties": {
+    "version": {"const": 1},
+    "records": {"type": "array", "items": {"type": "object"}},
+    "pair_execution_order": {
+      "type": "array",
+      "items": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "string", "minLength": 1}}
+    },
+    "phase_allocation": {
+      "type": "object",
+      "required": ["shadow", "experiment", "holdout"],
+      "properties": {
+        "shadow": {"type": "integer", "minimum": 0},
+        "experiment": {"type": "integer", "minimum": 0},
+        "holdout": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "seed": {"type": "integer"},
+    "live_provider_measurement": {"type": "boolean"},
+    "truth_boundary": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

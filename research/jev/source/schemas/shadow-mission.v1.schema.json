@@ -1,0 +1,70 @@
+{
+  "$id": "https://aftergraph.org/schemas/shadow-mission.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "agreement_rate": {
+      "maximum": 1,
+      "minimum": 0,
+      "type": "number"
+    },
+    "agreements": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "candidate_errors": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "candidate_outcome_observable": {
+      "type": "boolean"
+    },
+    "candidate_strategy": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "candidate_verified_outcome": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "incumbent_strategy": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "incumbent_verified_outcome": {
+      "type": "boolean"
+    },
+    "path_equivalent": {
+      "type": "boolean"
+    },
+    "shadow_calls": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "trace_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "version": {
+      "const": 1
+    }
+  },
+  "required": [
+    "version",
+    "trace_id",
+    "incumbent_strategy",
+    "candidate_strategy",
+    "shadow_calls",
+    "agreements",
+    "agreement_rate",
+    "candidate_errors",
+    "path_equivalent",
+    "candidate_outcome_observable",
+    "incumbent_verified_outcome",
+    "candidate_verified_outcome"
+  ],
+  "title": "Aftergraph ShadowMissionSummary v1",
+  "type": "object"
+}

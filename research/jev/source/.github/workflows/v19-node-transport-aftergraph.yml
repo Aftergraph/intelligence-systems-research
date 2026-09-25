@@ -1,0 +1,22 @@
+name: v1.9 signed node transport (Aftergraph runner)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  node-transport:
+    runs-on: [self-hosted, linux, x64, aftergraph-ci]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Install package
+        run: python3 -m pip install .
+      - name: v1.9 focused tests
+        run: python3 -m pytest -q tests/test_v19_*.py
+      - name: Signed transport + proof replication vertical
+        run: jev-one transport-demo
+      - name: Secret scan
+        run: python3 scripts/verify_no_secrets.py .

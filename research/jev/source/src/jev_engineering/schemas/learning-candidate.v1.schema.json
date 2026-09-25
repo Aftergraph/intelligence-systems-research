@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/learning-candidate.v1.schema.json",
+  "title": "Aftergraph LearningCandidate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "candidate_id", "decision_family", "incumbent_strategy", "candidate_strategy", "state"],
+  "properties": {
+    "version": {"const": 1},
+    "candidate_id": {"type": "string", "minLength": 1},
+    "decision_family": {"type": "string", "minLength": 1},
+    "incumbent_strategy": {"type": "string", "minLength": 1},
+    "candidate_strategy": {"type": "string", "minLength": 1},
+    "state": {"enum": ["observed", "replayed", "shadowed", "experimental", "holdout_verified", "promoted", "rejected", "quarantined"]},
+    "replay_runs": {"type": "integer", "minimum": 0},
+    "shadow_runs": {"type": "integer", "minimum": 0},
+    "experimental_runs": {"type": "integer", "minimum": 0},
+    "holdout_runs": {"type": "integer", "minimum": 0},
+    "holdout_successes": {"type": "integer", "minimum": 0},
+    "incumbent_vsr": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "candidate_vsr": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "candidate_fcr": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "incumbent_cpvo": {"type": ["number", "null"], "minimum": 0},
+    "candidate_cpvo": {"type": ["number", "null"], "minimum": 0},
+    "metadata": {"type": "object"}
+  }
+}
