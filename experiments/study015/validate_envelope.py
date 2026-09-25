@@ -32,6 +32,13 @@ def _semantic_errors(envelope: dict[str, Any]) -> list[str]:
     performance = envelope["performance"]
     authority = envelope["authority"]
 
+    execution_class = envelope["execution_class"]
+    is_live = envelope["is_live"]
+    if execution_class == "DRY_RUN" and is_live:
+        errors.append("DRY_RUN must have is_live=false")
+    if execution_class in {"LIVE_VALID", "LIVE_PROVIDER_FAILURE", "LIVE_PROTOCOL_FAILURE"} and not is_live:
+        errors.append(f"{execution_class} must have is_live=true")
+
     if outcome["verified_success"]:
         if not verification["independent"]:
             errors.append("verified_success requires independent verification")
