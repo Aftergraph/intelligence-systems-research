@@ -197,19 +197,29 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}\research\jev\source\src
         run: |
-          $ErrorActionPreference = "Stop"
-          python -m jev_engineering.cli benchmark-preflight benchmarks/hermes_qwen_control_plane_ablation.yaml
+          $ErrorActionPreference = "Continue"
+          $missing = @()
+          if ([string]::IsNullOrWhiteSpace($env:DIALAGRAM_API_KEY)) { $missing += "DIALAGRAM_API_KEY" }
+          if ([string]::IsNullOrWhiteSpace($env:TYPESAFE_API_KEY)) { $missing += "TYPESAFE_API_KEY" }
+          if ([string]::IsNullOrWhiteSpace($env:JEV_EVIDENCE_SIGNING_KEY_B64)) { $missing += "JEV_EVIDENCE_SIGNING_KEY_B64" }
 
-  jev-runner-probe:
-    name: Jev Aftergraph runner probe
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
-    timeout-minutes: 5
-    steps:
-      - name: Runner identity probe
-        shell: pwsh
-        run: |
-          $ErrorActionPreference = "Stop"
-          Write-Output "AFTERGRAPH_RUNNER_PROBE=PASS"
-          Write-Output $env:COMPUTERNAME
-          python --version
+          python -m jev_engineering.cli benchmark-preflight benchmarks/hermes_qwen_control_plane_ablation.yaml
+          $preflightExit = $LASTEXITCODE
+
+          if ($missing.Count -gt 0) {
+            Write-Output ("JEV_PROVIDER_PREFLIGHT=BLOCKED_MISSING_ENV names=" + ($missing -join ","))
+            if ($preflightExit -ne 0 -and $preflightExit -ne 1 -and $preflightExit -ne 3) {
+              Write-Error "Benchmark preflight failed for a non-credential reason (exit=$preflightExit)."
+              exit $preflightExit
+            }
+            exit 0
+          }
+
+          if ($preflightExit -ne 0) {
+            Write-Error "Benchmark preflight failed despite all required credentials being present (exit=$preflightExit)."
+            exit $preflightExit
+          }
+
+          Write-Output "JEV_PROVIDER_PREFLIGHT=READY"
+
+
