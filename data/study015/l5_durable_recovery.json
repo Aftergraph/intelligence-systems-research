@@ -1,0 +1,128 @@
+{
+  "schema": "study015.evidence-checkpoint/1.0",
+  "study_id": "STUDY-015",
+  "checkpoint": "L5_DURABLE_CAUSAL_RECOVERY",
+  "run_completed_at": "2026-09-25T17:45:42Z",
+  "status": "VERIFIED_L5_DURABLE_CAUSAL_RECOVERY",
+  "provenance": {
+    "repository": "Aftergraph/runtime",
+    "runner_pr": 210,
+    "runner_head": "82771872498b8a9896a7eb38289ebfa0e376c1b8",
+    "workflow_run_id": 36168989907,
+    "artifact_id": 10879866573,
+    "artifact_name": "study015-l5-durable-recovery",
+    "artifact_size_bytes": 1603,
+    "artifact_zip_sha256": "372102ac73fd0af8eb5607f77e87c5433036fc3706ae1c36247799593cecfc9d",
+    "steward_pr": 46,
+    "steward_head": "397c3c0a5b4292f74d7959b1ea21831ffcc12080",
+    "works_pr": 150,
+    "works_head": "b5953f2c6625177ea230b95ea8819170a44001c4",
+    "trust_gateway_pr": 136,
+    "trust_gateway_head": "55e734f826fcf6721c0f8f698a7776fa2154a38a",
+    "proof_target_pr": 209,
+    "superseded_falsification_run_id": 36168414366,
+    "superseded_falsification_reason": "TG research process adapter omitted Gateway auditFile, so the hash-chain was memory-only and git_egress_completed did not survive SIGKILL."
+  },
+  "receipt": {
+    "schema": "study015.l5-durable-recovery/1.0",
+    "execution_class": "LIVE_INTEGRATION_CONFORMANCE",
+    "evidence_class": "L5_DURABLE_CAUSAL_RECOVERY_CANDIDATE",
+    "performance_claim": false,
+    "g15_9_authorized": false,
+    "production_deployment": false,
+    "network_used": true,
+    "heads": {
+      "aie": "bdb36512e57e1bb1f2ec05312d725827267eafc1",
+      "runtime": "7dc0a336e06e7528f471bbd5676ddb50df6e9046",
+      "sentinel": "4125f66b0c6d476966feb017ec7ddf3e22ec9459",
+      "trust_gateway": "55e734f826fcf6721c0f8f698a7776fa2154a38a",
+      "works": "b5953f2c6625177ea230b95ea8819170a44001c4"
+    },
+    "hostile": {
+      "prior_l4_execution_context_rejected": true,
+      "revoked_authority_rejected_before_egress": true,
+      "stale_verification_head_rejected": true,
+      "wrong_pdr_rejected": true
+    },
+    "identity": {
+      "action_id": "act_cccccccccccccccccccccccccccccccc",
+      "admission_decision_id": "pdr_77777777777777777777777777777777",
+      "attempt_id": "attempt/study015/live-3",
+      "causal_id": "causal/study015/live-3",
+      "effect_id": "effect/study015/live-3",
+      "exact_subject": "git:Aftergraph/runtime@efc536b1095715124e2a5455161792f030c974a6",
+      "execution_context_id": "ctx_62ae40ce4ba8cf61672c9045dc61ceb1",
+      "execution_pdr_id": "pdr_3b961bbfd2458373468e79b692109ec3",
+      "mission_id": "mis_study015_l5_durable_recovery",
+      "runtime_dispatch_id": "rdisp/e74fb76a59b19190",
+      "sentinel_receipt_id": "3dd8a87ba63549791b1651534a1d6378672102567f5ce4a806f24fc46999aa84",
+      "trace_id": "trc_3bb8b58bd9505426da513b1ac057529b",
+      "work_id": "wrk_cdc17edc9e6396e00fc78b07a0038f82",
+      "worker_lease_id": "lse_ec1018fb140953d07f9ece0a16b8f289",
+      "works_execution_id": "wexec/idem/study015/live-3"
+    },
+    "proof_target": {
+      "branch": "study015/l5-durable-recovery-proof-target",
+      "pull_request": 209,
+      "remote_readback": "efc536b1095715124e2a5455161792f030c974a6",
+      "repository": "Aftergraph/runtime",
+      "sha_a": "92cc08482d91d70140db4916f1a11fc43b6318f6",
+      "sha_b": "efc536b1095715124e2a5455161792f030c974a6"
+    },
+    "seams": {
+      "aie_revalidation_subprocess": true,
+      "durable_verified_outcome": true,
+      "governed_remote_git_effect": true,
+      "human_approval_boundary": true,
+      "remote_exact_sha_readback": true,
+      "runtime_process_cli": true,
+      "runtime_works_subject_binding": true,
+      "sentinel_process_exact_head": true,
+      "tg_process_http": true,
+      "works_mission_acceptance": true,
+      "works_process_http": true
+    },
+    "durability": {
+      "prior_l4_causal_slice_sha256": "3ae010a18e036d7978b06f85c783b21be724776ce9c2947fee93813d17d47e4c",
+      "prior_l4_execution_context_id": "ctx_243e1bc1627b3ce8167df39c791e3f6e",
+      "durable_execution_context_readback": true,
+      "fresh_exact_subject": true,
+      "fresh_execution_context": true,
+      "mission_acceptance_retry_idempotent": true,
+      "post_restart_authority_revalidated_without_effect": true,
+      "same_authority_after_tg_restart": true,
+      "same_execution_context_after_restart": true,
+      "same_mission_after_tg_restart": true,
+      "same_remote_effect_after_restart": true,
+      "same_runtime_dispatch_after_restart": true,
+      "same_tg_audit_file_after_restart": true,
+      "same_trace_after_restart": true,
+      "same_work_id_after_restart": true,
+      "same_worker_lease_after_restart": true,
+      "same_works_db_after_restart": true,
+      "same_works_execution_after_restart": true,
+      "single_persisted_git_egress_completion": true,
+      "tg_audit_chain_verified_after_restart": true,
+      "trust_gateway_process_restarted_after_sigkill": true,
+      "works_process_restarted_after_sigkill": true
+    },
+    "causal_slice_sha256": "9bb6d0ed6833d09f7b5e9e0d2b70b3eeb7c3aba922fd887eed3c1e91fced7178"
+  },
+  "claim_boundary": {
+    "performance_claim": false,
+    "g15_9_authorized": false,
+    "production_deployment": false,
+    "world_first_claim": false,
+    "industry_superiority_claim": false
+  },
+  "predecessor": {
+    "checkpoint": "L4_INDEPENDENT_REPEATABILITY",
+    "receipt_sha256": "3ae010a18e036d7978b06f85c783b21be724776ce9c2947fee93813d17d47e4c"
+  },
+  "next_gate_candidate": {
+    "name": "L6_INDETERMINATE_EFFECT_RECONCILIATION",
+    "purpose": "Crash in the uncertainty window where the remote effect may have committed but the local completion receipt is absent, then reconcile external state before any retry so the effect is neither duplicated nor falsely declared absent.",
+    "performance_study": false,
+    "authorizes_g15_9": false
+  }
+}
