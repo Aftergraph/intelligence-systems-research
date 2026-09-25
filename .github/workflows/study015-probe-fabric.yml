@@ -1,8 +1,6 @@
 name: STUDY-015 Cross-Repo Probe Fabric
 
 on:
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
