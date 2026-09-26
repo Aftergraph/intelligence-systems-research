@@ -175,12 +175,7 @@ jobs:
     name: Jev provider preflight (no live calls)
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
-    environment: provider-smoke
     timeout-minutes: 20
-    env:
-      TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
-      DIALAGRAM_API_KEY: ${{ secrets.DIALAGRAM_API_KEY }}
-      JEV_EVIDENCE_SIGNING_KEY_B64: ${{ secrets.JEV_EVIDENCE_SIGNING_KEY_B64 }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Canonical source gates
@@ -191,38 +186,20 @@ jobs:
           python scripts/verify_no_secrets.py .
           python scripts/verify_release_relocatable.py .
           python -m compileall -q src
-      - name: Credential + benchmark preflight
+      - name: Sealed credential + benchmark preflight
         shell: pwsh
         working-directory: research/jev/source
         env:
           PYTHONPATH: ${{ github.workspace }}\research\jev\source\src
         run: |
-          $ErrorActionPreference = "Continue"
-          $missing = @()
-          if ([string]::IsNullOrWhiteSpace($env:DIALAGRAM_API_KEY)) { $missing += "DIALAGRAM_API_KEY" }
-          if ([string]::IsNullOrWhiteSpace($env:TYPESAFE_API_KEY)) { $missing += "TYPESAFE_API_KEY" }
-          if ([string]::IsNullOrWhiteSpace($env:JEV_EVIDENCE_SIGNING_KEY_B64)) { $missing += "JEV_EVIDENCE_SIGNING_KEY_B64" }
-
-          python -m jev_engineering.cli benchmark-preflight benchmarks/hermes_qwen_control_plane_ablation.yaml
-          $preflightExit = $LASTEXITCODE
-
-          if ($missing.Count -gt 0) {
-            Write-Output ("JEV_PROVIDER_PREFLIGHT=BLOCKED_MISSING_ENV names=" + ($missing -join ","))
-            if ($preflightExit -ne 0 -and $preflightExit -ne 1 -and $preflightExit -ne 3) {
-              Write-Error "Benchmark preflight failed for a non-credential reason (exit=$preflightExit)."
-              exit $preflightExit
-            }
-            exit 0
-          }
-
-          if ($preflightExit -ne 0) {
-            Write-Error "Benchmark preflight failed despite all required credentials being present (exit=$preflightExit)."
-            exit $preflightExit
-          }
-
-          Write-Output "JEV_PROVIDER_PREFLIGHT=READY"
-
-
+          $ErrorActionPreference = "Stop"
+          $root = "C:\Aftergraph\JevSecrets"
+          if (!(Test-Path "$root\v215-seal-private.der")) { throw "runner seal private key missing" }
+          if (!(Test-Path "$root\v215-evidence-signing.raw")) { throw "runner evidence signing key missing" }
+          if (!(Test-Path "configs/provider-smoke.v215.sealed.json")) { throw "sealed provider bundle missing" }
+          python scripts/runner_v215_vault.py exec --seal-private "$root\v215-seal-private.der" --signing-private "$root\v215-evidence-signing.raw" --bundle "configs/provider-smoke.v215.sealed.json" python -m jev_engineering.cli benchmark-preflight benchmarks/hermes_qwen_control_plane_ablation.yaml
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Write-Output "JEV_PROVIDER_PREFLIGHT=READY_SEALED"
 
   jev-v215-vault-bootstrap:
     name: Jev v2.15 runner vault bootstrap
