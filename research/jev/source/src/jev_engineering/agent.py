@@ -260,6 +260,20 @@ class CodingAgent:
             )
         return self.decisions.safe_to_run(task=task, command=action_repr, policy=self.policy)
 
+    def _completion_verdict(self, *, task: str, evidence: dict[str, Any]) -> DoneVerdict:
+        if (
+            bool(self.policy.get("authoritative_verifier", False))
+            and int(evidence.get("verification_exit_code", 1)) == 0
+            and bool(evidence.get("evidence_fresh", False))
+        ):
+            return DoneVerdict(
+                True,
+                1.0,
+                1.0,
+                "fresh preregistered deterministic verifier passed under authoritative-verifier policy",
+            )
+        return self.decisions.done(task=task, evidence=evidence)
+
     def _create_session(self, model: Any, task: str, context: str):
         return self.provider_factory.create(
             model,
@@ -591,19 +605,7 @@ class CodingAgent:
                 "evidence_claim_id": claim.claim_id,
                 "evidence_subject": claim.subject,
             }
-            if (
-                bool(self.policy.get("authoritative_verifier", False))
-                and int(latest_verification["exit_code"]) == 0
-                and evidence_fresh
-            ):
-                verdict = DoneVerdict(
-                    True,
-                    1.0,
-                    1.0,
-                    "fresh preregistered deterministic verifier passed under authoritative-verifier policy",
-                )
-            else:
-                verdict = self.decisions.done(task=task, evidence=evidence)
+            verdict = self._completion_verdict(task=task, evidence=evidence)
             self.audit.append(
                 "decision.done",
                 verified=verdict.verified,
