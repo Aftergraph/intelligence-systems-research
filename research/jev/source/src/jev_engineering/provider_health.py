@@ -57,7 +57,7 @@ def check_typesafe(*, api_key: str, base_url: str = "https://api.typesafe.ai", m
         with JevClient(api_key=api_key, base_url=base_url, model=model, timeout=20.0, transport=transport) as client:
             response = client.system_one(
                 state={"task": "provider smoke check", "risk": "none"},
-                questions={"continue": {"type": "noul", "true": "continue", "false": "stop"}},
+                questions={"continue": {"type": "noul", "instructions": "Should this harmless authenticated provider smoke check continue?"}},
             )
         response.noul("continue")
         results.append(ProviderCheck("typesafe", "system_one", True, _elapsed_ms(start), f"model={response.model}", response.request_ids))
