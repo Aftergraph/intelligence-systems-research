@@ -27,6 +27,8 @@ def test_repo_local_write_auto_allow_is_explicit_and_deterministic(tmp_path) -> 
         tools=RepoTools(tmp_path, command_mode="verify_only"),
         policy={"repo_local_write_auto_allow": True},
         decisions=spy,
+        _argument_summary=CodingAgent._argument_summary,
+        _redacted_command_for_decision=CodingAgent._redacted_command_for_decision,
     )
     call = ToolCall("c1", "write_file", {"path": "solution.py", "content": "x = 1\n"})
     verdict = CodingAgent._gate_action(fake, "repair fixture", call)
@@ -40,6 +42,8 @@ def test_repo_local_write_without_opt_in_still_uses_typed_safety(tmp_path) -> No
         tools=RepoTools(tmp_path, command_mode="verify_only"),
         policy={},
         decisions=spy,
+        _argument_summary=CodingAgent._argument_summary,
+        _redacted_command_for_decision=CodingAgent._redacted_command_for_decision,
     )
     call = ToolCall("c1", "replace_text", {"path": "solution.py", "old": "x", "new": "y"})
     (tmp_path / "solution.py").write_text("x = 1\n")
