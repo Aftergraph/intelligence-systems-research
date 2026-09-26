@@ -14,6 +14,8 @@ runtime:
   policy:
     destructive_block_threshold: 0.85
     human_threshold: 0.7
+    repo_local_write_auto_allow: true
+    authoritative_verifier: true
 models:
   qwen-3.8-max-thinking:
     provider: dialagram
