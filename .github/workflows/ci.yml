@@ -297,3 +297,17 @@ jobs:
           python -m pip install --disable-pip-version-check --quiet --target "$deps" "httpx==0.28.1" "PyYAML==6.0.3" "pytest==9.0.2" "cryptography==46.0.4"
           $env:PYTHONPATH = "$deps;${{ github.workspace }}\research\jev\source\src"
           python scripts/runner_v215_vault.py exec --seal-private "$root\v215-seal-private.der" --signing-private "$root\v215-evidence-signing.raw" --bundle "configs/provider-smoke.v215.sealed.json" python scripts/run_v216_pilot.py
+
+  jev-v216-linux-probe:
+    name: Jev v2.16 Linux runner probe
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, linux, x64, aie-interop]
+    timeout-minutes: 5
+    steps:
+      - name: Probe AIE interop runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "JEV_V216_LINUX_PROBE=PASS"
+          uname -a
+          python3 --version
