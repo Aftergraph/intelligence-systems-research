@@ -24,6 +24,16 @@ def bootstrap(args):
     print(json.dumps({"status":"READY","seal_public_key_der_b64":public_b64,"seal_key_fingerprint_sha256":__import__('hashlib').sha256(base64.b64decode(public_b64)).hexdigest(),"signing_key_id":args.signing_key_id,"signing_public_key_b64":base64.b64encode(signer.public_key_bytes()).decode()}))
 
 
+def exec_with_env(args):
+    values=unseal_values(load_bundle(args.bundle),Path(args.seal_private).read_bytes())
+    env=os.environ.copy(); env.update(values)
+    env["JEV_EVIDENCE_SIGNING_KEY_B64"]=base64.b64encode(Path(args.signing_private).read_bytes()).decode("ascii")
+    if not args.command:
+        raise SystemExit("exec requires command after --")
+    proc=subprocess.run(args.command,env=env)
+    raise SystemExit(proc.returncode)
+
+
 def smoke(args):
     values=unseal_values(load_bundle(args.bundle),Path(args.seal_private).read_bytes())
     report=run_provider_smoke(typesafe_api_key=values['TYPESAFE_API_KEY'],dialagram_api_key=values['DIALAGRAM_API_KEY'])
@@ -36,7 +46,9 @@ def smoke(args):
     if not report['ok']: raise SystemExit(4)
 
 p=argparse.ArgumentParser(); sub=p.add_subparsers(dest='cmd',required=True)
-for name,fn in [('bootstrap',bootstrap),('smoke',smoke)]:
+for name,fn in [('bootstrap',bootstrap),('smoke',smoke),('exec',exec_with_env)]:
     q=sub.add_parser(name); q.set_defaults(fn=fn); q.add_argument('--seal-private',required=True); q.add_argument('--signing-private',required=True); q.add_argument('--signing-key-id',default='jev-v215-runner')
-    if name=='smoke': q.add_argument('--bundle',required=True); q.add_argument('--evidence-out',required=True)
+    if name in {'smoke','exec'}: q.add_argument('--bundle',required=True)
+    if name=='smoke': q.add_argument('--evidence-out',required=True)
+    if name=='exec': q.add_argument('command',nargs=argparse.REMAINDER)
 a=p.parse_args(); a.fn(a)
