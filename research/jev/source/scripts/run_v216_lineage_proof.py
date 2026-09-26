@@ -1,5 +1,5 @@
 from __future__ import annotations
-import json, os, shutil
+import base64, json, os, shutil
 from pathlib import Path
 from jev_engineering.authenticated_benchmark import run_and_seal_authenticated_benchmark
 from jev_engineering.public_receipts import Ed25519ReceiptSigner
@@ -8,9 +8,13 @@ root=Path(__file__).resolve().parents[1]
 out=root/'artifacts'/'v216-lineage-proof'
 if out.exists(): shutil.rmtree(out)
 out.mkdir(parents=True,exist_ok=True)
-raw=os.environ.get('JEV_EVIDENCE_SIGNING_KEY_B64','')
-if not raw: raise SystemExit('missing JEV_EVIDENCE_SIGNING_KEY_B64')
-signer=Ed25519ReceiptSigner.from_private_key_b64(raw,key_id='jev-v215-runner')
+raw_b64=os.environ.get('JEV_EVIDENCE_SIGNING_KEY_B64','')
+if not raw_b64: raise SystemExit('missing JEV_EVIDENCE_SIGNING_KEY_B64')
+try:
+    raw=base64.b64decode(raw_b64, validate=True)
+except Exception as exc:
+    raise SystemExit('invalid JEV_EVIDENCE_SIGNING_KEY_B64') from exc
+signer=Ed25519ReceiptSigner.from_private_key_bytes(key_id='jev-v215-runner', raw=raw)
 bundle=run_and_seal_authenticated_benchmark(
     manifest_path=root/'benchmarks'/'v216_authenticated_lineage_proof.yaml',
     output_dir=out,
