@@ -338,3 +338,27 @@ jobs:
           python -m pip install --disable-pip-version-check --quiet --target "$deps" "httpx==0.28.1" "PyYAML==6.0.3" "pytest==9.0.2" "cryptography==46.0.4"
           $env:PYTHONPATH = "$deps;${{ github.workspace }}\research\jev\source\src"
           python scripts/runner_v215_vault.py exec --seal-private "$root\v215-seal-private.der" --signing-private "$root\v215-evidence-signing.raw" --bundle "configs/provider-smoke.v215.sealed.json" python scripts/run_v216_lineage_proof.py
+
+  jev-v216-cancel-stale-pilot:
+    name: Jev v2.16 cancel stale five-pair pilot
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    timeout-minutes: 5
+    steps:
+      - name: Cancel exact stale workflow run
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_RUN_ID: "36214534660"
+        run: |
+          set -euo pipefail
+          state="$(gh api -H 'Accept: application/vnd.github+json' "/repos/${GITHUB_REPOSITORY}/actions/runs/${TARGET_RUN_ID}" --jq .status)"
+          echo "TARGET_STATUS=${state}"
+          if [ "${state}" = "in_progress" ] || [ "${state}" = "queued" ]; then
+            gh api --method POST -H 'Accept: application/vnd.github+json' "/repos/${GITHUB_REPOSITORY}/actions/runs/${TARGET_RUN_ID}/cancel"
+            echo "STALE_PILOT_CANCEL_REQUESTED=1"
+          else
+            echo "STALE_PILOT_ALREADY_TERMINAL=1"
+          fi
