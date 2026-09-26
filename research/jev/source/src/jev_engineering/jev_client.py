@@ -43,6 +43,7 @@ class SystemOneResponse:
     answers: dict[str, dict[str, Any]]
     usage: Usage = field(default_factory=Usage)
     raw: dict[str, Any] = field(default_factory=dict)
+    request_ids: tuple[str, ...] = ()
 
     def choice(self, key: str) -> ChoiceAnswer:
         a = self.answers[key]
@@ -155,9 +156,18 @@ class JevClient:
             input_tokens=int(usage_payload.get("input_tokens", 0) or 0),
             output_tokens=int(usage_payload.get("output_tokens", 0) or 0),
         )
+        request_ids = []
+        for header in ("x-request-id", "x-trace-id", "request-id"):
+            value = response.headers.get(header)
+            if value and value not in request_ids:
+                request_ids.append(value)
+        payload_id = payload.get("id")
+        if payload_id and str(payload_id) not in request_ids:
+            request_ids.append(str(payload_id))
         return SystemOneResponse(
             model=str(payload.get("model", model or self.model)),
             answers=dict(payload["answers"]),
             usage=usage,
             raw=payload,
+            request_ids=tuple(request_ids),
         )
