@@ -31,6 +31,24 @@ verifier=Ed25519ReceiptVerifier({signer.key_id: signer.public_key_bytes()})
 receipts_verify=bundle.verify(verifier)
 payload=bundle.to_dict()
 (out/'evidence.json').write_text(json.dumps(payload,indent=2,sort_keys=True)+'\n')
+provenance=[]
+for record in bundle.execution.records:
+    att=dict(record.get('attestation') or {})
+    provenance.append({
+        'condition':record.get('condition'),
+        'status':record.get('status'),
+        'provider':att.get('provider'),
+        'model':att.get('model'),
+        'provider_request_count':len(att.get('provider_request_ids') or []),
+        'provider_authenticated':bool(att.get('authenticated',False)),
+        'transport_security':att.get('transport_security'),
+        'evidence_origin':att.get('evidence_origin'),
+        'decision_provider':att.get('decision_provider'),
+        'decision_model':att.get('decision_model'),
+        'decision_request_count':len(att.get('decision_request_ids') or []),
+        'decision_authenticated':bool(att.get('decision_authenticated',False)),
+        'decision_transport_security':att.get('decision_transport_security'),
+    })
 print(json.dumps({
     'status':'PASS' if receipts_verify else 'FAIL',
     'pairs':1,
@@ -40,5 +58,6 @@ print(json.dumps({
     'authenticated_live_ab_executed':False,
     'performance_claim':False,
     'truth_boundary':'one-pair proof establishes authenticated paired lineage only; it is not powered performance evidence',
+    'provenance':provenance,
 },sort_keys=True))
 if not receipts_verify: raise SystemExit(3)
