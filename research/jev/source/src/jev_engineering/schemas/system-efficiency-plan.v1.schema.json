@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/system-efficiency-plan.v1.schema.json",
+  "title": "SystemEfficiencyPlan/v1",
+  "type": "object",
+  "required": [
+    "version", "profile_id", "target_ratio", "selected_levers", "baseline_tokens",
+    "projected_categories", "projected_tokens", "projected_ratio",
+    "quality_retention_lower_bound", "minimum_evidence_level", "target_met", "truth_boundary"
+  ],
+  "properties": {
+    "version": {"const": 1},
+    "profile_id": {"type": "string", "minLength": 1},
+    "target_ratio": {"type": "number", "exclusiveMinimum": 0},
+    "selected_levers": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "baseline_tokens": {"type": "integer", "minimum": 0},
+    "projected_categories": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    },
+    "projected_tokens": {"type": "integer", "minimum": 0},
+    "projected_ratio": {"type": "number", "exclusiveMinimum": 0},
+    "quality_retention_lower_bound": {"type": "number", "minimum": 0, "maximum": 1},
+    "minimum_evidence_level": {"enum": ["hypothesis", "modeled", "observed", "benchmarked"]},
+    "target_met": {"type": "boolean"},
+    "truth_boundary": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

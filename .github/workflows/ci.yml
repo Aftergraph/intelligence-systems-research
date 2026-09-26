@@ -30,6 +30,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   python-tests:
     name: Python tests + audit
@@ -170,3 +174,128 @@ jobs:
       - name: Pre-execution gate
         run: |
           python -c "import os, sys; sys.path.insert(0, 'experiments/live_benchmark'); from study011_analyze import classify_execution; n = sum(1 for f in os.listdir('data/live_benchmark_dry_runs') if f.endswith('.json')); print(f'Found {n} dry-run files; LIVE_ONLY invariant preserved.'); print('PASS: pre-execution gate')"
+
+  jev-v216-lineage-proof:
+    name: Jev v2.16 bounded paired lineage proof
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Check one-shot lineage proof gate
+        id: gate
+        shell: pwsh
+        run: |
+          if (Test-Path "research/jev/live/v2.16/LINEAGE_PROOF") { "run=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8 } else { "run=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8 }
+      - name: Run bounded authenticated lineage proof
+        if: steps.gate.outputs.run == 'true'
+        shell: pwsh
+        working-directory: research/jev/source
+        env:
+          PYTHONPATH: ${{ github.workspace }}\research\jev\source\src
+        run: |
+          $ErrorActionPreference = "Stop"
+          $root = "C:\Aftergraph\JevSecrets"
+          $deps = Join-Path $env:RUNNER_TEMP "jev-v216-proof-deps"
+          New-Item -ItemType Directory -Force -Path $deps | Out-Null
+          python -m pip install --disable-pip-version-check --quiet --target "$deps" "httpx==0.28.1" "PyYAML==6.0.3" "pytest==9.0.2" "cryptography==46.0.4"
+          $env:PYTHONPATH = "$deps;${{ github.workspace }}\research\jev\source\src"
+          python scripts/runner_v215_vault.py exec --seal-private "$root\v215-seal-private.der" --signing-private "$root\v215-evidence-signing.raw" --bundle "configs/provider-smoke.v215.sealed.json" python scripts/run_v216_lineage_proof.py
+
+      - name: Upload signed lineage proof evidence
+        if: steps.gate.outputs.run == 'true' && always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: jev-v216-lineage-proof-${{ github.run_id }}
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            research/jev/source/artifacts/v216-lineage-proof/authenticated-live-evidence.v1.json
+            research/jev/source/artifacts/v216-lineage-proof/evidence-public-key.raw
+            research/jev/source/artifacts/v216-lineage-proof/evidence.json
+
+  jev-v216-cancel-stale-pilot:
+    name: Jev v2.16 cancel stale five-pair pilot
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    timeout-minutes: 5
+    steps:
+      - name: Cancel exact stale workflow run
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_RUN_ID: "36216023393"
+        run: |
+          set -euo pipefail
+          state="$(gh api -H 'Accept: application/vnd.github+json' "/repos/${GITHUB_REPOSITORY}/actions/runs/${TARGET_RUN_ID}" --jq .status)"
+          echo "TARGET_STATUS=${state}"
+          if [ "${state}" = "in_progress" ] || [ "${state}" = "queued" ]; then
+            gh api --method POST -H 'Accept: application/vnd.github+json' "/repos/${GITHUB_REPOSITORY}/actions/runs/${TARGET_RUN_ID}/cancel"
+            echo "STALE_PILOT_CANCEL_REQUESTED=1"
+          else
+            echo "STALE_PILOT_ALREADY_TERMINAL=1"
+          fi
+
+  jev-v217-completion-diagnostic:
+    name: Jev v2.17 completion diagnostic
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Check one-shot completion diagnostic gate
+        id: gate
+        shell: pwsh
+        run: |
+          if (Test-Path "research/jev/live/v2.17/COMPLETION_DIAGNOSTIC") { "run=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8 } else { "run=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8 }
+      - name: Run three-pair authenticated completion diagnostic
+        if: steps.gate.outputs.run == 'true'
+        shell: pwsh
+        working-directory: research/jev/source
+        env:
+          PYTHONPATH: ${{ github.workspace }}\research\jev\source\src
+        run: |
+          $ErrorActionPreference = "Stop"
+          $root = "C:\Aftergraph\JevSecrets"
+          $deps = Join-Path $env:RUNNER_TEMP "jev-v217-diagnostic-deps"
+          New-Item -ItemType Directory -Force -Path $deps | Out-Null
+          python -m pip install --disable-pip-version-check --quiet --target "$deps" "httpx==0.28.1" "PyYAML==6.0.3" "pytest==9.0.2" "cryptography==46.0.4"
+          $env:PYTHONPATH = "$deps;${{ github.workspace }}\research\jev\source\src"
+          python scripts/runner_v215_vault.py exec --seal-private "$root\v215-seal-private.der" --signing-private "$root\v215-evidence-signing.raw" --bundle "configs/provider-smoke.v215.sealed.json" python scripts/run_v217_completion_diagnostic.py
+
+      - name: Upload v2.17 completion diagnostic evidence
+        if: steps.gate.outputs.run == 'true' && always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: jev-v217-completion-diagnostic-${{ github.run_id }}
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            research/jev/source/artifacts/v217-completion-diagnostic/authenticated-live-evidence.v1.json
+            research/jev/source/artifacts/v217-completion-diagnostic/evidence-public-key.raw
+            research/jev/source/artifacts/v217-completion-diagnostic/completion-readiness.json
+            research/jev/source/artifacts/v217-completion-diagnostic/evidence/**/*.audit.jsonl
+
+  jev-v217-repair-contract:
+    name: Jev v2.17 repair contract (no live calls)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.11"
+      - name: Install Jev test dependencies
+        run: |
+          python -m pip install --disable-pip-version-check -e "research/jev/source[dev]"
+      - name: Run v2.17 repair/readiness contracts
+        working-directory: research/jev/source
+        run: |
+          python -m pytest -q \
+            tests/test_v217_completion_policy.py \
+            tests/test_v217_verifier_portability.py \
+            tests/test_v217_campaign_readiness.py \
+            tests/test_v217_completion_diagnostic_contract.py \
+            tests/test_v217_public_api.py

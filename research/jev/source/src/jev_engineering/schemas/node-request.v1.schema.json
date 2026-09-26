@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/node-request.v1.schema.json",
+  "title": "Aftergraph Node Request v1",
+  "type": "object",
+  "required": ["request_id", "sender", "recipient", "operation", "payload", "sent_at", "nonce"],
+  "properties": {
+    "request_id": {"type": "string", "minLength": 1},
+    "sender": {"type": "string", "minLength": 1},
+    "recipient": {"type": "string", "minLength": 1},
+    "operation": {"type": "string", "minLength": 1},
+    "payload": {"type": "object"},
+    "sent_at": {"type": "string", "format": "date-time"},
+    "nonce": {"type": "string", "minLength": 16}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,38 @@
+# Single-provider production profile: GPT-5.6 Sol is both the typed decision
+# engine and the frontier coding model. Only profiles explicitly marked
+# tier=frontier are exposed to the coding-model Choice gate.
+decision:
+  backend: openai
+  api_key_env: OPENAI_API_KEY
+  base_url: https://api.openai.com/v1
+  model: gpt-5.6-sol
+  reasoning_effort: high
+  offline_fallback: false
+
+runtime:
+  verify_command: "python -m pytest -q"
+  max_turns: 24
+  scope_top_k: 8
+  command_mode: verify_only
+  retention_every: 6
+  loop_check_every: 4
+  policy:
+    destructive_block_threshold: 0.85
+    human_threshold: 0.70
+
+models:
+  openai-sol:
+    provider: openai
+    model: gpt-5.6-sol
+    tier: frontier
+    transport: openai_responses
+    api_key_env: OPENAI_API_KEY
+    context_window: 1050000
+    reasoning_effort: high
+
+# Optional broad catalog. Imported entries remain unclassified until explicitly
+# promoted. Discovery is not permission.
+# catalog:
+#   path: ./litellm-model-catalog.json
+#   frontier_models:
+#     - openai/gpt-5.6-sol

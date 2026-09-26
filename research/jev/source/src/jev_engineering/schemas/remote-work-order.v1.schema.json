@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/remote-work-order.v1.schema.json",
+  "title": "Remote Work Order v1",
+  "type": "object",
+  "required": ["mission_id", "node_id", "execution_context_id", "lease_id", "fencing_token", "authority_grant_id", "candidate_sha", "operation"],
+  "properties": {
+    "mission_id": {"type": "string", "minLength": 1},
+    "node_id": {"type": "string", "minLength": 1},
+    "execution_context_id": {"type": "string", "minLength": 1},
+    "lease_id": {"type": "string", "minLength": 1},
+    "fencing_token": {"type": "integer", "minimum": 1},
+    "authority_grant_id": {"type": "string", "minLength": 1},
+    "candidate_sha": {"type": "string", "minLength": 1},
+    "operation": {"type": "string", "const": "verify_candidate"}
+  },
+  "additionalProperties": false
+}

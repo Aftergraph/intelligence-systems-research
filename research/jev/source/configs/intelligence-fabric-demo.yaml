@@ -1,0 +1,49 @@
+# Offline scheduler demonstration only. The probabilities below are illustrative
+# priors chosen to exercise routing gates; they are not benchmark measurements.
+intelligence_fabric:
+  enabled: true
+  required_vsr:
+    control: 0.80
+  frontier_budget:
+    input_tokens: 10000
+    output_tokens: 2000
+  strategies:
+    - id: deterministic-rule
+      source: rule
+      capabilities: [control]
+      predicted_vsr: 0.82
+      estimated_cost_usd: 0.0
+      estimated_latency_ms: 1
+      uncertainty: 0.02
+      risk: 0.01
+      metadata:
+        prediction_provenance: illustrative_prior_not_measured
+    - id: jev-system-one
+      source: jev
+      capabilities: [control]
+      predicted_vsr: 0.94
+      estimated_cost_usd: 0.0001
+      estimated_latency_ms: 60
+      uncertainty: 0.05
+      risk: 0.02
+      metadata:
+        prediction_provenance: illustrative_prior_not_measured
+    - id: frontier-control
+      source: frontier
+      capabilities: [control]
+      predicted_vsr: 0.99
+      estimated_cost_usd: 0.15
+      estimated_latency_ms: 1200
+      uncertainty: 0.03
+      risk: 0.03
+      frontier_input_tokens: 4000
+      frontier_output_tokens: 800
+      metadata:
+        model_alias: demo-frontier
+        prediction_provenance: illustrative_prior_not_measured
+models:
+  demo-frontier:
+    provider: mock
+    model: demo-frontier
+    tier: frontier
+    transport: mock

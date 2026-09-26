@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/context-projection.v1.schema.json",
+  "title": "Aftergraph ContextProjection v1",
+  "type": "object",
+  "required": ["version", "projection_id", "token_budget", "tokens_used", "candidate_tokens", "selected", "excluded"],
+  "properties": {
+    "version": {"const": 1},
+    "projection_id": {"type": "string", "minLength": 1},
+    "token_budget": {"type": "integer", "minimum": 0},
+    "tokens_used": {"type": "integer", "minimum": 0},
+    "candidate_tokens": {"type": "integer", "minimum": 0},
+    "useful_context_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+    "compression_ratio": {"type": "number", "minimum": 0},
+    "selected": {"type": "array", "items": {"type": "object"}},
+    "excluded": {"type": "object", "additionalProperties": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

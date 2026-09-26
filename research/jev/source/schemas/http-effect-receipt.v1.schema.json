@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/http-effect-receipt.v1.schema.json",
+  "title": "HttpEffectReceipt/v1",
+  "type": "object",
+  "required": ["action_id", "method", "url", "state", "principal", "authority_ref", "response_status", "response_sha256", "readback_sha256", "verifier_claim_ids"],
+  "properties": {
+    "action_id": {"type": "string", "minLength": 1},
+    "method": {"enum": ["POST", "PUT", "PATCH", "DELETE"]},
+    "url": {"type": "string", "format": "uri"},
+    "state": {"enum": ["new", "prepared", "authorized", "executed", "read_back", "verified", "committed", "compensated"]},
+    "principal": {"type": "string"},
+    "authority_ref": {"type": "string"},
+    "response_status": {"type": "integer", "minimum": 0},
+    "response_sha256": {"type": "string"},
+    "readback_sha256": {"type": "string"},
+    "verifier_claim_ids": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

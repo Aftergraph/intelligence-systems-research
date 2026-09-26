@@ -1,0 +1,64 @@
+decision:
+  backend: typesafe
+  api_key_env: TYPESAFE_API_KEY
+  base_url: https://api.typesafe.ai
+  model: jev-latest
+  offline_fallback: false
+
+intelligence_fabric:
+  enabled: true
+  required_vsr:
+    generation: 0.90
+  frontier_budget:
+    input_tokens: 120000
+    output_tokens: 25000
+  weights:
+    cost: 1.0
+    latency: 0.0001
+    uncertainty: 0.25
+    risk: 0.5
+    frontier_tokens: 0.000001
+  strategies:
+    - id: jev-control
+      source: jev
+      capabilities: [control]
+      predicted_vsr: 0.94
+      estimated_cost_usd: 0.0001
+      estimated_latency_ms: 60
+      uncertainty: 0.05
+      risk: 0.02
+      metadata:
+        prediction_provenance: illustrative_prior_not_measured
+    - id: qwen-3.8-max-thinking-generation
+      source: frontier
+      capabilities: [generation]
+      model_alias: qwen-3.8-max-thinking
+      predicted_vsr: 0.96
+      estimated_cost_usd: 0.05
+      estimated_latency_ms: 500
+      uncertainty: 0.08
+      risk: 0.05
+      metadata:
+        prediction_provenance: illustrative_prior_not_measured
+      frontier_input_tokens: 20000
+      frontier_output_tokens: 4000
+
+runtime:
+  verify_command: "python -m pytest -q"
+  max_turns: 24
+  scope_top_k: 8
+  command_mode: verify_only
+  retention_every: 6
+  loop_check_every: 4
+  policy:
+    destructive_block_threshold: 0.85
+    human_threshold: 0.70
+
+models:
+  qwen-3.8-max-thinking:
+    provider: dialagram
+    model: qwen-3.8-max-thinking
+    tier: frontier
+    transport: openai_compatible
+    base_url: https://dialagram.me/router/v1
+    api_key_env: DIALAGRAM_API_KEY

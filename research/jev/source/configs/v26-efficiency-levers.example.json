@@ -1,0 +1,37 @@
+[
+  {
+    "lever_id": "context-compiler",
+    "reductions": {"context_input": 0.75},
+    "quality_retention_lower_bound": 0.995,
+    "evidence_level": "benchmarked",
+    "complexity_cost": 1.0
+  },
+  {
+    "lever_id": "jev-control",
+    "reductions": {"frontier_control": 0.95},
+    "quality_retention_lower_bound": 0.998,
+    "evidence_level": "observed",
+    "complexity_cost": 1.0
+  },
+  {
+    "lever_id": "retry-pruning",
+    "reductions": {"retry": 0.75},
+    "quality_retention_lower_bound": 0.995,
+    "evidence_level": "observed",
+    "complexity_cost": 1.0
+  },
+  {
+    "lever_id": "cheap-first-escalation",
+    "reductions": {"context_input": 0.70, "generation_output": 0.70, "retry": 0.70},
+    "quality_retention_lower_bound": 0.99,
+    "evidence_level": "modeled",
+    "complexity_cost": 2.0
+  },
+  {
+    "lever_id": "verified-early-exit",
+    "reductions": {"context_input": 0.20, "generation_output": 0.20, "retry": 0.20},
+    "quality_retention_lower_bound": 0.995,
+    "evidence_level": "modeled",
+    "complexity_cost": 1.5
+  }
+]

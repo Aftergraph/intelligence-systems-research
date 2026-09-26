@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/execution-context.v1.schema.json",
+  "title": "WORKS Execution Context v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["execution_context_id", "trace_id", "mission_id", "node_id", "principal", "created_at"],
+  "properties": {
+    "execution_context_id": {"type": "string", "pattern": "^exec_"},
+    "trace_id": {"type": "string", "pattern": "^trace_"},
+    "mission_id": {"type": "string", "minLength": 1},
+    "node_id": {"type": "string", "minLength": 1},
+    "principal": {"type": "string", "minLength": 1},
+    "parent_execution_context_id": {"type": ["string", "null"]},
+    "created_at": {"type": "number"}
+  }
+}

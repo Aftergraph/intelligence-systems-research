@@ -1,0 +1,22 @@
+{
+  "schema": "aftergraph.source-import-evidence/1.0",
+  "artifact": "aftergraph-jev-engineering",
+  "version": "2.11.1",
+  "canonical_owner": "Aftergraph/intelligence-systems-research",
+  "source_import_commit": "5f141e2110da73433bce6f73a49400a1e701f1f4",
+  "source_capsule_sha256": "2b8e9ecc870d5d0b6829bcb57afc2ff72a76d1dbb71da3a9332f9c900a169793",
+  "materialized_files": 388,
+  "hygiene": {
+    "removed_from_v2_11_0_release_payload": [
+      "CHANGELOG.md.tmp",
+      "dist/"
+    ],
+    "binary_note_sha256": "feba6328abc5522e1d82a02432de2f59a368d71d1f6b80a1b1d4ce6840a52698"
+  },
+  "claim_boundary": {
+    "authenticated_live_ab_executed": false,
+    "live_provider_measurement": false,
+    "measured_10x": false,
+    "historical_11_86x": "modeled_not_measured"
+  }
+}

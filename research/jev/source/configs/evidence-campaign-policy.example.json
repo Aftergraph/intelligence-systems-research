@@ -1,0 +1,10 @@
+{
+  "min_holdout_pairs": 20,
+  "noninferiority_margin": 0.02,
+  "max_fcr": 0.0,
+  "require_lower_cpvo": true,
+  "min_fie_ratio": 1.0,
+  "target_fie_ratio": 10.0,
+  "bootstrap_samples": 10000,
+  "bootstrap_seed": 20260925
+}

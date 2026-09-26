@@ -1,0 +1,29 @@
+{
+  "capabilities": {
+    "adaptive_competence_routing": true,
+    "adaptive_topology_rewrite": true,
+    "authority_boundary_changed": false,
+    "cross_provider_receipt_hash_chain": true,
+    "evidence_deduplication": true,
+    "verified_outcome_competence_learning": true
+  },
+  "release": "2.14.0",
+  "schema": "aftergraph.jev-adaptive-swarm-evidence/1.0",
+  "truth_boundary": {
+    "authenticated_live_ab_executed": false,
+    "historical_11_86x": "modeled_not_measured",
+    "live_provider_measurement": false,
+    "measured_10x": false
+  },
+  "verification": {
+    "compileall": "PASS",
+    "dedicated_v214": "24/24 PASS",
+    "pytest": "377/377 PASS across six isolated shards (63, 63, 65, 62, 62, 62)",
+    "release_relocatability": "PASS",
+    "secret_scan": "PASS",
+    "v214_demo": "PASS",
+    "wheel_build": "PASS",
+    "wheel_import": "PASS"
+  },
+  "wheel_sha256": "47d001d2a2a4bbfd56fdd16848e69585584aeb60bd3268e704e39c9fe5c377d9"
+}

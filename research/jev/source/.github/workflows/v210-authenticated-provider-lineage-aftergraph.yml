@@ -1,0 +1,61 @@
+name: v2.10 authenticated provider lineage (Aftergraph)
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_live:
+        description: "Execute the real provider-backed paired coding campaign"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+env:
+  PYTHONPATH: ${{ github.workspace }}/src
+
+jobs:
+  verify-v210:
+    runs-on: [self-hosted, linux, x64, aftergraph-ci]
+    environment: provider-smoke
+    timeout-minutes: 90
+    env:
+      TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+      DIALAGRAM_API_KEY: ${{ secrets.DIALAGRAM_API_KEY }}
+      JEV_EVIDENCE_SIGNING_KEY_B64: ${{ secrets.JEV_EVIDENCE_SIGNING_KEY_B64 }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Install
+        run: python3 -m pip install -e '.[dev]'
+      - name: v2.10 focused regression
+        run: python3 -m pytest -q tests/test_v210_*.py tests/test_v29_*.py tests/test_benchmark.py tests/test_agent_loop.py
+      - name: Secret scan
+        run: python3 scripts/verify_no_secrets.py .
+      - name: Provider preflight
+        if: ${{ inputs.run_live }}
+        run: python3 -m jev_engineering.cli benchmark-preflight benchmarks/hermes_qwen_control_plane_ablation.yaml
+      - name: Authenticated live paired campaign
+        if: ${{ inputs.run_live }}
+        run: >-
+          python3 -m jev_engineering.cli live-campaign-v210
+          benchmarks/hermes_qwen_control_plane_ablation.yaml
+          --incumbent qwen-frontier-control
+          --candidate qwen-jev-control
+          --repeats 6
+          --shadow-pairs 5
+          --experiment-pairs 5
+          --holdout-pairs 20
+          --output-dir live-campaign-v210-results
+      - name: Verify sealed evidence
+        if: ${{ inputs.run_live }}
+        run: >-
+          python3 -m jev_engineering.cli verify-live-v210
+          live-campaign-v210-results/authenticated-live-evidence.v1.json
+          --public-key live-campaign-v210-results/evidence-public-key.raw
+      - name: Upload non-secret evidence
+        if: ${{ inputs.run_live }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: v210-authenticated-provider-lineage
+          path: live-campaign-v210-results

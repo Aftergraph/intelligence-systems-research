@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/learning-campaign.v1.schema.json",
+  "title": "LearningCampaign/v1",
+  "type": "object",
+  "required": ["candidate_id", "decision_family", "state", "min_holdout_trials", "noninferiority_margin"],
+  "properties": {
+    "candidate_id": {"type": "string", "minLength": 1},
+    "decision_family": {"type": "string", "minLength": 1},
+    "state": {"enum": ["shadow", "experiment", "holdout", "promoted", "quarantined", "rejected"]},
+    "min_holdout_trials": {"type": "integer", "minimum": 1},
+    "noninferiority_margin": {"type": "number", "minimum": 0, "maximum": 1}
+  },
+  "additionalProperties": true
+}

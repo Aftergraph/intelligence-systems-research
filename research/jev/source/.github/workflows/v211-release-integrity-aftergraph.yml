@@ -1,0 +1,22 @@
+name: v2.11 release integrity (Aftergraph)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-v211-release:
+    runs-on: [self-hosted, linux, x64, aftergraph-ci]
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Install from local source
+        run: python3 -m pip install -e '.[dev]'
+      - name: Release relocatability and action pinning
+        run: python3 scripts/verify_release_relocatable.py .
+      - name: Secret scan
+        run: python3 scripts/verify_no_secrets.py .
+      - name: v2.11 focused regression
+        run: python3 -m pytest -q tests/test_v211_*.py tests/test_benchmark.py tests/test_v210_*.py tests/test_v29_*.py

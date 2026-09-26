@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/frontier-workload-profile.v1.schema.json",
+  "title": "FrontierWorkloadProfile/v1",
+  "type": "object",
+  "required": ["version", "profile_id", "categories", "total_frontier_tokens", "verified_outcomes", "missions"],
+  "properties": {
+    "version": {"const": 1},
+    "profile_id": {"type": "string", "minLength": 1},
+    "categories": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    },
+    "total_frontier_tokens": {"type": "integer", "minimum": 0},
+    "verified_outcomes": {"type": "integer", "minimum": 0},
+    "missions": {"type": "integer", "minimum": 0},
+    "frontier_intelligence_efficiency": {"type": ["number", "null"], "minimum": 0},
+    "metadata": {"type": "object"}
+  },
+  "additionalProperties": false
+}

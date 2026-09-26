@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/journal-checkpoint.v1.schema.json",
+  "title": "Aftergraph Journal Checkpoint v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "worker_id", "stream_id", "cursor", "last_event_sha256", "complete"],
+  "properties": {
+    "version": {"const": 1},
+    "worker_id": {"type": "string", "minLength": 1},
+    "stream_id": {"type": "string", "minLength": 1},
+    "cursor": {"type": "integer", "minimum": 0},
+    "last_event_sha256": {"type": "string", "pattern": "^$|^[0-9a-f]{64}$"},
+    "complete": {"type": "boolean"}
+  }
+}
