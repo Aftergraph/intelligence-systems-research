@@ -311,3 +311,30 @@ jobs:
           echo "JEV_V216_LINUX_PROBE=PASS"
           uname -a
           python3 --version
+
+  jev-v216-lineage-proof:
+    name: Jev v2.16 bounded paired lineage proof
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Check one-shot lineage proof gate
+        id: gate
+        shell: pwsh
+        run: |
+          if (Test-Path "research/jev/live/v2.16/LINEAGE_PROOF") { "run=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8 } else { "run=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8 }
+      - name: Run bounded authenticated lineage proof
+        if: steps.gate.outputs.run == 'true'
+        shell: pwsh
+        working-directory: research/jev/source
+        env:
+          PYTHONPATH: ${{ github.workspace }}\research\jev\source\src
+        run: |
+          $ErrorActionPreference = "Stop"
+          $root = "C:\Aftergraph\JevSecrets"
+          $deps = Join-Path $env:RUNNER_TEMP "jev-v216-proof-deps"
+          New-Item -ItemType Directory -Force -Path $deps | Out-Null
+          python -m pip install --disable-pip-version-check --quiet --target "$deps" "httpx==0.28.1" "PyYAML==6.0.3" "pytest==9.0.2" "cryptography==46.0.4"
+          $env:PYTHONPATH = "$deps;${{ github.workspace }}\research\jev\source\src"
+          python scripts/runner_v215_vault.py exec --seal-private "$root\v215-seal-private.der" --signing-private "$root\v215-evidence-signing.raw" --bundle "configs/provider-smoke.v215.sealed.json" python scripts/run_v216_lineage_proof.py
