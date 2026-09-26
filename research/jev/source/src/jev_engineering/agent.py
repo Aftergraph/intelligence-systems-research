@@ -20,7 +20,7 @@ from .providers.base import ProviderFactory
 from .tools import ApprovalRequired, RepoTools, ToolPolicyError
 from .telemetry import extract_provider_request_id, extract_token_usage
 from .verification_portfolio import VerificationPortfolioOptimizer, VerificationRequirement
-from .types import AgentResult, AgentStatus, SafetyDecision, ToolCall
+from .types import AgentResult, AgentStatus, DoneVerdict, SafetyDecision, ToolCall
 
 
 SYSTEM_INSTRUCTIONS = """You are the frontier coding model inside a Jev-governed harness.
@@ -228,6 +228,17 @@ class CodingAgent:
             return SafetyDecision("confirm", 0.0, 1.0, "deterministic consequential-action policy")
         if call.name in _READ_ONLY:
             return SafetyDecision("allow", 0.0, 0.0, "deterministic read-only tool")
+        if (
+            deterministic == "allow"
+            and call.name in {"write_file", "replace_text"}
+            and bool(self.policy.get("repo_local_write_auto_allow", False))
+        ):
+            return SafetyDecision(
+                "allow",
+                0.0,
+                0.0,
+                "explicit policy auto-allows deterministic repository-local file edits",
+            )
         if call.name not in _MUTATING:
             return SafetyDecision("block", 1.0, 1.0, "tool is outside the governed tool surface")
         # File-write content stays hashed, but shell semantics must remain visible to
@@ -580,7 +591,19 @@ class CodingAgent:
                 "evidence_claim_id": claim.claim_id,
                 "evidence_subject": claim.subject,
             }
-            verdict = self.decisions.done(task=task, evidence=evidence)
+            if (
+                bool(self.policy.get("authoritative_verifier", False))
+                and int(latest_verification["exit_code"]) == 0
+                and evidence_fresh
+            ):
+                verdict = DoneVerdict(
+                    True,
+                    1.0,
+                    1.0,
+                    "fresh preregistered deterministic verifier passed under authoritative-verifier policy",
+                )
+            else:
+                verdict = self.decisions.done(task=task, evidence=evidence)
             self.audit.append(
                 "decision.done",
                 verified=verdict.verified,
