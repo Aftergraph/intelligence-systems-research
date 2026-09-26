@@ -18,6 +18,8 @@ def test_v216_lineage_proof_is_bounded_and_not_performance_claim() -> None:
 
     script = (ROOT / "scripts/run_v216_lineage_proof.py").read_text()
     assert "holdout_pairs=1" in script
+    assert "incumbent_condition='qwen-frontier-control'" in script
+    assert "candidate_condition='qwen-jev-control'" in script
     assert "'authenticated_live_ab_executed':False" in script
     assert "'performance_claim':False" in script
     assert "from_private_key_b64" not in script
