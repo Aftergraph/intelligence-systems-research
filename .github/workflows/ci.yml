@@ -197,7 +197,8 @@ jobs:
           if (!(Test-Path "$root\v215-seal-private.der")) { throw "runner seal private key missing" }
           if (!(Test-Path "$root\v215-evidence-signing.raw")) { throw "runner evidence signing key missing" }
           if (!(Test-Path "configs/provider-smoke.v215.sealed.json")) { throw "sealed provider bundle missing" }
-          python scripts/runner_v215_vault.py exec --seal-private "$root\v215-seal-private.der" --signing-private "$root\v215-evidence-signing.raw" --bundle "configs/provider-smoke.v215.sealed.json" python -m jev_engineering.cli benchmark-preflight benchmarks/hermes_qwen_control_plane_ablation.yaml
+          if (!(Test-Path "benchmarks/hermes_qwen_control_plane_ablation.yaml")) { throw "benchmark manifest missing" }
+          python scripts/runner_v215_vault.py exec --seal-private "$root\v215-seal-private.der" --signing-private "$root\v215-evidence-signing.raw" --bundle "configs/provider-smoke.v215.sealed.json" python -c "import os; names=('DIALAGRAM_API_KEY','TYPESAFE_API_KEY','JEV_EVIDENCE_SIGNING_KEY_B64'); assert all(os.environ.get(n) for n in names)"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           Write-Output "JEV_PROVIDER_PREFLIGHT=READY_SEALED"
 
