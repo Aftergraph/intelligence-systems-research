@@ -1,0 +1,4 @@
+shadow_completion_diagnostic=true
+pairs=3
+max_turns=6
+performance_claim=false
