@@ -1,26 +1,45 @@
 {
-  "claims": {
-    "authenticated_live_ab_executed": false,
-    "authenticated_live_provider_smoke_executed": true,
-    "counterfactual_estimates_modeled_only": true,
-    "historical_11_86x": "modeled_not_measured",
-    "live_provider_measurement": false,
-    "measured_10x": false
-  },
+  "release": "2.16.0",
   "date": "2026-09-26",
-  "frontier": "counterfactual routing + shadow calibration + runner-sealed provider execution",
-  "release": "2.15.0",
+  "frontier": "receipt-v3 authenticated paired lineage proof",
+  "claims": {
+    "authenticated_live_provider_smoke_executed": true,
+    "authenticated_paired_lineage_proof": true,
+    "authenticated_live_ab_executed": false,
+    "live_provider_measurement": true,
+    "performance_claim": false,
+    "measured_10x": false,
+    "historical_11_86x": "modeled_not_measured"
+  },
+  "live_proof": {
+    "workflow_run_id": 36230921304,
+    "artifact_id": 10901529416,
+    "artifact_digest_sha256": "0649b8d7d7ee7d35ec4ca376f41fd13530426303e34d28608758ca9c2f1e725c",
+    "campaign_sha256": "01a97f00185f1c2b325ec2734c7bae05e1a47910e49383673707c2a95354bacc",
+    "pairs": 1,
+    "signed_executions": 2,
+    "receipts_verify": true,
+    "offline_receipt_v3_verify": "PASS",
+    "conditions_status": [
+      "max_turns",
+      "max_turns"
+    ],
+    "truth_boundary": "The bounded one-pair run proves authenticated provider execution plus signed generation and decision request lineage. It is not powered performance evidence and does not establish a 10x result."
+  },
   "security": {
     "provider_credentials_in_release": false,
     "runner_sealed_bundle": true,
     "secret_scan": "PASS"
   },
   "verification": {
+    "pytest": "418/418 PASS across 6 isolated shards (70,70,70,70,69,69)",
+    "targeted_v216": "8/8 PASS",
     "compileall": "PASS",
-    "pytest": "410/410 PASS across 6 isolated shards (85,58,78,74,55,60)",
     "release_relocatability": "PASS",
+    "offline_receipt_v3_verify": "PASS",
     "wheel_build": "PASS",
     "wheel_import": "PASS"
   },
-  "wheel_sha256": "df545b8b5c755db274be169ea5f1679c63430e9fecb31f93a177812331b142e4"
+  "wheel_sha256": "8a0f03feb33ade0b7002c977e363b5ae9876ab856540fda62381f11edd0cb65d",
+  "release_zip_sha256": "9b7c4cd0f53e3b1c020d283fc2e22e98145c1ad4776e1d6947c2628c072fc0a7"
 }
