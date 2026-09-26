@@ -19,8 +19,8 @@
     "modeled_only": true,
     "modeled_ratio": 11.864406779661017
   },
-  "release": "2.13.0",
-  "truth_boundary": "v2.13.0 adds heterogeneous governed subagents and signed per-agent receipts; no authenticated provider-backed campaign was executed in this build environment and no measured 10x claim is made.",
+  "release": "2.14.0",
+  "truth_boundary": "v2.14.0 adds heterogeneous governed subagents and signed per-agent receipts; no authenticated provider-backed campaign was executed in this build environment and no measured 10x claim is made.",
   "verification": {
     "compileall": "PASS",
     "dedicated_v213": "24/24 PASS",

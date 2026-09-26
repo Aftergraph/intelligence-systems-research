@@ -2478,6 +2478,49 @@ def v212_demo() -> None:
     })
 
 
+
+@app.command("v214-demo")
+def v214_demo() -> None:
+    """Exercise adaptive verified-outcome routing without provider calls."""
+    import hashlib
+    from .adaptive_swarm import AdaptiveCompetenceRouter, AdaptiveTopologyRewriter, CompetenceLedger, CrossProviderReceiptChain, VerifiedOutcome
+    from .heterogeneous_agents import BackendBinding, BackendExecution, BackendIdentity, BackendKind, BackendRegistry, HeterogeneousSubagentExecutor, TopologyMode
+    from .multi_agent import MultiAgentOrchestrator, MultiAgentPlan, SubagentSpec, SubagentStatus, SubagentTask
+    from .public_receipts import Ed25519ReceiptSigner
+
+    def local_exec(identity, spec, task, context, trace_id, span_id):
+        return BackendExecution(SubagentStatus.SUCCESS, {"backend": identity.backend_id, "task": task.task_id}, 0.9)
+
+    registry=BackendRegistry()
+    registry.register(BackendIdentity("alpha",BackendKind.LOCAL,"local","alpha",capabilities=frozenset({"code"}),competence={"code":0.9}),local_exec)
+    registry.register(BackendIdentity("beta",BackendKind.WORKER,"aftergraph-worker","beta",capabilities=frozenset({"code"}),competence={"code":0.8}),local_exec)
+    ledger=CompetenceLedger(alpha=1.0)
+    router=AdaptiveCompetenceRouter(registry,(BackendBinding("builder",("alpha","beta"),frozenset({"code"}),"code",0.1),),ledger)
+    first=router.select(SubagentSpec("builder","build")).backend_id
+    ledger.apply(VerifiedOutcome("alpha","code",False,1.0,("sentinel:a","sentinel:b"),hashlib.sha256(b"demo-outcome").hexdigest()))
+    second=router.select(SubagentSpec("builder","build")).backend_id
+
+    routed=HeterogeneousSubagentExecutor(registry=registry,router=router,signer=Ed25519ReceiptSigner.generate(key_id="v214-demo"),persistent_signing_key=False)
+    plan=MultiAgentPlan("v214-demo","orchestrator",(SubagentSpec("builder","build"),),(SubagentTask("build","builder",{}),),max_parallelism=2)
+    plan,decision=AdaptiveTopologyRewriter().rewrite(plan,recent_successes=4,recent_failures=0,current=TopologyMode.AUTO)
+    result=MultiAgentOrchestrator(executor=routed).run(plan,context={})
+    chain=CrossProviderReceiptChain(Ed25519ReceiptSigner.generate(key_id="v214-chain"))
+    for receipt in routed.receipts: chain.append(receipt)
+    sealed=chain.seal()
+    console.print_json(data={
+        "mode":"v2.14-adaptive-heterogeneous-swarm",
+        "accepted":result.accepted,
+        "initial_backend":first,
+        "post_verified_feedback_backend":second,
+        "topology":decision.to_mode.value,
+        "verified_outcome_learning": first != second,
+        "receipt_chain_verified":chain.verify(sealed),
+        "receipt_chain_all_live":chain.all_live,
+        "provider_calls":0,
+        "live_provider_measurement":False,
+        "truth_boundary":"adaptive routing is driven by synthetic verified-outcome fixtures; no live provider performance claim is established",
+    })
+
 if __name__ == "__main__":
     app()
 

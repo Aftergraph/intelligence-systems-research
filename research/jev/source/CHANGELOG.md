@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.14.0 — Adaptive heterogeneous swarm
+
+- Adds verified-outcome competence learning with bounded updates and evidence de-duplication.
+- Adds adaptive competence routing that preserves capability and minimum-competence gates.
+- Adds hash-chained cross-provider subagent receipts with explicit non-elevation of evidence class.
+- Adds adaptive topology rewriting between bounded parallel and hierarchical execution based only on verified outcomes.
+- Keeps live-provider and performance claims fail-closed.
+
 ## 2.13.0 — Heterogeneous governed subagents
 - Added immutable backend identities and registry-backed execution.
 - Added competence-aware deterministic backend routing and capability gates.
@@ -35,6 +43,14 @@
 - Live execution remains unperformed in this build container because provider credentials are absent.
 
 # Changelog
+
+## 2.14.0 — Adaptive heterogeneous swarm
+
+- Adds verified-outcome competence learning with bounded updates and evidence de-duplication.
+- Adds adaptive competence routing that preserves capability and minimum-competence gates.
+- Adds hash-chained cross-provider subagent receipts with explicit non-elevation of evidence class.
+- Adds adaptive topology rewriting between bounded parallel and hierarchical execution based only on verified outcomes.
+- Keeps live-provider and performance claims fail-closed.
 
 ## 2.9.0 — 2026-09-25
 

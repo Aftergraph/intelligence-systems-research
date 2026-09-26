@@ -12,7 +12,7 @@ def test_v213_exports():
         assert hasattr(jev, name), name
 
 def test_v213_version():
-    assert jev.__version__ == '2.13.0'
+    assert tuple(map(int, jev.__version__.split('.'))) >= (2, 13, 0)
 
 def test_v213_schemas_exist():
     root=Path(jev.__file__).parent/'schemas'
