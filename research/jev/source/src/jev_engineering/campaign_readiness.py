@@ -81,6 +81,9 @@ class PoweredCampaignPlan:
     experiment_pairs: int
     holdout_pairs: int
     total_pairs: int
+    execution_cap_pairs: int
+    estimated_condition_executions: int
+    estimated_max_agent_turns: int
     sample_size_method: str
     completion_readiness: dict[str, Any]
     blockers: tuple[str, ...]
@@ -97,6 +100,10 @@ def _condition_rows(records: Iterable[Mapping[str, Any]], condition: str) -> lis
 
 
 def _baseline_valid(row: Mapping[str, Any], expected_exit_code: int) -> bool:
+    # v2.17+ benchmark rows carry an explicit post-validation flag. Older v2.16
+    # evidence can still be audited from its exit code, and correctly fails on 127.
+    if "baseline_verifier_valid" in row:
+        return bool(row.get("baseline_verifier_valid"))
     raw = row.get("baseline_verification_exit_code")
     if raw is None:
         return False
@@ -216,6 +223,8 @@ def plan_powered_campaign(
     live_lineage_proven: bool,
     pricing_reviewed: bool,
     preregistered: bool,
+    execution_cap_pairs: int = 100,
+    max_turns_per_execution: int = 24,
 ) -> PoweredCampaignPlan:
     sizing = plan_noninferiority_pairs(
         baseline_vsr=baseline_vsr_assumption,
@@ -224,6 +233,9 @@ def plan_powered_campaign(
         power=power,
     )
     holdout = max(min_holdout_pairs, int(sizing["recommended_pairs"]))
+    if execution_cap_pairs < 1 or max_turns_per_execution < 1:
+        raise ValueError("execution cap and max turns must be positive")
+    total_pairs = shadow_pairs + experiment_pairs + holdout
     blockers: list[str] = []
     if not readiness.ready:
         blockers.append("completion_readiness_not_met")
@@ -233,6 +245,8 @@ def plan_powered_campaign(
         blockers.append("pricing_not_reviewed")
     if not preregistered:
         blockers.append("campaign_not_preregistered")
+    if total_pairs > execution_cap_pairs:
+        blockers.append("planned_pairs_exceed_execution_cap")
     return PoweredCampaignPlan(
         executable=not blockers,
         baseline_vsr_assumption=baseline_vsr_assumption,
@@ -242,7 +256,10 @@ def plan_powered_campaign(
         shadow_pairs=shadow_pairs,
         experiment_pairs=experiment_pairs,
         holdout_pairs=holdout,
-        total_pairs=shadow_pairs + experiment_pairs + holdout,
+        total_pairs=total_pairs,
+        execution_cap_pairs=execution_cap_pairs,
+        estimated_condition_executions=2 * total_pairs,
+        estimated_max_agent_turns=2 * total_pairs * max_turns_per_execution,
         sample_size_method=str(sizing["method"]),
         completion_readiness=readiness.to_dict(),
         blockers=tuple(blockers),

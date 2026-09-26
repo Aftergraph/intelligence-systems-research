@@ -429,6 +429,8 @@ def run_manifest(
                             "decision_transport_security": decision_transport_security,
                             "turns": result.turns,
                             "baseline_verification_exit_code": baseline_exit,
+                            "baseline_verifier_valid": True,
+                            "baseline_verification_command_sha256": str(baseline.get("command_sha256") or ""),
                             "verification_exit_code": result.verification_exit_code,
                             "metrics": result.metrics,
                             "audit_path": str(audit_path.relative_to(out)),

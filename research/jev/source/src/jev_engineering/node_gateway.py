@@ -163,6 +163,11 @@ class NodeGatewayServer:
                 self._send(200, result)
 
         self._server = ThreadingHTTPServer((host, port), Handler)
+        # Handler threads must never hold the process hostage during bounded CI/test shutdown.
+        # ThreadingMixIn defaults to non-daemon threads and block_on_close=True, which can hang
+        # after a completed mTLS request if a connection thread is still unwinding.
+        self._server.daemon_threads = True
+        self._server.block_on_close = False
         if ssl_context is not None:
             self._server.socket = ssl_context.wrap_socket(self._server.socket, server_side=True)
         self._thread: Thread | None = None

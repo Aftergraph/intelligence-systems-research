@@ -57,7 +57,9 @@ def test_power_plan_is_fail_closed_until_readiness_and_preregistration() -> None
     assert "completion_readiness_not_met" in plan.blockers
     assert "pricing_not_reviewed" in plan.blockers
     assert "campaign_not_preregistered" in plan.blockers
+    assert "planned_pairs_exceed_execution_cap" in plan.blockers
     assert plan.holdout_pairs >= 20
+    assert plan.estimated_condition_executions == 2 * plan.total_pairs
     assert plan.total_pairs > plan.holdout_pairs
 
 
@@ -72,6 +74,20 @@ def test_ready_synthetic_pilot_can_produce_executable_preregistered_plan() -> No
             })
     report=analyze_completion_readiness(rows,incumbent_condition="frontier",candidate_condition="jev")
     assert report.ready is True
-    plan=plan_powered_campaign(readiness=report,baseline_vsr_assumption=.9,live_lineage_proven=True,pricing_reviewed=True,preregistered=True)
+    plan=plan_powered_campaign(readiness=report,baseline_vsr_assumption=.9,live_lineage_proven=True,pricing_reviewed=True,preregistered=True,execution_cap_pairs=5000)
     assert plan.executable is True
     assert plan.blockers == ()
+
+
+def test_valid_v217_baseline_flag_overrides_legacy_exit_interpretation() -> None:
+    rows=[]
+    for repeat in range(1,4):
+        for condition in ("frontier","jev"):
+            rows.append({
+                "condition":condition,"case_id":"clamp","repeat":repeat,"status":"verified",
+                "baseline_verification_exit_code":999,
+                "baseline_verifier_valid":True,
+                "metrics":{"verifier_runs":1,"completion_claims":1,"false_completion_claims":0},
+            })
+    report=analyze_completion_readiness(rows,incumbent_condition="frontier",candidate_condition="jev")
+    assert report.ready is True

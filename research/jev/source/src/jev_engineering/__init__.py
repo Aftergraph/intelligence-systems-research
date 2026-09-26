@@ -336,6 +336,14 @@ __all__ = [
     "DynamicTopologySelector",
     "SignedSubagentReceipt",
     "HeterogeneousSubagentExecutor",
+    "CompletionReadinessPolicy",
+    "CompletionConditionReport",
+    "CompletionReadinessReport",
+    "TurnBudgetRecommendation",
+    "PoweredCampaignPlan",
+    "analyze_completion_readiness",
+    "recommend_turn_budgets",
+    "plan_powered_campaign",
     "CounterfactualRouter",
     "CounterfactualEstimate",
     "CalibrationLedger",
@@ -362,3 +370,8 @@ from .adaptive_swarm import (
 
 from .counterfactual_routing import CounterfactualRouter, CounterfactualEstimate, CalibrationLedger, CalibrationResult, ShadowObservation, CompetenceDecayPolicy, DecayedCompetence, TopologyOutcome, TopologyOutcomeMemory
 from .sealed_secrets import SealedSecretBundle, generate_runner_seal_keypair, public_key_b64_from_private, seal_values, unseal_values, load_bundle
+from .campaign_readiness import (
+    CompletionConditionReport, CompletionReadinessPolicy, CompletionReadinessReport,
+    PoweredCampaignPlan, TurnBudgetRecommendation, analyze_completion_readiness,
+    plan_powered_campaign, recommend_turn_budgets,
+)

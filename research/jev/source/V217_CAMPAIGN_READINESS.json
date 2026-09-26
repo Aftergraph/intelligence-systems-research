@@ -49,7 +49,8 @@
     "blockers": [
       "completion_readiness_not_met",
       "pricing_not_reviewed",
-      "campaign_not_preregistered"
+      "campaign_not_preregistered",
+      "planned_pairs_exceed_execution_cap"
     ],
     "completion_readiness": {
       "conditions": [
@@ -95,7 +96,10 @@
         "qwen-jev-control: max-turn exhaustion rate above readiness ceiling"
       ]
     },
+    "estimated_condition_executions": 5596,
+    "estimated_max_agent_turns": 134304,
     "executable": false,
+    "execution_cap_pairs": 100,
     "experiment_pairs": 10,
     "holdout_pairs": 2783,
     "noninferiority_margin": 0.02,

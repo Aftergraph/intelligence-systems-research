@@ -27,6 +27,7 @@ class OpenAICompatibleDecisionBackend(OpenAIDecisionBackend):
         timeout: float = 120.0,
         transport: httpx.BaseTransport | None = None,
         extra: dict[str, Any] | None = None,
+        max_attempts: int = 2,
     ) -> None:
         if not api_key:
             raise ValueError("OpenAI-compatible API key is required")
@@ -34,6 +35,9 @@ class OpenAICompatibleDecisionBackend(OpenAIDecisionBackend):
         self.base_url = base_url.rstrip("/")
         self.reasoning_effort = None
         self.extra = dict(extra or {})
+        if max_attempts < 1 or max_attempts > 3:
+            raise ValueError("max_attempts must be between 1 and 3")
+        self.max_attempts = max_attempts
         self._client = httpx.Client(
             timeout=timeout,
             transport=transport,
@@ -93,60 +97,96 @@ class OpenAICompatibleDecisionBackend(OpenAIDecisionBackend):
             },
         }
         body.update(self.extra)
-        response = self._client.post(f"{self.base_url}/chat/completions", json=body)
-        try:
-            response.raise_for_status()
-            payload = response.json()
-        except (httpx.HTTPError, ValueError) as exc:
-            raise OpenAIDecisionError(f"Compatible decision request failed: {exc}") from exc
-        if not isinstance(payload, dict):
-            raise OpenAIDecisionError("Compatible provider returned a non-object response")
+        accumulated_ids: list[str] = []
+        total_input = 0
+        total_output = 0
+        last_error: OpenAIDecisionError | None = None
 
-        choices = payload.get("choices") or []
-        message = choices[0].get("message") if choices and isinstance(choices[0], dict) else None
-        if not isinstance(message, dict):
-            raise OpenAIDecisionError("Compatible provider returned no assistant message")
-        selected_call: dict[str, Any] | None = None
-        for item in message.get("tool_calls") or []:
-            if not isinstance(item, dict):
-                continue
-            function = item.get("function") or {}
-            if isinstance(function, dict) and function.get("name") == "submit_decisions":
-                selected_call = function
-                break
-        if selected_call is None:
-            raise OpenAIDecisionError("Compatible provider did not call submit_decisions")
+        for attempt in range(1, self.max_attempts + 1):
+            response = self._client.post(f"{self.base_url}/chat/completions", json=body)
+            for header in ("x-request-id", "x-trace-id", "request-id"):
+                value = response.headers.get(header)
+                if value and value not in accumulated_ids:
+                    accumulated_ids.append(value)
+            try:
+                response.raise_for_status()
+                payload = response.json()
+            except httpx.HTTPStatusError as exc:
+                status = exc.response.status_code
+                retryable = status == 429 or status >= 500
+                last_error = OpenAIDecisionError(f"Compatible decision request failed with HTTP {status}")
+                if retryable and attempt < self.max_attempts:
+                    continue
+                raise last_error from exc
+            except (httpx.HTTPError, ValueError) as exc:
+                last_error = OpenAIDecisionError(f"Compatible decision request failed: {exc}")
+                if attempt < self.max_attempts:
+                    continue
+                raise last_error from exc
 
-        raw_arguments = selected_call.get("arguments") or "{}"
-        try:
-            arguments = json.loads(raw_arguments) if isinstance(raw_arguments, str) else raw_arguments
-        except json.JSONDecodeError as exc:
-            raise OpenAIDecisionError("submit_decisions emitted invalid JSON") from exc
-        if not isinstance(arguments, dict) or not isinstance(arguments.get("answers"), dict):
-            raise OpenAIDecisionError("submit_decisions is missing answers")
-        answers = self._validate_answers(questions, dict(arguments["answers"]))
+            if not isinstance(payload, dict):
+                last_error = OpenAIDecisionError("Compatible provider returned a non-object response")
+                if attempt < self.max_attempts:
+                    continue
+                raise last_error
 
-        usage_payload = payload.get("usage") or {}
-        usage = Usage(
-            input_tokens=int(
-                usage_payload.get("prompt_tokens", usage_payload.get("input_tokens", 0)) or 0
-            ),
-            output_tokens=int(
-                usage_payload.get("completion_tokens", usage_payload.get("output_tokens", 0)) or 0
-            ),
-        )
-        request_ids: list[str] = []
-        for header in ("x-request-id", "x-trace-id", "request-id"):
-            value = response.headers.get(header)
-            if value and value not in request_ids:
-                request_ids.append(value)
-        payload_id = payload.get("id")
-        if payload_id and str(payload_id) not in request_ids:
-            request_ids.append(str(payload_id))
-        return SystemOneResponse(
-            model=str(payload.get("model") or chosen_model),
-            answers=answers,
-            usage=usage,
-            raw=payload,
-            request_ids=tuple(request_ids),
-        )
+            payload_id = payload.get("id")
+            if payload_id and str(payload_id) not in accumulated_ids:
+                accumulated_ids.append(str(payload_id))
+            usage_payload = payload.get("usage") or {}
+            total_input += int(usage_payload.get("prompt_tokens", usage_payload.get("input_tokens", 0)) or 0)
+            total_output += int(usage_payload.get("completion_tokens", usage_payload.get("output_tokens", 0)) or 0)
+
+            choices = payload.get("choices") or []
+            message = choices[0].get("message") if choices and isinstance(choices[0], dict) else None
+            if not isinstance(message, dict):
+                last_error = OpenAIDecisionError("Compatible provider returned no assistant message")
+                if attempt < self.max_attempts:
+                    continue
+                raise last_error
+
+            selected_call: dict[str, Any] | None = None
+            for item in message.get("tool_calls") or []:
+                if not isinstance(item, dict):
+                    continue
+                function = item.get("function") or {}
+                if isinstance(function, dict) and function.get("name") == "submit_decisions":
+                    selected_call = function
+                    break
+            if selected_call is None:
+                last_error = OpenAIDecisionError("Compatible provider did not call submit_decisions")
+                if attempt < self.max_attempts:
+                    continue
+                raise last_error
+
+            raw_arguments = selected_call.get("arguments") or "{}"
+            try:
+                arguments = json.loads(raw_arguments) if isinstance(raw_arguments, str) else raw_arguments
+            except json.JSONDecodeError as exc:
+                last_error = OpenAIDecisionError("submit_decisions emitted invalid JSON")
+                if attempt < self.max_attempts:
+                    continue
+                raise last_error from exc
+            if not isinstance(arguments, dict) or not isinstance(arguments.get("answers"), dict):
+                last_error = OpenAIDecisionError("submit_decisions is missing answers")
+                if attempt < self.max_attempts:
+                    continue
+                raise last_error
+            try:
+                answers = self._validate_answers(questions, dict(arguments["answers"]))
+            except Exception as exc:
+                last_error = OpenAIDecisionError(f"submit_decisions answers failed validation: {exc}")
+                if attempt < self.max_attempts:
+                    continue
+                raise last_error from exc
+
+            return SystemOneResponse(
+                model=str(payload.get("model") or chosen_model),
+                answers=answers,
+                usage=Usage(input_tokens=total_input, output_tokens=total_output),
+                raw={**payload, "aftergraph_attempts": attempt},
+                request_ids=tuple(accumulated_ids),
+            )
+
+        assert last_error is not None
+        raise last_error
