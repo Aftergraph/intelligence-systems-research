@@ -1,14 +1,30 @@
 {
-  "release": "2.15.0",
+  "release": "2.16.0",
   "authenticated_live_provider_smoke_executed": true,
-  "live_provider_smoke_ok": true,
-  "typesafe_live_check": true,
-  "dialagram_live_check": true,
-  "full_cross_provider_request_lineage": false,
+  "authenticated_paired_lineage_proof": true,
+  "live_provider_measurement": true,
+  "receipts_verify": true,
+  "generation_lineage_bound": true,
+  "decision_lineage_bound": true,
+  "campaign_sha256": "01a97f00185f1c2b325ec2734c7bae05e1a47910e49383673707c2a95354bacc",
+  "conditions": [
+    {
+      "condition": "qwen-jev-control",
+      "generation_provider": "dialagram",
+      "decision_provider": "typesafe",
+      "status": "max_turns"
+    },
+    {
+      "condition": "qwen-frontier-control",
+      "generation_provider": "dialagram",
+      "decision_provider": "dialagram",
+      "status": "max_turns"
+    }
+  ],
   "authenticated_live_ab_executed": false,
-  "live_provider_measurement": false,
+  "performance_claim": false,
   "measured_10x": false,
   "provider_credentials_in_release": false,
   "sealed_credentials_only": true,
-  "truth_boundary": "TypeSafe and Dialagram authenticated smoke calls executed successfully on the Aftergraph self-hosted runner. TypeSafe did not expose request lineage in this response, so this is authenticated live-provider smoke evidence, not a sealed paired A/B measurement or performance claim."
+  "truth_boundary": "One authenticated paired lineage proof completed with signed receipt-v3 evidence. Both conditions reached max_turns, so no performance claim or promotion decision is admissible."
 }
