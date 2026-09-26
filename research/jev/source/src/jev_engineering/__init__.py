@@ -337,10 +337,13 @@ __all__ = [
     "SignedSubagentReceipt",
     "HeterogeneousSubagentExecutor",
 ]
-__version__ = "2.14.0"
+__version__ = "2.15.0"
 
 from .adaptive_swarm import (
     AdaptiveCompetenceRouter, AdaptiveTopologyRewriter, CompetenceLedger,
     CompetenceObservation, CrossProviderReceiptChain, ReceiptChainLink,
     TopologyRewriteDecision, VerifiedOutcome,
 )
+
+from .counterfactual_routing import CounterfactualRouter, CounterfactualEstimate, CalibrationLedger, CalibrationResult, ShadowObservation, CompetenceDecayPolicy, DecayedCompetence, TopologyOutcome, TopologyOutcomeMemory
+from .sealed_secrets import SealedSecretBundle, generate_runner_seal_keypair, public_key_b64_from_private, seal_values, unseal_values, load_bundle

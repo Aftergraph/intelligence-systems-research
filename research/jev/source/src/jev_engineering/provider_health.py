@@ -16,6 +16,7 @@ class ProviderCheck:
     ok: bool
     latency_ms: float
     detail: str
+    request_ids: tuple[str, ...] = ()
 
     def to_dict(self) -> dict[str, object]:
         return {
@@ -24,6 +25,7 @@ class ProviderCheck:
             "ok": self.ok,
             "latency_ms": round(self.latency_ms, 2),
             "detail": self.detail,
+            "request_ids": list(self.request_ids),
         }
 
 
@@ -58,7 +60,7 @@ def check_typesafe(*, api_key: str, base_url: str = "https://api.typesafe.ai", m
                 questions={"continue": {"type": "noul", "true": "continue", "false": "stop"}},
             )
         response.noul("continue")
-        results.append(ProviderCheck("typesafe", "system_one", True, _elapsed_ms(start), f"model={response.model}"))
+        results.append(ProviderCheck("typesafe", "system_one", True, _elapsed_ms(start), f"model={response.model}", response.request_ids))
     except Exception as exc:
         results.append(ProviderCheck("typesafe", "system_one", False, _elapsed_ms(start), _safe_detail(f"{type(exc).__name__}: {exc}", (api_key,))))
     return results
@@ -93,7 +95,15 @@ def check_dialagram(*, api_key: str, base_url: str = "https://dialagram.me/route
             choices = payload.get("choices", []) if isinstance(payload, dict) else []
             if not choices:
                 raise RuntimeError("response has no choices")
-            results.append(ProviderCheck("dialagram", "chat_completions", True, _elapsed_ms(start), f"model={payload.get('model', model)}"))
+            request_ids = []
+            for header in ("x-request-id", "x-trace-id", "request-id"):
+                value = response.headers.get(header)
+                if value and value not in request_ids:
+                    request_ids.append(value)
+            payload_id = payload.get("id") if isinstance(payload, dict) else None
+            if payload_id and str(payload_id) not in request_ids:
+                request_ids.append(str(payload_id))
+            results.append(ProviderCheck("dialagram", "chat_completions", True, _elapsed_ms(start), f"model={payload.get('model', model)}", tuple(request_ids)))
         except Exception as exc:
             results.append(ProviderCheck("dialagram", "chat_completions", False, _elapsed_ms(start), _safe_detail(f"{type(exc).__name__}: {exc}", (api_key,))))
         return results
@@ -104,7 +114,10 @@ def run_provider_smoke(*, typesafe_api_key: str, dialagram_api_key: str, typesaf
         *check_typesafe(api_key=typesafe_api_key, base_url=typesafe_base_url),
         *check_dialagram(api_key=dialagram_api_key, base_url=dialagram_base_url, model=dialagram_model),
     ]
+    lineage_checks = [c for c in checks if c.check in {"system_one", "chat_completions"}]
     return {
         "ok": bool(checks) and all(check.ok for check in checks),
         "checks": [check.to_dict() for check in checks],
+        "request_lineage_present": bool(lineage_checks) and all(bool(c.request_ids) for c in lineage_checks),
+        "authenticated_https": typesafe_base_url.startswith("https://") and dialagram_base_url.startswith("https://"),
     }
