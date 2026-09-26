@@ -308,3 +308,11 @@
 - Added measured per-mission frontier calls/tokens/cost receipt and `efficiency-execution-receipt/v1` schema.
 - Added fail-closed frontier token budget enforcement and verifier-backed early exit.
 - Added `v27-demo`; synthetic demo is explicitly not a live provider performance claim.
+
+## 2.15.0
+- Add modeled-only counterfactual route estimates and calibration ledger.
+- Add measured-shadow vs modeled-counterfactual truth boundary.
+- Add competence decay and verified topology outcome memory.
+- Add RSA-OAEP runner-sealed TypeSafe/Dialagram credential envelope.
+- Add persistent runner Ed25519 smoke-evidence signing.
+- Capture provider request lineage when exposed by TypeSafe/Dialagram transports.

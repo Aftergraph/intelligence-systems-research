@@ -1,34 +1,26 @@
 {
-  "authenticated_provider_lineage_v210": {
-    "authenticated_https_required_for_live": true,
+  "claims": {
     "authenticated_live_ab_executed": false,
-    "deterministic_verifier_bound": true,
-    "existing_real_coding_benchmark_reused": true,
+    "authenticated_live_provider_smoke_executed": true,
+    "counterfactual_estimates_modeled_only": true,
+    "historical_11_86x": "modeled_not_measured",
     "live_provider_measurement": false,
-    "missing_or_tampered_request_lineage_fails_closed": true,
-    "payload_metrics_pair_order_cross_binding": true,
-    "persistent_signing_key_required_for_live_cli": true,
-    "promotion_authority": false,
-    "provider_response_ids_captured_per_turn": true,
-    "request_set_bound_into_receipt_v2": true
+    "measured_10x": false
   },
-  "date": "2026-09-25",
-  "evidence_cut": "2026-09-25",
-  "performance_claim": {
-    "measured_10x": false,
-    "modeled_only": true,
-    "modeled_ratio": 11.864406779661017
+  "date": "2026-09-26",
+  "frontier": "counterfactual routing + shadow calibration + runner-sealed provider execution",
+  "release": "2.15.0",
+  "security": {
+    "provider_credentials_in_release": false,
+    "runner_sealed_bundle": true,
+    "secret_scan": "PASS"
   },
-  "release": "2.14.0",
-  "truth_boundary": "v2.14.0 adds heterogeneous governed subagents and signed per-agent receipts; no authenticated provider-backed campaign was executed in this build environment and no measured 10x claim is made.",
   "verification": {
     "compileall": "PASS",
-    "dedicated_v213": "24/24 PASS",
-    "pytest": "353 collected; 353 PASS across 6 isolated invocations (68, 54, 75, 65, 34, 57)",
+    "pytest": "410/410 PASS across 6 isolated shards (85,58,78,74,55,60)",
     "release_relocatability": "PASS",
-    "secret_scan": "PASS",
     "wheel_build": "PASS",
     "wheel_import": "PASS"
   },
-  "wheel_sha256": "8dbf95b8e308be206c8d28811b9af83eed167ef507eb2174ba2f496ac4cf2d99"
+  "wheel_sha256": "df545b8b5c755db274be169ea5f1679c63430e9fecb31f93a177812331b142e4"
 }

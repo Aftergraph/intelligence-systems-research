@@ -1,11 +1,14 @@
 {
+  "release": "2.15.0",
+  "authenticated_live_provider_smoke_executed": true,
+  "live_provider_smoke_ok": true,
+  "typesafe_live_check": true,
+  "dialagram_live_check": true,
+  "full_cross_provider_request_lineage": false,
   "authenticated_live_ab_executed": false,
   "live_provider_measurement": false,
   "measured_10x": false,
   "provider_credentials_in_release": false,
-  "provider_request_lineage_implemented": true,
-  "real_benchmark_bridge_implemented": true,
-  "release": "2.14.0",
-  "signed_receipt_pipeline_implemented": true,
-  "truth_boundary": "No provider-backed v2.14.0 campaign was executed in this build environment; heterogeneous routing verification used local/synthetic backends only."
+  "sealed_credentials_only": true,
+  "truth_boundary": "TypeSafe and Dialagram authenticated smoke calls executed successfully on the Aftergraph self-hosted runner. TypeSafe did not expose request lineage in this response, so this is authenticated live-provider smoke evidence, not a sealed paired A/B measurement or performance claim."
 }

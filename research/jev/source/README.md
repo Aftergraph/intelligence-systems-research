@@ -1,4 +1,4 @@
-# Aftergraph Jev Engineering v2.14.0
+# Aftergraph Jev Engineering v2.15.0
 
 
 
@@ -783,3 +783,9 @@ The bundled demo is deterministic/synthetic and proves execution mechanics, not 
 ## v2.10 authenticated provider lineage
 
 See `docs/V210_AUTHENTICATED_PROVIDER_LINEAGE.md`. The live path now seals real provider request lineage from the existing deterministic coding benchmark. A signed bundle is not labeled live unless every execution has authenticated HTTPS transport and provider-issued request IDs.
+
+## v2.15 — counterfactual routing, shadow challengers, and runner-sealed provider credentials
+
+v2.15 adds explicitly modeled counterfactual route estimates, calibration against later independently verified challenger outcomes, competence decay toward a declared prior, and topology outcome memory. Counterfactual estimates are always labeled `modeled_only=true`; they never count as measured provider evidence.
+
+Provider credentials are installed through a runner-sealed envelope. The repository contains only RSA-OAEP ciphertext bound to the persistent Aftergraph runner public key. The private unsealing key and Ed25519 evidence-signing key remain on the self-hosted node. Secrets are decrypted into process memory only for the one-shot authenticated smoke path and are never written to source, release archives, logs, or receipts.

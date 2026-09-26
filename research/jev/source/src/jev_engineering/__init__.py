@@ -336,6 +336,21 @@ __all__ = [
     "DynamicTopologySelector",
     "SignedSubagentReceipt",
     "HeterogeneousSubagentExecutor",
+    "CounterfactualRouter",
+    "CounterfactualEstimate",
+    "CalibrationLedger",
+    "CalibrationResult",
+    "ShadowObservation",
+    "CompetenceDecayPolicy",
+    "DecayedCompetence",
+    "TopologyOutcome",
+    "TopologyOutcomeMemory",
+    "SealedSecretBundle",
+    "generate_runner_seal_keypair",
+    "public_key_b64_from_private",
+    "seal_values",
+    "unseal_values",
+    "load_bundle",
 ]
 __version__ = "2.15.0"
 

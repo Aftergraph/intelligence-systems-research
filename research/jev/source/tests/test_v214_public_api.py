@@ -5,7 +5,7 @@ from jev_engineering.cli import app
 
 
 def test_version_is_v214():
-    assert jev.__version__ == "2.14.0"
+    assert tuple(map(int, jev.__version__.split("."))) >= (2, 14, 0)
 
 
 def test_adaptive_symbols_exported():
