@@ -157,7 +157,7 @@ class JevClient:
             output_tokens=int(usage_payload.get("output_tokens", 0) or 0),
         )
         request_ids = []
-        for header in ("x-request-id", "x-trace-id", "request-id"):
+        for header in ("x-typesafe-request-id", "x-request-id", "x-trace-id", "request-id"):
             value = response.headers.get(header)
             if value and value not in request_ids:
                 request_ids.append(value)
