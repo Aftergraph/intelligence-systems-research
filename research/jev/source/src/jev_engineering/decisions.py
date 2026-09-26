@@ -34,6 +34,7 @@ class DecisionEngine:
             "output_tokens": 0,
             "latency_ms": 0.0,
         }
+        self._request_ids: list[str] = []
 
     def _ask(self, state: Any, questions: dict[str, dict[str, Any]]) -> SystemOneResponse:
         started = perf_counter()
@@ -44,10 +45,18 @@ class DecisionEngine:
         self._metrics["input_tokens"] += int(response.usage.input_tokens)
         self._metrics["output_tokens"] += int(response.usage.output_tokens)
         self._metrics["latency_ms"] += (perf_counter() - started) * 1000.0
+        for request_id in response.request_ids:
+            value = str(request_id).strip()
+            if value and value not in self._request_ids:
+                self._request_ids.append(value)
         return response
 
-    def telemetry(self) -> dict[str, int | float]:
-        return dict(self._metrics)
+    def telemetry(self) -> dict[str, Any]:
+        return {
+            **self._metrics,
+            "request_count": len(self._request_ids),
+            "request_ids": list(self._request_ids),
+        }
 
     def scope(self, *, task: str, candidates: list[CandidateFile], top_k: int = 8) -> list[CandidateFile]:
         if not candidates:

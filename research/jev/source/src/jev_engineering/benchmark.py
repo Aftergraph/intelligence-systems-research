@@ -311,6 +311,23 @@ def run_manifest(
 
                     cfg = AppConfig.load(condition["config_path"])
                     decision_cfg = cfg.raw.get("decision") or cfg.raw.get("jev") or {}
+                    decision_backend_name = str(decision_cfg.get("backend") or "jev").casefold()
+                    if decision_backend_name in {"jev", "typesafe"}:
+                        decision_provider_name = "typesafe"
+                        decision_key_env = str(decision_cfg.get("api_key_env") or "TYPESAFE_API_KEY")
+                        decision_base_url = str(decision_cfg.get("base_url") or "https://api.typesafe.ai")
+                    elif decision_backend_name in {"openai_compatible", "compatible", "chat_completions"}:
+                        decision_provider_name = str(decision_cfg.get("provider") or "dialagram")
+                        decision_key_env = str(decision_cfg.get("api_key_env") or "DIALAGRAM_API_KEY")
+                        decision_base_url = str(decision_cfg.get("base_url") or "https://dialagram.me/router/v1")
+                    elif decision_backend_name in {"openai", "chatgpt", "gpt"}:
+                        decision_provider_name = "openai"
+                        decision_key_env = str(decision_cfg.get("api_key_env") or "OPENAI_API_KEY")
+                        decision_base_url = str(decision_cfg.get("base_url") or "https://api.openai.com/v1")
+                    else:
+                        decision_provider_name = "local"
+                        decision_key_env = ""
+                        decision_base_url = "local"
                     engine = DecisionEngine(
                         cfg.decision_backend(), decision_model=decision_cfg.get("model")
                     )
@@ -353,6 +370,10 @@ def run_manifest(
                         }.get(model_profile.provider.casefold())
                     provider_authenticated = bool(provider_key_env and os.environ.get(provider_key_env))
                     transport_security = "https" if (provider_base_url or "https://provider.invalid").startswith("https://") else "local-or-plaintext"
+                    decision_telemetry = engine.telemetry()
+                    decision_request_ids = [str(x) for x in (decision_telemetry.get("request_ids") or []) if str(x).strip()]
+                    decision_authenticated = bool(decision_key_env and os.environ.get(decision_key_env))
+                    decision_transport_security = "https" if decision_base_url.startswith("https://") else "local-or-plaintext"
                     records.append(
                         {
                             "timestamp_utc": datetime.now(UTC).isoformat(),
@@ -369,6 +390,12 @@ def run_manifest(
                             "provider_request_ids": list(result.provider_request_ids),
                             "provider_authenticated": provider_authenticated,
                             "transport_security": transport_security,
+                            "decision_backend": decision_backend_name,
+                            "decision_provider": decision_provider_name,
+                            "decision_model": str(decision_cfg.get("model") or getattr(engine.backend, "model", "")),
+                            "decision_request_ids": decision_request_ids,
+                            "decision_authenticated": decision_authenticated,
+                            "decision_transport_security": decision_transport_security,
                             "turns": result.turns,
                             "baseline_verification_exit_code": baseline_exit,
                             "verification_exit_code": result.verification_exit_code,

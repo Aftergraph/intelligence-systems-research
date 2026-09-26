@@ -135,9 +135,18 @@ class OpenAICompatibleDecisionBackend(OpenAIDecisionBackend):
                 usage_payload.get("completion_tokens", usage_payload.get("output_tokens", 0)) or 0
             ),
         )
+        request_ids: list[str] = []
+        for header in ("x-request-id", "x-trace-id", "request-id"):
+            value = response.headers.get(header)
+            if value and value not in request_ids:
+                request_ids.append(value)
+        payload_id = payload.get("id")
+        if payload_id and str(payload_id) not in request_ids:
+            request_ids.append(str(payload_id))
         return SystemOneResponse(
             model=str(payload.get("model") or chosen_model),
             answers=answers,
             usage=usage,
             raw=payload,
+            request_ids=tuple(request_ids),
         )

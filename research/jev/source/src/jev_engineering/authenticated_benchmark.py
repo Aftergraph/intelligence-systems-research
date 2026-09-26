@@ -89,6 +89,7 @@ def seal_authenticated_benchmark(
     normalized: list[dict[str, Any]] = []
     attestations: dict[tuple[int, str, str], dict[str, Any]] = {}
     all_live = True
+    decision_lineage_present = any("decision_provider" in r for r in rows)
 
     required_metrics = (
         "completion_claims", "false_completion_claims", "provider_input_tokens",
@@ -117,6 +118,20 @@ def seal_authenticated_benchmark(
             all_live = False
         if not authenticated or transport != "https":
             all_live = False
+        decision_provider = str(row.get("decision_provider") or "")
+        decision_model = str(row.get("decision_model") or "")
+        decision_request_ids = [str(x) for x in (row.get("decision_request_ids") or []) if str(x).strip()]
+        decision_authenticated = bool(row.get("decision_authenticated", False))
+        decision_transport = str(row.get("decision_transport_security") or "")
+        decision_live = (
+            bool(decision_provider)
+            and bool(decision_model)
+            and bool(decision_request_ids)
+            and decision_authenticated
+            and decision_transport == "https"
+        )
+        if decision_lineage_present and not decision_live:
+            all_live = False
         attestation = {
             "provider": provider,
             "model": model,
@@ -125,6 +140,12 @@ def seal_authenticated_benchmark(
             "evidence_origin": "live-provider" if authenticated and transport == "https" and request_ids else "replay",
             "transport_security": transport,
             "authenticated": authenticated and transport == "https" and bool(request_ids),
+            "decision_provider": decision_provider,
+            "decision_model": decision_model,
+            "decision_request_id": _request_set_id(decision_request_ids) if decision_request_ids else "missing",
+            "decision_request_ids": decision_request_ids,
+            "decision_transport_security": decision_transport,
+            "decision_authenticated": decision_live,
         }
         attestations[identity] = attestation
         order_index = int(row.get("randomized_order_index") or 0)
@@ -171,7 +192,7 @@ def seal_authenticated_benchmark(
         attestation = attestations[identity]
         request_ids = list(attestation["provider_request_ids"])
         payload = {
-            "receipt_version": 2,
+            "receipt_version": 3 if decision_lineage_present else 2,
             "campaign_sha256": campaign_sha256,
             "signer_key_id": signer.key_id,
             "case_id": record["case_id"],
@@ -190,6 +211,17 @@ def seal_authenticated_benchmark(
             "transport_security": attestation["transport_security"],
             "provider_authenticated": attestation["authenticated"],
         }
+        if decision_lineage_present:
+            decision_ids = list(attestation["decision_request_ids"])
+            payload.update({
+                "decision_provider": attestation["decision_provider"],
+                "decision_model": attestation["decision_model"],
+                "decision_request_id": attestation["decision_request_id"],
+                "decision_request_count": len(decision_ids),
+                "decision_request_ids_sha256": _canonical_hash(decision_ids),
+                "decision_transport_security": attestation["decision_transport_security"],
+                "decision_authenticated": attestation["decision_authenticated"],
+            })
         signed.append(SignedProviderExecution(signer.sign(payload)))
     return LiveCampaignEvidenceBundle(
         execution=execution,
