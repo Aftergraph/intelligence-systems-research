@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/multi-agent-plan.v1.schema.json",
+  "title": "Aftergraph Jev Multi-Agent Plan v1",
+  "type": "object",
+  "required": ["mission_id", "orchestrator_id", "agents", "tasks", "join_policy", "max_parallelism"],
+  "properties": {
+    "mission_id": {"type": "string", "minLength": 1},
+    "orchestrator_id": {"type": "string", "minLength": 1},
+    "agents": {"type": "array", "minItems": 1},
+    "tasks": {"type": "array", "minItems": 1},
+    "join_policy": {"type": "object"},
+    "join_task_ids": {"type": "array", "items": {"type": "string"}},
+    "max_parallelism": {"type": "integer", "minimum": 1},
+    "max_total_attempts": {"type": "integer", "minimum": 1}
+  },
+  "additionalProperties": false
+}

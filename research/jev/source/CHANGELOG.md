@@ -1,9 +1,9 @@
-## 2.11.1 — 2026-09-25
+## 2.12.0 — 2026-09-25
 
 - Makes benchmark preflight evidence relocatable by preserving manifest-relative config/case paths instead of build-container absolute paths.
 - Adds a release relocatability gate covering version drift, stale absolute evidence paths, and mutable GitHub Actions references.
 - Pins remaining official GitHub Actions references to immutable commit SHAs.
-- Corrects README release identity to v2.11.1.
+- Corrects README release identity to v2.12.0.
 - No live provider campaign executed in the build container; performance claims remain unchanged.
 
 ## 2.10.0 — 2026-09-25

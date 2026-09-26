@@ -151,4 +151,3 @@ The remote operation surface is server registered. Do not add a generic network 
 - A 10× feasibility ceiling is a mathematical bound under stated assumptions, not an observed performance result.
 - Post-promotion monitoring may request quarantine; it does not independently revoke external authority unless the host runtime wires that signal into its promotion/authority controls.
 - Do not weaken the holdout boundary by repeatedly inspecting and redesigning against the same holdout dataset. Replace contaminated holdout evidence with a newly preregistered set.
-

@@ -105,6 +105,11 @@ from .system_efficiency import (
     EfficiencyLever, FrontierWorkloadProfile, RetryBudgetOptimizer, RetryBudgetPlan, RetryCandidate,
     SystemEfficiencyCompiler, SystemEfficiencyPlan,
 )
+from .multi_agent import (
+    JoinMode, JoinPolicy, MultiAgentOrchestrator, MultiAgentPlan, MultiAgentRunResult,
+    SubagentOutcome, SubagentSpec, SubagentStatus, SubagentTask,
+)
+
 from .verification_portfolio import (
     VerificationMethod,
     VerificationPlan,
@@ -304,5 +309,14 @@ __all__ = [
     "LiveCampaignEvidenceBundle",
     "ProviderExecutionAttestation",
     "SignedProviderExecution",
+    "JoinMode",
+    "JoinPolicy",
+    "MultiAgentOrchestrator",
+    "MultiAgentPlan",
+    "MultiAgentRunResult",
+    "SubagentOutcome",
+    "SubagentSpec",
+    "SubagentStatus",
+    "SubagentTask",
 ]
-__version__ = "2.11.1"
+__version__ = "2.12.0"
