@@ -128,11 +128,35 @@ class LiveCampaignEvidenceBundle:
                     return False
                 if bool(p.get("provider_authenticated", False)) != bool(attestation.get("authenticated", False)):
                     return False
+                if int(p.get("receipt_version") or 1) >= 3:
+                    decision_ids = [str(x) for x in (attestation.get("decision_request_ids") or [])]
+                    if str(p.get("decision_provider") or "") != str(attestation.get("decision_provider") or ""):
+                        return False
+                    if str(p.get("decision_model") or "") != str(attestation.get("decision_model") or ""):
+                        return False
+                    if str(p.get("decision_request_id") or "") != str(attestation.get("decision_request_id") or ""):
+                        return False
+                    if int(p.get("decision_request_count") or 0) != len(decision_ids):
+                        return False
+                    if str(p.get("decision_request_ids_sha256") or "") != _canonical_hash(decision_ids):
+                        return False
+                    if str(p.get("decision_transport_security") or "") != str(attestation.get("decision_transport_security") or ""):
+                        return False
+                    if bool(p.get("decision_authenticated", False)) != bool(attestation.get("decision_authenticated", False)):
+                        return False
                 if self.live_provider_measurement and not (
                     bool(attestation.get("authenticated", False))
                     and str(attestation.get("evidence_origin") or "") == "live-provider"
                     and str(attestation.get("transport_security") or "") == "https"
                     and bool(request_ids)
+                    and (
+                        int(p.get("receipt_version") or 1) < 3
+                        or (
+                            bool(attestation.get("decision_authenticated", False))
+                            and str(attestation.get("decision_transport_security") or "") == "https"
+                            and bool(attestation.get("decision_request_ids") or [])
+                        )
+                    )
                 ):
                     return False
         return True

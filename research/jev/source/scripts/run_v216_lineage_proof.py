@@ -2,7 +2,7 @@ from __future__ import annotations
 import base64, json, os, shutil
 from pathlib import Path
 from jev_engineering.authenticated_benchmark import run_and_seal_authenticated_benchmark
-from jev_engineering.public_receipts import Ed25519ReceiptSigner
+from jev_engineering.public_receipts import Ed25519ReceiptSigner, Ed25519ReceiptVerifier
 
 root=Path(__file__).resolve().parents[1]
 out=root/'artifacts'/'v216-lineage-proof'
@@ -27,16 +27,18 @@ bundle=run_and_seal_authenticated_benchmark(
     experiment_pairs=0,
     holdout_pairs=1,
 )
+verifier=Ed25519ReceiptVerifier({signer.key_id: signer.public_key_bytes()})
+receipts_verify=bundle.verify(verifier)
 payload=bundle.to_dict()
 (out/'evidence.json').write_text(json.dumps(payload,indent=2,sort_keys=True)+'\n')
 print(json.dumps({
-    'status':'PASS' if bundle.verify_signatures() else 'FAIL',
+    'status':'PASS' if receipts_verify else 'FAIL',
     'pairs':1,
     'signed_executions':len(bundle.signed_executions),
-    'receipts_verify':bundle.verify_signatures(),
+    'receipts_verify':receipts_verify,
     'live_provider_measurement':bundle.live_provider_measurement,
     'authenticated_live_ab_executed':False,
     'performance_claim':False,
     'truth_boundary':'one-pair proof establishes authenticated paired lineage only; it is not powered performance evidence',
 },sort_keys=True))
-if not bundle.verify_signatures(): raise SystemExit(3)
+if not receipts_verify: raise SystemExit(3)
