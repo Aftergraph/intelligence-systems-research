@@ -225,3 +225,45 @@ jobs:
           else
             echo "STALE_PILOT_ALREADY_TERMINAL=1"
           fi
+
+  jev-v216-evidence-diagnose:
+    name: Jev v2.16 recover sanitized proof evidence
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    timeout-minutes: 10
+    steps:
+      - name: Read prior proof evidence without checkout or provider calls
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $path = Join-Path $env:GITHUB_WORKSPACE "research\jev\source\artifacts\v216-lineage-proof\authenticated-live-evidence.v1.json"
+          if (!(Test-Path $path)) {
+            Write-Output "V216_EVIDENCE_RECOVERY=UNAVAILABLE"
+            exit 0
+          }
+          $e = Get-Content $path -Raw | ConvertFrom-Json
+          $rows = @()
+          foreach ($r in $e.execution.records) {
+            $a = $r.attestation
+            $rows += [ordered]@{
+              condition = $r.condition
+              status = $r.status
+              provider = $a.provider
+              model = $a.model
+              provider_request_count = @($a.provider_request_ids).Count
+              provider_authenticated = [bool]$a.authenticated
+              transport_security = $a.transport_security
+              decision_provider = $a.decision_provider
+              decision_model = $a.decision_model
+              decision_request_count = @($a.decision_request_ids).Count
+              decision_authenticated = [bool]$a.decision_authenticated
+              decision_transport_security = $a.decision_transport_security
+            }
+          }
+          [ordered]@{
+            live_provider_measurement = [bool]$e.live_provider_measurement
+            campaign_sha256 = $e.campaign_sha256
+            signed_execution_count = @($e.signed_executions).Count
+            records = $rows
+          } | ConvertTo-Json -Depth 6 -Compress
+          Write-Output "V216_EVIDENCE_RECOVERY=PASS"
