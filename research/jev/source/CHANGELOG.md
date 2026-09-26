@@ -1,3 +1,14 @@
+
+## 2.12.0 — Governed multi-agent runtime
+
+- Added hierarchical orchestrator with bounded parallel fan-out/fan-in.
+- Added least-privilege context/tool scopes for subagents.
+- Added dependency-output contracts, retries, fallback agents, circuit breakers, soft deadlines and evaluator fail-closed semantics.
+- Added ALL/ANY/QUORUM/BEST_N join policies with terminal-only join scoping.
+- Added shared trace_id / per-subagent span_id audit events and deterministic state hashes.
+- Added multi-agent plan/run schemas and claim-safe `v212-demo`.
+- Added 39 dedicated v2.12 tests; full suite is 329/329 PASS across six isolated shards.
+- No live provider campaign was executed; historical 11.86x remains modeled, not measured.
 ## 2.12.0 — 2026-09-25
 
 - Makes benchmark preflight evidence relocatable by preserving manifest-relative config/case paths instead of build-container absolute paths.

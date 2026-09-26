@@ -1,7 +1,24 @@
 # Aftergraph Jev Engineering v2.12.0
 
-v2.11 hardens the v2.10 authenticated provider-lineage release for canonical Aftergraph research adoption. Benchmark preflight evidence is now relocatable, release identity is consistent across package/README, and shipped external GitHub Actions references are pinned to immutable commit SHAs.
+## Frontier
 
-The canonical ownership target is `Aftergraph/intelligence-systems-research`; Jev does not absorb AIE authority, Trust Gateway admission, WORKS execution, or Sentinel verification ownership.
+Governed multi-agent execution: hierarchical orchestration with bounded parallel fan-out/fan-in, least-privilege context/tool scopes, explicit dependency-output contracts, evaluator gates, retry/fallback/circuit-breaker recovery, structured traces, and deterministic join semantics.
 
-No live provider campaign was executed in the build environment. `live_provider_measurement=false`, `authenticated_live_ab_executed=false`, `measured_10x=false`, and the historical 11.86x figure remains modeled rather than measured.
+## Verification
+
+- 329/329 tests PASS across six isolated shards.
+- 39/39 v2.12 dedicated multi-agent/public-API tests PASS.
+- `compileall`: PASS.
+- Secret scan: PASS.
+- Release relocatability: PASS.
+- Wheel build/import: PASS.
+- Installed-wheel `v212-demo`: PASS.
+
+## Truth boundary
+
+`v212-demo` uses deterministic local adapters only. It demonstrates orchestration semantics, not provider-backed subagents and not a measured efficiency improvement.
+
+- `authenticated_live_ab_executed=false`
+- `live_provider_measurement=false`
+- `measured_10x=false`
+- historical `11.86x` remains modeled, not measured.
