@@ -241,4 +241,31 @@ jobs:
           $root = "C:\Aftergraph\JevSecrets"
           New-Item -ItemType Directory -Force -Path $root | Out-Null
           python scripts/runner_v215_vault.py bootstrap --seal-private "$root\v215-seal-private.der" --signing-private "$root\v215-evidence-signing.raw" --signing-key-id "jev-v215-runner"
-          icacls $root /inheritance:r /grant:r "$env:USERNAME:(OI)(CI)F" "SYSTEM:(OI)(CI)F" | Out-Null
+          icacls $root /inheritance:r /grant:r "${env:USERNAME}:(OI)(CI)F" "SYSTEM:(OI)(CI)F" | Out-Null
+
+  jev-v215-live-smoke:
+    name: Jev v2.15 authenticated provider smoke
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Check one-shot gate
+        id: gate
+        shell: pwsh
+        run: |
+          if (Test-Path "research/jev/live/v2.15/RUN") { "run=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8 } else { "run=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8 }
+      - name: Authenticated TypeSafe + Dialagram smoke
+        if: steps.gate.outputs.run == 'true'
+        shell: pwsh
+        working-directory: research/jev/source
+        env:
+          PYTHONPATH: ${{ github.workspace }}\research\jev\source\src
+        run: |
+          $ErrorActionPreference = "Stop"
+          $root = "C:\Aftergraph\JevSecrets"
+          $evidence = Join-Path $env:RUNNER_TEMP "v215-live-smoke-evidence.json"
+          python scripts/runner_v215_vault.py smoke --seal-private "$root\v215-seal-private.der" --signing-private "$root\v215-evidence-signing.raw" --signing-key-id "jev-v215-runner" --bundle "configs/provider-smoke.v215.sealed.json" --evidence-out "$evidence"
+          Write-Output "V215_LIVE_SMOKE_EVIDENCE_BEGIN"
+          Get-Content $evidence
+          Write-Output "V215_LIVE_SMOKE_EVIDENCE_END"
