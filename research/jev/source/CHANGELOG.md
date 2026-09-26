@@ -1,3 +1,12 @@
+# Changelog
+
+## 2.13.0 — Heterogeneous governed subagents
+- Added immutable backend identities and registry-backed execution.
+- Added competence-aware deterministic backend routing and capability gates.
+- Added dynamic topology selector for hierarchical vs bounded-parallel execution.
+- Added signed per-agent execution receipts with trace/span and provider-lineage binding.
+- Added fail-closed live-provider evidence semantics separating signed from live/authenticated evidence.
+
 
 ## 2.12.0 — Governed multi-agent runtime
 

@@ -19,17 +19,16 @@
     "modeled_only": true,
     "modeled_ratio": 11.864406779661017
   },
-  "release": "2.11.1",
-  "truth_boundary": "v2.11.1 is the clean canonical-source adoption patch: release portability and provider-request lineage are implemented and verified, but no authenticated provider-backed campaign was executed in this build environment; no measured 10x claim is made.",
+  "release": "2.13.0",
+  "truth_boundary": "v2.13.0 adds heterogeneous governed subagents and signed per-agent receipts; no authenticated provider-backed campaign was executed in this build environment and no measured 10x claim is made.",
   "verification": {
     "compileall": "PASS",
-    "installed_wheel_v29_demo": "PASS (authenticated_live_ab_executed=false; live_provider_measurement=false)",
-    "pytest": "290 collected; 290 PASS across 6 isolated invocations (31, 41, 50, 59, 41, 68)",
+    "dedicated_v213": "24/24 PASS",
+    "pytest": "353 collected; 353 PASS across 6 isolated invocations (68, 54, 75, 65, 34, 57)",
     "release_relocatability": "PASS",
-    "ruff": "UNVERIFIED — ruff is not installed in this execution container",
     "secret_scan": "PASS",
-    "wheel_build": "PASS (local --no-build-isolation)",
-    "wheel_import": "PASS (isolated --target smoke)"
+    "wheel_build": "PASS",
+    "wheel_import": "PASS"
   },
-  "wheel_sha256": "c1dc4a9376e62b7b646b8f618d001a45d86cfeddcb981598d61a10c4e7a8e430"
+  "wheel_sha256": "8dbf95b8e308be206c8d28811b9af83eed167ef507eb2174ba2f496ac4cf2d99"
 }

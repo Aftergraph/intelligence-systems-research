@@ -110,6 +110,12 @@ from .multi_agent import (
     SubagentOutcome, SubagentSpec, SubagentStatus, SubagentTask,
 )
 
+from .heterogeneous_agents import (
+    BackendBinding, BackendExecution, BackendIdentity, BackendKind, BackendRegistry, CompetenceRouter,
+    DynamicTopologySelector, HeterogeneousSubagentExecutor, RouteDecision, SignedSubagentReceipt,
+    TopologyDecision, TopologyMode,
+)
+
 from .verification_portfolio import (
     VerificationMethod,
     VerificationPlan,
@@ -318,5 +324,17 @@ __all__ = [
     "SubagentSpec",
     "SubagentStatus",
     "SubagentTask",
+    "BackendKind",
+    "BackendIdentity",
+    "BackendBinding",
+    "BackendExecution",
+    "BackendRegistry",
+    "CompetenceRouter",
+    "RouteDecision",
+    "TopologyMode",
+    "TopologyDecision",
+    "DynamicTopologySelector",
+    "SignedSubagentReceipt",
+    "HeterogeneousSubagentExecutor",
 ]
-__version__ = "2.12.0"
+__version__ = "2.13.0"

@@ -15,7 +15,8 @@ def test_v212_public_api_exports():
 
 
 def test_v212_version():
-    assert jev.__version__ == "2.12.0"
+    from packaging.version import Version
+    assert Version(jev.__version__) >= Version("2.12.0")
 
 
 def test_v212_schemas_exist():
