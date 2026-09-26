@@ -247,3 +247,26 @@ jobs:
           Write-Output "V215_LIVE_SMOKE_EVIDENCE_BEGIN"
           Get-Content $evidence
           Write-Output "V215_LIVE_SMOKE_EVIDENCE_END"
+
+  jev-v216-typesafe-lineage-probe:
+    name: Jev v2.16 TypeSafe lineage probe
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Check one-shot lineage gate
+        id: gate
+        shell: pwsh
+        run: |
+          if (Test-Path "research/jev/live/v2.16/LINEAGE_PROBE") { "run=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8 } else { "run=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8 }
+      - name: Inventory TypeSafe trace-like response headers
+        if: steps.gate.outputs.run == 'true'
+        shell: pwsh
+        working-directory: research/jev/source
+        env:
+          PYTHONPATH: ${{ github.workspace }}\research\jev\source\src
+        run: |
+          $ErrorActionPreference = "Stop"
+          $root = "C:\Aftergraph\JevSecrets"
+          python scripts/runner_v215_vault.py exec --seal-private "$root\v215-seal-private.der" --signing-private "$root\v215-evidence-signing.raw" --bundle "configs/provider-smoke.v215.sealed.json" python -c "import json,os,urllib.request,hashlib; body=json.dumps({'model':'jev-latest','state':{'probe':'lineage'},'questions':{'probe':{'type':'noul','instructions':'Return a probability for this harmless transport-lineage probe.'}}}).encode(); req=urllib.request.Request('https://api.typesafe.ai/v1/systemone',data=body,method='POST',headers={'Authorization':'Bearer '+os.environ['TYPESAFE_API_KEY'],'Content-Type':'application/json','User-Agent':'aftergraph-jev-engineering/v2.16'}); resp=urllib.request.urlopen(req,timeout=30); names=sorted(resp.headers.keys()); trace=[n for n in names if any(k in n.lower() for k in ('request','trace','correlation','ray'))]; print(json.dumps({'status':resp.status,'header_names':names,'trace_like_header_names':trace}))"
