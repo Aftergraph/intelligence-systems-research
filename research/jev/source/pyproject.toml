@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aftergraph-jev-engineering"
-version = "2.16.0"
+version = "2.17.0"
 description = "Verified adaptive intelligence fabric with typed System-One control, frontier execution, signed evidence and mTLS node transport."
 readme = "README.md"
 requires-python = ">=3.11"

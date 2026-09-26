@@ -240,6 +240,38 @@ def preflight_manifest(path: str | Path) -> dict[str, Any]:
     }
 
 
+
+
+def _validate_baseline_verifier(command: str, result: Mapping[str, Any]) -> int:
+    """Require a real failing verifier, not an infrastructure/shell failure.
+
+    v2.16 exposed a Windows-specific false baseline: Git-Bash returned 127 for
+    `python -m pytest`, which the benchmark previously treated as a valid broken fixture.
+    Pytest fixtures are preregistered to fail with exit code 1; timeout, command-not-found,
+    usage, collection, and internal errors are not admissible baseline evidence.
+    """
+    exit_code = int(result.get("exit_code", -1))
+    output = str(result.get("output") or "")
+    normalized = " ".join(command.strip().split()).casefold()
+    if exit_code == 0:
+        raise RuntimeError("benchmark fixture baseline already passes")
+    if exit_code in {124, 126, 127, 9009}:
+        raise RuntimeError(f"baseline verifier infrastructure failure: exit_code={exit_code}")
+    lower = output.casefold()
+    infra_markers = (
+        "command not found",
+        "is not recognized as an internal or external command",
+        "no module named pytest",
+        "command timed out",
+    )
+    if any(marker in lower for marker in infra_markers):
+        raise RuntimeError("baseline verifier infrastructure failure: verifier did not execute")
+    if normalized.startswith(("pytest", "python -m pytest", "python3 -m pytest")) and exit_code != 1:
+        raise RuntimeError(
+            f"pytest baseline must fail by test assertion (exit 1), observed exit_code={exit_code}"
+        )
+    return exit_code
+
 def run_manifest(
     path: str | Path,
     *,
@@ -303,11 +335,10 @@ def run_manifest(
 
                     baseline_tools = RepoTools(workspace, command_mode="verify_only")
                     baseline = baseline_tools.run_command(verify_command, safety_action="allow")
-                    baseline_exit = int(baseline.get("exit_code", 1))
-                    if baseline_exit == 0:
-                        raise RuntimeError(
-                            f"Invalid benchmark fixture {case_id!r}: baseline verifier already passes"
-                        )
+                    try:
+                        baseline_exit = _validate_baseline_verifier(verify_command, baseline)
+                    except RuntimeError as exc:
+                        raise RuntimeError(f"Invalid benchmark fixture {case_id!r}: {exc}") from exc
 
                     cfg = AppConfig.load(condition["config_path"])
                     decision_cfg = cfg.raw.get("decision") or cfg.raw.get("jev") or {}

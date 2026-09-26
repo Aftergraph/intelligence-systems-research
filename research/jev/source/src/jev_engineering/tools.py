@@ -200,8 +200,17 @@ class RepoTools:
         if safety_action not in {"allow", "approved"}:
             raise ToolPolicyError(f"Typed safety gate did not allow command: {safety_action}")
         try:
+            # verify_only is deliberately shell-free. This is both safer and portable:
+            # the v2.16 Windows live proof showed that routing an allowlisted verifier
+            # through Git Bash can turn a valid `python -m pytest` command into exit 127.
+            if self.command_mode == "verify_only":
+                argv = shlex.split(command, posix=True)
+            elif os.name == "nt":
+                argv = ["powershell", "-NoProfile", "-NonInteractive", "-Command", command]
+            else:
+                argv = ["bash", "-lc", command]
             completed = subprocess.run(
-                ["bash", "-lc", command],
+                argv,
                 cwd=self.root,
                 env=self._safe_subprocess_env(),
                 capture_output=True,

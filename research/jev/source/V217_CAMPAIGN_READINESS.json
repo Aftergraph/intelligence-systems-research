@@ -1,0 +1,127 @@
+{
+  "completion_readiness": {
+    "conditions": [
+      {
+        "baseline_valid": false,
+        "completion_claims": 1,
+        "condition": "qwen-frontier-control",
+        "false_completion_claims": 1,
+        "false_completion_rate": 1.0,
+        "max_turn_rate": 1.0,
+        "max_turns": 1,
+        "missions": 1,
+        "verified": 0,
+        "verified_rate": 0.0,
+        "verifier_run_rate": 1.0,
+        "verifier_runs": 1
+      },
+      {
+        "baseline_valid": false,
+        "completion_claims": 0,
+        "condition": "qwen-jev-control",
+        "false_completion_claims": 0,
+        "false_completion_rate": 0.0,
+        "max_turn_rate": 1.0,
+        "max_turns": 1,
+        "missions": 1,
+        "verified": 0,
+        "verified_rate": 0.0,
+        "verifier_run_rate": 0.0,
+        "verifier_runs": 0
+      }
+    ],
+    "paired_missions": 1,
+    "ready": false,
+    "reasons": [
+      "pilot has 1 pairs; requires at least 3",
+      "qwen-frontier-control: baseline verifier did not produce the preregistered failing exit code",
+      "qwen-frontier-control: verified completion rate below readiness floor",
+      "qwen-frontier-control: max-turn exhaustion rate above readiness ceiling",
+      "qwen-frontier-control: false-completion rate above readiness ceiling",
+      "qwen-jev-control: baseline verifier did not produce the preregistered failing exit code",
+      "qwen-jev-control: verified completion rate below readiness floor",
+      "qwen-jev-control: max-turn exhaustion rate above readiness ceiling"
+    ]
+  },
+  "powered_campaign_plan": {
+    "alpha_one_sided": 0.05,
+    "baseline_vsr_assumption": 0.9,
+    "blockers": [
+      "completion_readiness_not_met",
+      "pricing_not_reviewed",
+      "campaign_not_preregistered"
+    ],
+    "completion_readiness": {
+      "conditions": [
+        {
+          "baseline_valid": false,
+          "completion_claims": 1,
+          "condition": "qwen-frontier-control",
+          "false_completion_claims": 1,
+          "false_completion_rate": 1.0,
+          "max_turn_rate": 1.0,
+          "max_turns": 1,
+          "missions": 1,
+          "verified": 0,
+          "verified_rate": 0.0,
+          "verifier_run_rate": 1.0,
+          "verifier_runs": 1
+        },
+        {
+          "baseline_valid": false,
+          "completion_claims": 0,
+          "condition": "qwen-jev-control",
+          "false_completion_claims": 0,
+          "false_completion_rate": 0.0,
+          "max_turn_rate": 1.0,
+          "max_turns": 1,
+          "missions": 1,
+          "verified": 0,
+          "verified_rate": 0.0,
+          "verifier_run_rate": 0.0,
+          "verifier_runs": 0
+        }
+      ],
+      "paired_missions": 1,
+      "ready": false,
+      "reasons": [
+        "pilot has 1 pairs; requires at least 3",
+        "qwen-frontier-control: baseline verifier did not produce the preregistered failing exit code",
+        "qwen-frontier-control: verified completion rate below readiness floor",
+        "qwen-frontier-control: max-turn exhaustion rate above readiness ceiling",
+        "qwen-frontier-control: false-completion rate above readiness ceiling",
+        "qwen-jev-control: baseline verifier did not produce the preregistered failing exit code",
+        "qwen-jev-control: verified completion rate below readiness floor",
+        "qwen-jev-control: max-turn exhaustion rate above readiness ceiling"
+      ]
+    },
+    "executable": false,
+    "experiment_pairs": 10,
+    "holdout_pairs": 2783,
+    "noninferiority_margin": 0.02,
+    "power": 0.8,
+    "sample_size_method": "conservative-independent-proportions-approximation",
+    "shadow_pairs": 5,
+    "total_pairs": 2798,
+    "truth_boundary": "This is a preregistration/power-planning artifact. executable=true authorizes only the planned research campaign; it is not a performance result or deployment authority."
+  },
+  "source_campaign_sha256": "01a97f00185f1c2b325ec2734c7bae05e1a47910e49383673707c2a95354bacc",
+  "truth_boundary": "v2.16 live proof is used only to gate readiness; no powered provider campaign is executed by this script.",
+  "turn_budget_recommendations": [
+    {
+      "action": "repair_verifier_first",
+      "condition": "qwen-frontier-control",
+      "current_max_turns": 4,
+      "reason": "turn budget is uninterpretable until verifier baseline is valid",
+      "recommended_max_turns": 4
+    },
+    {
+      "action": "repair_verifier_first",
+      "condition": "qwen-jev-control",
+      "current_max_turns": 4,
+      "reason": "turn budget is uninterpretable until verifier baseline is valid",
+      "recommended_max_turns": 4
+    }
+  ],
+  "version": "2.17.0"
+}
