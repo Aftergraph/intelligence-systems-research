@@ -145,6 +145,8 @@ HISTORICAL_BASENAMES = {
     "study012_power_plan.json",
     "study012_condition_ladder.json",
     "study012_confirmatory_env_lock.json",
+    "study012_freeze_approval.json",
+    "study012_execution_window.json",
     "study012_destructive_test_clearance.json",
     "study012_i0_opportunity_matrix.json",
     "study012_pilot_dryrun_report.json",
