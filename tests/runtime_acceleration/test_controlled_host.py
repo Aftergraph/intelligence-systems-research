@@ -67,6 +67,16 @@ def _revisions(config: dict) -> dict:
     }
 
 
+def _string_values(value):
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, dict):
+        return [item for child in value.values() for item in _string_values(child)]
+    if isinstance(value, (list, tuple)):
+        return [item for child in value for item in _string_values(child)]
+    return []
+
+
 def test_probe_host_ready_requires_exact_pins_protocol_preflight_and_installed_toolrush_parity(tmp_path):
     config = _config(tmp_path)
     revisions = _revisions(config)
@@ -94,6 +104,35 @@ def test_probe_host_ready_requires_exact_pins_protocol_preflight_and_installed_t
     assert result["obscura_serve_argv"][-2:] == ["--host", "127.0.0.1"]
     assert result["live_provider_calls"] == 0
     assert result["production_mutations"] == 0
+
+
+def test_probe_receipt_redacts_machine_local_paths_from_published_evidence(tmp_path):
+    config = _config(tmp_path)
+    revisions = _revisions(config)
+    ready = probe_host(
+        config,
+        runner=_runner,
+        revision_reader=lambda path: revisions[str(Path(path))],
+        snapshot_provider=_clean_snapshot,
+    )
+
+    config["obscura_executable"] = str(tmp_path / "private" / "obscura.exe")
+    blocked = probe_host(
+        config,
+        runner=_runner,
+        revision_reader=lambda path: revisions[str(Path(path))],
+        snapshot_provider=_clean_snapshot,
+    )
+
+    private_root = str(tmp_path).casefold()
+    assert all(
+        private_root not in value.casefold()
+        for result in (ready, blocked)
+        for value in _string_values(result)
+    )
+    assert ready["toolrush_doctor"]["argv"] == ["python.exe", "doctor.py", "--smoke"]
+    assert ready["obscura_serve_argv"][0] == "obscura.exe"
+    assert "path does not exist: obscura_executable" in blocked["reasons"]
 
 
 def test_probe_host_blocks_revision_drift(tmp_path):
