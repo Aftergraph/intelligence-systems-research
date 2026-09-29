@@ -1,0 +1,229 @@
+name: Hermes AVC — Computer Node connect mission
+
+on:
+  push:
+    branches:
+      - ops/hermes-avc-computer-node-connect-20260929
+    paths:
+      - ".github/workflows/hermes-avc-computer-node-connect.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/hermes-avc-computer-node-connect.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hermes-avc-computer-node-connect-jonas-lenovo
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    timeout-minutes: 45
+
+    steps:
+      - name: Verify physical host
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Write-Host "HOST=$env:COMPUTERNAME"
+          Write-Host "USER=$([System.Security.Principal.WindowsIdentity]::GetCurrent().Name)"
+          if ($env:COMPUTERNAME -notmatch 'JONAS-LENOVO') {
+            throw "Refusing to dispatch: expected JONAS-LENOVO physical runner."
+          }
+
+      - name: Probe Computer Node and MCP state without printing secrets
+        id: probe
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Continue'
+          $needsFix = $false
+          $taskState = 'MISSING'
+          $manifestState = 'UNAVAILABLE'
+          $fileRead = 'UNKNOWN'
+          $mcpState = 'NOT_LISTENING'
+
+          $task = Get-ScheduledTask -TaskName 'Aftergraph-Computer-Node' -ErrorAction SilentlyContinue
+          if ($task) {
+            $taskState = [string]$task.State
+          } else {
+            $needsFix = $true
+          }
+
+          $installRoot = Join-Path $env:LOCALAPPDATA 'Aftergraph\ComputerNode'
+          $configPath = Join-Path $installRoot 'config.json'
+          $secretPath = Join-Path $installRoot 'token.dpapi'
+
+          if ((Test-Path -LiteralPath $configPath -PathType Leaf) -and
+              (Test-Path -LiteralPath $secretPath -PathType Leaf)) {
+            try {
+              $cfg = Get-Content -LiteralPath $configPath -Raw | ConvertFrom-Json
+              $encrypted = (Get-Content -LiteralPath $secretPath -Raw).Trim()
+              $secure = ConvertTo-SecureString $encrypted
+              $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secure)
+              $plain = $null
+              try {
+                $plain = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstr)
+                $headers = @{ Authorization = "Bearer $plain" }
+                $base = "http://127.0.0.1:$($cfg.port)"
+                $manifest = Invoke-RestMethod -Uri "$base/v1/manifest" -Headers $headers -Method Get -TimeoutSec 3
+                $manifestState = 'PASS'
+                $native = @($manifest.providers | Where-Object { $_.id -eq 'native-windows' }) | Select-Object -First 1
+                if ($native -and (@($native.capabilities) -contains 'computer.files.read')) {
+                  $fileRead = 'ADVERTISED'
+                } else {
+                  $fileRead = 'NOT_ADVERTISED'
+                  $needsFix = $true
+                }
+              } finally {
+                $plain = $null
+                if ($bstr -ne [IntPtr]::Zero) {
+                  [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
+                }
+              }
+            } catch {
+              $manifestState = 'UNAVAILABLE_OR_DPAPI_CONTEXT_MISMATCH'
+              $needsFix = $true
+            }
+          } else {
+            $needsFix = $true
+          }
+
+          $mcpListener = Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue |
+            Where-Object { $_.LocalPort -eq 8810 } |
+            Select-Object -First 1
+          if ($mcpListener) {
+            $mcpState = 'LISTENING'
+          } else {
+            $needsFix = $true
+          }
+
+          Write-Host "COMPUTER_NODE_TASK=$taskState"
+          Write-Host "COMPUTER_NODE_MANIFEST=$manifestState"
+          Write-Host "COMPUTER_FILES_READ=$fileRead"
+          Write-Host "COMPUTER_MCP=$mcpState"
+          "needs_fix=$($needsFix.ToString().ToLowerInvariant())" >> $env:GITHUB_OUTPUT
+
+      - name: Verify Hermes AVC profile is callable
+        id: hermes
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $cmd = Get-Command hermes -ErrorAction Stop
+          Write-Host "HERMES_BIN_PRESENT=true"
+          $profiles = (& $cmd.Source profile list 2>&1 | Out-String)
+          if ($profiles -notmatch '(?im)^\s*avc\b|(?im)\bavc\b') {
+            throw "Canonical Hermes AVC profile was not found."
+          }
+          Write-Host "HERMES_AVC_PROFILE_PRESENT=true"
+          $gateway = (& $cmd.Source -p avc gateway status 2>&1 | Out-String)
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host "HERMES_AVC_GATEWAY=UNHEALTHY"
+          } else {
+            Write-Host "HERMES_AVC_GATEWAY=HEALTHY"
+          }
+
+      - name: Dispatch repair/build/connect mission to Hermes AVC
+        if: steps.probe.outputs.needs_fix == 'true'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $prompt = @'
+          You are the canonical Hermes AVC engineering/operator profile on JONAS-LENOVO.
+
+          OWNER AUTHORIZATION:
+          Jonas explicitly authorized you to fix, build, verify, and connect the Aftergraph Computer Node path so ChatGPT/Friday can observe JONAS-LENOVO through Aftergraph-native infrastructure. Work autonomously until you reach a real external blocker. Do not ask for routine confirmation.
+
+          CURRENT VERIFIED CONTEXT:
+          - Aftergraph/runtime draft PR #243, branch frontier/computer-node-readonly-files-mcp, implements opt-in bounded computer.files.read for Computer Node.
+          - Its Linux exact-head CI was green on the prior code head after a Windows installer duplication regression was fixed.
+          - Aftergraph/trust-gateway draft PR #142, branch frontier/computer-mcp-connector, implements governed POST /v2/computer/files/read plus a read-only MCP facade.
+          - Trust Gateway CI, Cross-repo Integration Gate, and CodeQL were green at head a87961231d415ed31b83ec823bd3c4a6d7fd7cb5.
+          - The verified physical JONAS-LENOVO GitHub runner is repository-scoped under Aftergraph/intelligence-systems-research with labels self-hosted, Windows, X64, aftergraph-jar-exp-0013.
+          - A Runtime-repo physical acceptance workflow remained queued because that runner is not currently scoped to Aftergraph/runtime. Treat that as infrastructure/routing evidence, not a product failure.
+          - Remote Desktop Commander is paired/online but ChatGPT-side monthly read quota is exhausted, so Aftergraph-native Computer Node/MCP is the required durable path.
+          - Preserve Home OS v0.28 as rollback and do not mutate Home OS v0.29 artifacts except where independently required and verified.
+
+          MISSION:
+          1. Inspect the actual host first. Record sanitized facts only: active Windows identity, canonical Aftergraph paths, Computer Node task/config state, GitHub runner scope, Runtime/Trust Gateway checkout locations and exact SHAs. Never print tokens, DPAPI plaintext, API keys, passwords, cookies, auth files, or Telegram credentials.
+          2. Resolve the physical-runner scope blocker honestly. Prefer an Aftergraph-native solution:
+             - either authorize/register a governed JONAS-LENOVO runner for Aftergraph/runtime,
+             - or perform the physical acceptance from the already-authorized intelligence-systems-research runner against an exact Runtime candidate checkout/artifact with SHA binding.
+             Do not mark a queued job as a pass.
+          3. Materialize and test Runtime PR #243 exact candidate on JONAS-LENOVO. Run the Computer Node build/tests and a physical bounded-read acceptance proving:
+             - native-windows advertises computer.files.read only when a read root is configured,
+             - C:\Aftergraph is the only intended live read root,
+             - an allowed text read succeeds,
+             - an outside-root read is denied,
+             - binary/oversize behavior remains bounded,
+             - no write/shell/input capability is introduced.
+          4. If and only if exact-head tests + physical acceptance are green, deploy/replace the managed Aftergraph-Computer-Node transactionally using the existing installer/rollback semantics and ReadRoot C:\Aftergraph. Preserve the previous installed node until authenticated identity/manifest verification succeeds.
+          5. Materialize Trust Gateway PR #142 exact candidate. Verify its full test suite, cross-repo contract, audit transparency contract, and read-only MCP tool catalog. Do not bypass Trust Gateway; MCP must call Trust Gateway, which calls Computer Node.
+          6. Deploy the Computer MCP facade with separate credentials:
+             - TG_COMPUTER_MCP_GATEWAY_TOKEN
+             - AFTERGRAPH_COMPUTER_MCP_TOKEN
+             - AFTERGRAPH_COMPUTER_MCP_READ_PREFIXES=C:\Aftergraph
+             Keep node and gateway secrets out of logs and Git.
+          7. Expose the MCP facade only through the existing approved authenticated HTTPS/private transport pattern. Never expose the raw Computer Node on a public interface and never treat transport possession as authority.
+          8. Verify end-to-end from outside the local process boundary as far as the available infrastructure permits:
+             MCP initialize -> tools/list -> aftergraph_computer_providers -> aftergraph_computer_health -> aftergraph_computer_file_read on a harmless file under C:\Aftergraph.
+          9. If ChatGPT custom-app registration is the only remaining blocker, produce the exact non-secret MCP HTTPS endpoint plus the minimum one-time user action required. Do not claim ChatGPT is connected until a real ChatGPT-side tool call succeeds.
+          10. Update GitHub PRs/evidence with sanitized exact-head SHAs, test counts/results, physical host receipt, deployed service state, and remaining blocker. Merge only if repository policy, exact-head gates, and physical evidence all support promotion. Do not force-merge or bypass required checks.
+          11. If a defect is found, fix it in source with tests, rerun gates, and continue. Distinguish product failure, verifier failure, runner-scope failure, and account/UI registration blockers.
+
+          COMPLETION STANDARD:
+          The work is not complete because code exists or a local process listens. Complete only when the governed chain is proven as far as technically possible:
+          ChatGPT registration boundary -> HTTPS MCP -> Trust Gateway -> Computer Node -> JONAS-LENOVO read-only observation,
+          with fail-closed authorization and evidence.
+
+          FINAL RESPONSE FORMAT:
+          Return ONLY these sanitized lines, with no prose and no secrets:
+          HERMES_COMPUTER_NODE_BUILD=PASS|FAIL|BLOCKED
+          HERMES_PHYSICAL_ACCEPTANCE=PASS|FAIL|BLOCKED
+          HERMES_COMPUTER_NODE_DEPLOY=PASS|FAIL|BLOCKED
+          HERMES_TRUST_GATEWAY_BUILD=PASS|FAIL|BLOCKED
+          HERMES_MCP_DEPLOY=PASS|FAIL|BLOCKED
+          HERMES_EXTERNAL_MCP_PROBE=PASS|FAIL|BLOCKED
+          HERMES_CHATGPT_REGISTRATION=PASS|USER_ACTION_REQUIRED|BLOCKED
+          HERMES_RUNTIME_HEAD=<sha-or-NONE>
+          HERMES_TRUST_GATEWAY_HEAD=<sha-or-NONE>
+          HERMES_BLOCKER=<single sanitized sentence or NONE>
+          HERMES_NEXT_ACTION=<single sanitized sentence or NONE>
+          '@
+
+          $out = Join-Path $env:RUNNER_TEMP 'hermes-avc-computer-node-connect.txt'
+          & hermes -p avc chat -q $prompt *> $out
+          $exit = $LASTEXITCODE
+
+          $statusLines = Get-Content -LiteralPath $out -ErrorAction SilentlyContinue |
+            Where-Object { $_ -match '^HERMES_[A-Z0-9_]+=' }
+
+          if ($statusLines) {
+            $statusLines | ForEach-Object { Write-Host $_ }
+          } else {
+            Write-Host "HERMES_DISPATCH_OUTPUT=NO_STRUCTURED_STATUS"
+          }
+
+          $sha = if (Test-Path -LiteralPath $out) {
+            (Get-FileHash -LiteralPath $out -Algorithm SHA256).Hash.ToLowerInvariant()
+          } else {
+            'NONE'
+          }
+          Write-Host "HERMES_OUTPUT_SHA256=$sha"
+          Write-Host "HERMES_EXIT_CODE=$exit"
+
+          Remove-Item -LiteralPath $out -Force -ErrorAction SilentlyContinue
+          if ($exit -ne 0) {
+            throw "Hermes AVC mission returned non-zero exit code $exit."
+          }
+
+      - name: Report already-connected state
+        if: steps.probe.outputs.needs_fix != 'true'
+        shell: pwsh
+        run: |
+          Write-Host "HERMES_DISPATCH=SKIPPED_ALREADY_LOCALLY_READY"
+          Write-Host "NOTE=ChatGPT-side registration/callability must still be verified from ChatGPT."
