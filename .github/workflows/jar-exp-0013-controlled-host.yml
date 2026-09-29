@@ -8,6 +8,11 @@ on:
         required: true
         default: "C:\\Aftergraph\\JAR-EXP-0013\\controlled-host.json"
         type: string
+      runner_probe_only:
+        description: "Run only the physical runner claim and evidence check"
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -17,7 +22,83 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  runner-probe:
+    runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
+    timeout-minutes: 5
+    steps:
+      - name: Prove the claimed Lenovo job and record its token tier
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          if ($env:COMPUTERNAME -ne "JONAS-LENOVO") {
+            throw ("wrong_host:" + $env:COMPUTERNAME)
+          }
+
+          Add-Type -TypeDefinition @'
+          using System;
+          using System.Runtime.InteropServices;
+          public static class RunnerTokenProbe {
+            [DllImport("kernel32.dll", SetLastError=true)] public static extern IntPtr OpenProcess(uint access, bool inherit, int pid);
+            [DllImport("advapi32.dll", SetLastError=true)] public static extern bool OpenProcessToken(IntPtr process, uint access, out IntPtr token);
+            [DllImport("advapi32.dll", SetLastError=true)] public static extern bool GetTokenInformation(IntPtr token, int infoClass, out int info, int length, out int returnLength);
+            [DllImport("kernel32.dll")] public static extern bool CloseHandle(IntPtr handle);
+          }
+          '@
+
+          $process = [RunnerTokenProbe]::OpenProcess(0x1000, $false, $PID)
+          if ($process -eq [IntPtr]::Zero) { throw "could_not_open_job_process" }
+          $token = [IntPtr]::Zero
+          try {
+            if (-not [RunnerTokenProbe]::OpenProcessToken($process, 8, [ref]$token)) {
+              throw "could_not_open_job_token"
+            }
+            $bytes = 0
+            $elevationType = 0
+            $isElevated = 0
+            if (-not [RunnerTokenProbe]::GetTokenInformation($token, 18, [ref]$elevationType, 4, [ref]$bytes)) {
+              throw "could_not_read_elevation_type"
+            }
+            if (-not [RunnerTokenProbe]::GetTokenInformation($token, 20, [ref]$isElevated, 4, [ref]$bytes)) {
+              throw "could_not_read_elevation_state"
+            }
+
+            $outDir = Join-Path $env:RUNNER_TEMP "jar-exp-0013"
+            New-Item -ItemType Directory -Force -Path $outDir | Out-Null
+            $report = [ordered]@{
+              host = $env:COMPUTERNAME
+              runner_name = $env:RUNNER_NAME
+              runner_os = $env:RUNNER_OS
+              runner_arch = $env:RUNNER_ARCH
+              repository = $env:GITHUB_REPOSITORY
+              workflow = $env:GITHUB_WORKFLOW
+              run_id = $env:GITHUB_RUN_ID
+              sha = $env:GITHUB_SHA
+              required_runner_labels = @("self-hosted", "Windows", "X64", "aftergraph-jar-exp-0013")
+              job_claimed = $true
+              job_token_elevation_type = $elevationType
+              job_token_is_elevated = ($isElevated -ne 0)
+              machine_attestation = "hostname_only"
+              observed_at_utc = [DateTime]::UtcNow.ToString("o")
+            }
+            $report | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath (Join-Path $outDir "runner-identity.json") -Encoding utf8
+          }
+          finally {
+            if ($token -ne [IntPtr]::Zero) { [void][RunnerTokenProbe]::CloseHandle($token) }
+            [void][RunnerTokenProbe]::CloseHandle($process)
+          }
+
+      - name: Publish runner execution receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: jonas-lenovo-runner-probe-${{ github.run_id }}
+          path: ${{ runner.temp }}/jar-exp-0013/runner-identity.json
+          if-no-files-found: error
+          retention-days: 30
+
   controlled-host:
+    needs: runner-probe
+    if: ${{ inputs.runner_probe_only != true }}
     runs-on: [self-hosted, Windows, X64, aftergraph-jar-exp-0013]
     timeout-minutes: 30
     steps:
@@ -25,9 +106,30 @@ jobs:
         with:
           fetch-depth: 1
 
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
-        with:
-          python-version: "3.11"
+      - name: Prepare isolated user-scoped Python 3.11
+        shell: pwsh
+        run: |
+          $uv = Get-Command uv -ErrorAction Stop
+          $basePython = & $uv.Source python find 3.11
+          if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($basePython)) {
+            throw "Python 3.11 is not installed in the runner user's uv cache"
+          }
+          if (-not (Test-Path -LiteralPath $basePython)) {
+            throw "uv returned a Python path that does not exist"
+          }
+
+          $venv = Join-Path $env:RUNNER_TEMP "jar-exp-0013-venv"
+          & $basePython -m venv $venv
+          if ($LASTEXITCODE -ne 0) {
+            throw "Could not create the isolated Python environment"
+          }
+          $venvScripts = Join-Path $venv "Scripts"
+          Add-Content -LiteralPath $env:GITHUB_PATH -Value $venvScripts -Encoding utf8
+          $env:PATH = "$venvScripts;$env:PATH"
+          & (Join-Path $venvScripts "python.exe") --version
+          if ($LASTEXITCODE -ne 0) {
+            throw "The isolated Python environment did not start"
+          }
 
       - name: Install isolated bridge dependencies
         shell: pwsh
@@ -65,7 +167,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: jar-exp-0013-controlled-host-probe-${{ github.run_id }}
+          name: jar-exp-0013-controlled-host-${{ github.run_id }}
           path: ${{ runner.temp }}/jar-exp-0013/controlled-host-probe.json
-          if-no-files-found: warn
+          if-no-files-found: error
           retention-days: 30

@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from typing import Callable
 
 from .host_preflight import check_preflight
@@ -43,10 +43,26 @@ def capture_preflight_snapshot() -> dict:
 def _command_summary(result: CommandResult) -> dict:
     """Persist only non-secret command metadata; raw command output is intentionally omitted."""
     return {
-        "argv": list(result.argv),
+        "argv": _safe_argv(result.argv),
         "returncode": int(result.returncode),
         "duration_ms": float(result.duration_ms),
     }
+
+
+def _safe_argv(argv) -> list[str]:
+    """Keep command names and flags while omitting machine-local absolute paths."""
+    safe = []
+    for value in argv:
+        argument = str(value)
+        windows_path = PureWindowsPath(argument)
+        path = Path(argument)
+        if windows_path.is_absolute():
+            safe.append(windows_path.name)
+        elif path.is_absolute():
+            safe.append(path.name)
+        else:
+            safe.append(argument)
+    return safe
 
 
 def _sha256(path: Path) -> str:
@@ -75,9 +91,9 @@ def _toolrush_installation_report(paths: dict[str, Path], reasons: list[str]) ->
     pinned_plugin = repo / "v2" / "plugin" / "__init__.py"
     pinned_doctor = repo / "v2" / "plugin" / "doctor.py"
     if not pinned_plugin.is_file():
-        reasons.append(f"pinned ToolRush plugin is missing: {pinned_plugin}")
+        reasons.append("pinned ToolRush plugin is missing")
     if not pinned_doctor.is_file():
-        reasons.append(f"pinned ToolRush doctor is missing: {pinned_doctor}")
+        reasons.append("pinned ToolRush doctor is missing")
 
     if installed_plugin is not None and installed_plugin.is_file():
         report["plugin_sha256"] = _sha256(installed_plugin)
@@ -128,8 +144,8 @@ def probe_host(
     protocol_path = Path(config.get("protocol_path") or DEFAULT_PROTOCOL)
     try:
         protocol = load_protocol(protocol_path)
-    except Exception as exc:
-        return _blocked([f"protocol load failed: {exc}"])
+    except Exception:
+        return _blocked(["protocol load failed"])
 
     reasons: list[str] = []
     paths: dict[str, Path] = {}
@@ -141,7 +157,7 @@ def probe_host(
         path = Path(str(raw))
         paths[field] = path
         if not path.exists():
-            reasons.append(f"path does not exist: {field}={path}")
+            reasons.append(f"path does not exist: {field}")
 
     pins = {
         "toolrush": str(protocol["pins"]["toolrush"]).lower(),
@@ -157,8 +173,8 @@ def probe_host(
             continue
         try:
             actual = str(revision_reader(path)).strip().lower()
-        except Exception as exc:
-            reasons.append(f"{label} revision check failed: {exc}")
+        except Exception:
+            reasons.append(f"{label} revision check failed")
             continue
         if actual != expected:
             reasons.append(f"{label} revision mismatch: expected {expected}, got {actual}")
@@ -177,8 +193,8 @@ def probe_host(
             toolrush_doctor = _command_summary(doctor_result)
             if doctor_result.returncode != 0:
                 reasons.append("ToolRush doctor smoke failed")
-        except Exception as exc:
-            reasons.append(f"ToolRush doctor smoke failed: {exc}")
+        except Exception:
+            reasons.append("ToolRush doctor smoke failed")
 
     obscura_version: dict | None = None
     obscura_executable = paths.get("obscura_executable")
@@ -188,8 +204,8 @@ def probe_host(
             obscura_version = _command_summary(version_result)
             if version_result.returncode != 0:
                 reasons.append("Obscura version probe failed")
-        except Exception as exc:
-            reasons.append(f"Obscura version probe failed: {exc}")
+        except Exception:
+            reasons.append("Obscura version probe failed")
 
     protocol_limits = protocol.get("preflight")
     if not isinstance(protocol_limits, dict):
@@ -215,12 +231,14 @@ def probe_host(
             preflight = {"clean": False, "reasons": ["preflight_capture_failed"]}
 
     try:
-        obscura_serve_argv = build_obscura_serve_argv(
-            config.get("obscura_executable", "obscura"),
-            port=int(config.get("obscura_port", 9222)),
+        obscura_serve_argv = _safe_argv(
+            build_obscura_serve_argv(
+                config.get("obscura_executable", "obscura"),
+                port=int(config.get("obscura_port", 9222)),
+            )
         )
-    except Exception as exc:
-        reasons.append(f"invalid Obscura serve configuration: {exc}")
+    except Exception:
+        reasons.append("invalid Obscura serve configuration")
         obscura_serve_argv = []
 
     if reasons:
