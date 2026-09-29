@@ -6,6 +6,11 @@ on:
       - ops/hermes-avc-computer-node-connect-20260929
     paths:
       - ".github/workflows/hermes-avc-computer-node-connect.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/hermes-avc-computer-node-connect.yml"
   workflow_dispatch:
 
 permissions:
