@@ -14,6 +14,15 @@ from runtime.verifier import DeterministicTestVerifier
 from runtime.storage import TrajectoryStorage
 from runtime.policy import PolicyEngine
 
+# Delegation windows are computed relative to "now" so the fixtures do not
+# expire on a fixed calendar date (they previously hard-coded 2026-09-30,
+# which turned CI red from 2026-09-30 onwards).
+import datetime as _dt
+_NOW = _dt.datetime.now(_dt.timezone.utc).replace(microsecond=0)
+_VALID_FROM = (_NOW - _dt.timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
+_EXPIRES_AT = (_NOW + _dt.timedelta(days=30)).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
 # ponytail: Phase H Enterprise Pilot Integration Suite.
 # Demonstrates SPEC-001 deployed across 3 high-impact enterprise operational scenarios:
 # 1. GitOps Production Deployment & Canary Verification
@@ -43,8 +52,8 @@ def run_gitops_pilot():
             "allowed_capabilities": ["mcp://k8s/deploy_canary", "mcp://prometheus/query_metrics", "mcp://git/tag_release"],
             "denied_capabilities": ["mcp://k8s/delete_namespace", "mcp://aws/delete_cluster"]
         },
-        "valid_from": "2026-09-01T00:00:00Z",
-        "expires_at": "2026-09-30T00:00:00Z"
+        "valid_from": _VALID_FROM,
+        "expires_at": _EXPIRES_AT
     }
 
     engine = MissionEngine()
@@ -105,8 +114,8 @@ def run_data_pipeline_pilot():
         "delegate": "urn:agent:etl-worker",
         "purpose": "pilot-etl-financial",
         "scope": {"allowed_capabilities": ["mcp://s3/*", "mcp://duckdb/*"]},
-        "valid_from": "2026-09-01T00:00:00Z",
-        "expires_at": "2026-09-30T00:00:00Z"
+        "valid_from": _VALID_FROM,
+        "expires_at": _EXPIRES_AT
     }
 
     engine = MissionEngine()
@@ -150,8 +159,8 @@ def run_sre_incident_pilot():
             "allowed_capabilities": ["mcp://k8s/get_logs", "mcp://k8s/restart_pod"],
             "denied_capabilities": ["mcp://k8s/drain_node", "mcp://k8s/delete_deployment"]
         },
-        "valid_from": "2026-09-01T00:00:00Z",
-        "expires_at": "2026-09-30T00:00:00Z"
+        "valid_from": _VALID_FROM,
+        "expires_at": _EXPIRES_AT
     }
 
     engine = MissionEngine()

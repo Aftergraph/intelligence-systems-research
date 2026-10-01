@@ -4,6 +4,15 @@ import json
 import os
 import sys
 
+# Delegation windows are computed relative to "now" so the fixtures do not
+# expire on a fixed calendar date (they previously hard-coded 2026-09-30,
+# which turned CI red from 2026-09-30 onwards).
+import datetime as _dt
+_NOW = _dt.datetime.now(_dt.timezone.utc).replace(microsecond=0)
+_VALID_FROM = (_NOW - _dt.timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
+_EXPIRES_AT = (_NOW + _dt.timedelta(days=30)).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
 # ponytail: Standalone Conformance Test Runner for Third-Party Implementations.
 # Zero dependency on Jonas Abde reference runtime. Evaluates any candidate engine
 # implementing the SPEC-001 lifecycle and verification methods.
@@ -113,7 +122,7 @@ def run_standalone_conformance(engine_module=None, engine_class=None):
                 _auth(engine, {
                     "id": "del-tc3", "principal": "urn:p", "delegate": "urn:d",
                     "purpose": "release-production", "scope": {"allowed_capabilities": ["*"]},
-                    "valid_from": "2026-09-01T00:00:00Z", "expires_at": "2026-09-30T00:00:00Z"
+                    "valid_from": _VALID_FROM, "expires_at": _EXPIRES_AT
                 })
                 _start(engine)
                 _complete(engine)
@@ -124,7 +133,7 @@ def run_standalone_conformance(engine_module=None, engine_class=None):
                 _auth(engine, {
                     "id": "del-tc4", "principal": "urn:p", "delegate": "urn:d",
                     "purpose": "release-production", "scope": {"allowed_capabilities": ["*"]},
-                    "valid_from": "2026-09-01T00:00:00Z", "expires_at": "2026-09-30T00:00:00Z"
+                    "valid_from": _VALID_FROM, "expires_at": _EXPIRES_AT
                 })
                 _start(engine)
                 _complete(engine)
@@ -149,7 +158,7 @@ def run_standalone_conformance(engine_module=None, engine_class=None):
                         "allowed_capabilities": ["mcp://allowed/*"],
                         "denied_capabilities": ["mcp://allowed/blocked"]
                     },
-                    "valid_from": "2026-09-01T00:00:00Z", "expires_at": "2026-09-30T00:00:00Z"
+                    "valid_from": _VALID_FROM, "expires_at": _EXPIRES_AT
                 })
                 _start(engine)
                 _act(engine, "mcp://allowed/tool1")
@@ -171,7 +180,7 @@ def run_standalone_conformance(engine_module=None, engine_class=None):
                 _auth(engine, {
                     "id": "del-tc6", "principal": "urn:p", "delegate": "urn:d",
                     "purpose": "m-bgt", "scope": {"allowed_capabilities": ["*"]},
-                    "valid_from": "2026-09-01T00:00:00Z", "expires_at": "2026-09-30T00:00:00Z"
+                    "valid_from": _VALID_FROM, "expires_at": _EXPIRES_AT
                 })
                 _start(engine)
                 try:
