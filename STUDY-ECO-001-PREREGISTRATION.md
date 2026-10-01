@@ -54,7 +54,7 @@ promotion-authority and scientific-validity flags.
 The confirmatory runner MUST use these exact component commits:
 
 - CORE Labs Fabric implementation freeze:
-  `688e120dbca382e2329679378649ea5adca9220d`
+  `57ae5bb65dc3de0e0ab358cba6e53fc88626b974`
 - Trust Gateway:
   `49d9d1d43c80f4dae34dc3df6778e9a8cccb39db`
 - WORKS:
