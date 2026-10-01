@@ -19,7 +19,7 @@ SHA1_LEN = 40
 SHA256_LEN = 64
 
 FROZEN_SUBJECTS = {
-    "core_labs_fabric": "688e120dbca382e2329679378649ea5adca9220d",
+    "core_labs_fabric": "57ae5bb65dc3de0e0ab358cba6e53fc88626b974",
     "trust_gateway": "49d9d1d43c80f4dae34dc3df6778e9a8cccb39db",
     "works_execution": "e7bc30a56ad14410927daa5c83e561d918ccb1da",
     "runtime": "e97b465faa34044d6e573f5f228efec79884e230",
