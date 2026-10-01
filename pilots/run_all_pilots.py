@@ -44,7 +44,7 @@ def run_gitops_pilot():
             "denied_capabilities": ["mcp://k8s/delete_namespace", "mcp://aws/delete_cluster"]
         },
         "valid_from": "2026-09-01T00:00:00Z",
-        "expires_at": "2026-09-30T00:00:00Z"
+        "expires_at": "2099-12-31T23:59:59Z"
     }
 
     engine = MissionEngine()
@@ -106,7 +106,7 @@ def run_data_pipeline_pilot():
         "purpose": "pilot-etl-financial",
         "scope": {"allowed_capabilities": ["mcp://s3/*", "mcp://duckdb/*"]},
         "valid_from": "2026-09-01T00:00:00Z",
-        "expires_at": "2026-09-30T00:00:00Z"
+        "expires_at": "2099-12-31T23:59:59Z"
     }
 
     engine = MissionEngine()
@@ -151,7 +151,7 @@ def run_sre_incident_pilot():
             "denied_capabilities": ["mcp://k8s/drain_node", "mcp://k8s/delete_deployment"]
         },
         "valid_from": "2026-09-01T00:00:00Z",
-        "expires_at": "2026-09-30T00:00:00Z"
+        "expires_at": "2099-12-31T23:59:59Z"
     }
 
     engine = MissionEngine()
