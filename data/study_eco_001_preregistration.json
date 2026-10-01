@@ -38,5 +38,19 @@
     "scientific_validity_granted": false
   },
   "external_independent_reproduction": false,
-  "evidence_level_claim": "NO_E5_OR_E6_CLAIM"
+  "evidence_level_claim": "NO_E5_OR_E6_CLAIM",
+  "raw_evidence_binding": {
+    "artifact_root": "directory containing aftergraph.study-eco-001-evidence/v1",
+    "preflight_receipt_path_required": true,
+    "sentinel_verification_path_required": true,
+    "suite_output_path_required": true,
+    "recompute_preflight_canonical_digest": true,
+    "recompute_sentinel_canonical_digest": true,
+    "recompute_suite_output_sha256": true,
+    "max_artifact_bytes": 8388608,
+    "absolute_paths_forbidden": true,
+    "path_traversal_forbidden": true,
+    "duplicate_suite_ids": "FALSIFIED",
+    "semantic_failure_precedence": "FALSIFIED_OVER_INVALID_RUN"
+  }
 }
