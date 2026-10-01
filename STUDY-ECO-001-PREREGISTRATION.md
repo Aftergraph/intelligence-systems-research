@@ -160,6 +160,25 @@ tampered without rejection, recovery can move assets, revocation/kill-switch
 tests fail, disagreement becomes FINAL, or self-produced observational evidence
 is treated as independent scientific evidence.
 
+## Raw evidence binding
+
+A confirmatory pass MUST be bound to retained raw artifacts, not summary hashes
+alone. The evidence record therefore includes relative paths for the CORE Labs
+preflight receipt, Sentinel independent-verification receipt, and every fixed
+suite output. The frozen analyzer resolves those paths beneath the evidence
+directory, forbids absolute paths and path traversal, caps each input at 8 MiB,
+recomputes the internal preflight and Sentinel canonical JSON digests, and
+recomputes every suite-output SHA-256 from raw bytes.
+
+A syntactically valid but unbound digest is not sufficient evidence. Missing,
+tampered, mismatched, duplicated, or path-escaping semantic evidence is a
+confirmatory failure. Duplicate suite IDs are retained as a failure rather than
+collapsed; a later passing record cannot erase an earlier failed record.
+
+If malformed metadata and a semantic failure coexist after semantic observation,
+the run is classified `FALSIFIED`, not `INVALID_RUN`. `INVALID_RUN` remains
+reserved for pre-semantic setup/identity defects with no semantic gate failure.
+
 ## Claim boundaries
 
 A pass does **not** demonstrate:
