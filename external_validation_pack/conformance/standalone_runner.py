@@ -113,7 +113,7 @@ def run_standalone_conformance(engine_module=None, engine_class=None):
                 _auth(engine, {
                     "id": "del-tc3", "principal": "urn:p", "delegate": "urn:d",
                     "purpose": "release-production", "scope": {"allowed_capabilities": ["*"]},
-                    "valid_from": "2026-09-01T00:00:00Z", "expires_at": "2026-09-30T00:00:00Z"
+                    "valid_from": "2026-09-01T00:00:00Z", "expires_at": "2099-12-31T23:59:59Z"
                 })
                 _start(engine)
                 _complete(engine)
@@ -124,7 +124,7 @@ def run_standalone_conformance(engine_module=None, engine_class=None):
                 _auth(engine, {
                     "id": "del-tc4", "principal": "urn:p", "delegate": "urn:d",
                     "purpose": "release-production", "scope": {"allowed_capabilities": ["*"]},
-                    "valid_from": "2026-09-01T00:00:00Z", "expires_at": "2026-09-30T00:00:00Z"
+                    "valid_from": "2026-09-01T00:00:00Z", "expires_at": "2099-12-31T23:59:59Z"
                 })
                 _start(engine)
                 _complete(engine)
@@ -149,7 +149,7 @@ def run_standalone_conformance(engine_module=None, engine_class=None):
                         "allowed_capabilities": ["mcp://allowed/*"],
                         "denied_capabilities": ["mcp://allowed/blocked"]
                     },
-                    "valid_from": "2026-09-01T00:00:00Z", "expires_at": "2026-09-30T00:00:00Z"
+                    "valid_from": "2026-09-01T00:00:00Z", "expires_at": "2099-12-31T23:59:59Z"
                 })
                 _start(engine)
                 _act(engine, "mcp://allowed/tool1")
@@ -171,7 +171,7 @@ def run_standalone_conformance(engine_module=None, engine_class=None):
                 _auth(engine, {
                     "id": "del-tc6", "principal": "urn:p", "delegate": "urn:d",
                     "purpose": "m-bgt", "scope": {"allowed_capabilities": ["*"]},
-                    "valid_from": "2026-09-01T00:00:00Z", "expires_at": "2026-09-30T00:00:00Z"
+                    "valid_from": "2026-09-01T00:00:00Z", "expires_at": "2099-12-31T23:59:59Z"
                 })
                 _start(engine)
                 try:
