@@ -15,7 +15,9 @@
       "data/study012_i0_opportunity_matrix.json (DRAFT snapshot + sidecar)",
       "data/study012_pilot_dryrun_report.json (DRAFT snapshot + sidecar)",
       "data/study012_verifier_pin.json (DRAFT snapshot + sidecar)",
-      "tests/test_study012_clearance.py (pins DRAFT clearance content, incl. experiment_id)"
+      "tests/test_study012_clearance.py (pins DRAFT clearance content, incl. experiment_id)",
+      "data/study012_freeze_approval.json (G12-9 DRAFT snapshot + sidecar; post-ruling carry-over of the alias via #100, recorded here instead of rewriting the sealed file)",
+      "data/study012_execution_window.json (G12-10 DRAFT snapshot + sidecar; post-ruling carry-over of the alias via #101, recorded here instead of rewriting the sealed file)"
     ]
   },
   "non_canonical_aliases": [

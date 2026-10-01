@@ -150,6 +150,8 @@ HISTORICAL_BASENAMES = {
     "study012_pilot_dryrun_report.json",
     "study012_verifier_pin.json",
     "test_study012_clearance.py",
+    "study012_freeze_approval.json",
+    "study012_execution_window.json",
 }
 
 
