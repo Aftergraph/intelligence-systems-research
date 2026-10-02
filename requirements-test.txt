@@ -5,7 +5,7 @@
 #   pyyaml          — tests/test_adapters.py, cli/mission_cli.py, security/fuzzer.py
 #   jsonschema      — tests/test_schemas.py, tests/test_ci_workflow_schema.py
 #   pyjwt           — tests/test_token_exchange_q004.py
-pytest>=8,<9
+pytest>=9.0.3,<10
 PyYAML>=6,<7
 jsonschema>=4,<5
 PyJWT>=2,<3
