@@ -1,0 +1,90 @@
+{
+  "schema": "study015.evidence-checkpoint/1.0",
+  "study_id": "STUDY-015",
+  "checkpoint": "LIVE_CAUSAL_SLICE_L3",
+  "recorded_at": "2026-09-25T07:42:40Z",
+  "status": "VERIFIED_L3_COMPOSITION_CONFORMANCE",
+  "provenance": {
+    "repository": "Aftergraph/runtime",
+    "runner_pr": 203,
+    "runner_head": "85d7a8c1374c745db4dec5c828263b44ae1de8ce",
+    "workflow_run_id": 36108876350,
+    "artifact_id": 10852541022,
+    "artifact_name": "study015-live-causal-slice",
+    "artifact_size_bytes": 1255,
+    "artifact_zip_sha256": "d3a068a131d4abf2783ca99fc3dcdd687e2857d04135239df2fa228792dbec13"
+  },
+  "receipt": {
+    "schema": "study015.live-causal-slice/1.0",
+    "execution_class": "LIVE_INTEGRATION_CONFORMANCE",
+    "evidence_class": "L3_COMPOSITION_CONFORMANCE_CANDIDATE",
+    "performance_claim": false,
+    "g15_9_authorized": false,
+    "production_deployment": false,
+    "network_used": true,
+    "heads": {
+      "aie": "bdb36512e57e1bb1f2ec05312d725827267eafc1",
+      "runtime": "7dc0a336e06e7528f471bbd5676ddb50df6e9046",
+      "sentinel": "4125f66b0c6d476966feb017ec7ddf3e22ec9459",
+      "trust_gateway": "bb224848cd540db701de783f44101aa95e914563",
+      "works": "ee04809f041cbc328ba024400f0f538cf48239c1"
+    },
+    "hostile": {
+      "revoked_authority_rejected_before_egress": true,
+      "stale_verification_head_rejected": true,
+      "wrong_pdr_rejected": true
+    },
+    "identity": {
+      "action_id": "act_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "admission_decision_id": "pdr_55555555555555555555555555555555",
+      "attempt_id": "attempt/study015/live-1",
+      "causal_id": "causal/study015/live-1",
+      "effect_id": "effect/study015/live-1",
+      "exact_subject": "git:Aftergraph/runtime@9c781f624bae36ee35aa23df57060e934d3a634c",
+      "execution_context_id": "ctx_c25bcc01cd7b21ed26826f1666847208",
+      "execution_pdr_id": "pdr_cafffe063d64f0a260ad6ad75689b2b6",
+      "mission_id": "mis_study015_live_causal",
+      "runtime_dispatch_id": "rdisp/a00e22c896e513cb",
+      "sentinel_receipt_id": "d9a2949baf9a7d30569f425a240be2576fc308eb4c1bc9994a7e8dc05b83575e",
+      "trace_id": "trc_02f70eb5d99d939157862dd6ddc33d28",
+      "work_id": "wrk_7f8d49b9f1e446f4ab1cc8624e9ebf5c",
+      "worker_lease_id": "lse_aa71427591fdeffc378bc5a3fd816960",
+      "works_execution_id": "wexec/idem/study015/live-1"
+    },
+    "proof_target": {
+      "branch": "study015/live-causal-proof-target",
+      "pull_request": 202,
+      "remote_readback": "9c781f624bae36ee35aa23df57060e934d3a634c",
+      "repository": "Aftergraph/runtime",
+      "sha_a": "7dc0a336e06e7528f471bbd5676ddb50df6e9046",
+      "sha_b": "9c781f624bae36ee35aa23df57060e934d3a634c"
+    },
+    "seams": {
+      "aie_revalidation_subprocess": true,
+      "durable_verified_outcome": true,
+      "governed_remote_git_effect": true,
+      "human_approval_boundary": true,
+      "remote_exact_sha_readback": true,
+      "runtime_process_cli": true,
+      "runtime_works_subject_binding": true,
+      "sentinel_process_exact_head": true,
+      "tg_process_http": true,
+      "works_mission_acceptance": true,
+      "works_process_http": true
+    },
+    "causal_slice_sha256": "39a4e862030476ad4585fd70038056c8ad3e2b719e645ca64b86a477cdfb230d"
+  },
+  "claim_boundary": {
+    "performance_claim": false,
+    "g15_9_authorized": false,
+    "production_deployment": false,
+    "world_first_claim": false,
+    "industry_superiority_claim": false
+  },
+  "next_gate_candidate": {
+    "name": "L4_INDEPENDENT_REPEATABILITY",
+    "purpose": "Repeat the same invariant chain with fresh causal identities and a fresh exact proof subject, then require independent receipt equivalence and fail-closed replay/stale-subject behavior.",
+    "performance_study": false,
+    "authorizes_g15_9": false
+  }
+}
