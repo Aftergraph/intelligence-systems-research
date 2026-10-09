@@ -1,0 +1,66 @@
+name: v2.5 evidence campaign (Aftergraph)
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_live:
+        description: "Run provider-backed paired campaign after planning checks"
+        required: true
+        default: false
+        type: boolean
+      pricing_path:
+        description: "Operator-reviewed pricing JSON path"
+        required: true
+        default: "configs/live-campaign-pricing.example.json"
+        type: string
+      manifest_path:
+        description: "Paired benchmark manifest"
+        required: true
+        default: "benchmarks/hermes_qwen_control_plane_ablation.yaml"
+        type: string
+
+permissions:
+  contents: read
+
+env:
+  PYTHONPATH: ${{ github.workspace }}/src
+
+jobs:
+  evidence-campaign:
+    runs-on: [self-hosted, linux, x64, aftergraph-ci]
+    environment: provider-smoke
+    timeout-minutes: 60
+    env:
+      TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+      DIALAGRAM_API_KEY: ${{ secrets.DIALAGRAM_API_KEY }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Verify release has no embedded provider secrets
+        run: python scripts/verify_no_secrets.py .
+      - name: Campaign power plan
+        run: python -m jev_engineering.cli campaign-plan-v25 --baseline-vsr 0.90 --margin 0.02
+      - name: Provider/fixture preflight
+        run: python -m jev_engineering.cli benchmark-preflight "${{ inputs.manifest_path }}"
+      - name: Run paired provider campaign
+        if: ${{ inputs.run_live }}
+        run: >-
+          python -m jev_engineering.cli live-campaign-v25
+          "${{ inputs.manifest_path }}"
+          --pricing "${{ inputs.pricing_path }}"
+          --incumbent qwen-frontier-control
+          --candidate qwen-jev-control
+          --repeats 6
+          --shadow-pairs 5
+          --experiment-pairs 5
+          --holdout-pairs 20
+          --min-fie-ratio 1.0
+          --target-fie-ratio 10.0
+      - name: Verify evidence bundle
+        if: ${{ inputs.run_live }}
+        run: python -m jev_engineering.cli campaign-verify-v25 live-campaign-v25-results/campaign-evidence.v1.json
+      - name: Upload non-secret evidence
+        if: ${{ inputs.run_live }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: v25-evidence-campaign
+          path: live-campaign-v25-results

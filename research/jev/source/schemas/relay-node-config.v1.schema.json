@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/relay-node-config.v1.schema.json",
+  "title": "Aftergraph Relay Node Config v1",
+  "type": "object",
+  "required": ["node_config_file", "relay_host", "relay_port", "ca_file", "certificate_file", "private_key_file"],
+  "properties": {
+    "node_config_file": {"type": "string", "minLength": 1},
+    "relay_host": {"type": "string", "minLength": 1},
+    "relay_port": {"type": "integer", "minimum": 1, "maximum": 65535},
+    "server_name": {"type": ["string", "null"], "minLength": 1},
+    "ca_file": {"type": "string", "minLength": 1},
+    "certificate_file": {"type": "string", "minLength": 1},
+    "private_key_file": {"type": "string", "minLength": 1},
+    "reconnect_delay_s": {"type": "number", "minimum": 0},
+    "connect_timeout_s": {"type": "number", "exclusiveMinimum": 0}
+  },
+  "additionalProperties": false
+}

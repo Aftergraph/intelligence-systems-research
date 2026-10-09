@@ -1,0 +1,24 @@
+{
+  "observations": [
+    {
+      "failures": 0.0,
+      "key": {
+        "context_band": "*",
+        "environment": "*",
+        "language": "*",
+        "mission_phase": "*",
+        "reasoning_level": "*",
+        "repo": "*",
+        "risk_class": "*",
+        "strategy_id": "jev-scope",
+        "task_family": "scope",
+        "toolset": "*"
+      },
+      "observations": 1,
+      "successes": 1.0
+    }
+  ],
+  "prior_alpha": 1.0,
+  "prior_beta": 1.0,
+  "version": 1
+}

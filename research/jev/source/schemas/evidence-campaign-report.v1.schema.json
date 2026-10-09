@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/evidence-campaign-report.v1.schema.json",
+  "title": "EvidenceCampaignReport/v1",
+  "type": "object",
+  "required": ["version", "paired_missions", "phase_allocation", "incumbent_condition", "candidate_condition", "shadow", "experiment", "holdout", "all", "promotion", "efficiency_target", "truth_boundary"],
+  "properties": {
+    "version": {"const": 1},
+    "paired_missions": {"type": "integer", "minimum": 1},
+    "phase_allocation": {
+      "type": "object",
+      "required": ["shadow", "experiment", "holdout"],
+      "properties": {
+        "shadow": {"type": "integer", "minimum": 1},
+        "experiment": {"type": "integer", "minimum": 1},
+        "holdout": {"type": "integer", "minimum": 1}
+      }
+    },
+    "incumbent_condition": {"type": "string", "minLength": 1},
+    "candidate_condition": {"type": "string", "minLength": 1},
+    "promotion": {
+      "type": "object",
+      "required": ["promote", "reasons", "evidence_scope"],
+      "properties": {
+        "promote": {"type": "boolean"},
+        "reasons": {"type": "array", "items": {"type": "string"}},
+        "evidence_scope": {"const": "holdout-only"}
+      },
+      "additionalProperties": true
+    },
+    "efficiency_target": {
+      "type": "object",
+      "required": ["target_ratio", "target_attainable_by_control_plane_only", "requires_generator_or_context_reduction"],
+      "properties": {
+        "target_ratio": {"type": "number", "exclusiveMinimum": 0},
+        "target_attainable_by_control_plane_only": {"type": "boolean"},
+        "requires_generator_or_context_reduction": {"type": "boolean"}
+      },
+      "additionalProperties": true
+    },
+    "truth_boundary": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": true
+}

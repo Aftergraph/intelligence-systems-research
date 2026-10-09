@@ -1,0 +1,24 @@
+name: v2.1 multi-node verified fabric
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-v21:
+    runs-on: [self-hosted, linux, x64, aftergraph-ci]
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Install package + test dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -e '.[dev]'
+      - name: Full test suite
+        run: python3 -m pytest -q
+      - name: Two-node mTLS vertical
+        run: jev-one v21-demo
+      - name: Secret scan
+        run: python3 scripts/verify_no_secrets.py .

@@ -1,0 +1,22 @@
+name: v2.6 system efficiency compiler — Aftergraph
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-v26:
+    runs-on: [self-hosted, linux, x64, aftergraph-ci]
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Python tests
+        run: python -m pytest -q
+      - name: Compileall
+        run: python -m compileall -q src tests
+      - name: v2.6 synthetic planning proof
+        run: PYTHONPATH=src python -m jev_engineering.cli v26-demo
+      - name: Secret scan
+        run: python scripts/verify_no_secrets.py .

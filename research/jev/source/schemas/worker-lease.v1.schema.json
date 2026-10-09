@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/worker-lease.v1.schema.json",
+  "title": "Aftergraph WorkerLease v1",
+  "type": "object",
+  "required": ["lease_id", "node_id", "worker_id", "authority_grant_id", "capabilities", "issued_at", "expires_at", "heartbeat_at", "fencing_token", "status"],
+  "properties": {
+    "lease_id": {"type": "string", "minLength": 1},
+    "node_id": {"type": "string", "minLength": 1},
+    "worker_id": {"type": "string", "minLength": 1},
+    "authority_grant_id": {"type": "string", "minLength": 1},
+    "capabilities": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "issued_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "heartbeat_at": {"type": "string", "format": "date-time"},
+    "fencing_token": {"type": "integer", "minimum": 1},
+    "status": {"enum": ["active", "fenced", "revoked", "expired"]}
+  },
+  "additionalProperties": false
+}

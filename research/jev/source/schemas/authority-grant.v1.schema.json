@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/authority-grant.v1.schema.json",
+  "title": "Aftergraph AuthorityGrant v1",
+  "type": "object",
+  "required": ["grant_id", "principal", "scopes", "budget_usd", "spent_usd", "expires_at", "delegation_depth_remaining", "authority_ref", "chain_hash", "revoked"],
+  "properties": {
+    "grant_id": {"type": "string", "minLength": 1},
+    "principal": {"type": "string", "minLength": 1},
+    "scopes": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true, "minItems": 1},
+    "budget_usd": {"type": "number", "minimum": 0},
+    "spent_usd": {"type": "number", "minimum": 0},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "delegation_depth_remaining": {"type": "integer", "minimum": 0},
+    "authority_ref": {"type": "string", "minLength": 1},
+    "parent_grant_id": {"type": ["string", "null"]},
+    "chain_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "revoked": {"type": "boolean"}
+  },
+  "additionalProperties": false
+}

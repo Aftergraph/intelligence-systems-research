@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/quorum-verdict.v1.schema.json",
+  "title": "Independent Verification Quorum Verdict v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["accepted", "conflict", "positive_verifiers", "negative_verifiers"],
+  "properties": {
+    "accepted": {"type": "boolean"},
+    "conflict": {"type": "boolean"},
+    "positive_verifiers": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "negative_verifiers": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+  }
+}

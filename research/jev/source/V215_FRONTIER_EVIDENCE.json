@@ -1,0 +1,86 @@
+{
+  "counterfactual_routing": {
+    "calibration_requires_verified_challenger_outcome": true,
+    "competence_decay_bounded": true,
+    "modeled_only": true,
+    "topology_outcome_memory_verified_only": true
+  },
+  "live_smoke": {
+    "github": {
+      "job_id": 108323621166,
+      "pull_request": 142,
+      "repository": "Aftergraph/intelligence-systems-research",
+      "source_commit": "c48829a7aa8f1863f1722ec915b1fb6451091b26",
+      "workflow_run_id": 36213109853
+    },
+    "providers": {
+      "dialagram": {
+        "chat_completions_check": true,
+        "models_check": true,
+        "provider_request_id": "chatcmpl-af0b5789bb57456f8df1a1a8420e1cef",
+        "request_lineage_present": true,
+        "served_model": "qwen-3.8-max-thinking"
+      },
+      "typesafe": {
+        "models_check": true,
+        "request_lineage_present": false,
+        "served_model": "jev-1.13.0",
+        "system_one_check": true
+      }
+    },
+    "receipt": {
+      "authenticated_https": true,
+      "live_provider_smoke_executed": true,
+      "ok": true,
+      "payload_sha256": "f7d07860ac0b8ea739e7f9860f0b0726b477c81df88f10f1aa5cdce22d26743a",
+      "performance_claim": false
+    },
+    "release": "2.15.0",
+    "runner": {
+      "evidence_signing_key_id": "jev-v215-runner",
+      "evidence_signing_public_key_b64": "ocXc+iuUiNUehL8kr00UECdC+JPZKdBHLUcE3RdrMME=",
+      "persistent_seal_key_fingerprint_sha256": "eb94035b96de87f4b80df0db64b50cc2dd6ac072dfca9c5e02d87e4ace336250",
+      "surface": "aftergraph-jar-exp-0013"
+    },
+    "schema": "aftergraph.v215-live-provider-smoke-evidence/1.0",
+    "truth_boundary": {
+      "authenticated_live_ab_executed": false,
+      "authenticated_live_provider_smoke_executed": true,
+      "full_cross_provider_request_lineage": false,
+      "live_provider_measurement": false,
+      "measured_10x": false
+    }
+  },
+  "release": "2.15.0",
+  "schema": "aftergraph.v215-frontier-evidence/1.0",
+  "sealed_provider_credentials": {
+    "bundle_path": "configs/provider-smoke.v215.sealed.json",
+    "bundle_sha256": "3b8494fbdfd3c607a94f0565644c2bd9dc0645e87231f0c316aa0ae7fad71fda",
+    "child_process_env_materialization": true,
+    "plaintext_credentials_in_release": false,
+    "runner_key_fingerprint_sha256": "eb94035b96de87f4b80df0db64b50cc2dd6ac072dfca9c5e02d87e4ace336250"
+  },
+  "truth_boundary": {
+    "authenticated_live_ab_executed": false,
+    "authenticated_live_provider_smoke_executed": true,
+    "counterfactuals_are_measured": false,
+    "live_provider_measurement": false,
+    "measured_10x": false
+  },
+  "verification": {
+    "compileall": "PASS",
+    "dedicated_v215": 36,
+    "pytest": "410/410 PASS",
+    "relocatability": "PASS",
+    "secret_scan": "PASS",
+    "shards": [
+      85,
+      58,
+      78,
+      74,
+      55,
+      60
+    ],
+    "wheel_import": "PASS"
+  }
+}

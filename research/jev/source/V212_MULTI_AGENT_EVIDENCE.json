@@ -1,0 +1,16 @@
+{
+  "release": "2.12.0",
+  "frontier": "governed-multi-agent-runtime",
+  "dedicated_tests": {"passed": 39, "collected": 39},
+  "full_regression": {"passed": 329, "collected": 329, "shards": [55,55,55,55,55,54]},
+  "compileall": "PASS",
+  "secret_scan": "PASS",
+  "release_relocatable": "PASS",
+  "wheel_import": "PASS",
+  "claims": {
+    "authenticated_live_ab_executed": false,
+    "live_provider_measurement": false,
+    "measured_10x": false,
+    "historical_11_86x": "modeled_not_measured"
+  }
+}

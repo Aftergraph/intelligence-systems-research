@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "aftergraph://schemas/counterfactual-estimate.v1",
+  "type": "object",
+  "required": ["estimate_id","agent_id","selected_backend_id","alternate_backend_id","predicted_success","modeled_only"],
+  "properties": {
+    "estimate_id": {"type":"string","minLength":64,"maxLength":64},
+    "agent_id": {"type":"string","minLength":1},
+    "selected_backend_id": {"type":"string","minLength":1},
+    "alternate_backend_id": {"type":"string","minLength":1},
+    "predicted_success": {"type":"number","minimum":0,"maximum":1},
+    "modeled_only": {"const":true}
+  },
+  "additionalProperties": false
+}

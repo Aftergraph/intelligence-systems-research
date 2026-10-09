@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/subagent-execution-receipt.v1.schema.json",
+  "title": "Aftergraph Jev Signed Subagent Execution Receipt v1",
+  "type": "object",
+  "required": ["schema", "task_id", "agent_id", "backend", "trace_id", "span_id", "input_sha256", "output_sha256", "status", "live_provider_evidence"],
+  "properties": {
+    "schema": {"const": "aftergraph.subagent-execution-receipt/1.0"},
+    "task_id": {"type": "string", "minLength": 1},
+    "agent_id": {"type": "string", "minLength": 1},
+    "backend": {"type": "object"},
+    "trace_id": {"type": "string", "minLength": 1},
+    "span_id": {"type": "string", "minLength": 1},
+    "input_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "output_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "status": {"type": "string"},
+    "live_provider_evidence": {"type": "boolean"}
+  },
+  "additionalProperties": true
+}

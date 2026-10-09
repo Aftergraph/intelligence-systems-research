@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/node-client-config.v1.schema.json",
+  "title": "Aftergraph Node Client Config v1",
+  "type": "object",
+  "required": ["sender_id", "worker_id", "endpoint_url", "ca_file", "certificate_file", "private_key_file", "signing_key_file", "signing_key_id", "worker_public_key_b64"],
+  "properties": {
+    "sender_id": {"type": "string", "minLength": 1},
+    "worker_id": {"type": "string", "minLength": 1},
+    "endpoint_url": {"type": "string", "minLength": 1},
+    "ca_file": {"type": "string", "minLength": 1},
+    "certificate_file": {"type": "string", "minLength": 1},
+    "private_key_file": {"type": "string", "minLength": 1},
+    "signing_key_file": {"type": "string", "minLength": 1},
+    "signing_key_id": {"type": "string", "minLength": 1},
+    "worker_public_key_b64": {"type": "string", "minLength": 1},
+    "timeout_s": {"type": "number", "exclusiveMinimum": 0}
+  },
+  "additionalProperties": false
+}

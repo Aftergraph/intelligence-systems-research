@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/speculative-transaction.v1.schema.json",
+  "title": "Aftergraph SpeculativeTransaction v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "state", "writes"],
+  "properties": {
+    "version": {"const": 1},
+    "state": {"enum": ["staged", "committed"]},
+    "writes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "preimage_sha256", "staged_sha256"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "preimage_sha256": {"type": "string", "minLength": 1},
+          "staged_sha256": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/campaign-evidence-bundle.v1.schema.json",
+  "title": "CampaignEvidenceBundle/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "package_version", "created_at", "files", "bundle_sha256"],
+  "properties": {
+    "version": {"const": 1},
+    "package_version": {"type": "string", "minLength": 1},
+    "created_at": {"type": "string", "minLength": 1},
+    "bundle_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "files": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manifest", "pricing", "results", "report"],
+      "properties": {
+        "manifest": {"$ref": "#/$defs/file"},
+        "pricing": {"$ref": "#/$defs/file"},
+        "results": {"$ref": "#/$defs/file"},
+        "report": {"$ref": "#/$defs/file"}
+      }
+    }
+  },
+  "$defs": {
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    }
+  }
+}

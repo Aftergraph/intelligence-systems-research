@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/workload-assertion.v1.schema.json",
+  "title": "Aftergraph Workload Assertion v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "key_id", "principal", "audience", "execution_context_id", "issued_at", "expires_at", "nonce", "signature_b64"],
+  "properties": {
+    "version": {"const": "aftergraph.workload-assertion/v1"},
+    "key_id": {"type": "string", "minLength": 1},
+    "principal": {"type": "string", "minLength": 1},
+    "audience": {"type": "string", "minLength": 1},
+    "execution_context_id": {"type": "string", "minLength": 1},
+    "issued_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "nonce": {"type": "string", "minLength": 8},
+    "signature_b64": {"type": "string", "minLength": 16}
+  }
+}

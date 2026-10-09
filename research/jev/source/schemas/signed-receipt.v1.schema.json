@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/signed-receipt.v1.schema.json",
+  "title": "Aftergraph SignedReceipt v1",
+  "type": "object",
+  "required": ["payload", "key_id", "algorithm", "payload_sha256", "signature_hex"],
+  "properties": {
+    "payload": {"type": "object"},
+    "key_id": {"type": "string", "minLength": 1},
+    "algorithm": {"const": "HMAC-SHA256"},
+    "payload_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "signature_hex": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": false
+}

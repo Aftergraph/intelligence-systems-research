@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/worker-endpoint.v1.schema.json",
+  "title": "Aftergraph Worker Endpoint v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["worker_id", "habitat_id", "endpoint_uri", "capabilities", "identity_key_id", "last_seen"],
+  "properties": {
+    "worker_id": {"type": "string", "minLength": 1},
+    "habitat_id": {"type": "string", "minLength": 1},
+    "endpoint_uri": {"type": "string", "minLength": 1},
+    "capabilities": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "identity_key_id": {"type": "string", "minLength": 1},
+    "last_seen": {"type": "string", "format": "date-time"}
+  }
+}

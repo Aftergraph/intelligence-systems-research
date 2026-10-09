@@ -1,0 +1,76 @@
+{
+  "$id": "https://aftergraph.org/schemas/effect-receipt.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "action_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "authority_ref": {
+      "type": "string"
+    },
+    "compensated_to_sha256": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "kind": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "postimage_sha256": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "preimage_sha256": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "principal": {
+      "type": "string"
+    },
+    "readback_sha256": {
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "executed",
+        "read_back",
+        "verified",
+        "committed",
+        "compensated"
+      ]
+    },
+    "target": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "verifier_claim_ids": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "version": {
+      "const": 1
+    }
+  },
+  "required": [
+    "version",
+    "action_id",
+    "kind",
+    "target",
+    "state",
+    "principal",
+    "authority_ref",
+    "preimage_sha256",
+    "postimage_sha256",
+    "readback_sha256",
+    "verifier_claim_ids"
+  ],
+  "title": "Aftergraph EffectReceipt v1",
+  "type": "object"
+}

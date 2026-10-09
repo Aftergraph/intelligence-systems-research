@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/competence-observation.v1.schema.json",
+  "title": "Aftergraph CompetenceObservation v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["strategy_id", "task_family", "success", "weight"],
+  "properties": {
+    "strategy_id": {"type": "string", "minLength": 1},
+    "task_family": {"type": "string", "minLength": 1},
+    "repo": {"type": "string"},
+    "language": {"type": "string"},
+    "mission_phase": {"type": "string"},
+    "toolset": {"type": "string"},
+    "context_band": {"type": "string"},
+    "risk_class": {"type": "string"},
+    "reasoning_level": {"type": "string"},
+    "environment": {"type": "string"},
+    "success": {"type": "boolean"},
+    "weight": {"type": "number", "exclusiveMinimum": 0}
+  }
+}

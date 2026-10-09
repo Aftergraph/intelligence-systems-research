@@ -1,0 +1,36 @@
+{
+  "schema": "aftergraph.research-artifact-adoption/1.0",
+  "artifact": "aftergraph-jev-engineering",
+  "version": "2.11.1",
+  "canonical_owner": "Aftergraph/intelligence-systems-research",
+  "release_date": "2026-09-25",
+  "release_zip": {
+    "name": "aftergraph-jev-engineering-v2.11.1-final.zip",
+    "sha256": "bdc7889921b109d2911e75d849fd9874b36c18b55e14fd2bd3f2afcbbbeff981"
+  },
+  "wheel": {
+    "name": "aftergraph_jev_engineering-2.11.1-py3-none-any.whl",
+    "sha256": "c1dc4a9376e62b7b646b8f618d001a45d86cfeddcb981598d61a10c4e7a8e430"
+  },
+  "verification": {
+    "tests_passed": 290,
+    "tests_collected": 290,
+    "release_relocatable": "PASS",
+    "secret_scan": "PASS",
+    "compileall": "PASS",
+    "wheel_build": "PASS",
+    "wheel_import": "PASS",
+    "ruff": "UNVERIFIED"
+  },
+  "claims": {
+    "authenticated_live_ab_executed": false,
+    "live_provider_measurement": false,
+    "measured_10x": false,
+    "historical_11_86x": "modeled_not_measured"
+  },
+  "source_import": {
+    "state": "MATERIALIZED",
+    "path": "research/jev/source",
+    "evidence": "research/jev/import/v2.11.1/evidence.json"
+  }
+}

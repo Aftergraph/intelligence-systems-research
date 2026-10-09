@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/mission-measurement.v1.schema.json",
+  "title": "MissionMeasurement/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["mission_id", "condition", "declared_complete", "verified", "cost_usd", "wall_time_s", "frontier_input_tokens", "frontier_output_tokens"],
+  "properties": {
+    "mission_id": {"type": "string", "minLength": 1},
+    "condition": {"type": "string", "minLength": 1},
+    "declared_complete": {"type": "boolean"},
+    "verified": {"type": "boolean"},
+    "cost_usd": {"type": "number", "minimum": 0},
+    "wall_time_s": {"type": "number", "minimum": 0},
+    "frontier_input_tokens": {"type": "integer", "minimum": 0},
+    "frontier_output_tokens": {"type": "integer", "minimum": 0}
+  }
+}

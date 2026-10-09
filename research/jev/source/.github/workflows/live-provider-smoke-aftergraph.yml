@@ -1,0 +1,27 @@
+name: Live provider smoke (Aftergraph runner)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  provider-smoke:
+    name: TypeSafe + Dialagram authenticated smoke on Aftergraph CI
+    runs-on: [self-hosted, linux, x64, aftergraph-ci]
+    environment: provider-smoke
+    timeout-minutes: 10
+    env:
+      TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+      DIALAGRAM_API_KEY: ${{ secrets.DIALAGRAM_API_KEY }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Verify Python
+        run: python3 --version
+      - name: Install package
+        run: python3 -m pip install .
+      - name: Secret presence only
+        run: jev-one secret-status
+      - name: Authenticated provider smoke
+        run: jev-one live-smoke

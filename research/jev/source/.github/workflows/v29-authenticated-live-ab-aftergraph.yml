@@ -1,0 +1,24 @@
+name: v2.9 authenticated live A/B evidence gate
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-v29:
+    runs-on: [self-hosted, linux, x64, aftergraph-ci]
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Install package + test dependencies
+        run: python3 -m pip install -e '.[dev]'
+      - name: v2.9 focused tests
+        run: python3 -m pytest -q tests/test_v29_*.py tests/test_v28_*.py tests/test_v27_*.py
+      - name: Claim-safe signed receipt vertical
+        run: jev-one v29-demo
+      - name: Compile
+        run: python3 -m compileall -q src tests
+      - name: Secret scan
+        run: python3 scripts/verify_no_secrets.py .
