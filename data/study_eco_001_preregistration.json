@@ -1,0 +1,56 @@
+{
+  "schema_version": "aftergraph.study-eco-001-preregistration/v1",
+  "study_id": "STUDY-ECO-001",
+  "status": "FROZEN_BEFORE_EXECUTION",
+  "frozen_date": "2026-10-01",
+  "study_class": "INTERNAL_PREREGISTERED_DETERMINISTIC_SYSTEM_CONFIRMATION",
+  "hypothesis": {
+    "null": "At least one preregistered exact-subject, coverage, independent-verification, zero-effect, revocation or finality gate fails.",
+    "alternative": "All preregistered gates pass in one execution window without authority, finality, promotion or scientific-validity escalation."
+  },
+  "implementation_subjects": {
+    "core_labs_fabric": "57ae5bb65dc3de0e0ab358cba6e53fc88626b974",
+    "trust_gateway": "49d9d1d43c80f4dae34dc3df6778e9a8cccb39db",
+    "works_execution": "e7bc30a56ad14410927daa5c83e561d918ccb1da",
+    "runtime": "e97b465faa34044d6e573f5f228efec79884e230",
+    "fihim_eval_lab": "6e2b83679446e4e3c67c6166228bceafff222656",
+    "fihim_vnext": "e209f21b9b226613a83f2ce63bb4107e60e266ab",
+    "sentinel": "065a7bbfafac53f3425feecdf3ec1c1f81036394"
+  },
+  "primary_gates": [
+    "LIVE_MULTI_REPO_PREFLIGHT",
+    "TG_CUSTODY_CANARY",
+    "WORKS_SETTLEMENT_RECOVERY",
+    "SENTINEL_CUSTODY_VERIFICATION",
+    "SENTINEL_RAIL_VERIFICATION"
+  ],
+  "success": {
+    "preflight_state": "OBSERVED",
+    "missing_adapter_count": 0,
+    "sentinel_state": "VERIFIED_OBSERVATIONAL_PREFLIGHT",
+    "sentinel_valid": true,
+    "sentinel_coverage_complete": true,
+    "required_suite_exit_code": 0,
+    "external_effects": 0,
+    "real_asset_movement": false,
+    "live_money_movement": false,
+    "promotion_authority": false,
+    "scientific_validity_granted": false
+  },
+  "external_independent_reproduction": false,
+  "evidence_level_claim": "NO_E5_OR_E6_CLAIM",
+  "raw_evidence_binding": {
+    "artifact_root": "directory containing aftergraph.study-eco-001-evidence/v1",
+    "preflight_receipt_path_required": true,
+    "sentinel_verification_path_required": true,
+    "suite_output_path_required": true,
+    "recompute_preflight_canonical_digest": true,
+    "recompute_sentinel_canonical_digest": true,
+    "recompute_suite_output_sha256": true,
+    "max_artifact_bytes": 8388608,
+    "absolute_paths_forbidden": true,
+    "path_traversal_forbidden": true,
+    "duplicate_suite_ids": "FALSIFIED",
+    "semantic_failure_precedence": "FALSIFIED_OVER_INVALID_RUN"
+  }
+}
