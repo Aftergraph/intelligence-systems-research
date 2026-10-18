@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/multi-agent-run.v1.schema.json",
+  "title": "Aftergraph Jev Multi-Agent Run v1",
+  "type": "object",
+  "required": ["mission_id", "trace_id", "accepted", "degraded", "outcomes", "state_sha256"],
+  "properties": {
+    "mission_id": {"type": "string", "minLength": 1},
+    "trace_id": {"type": "string", "minLength": 1},
+    "accepted": {"type": "boolean"},
+    "degraded": {"type": "boolean"},
+    "outcomes": {"type": "array"},
+    "selected_task_ids": {"type": "array", "items": {"type": "string"}},
+    "failed_task_ids": {"type": "array", "items": {"type": "string"}},
+    "total_attempts": {"type": "integer", "minimum": 0},
+    "latency_ms": {"type": "number", "minimum": 0},
+    "state_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": false
+}

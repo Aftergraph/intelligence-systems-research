@@ -1,0 +1,15 @@
+version: 1
+name: v216-authenticated-lineage-proof
+hypothesis: One paired case is sufficient only to prove authenticated generation+decision
+  request lineage; it is not a performance estimate.
+conditions:
+- id: qwen-frontier-control
+  config: ../configs/v216-proof-frontier.yaml
+- id: qwen-jev-control
+  config: ../configs/v216-proof-jev.yaml
+cases:
+- id: clamp
+  source: cases/clamp
+  task: Fix clamp() so it implements its documented inclusive interval behavior and
+    all tests pass.
+  verify: python -m pytest -q

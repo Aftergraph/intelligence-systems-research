@@ -1,0 +1,14 @@
+{
+  "profile_id": "example-v26",
+  "categories": {
+    "context_input": 80000,
+    "generation_output": 20000,
+    "frontier_control": 20000,
+    "retry": 20000
+  },
+  "verified_outcomes": 90,
+  "missions": 100,
+  "metadata": {
+    "truth_boundary": "example numbers only; replace with measured telemetry"
+  }
+}

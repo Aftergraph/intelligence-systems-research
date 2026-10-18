@@ -1,0 +1,43 @@
+decision:
+  backend: local
+
+context_compiler:
+  enabled: true
+  token_budget: 12000
+
+verification_fabric:
+  enabled: true
+  requirement:
+    required_assurance: 2
+    required_detection: 0.90
+    defect_probability: 0.15
+    impact_usd: 100
+    max_cost_usd: 0.20
+  methods:
+    - id: unit
+      assurance_level: 1
+      detection_probability: 0.75
+      estimated_cost_usd: 0.01
+      estimated_latency_ms: 1200
+      command: $PRIMARY_VERIFY
+    - id: compile
+      assurance_level: 2
+      detection_probability: 0.70
+      estimated_cost_usd: 0.01
+      estimated_latency_ms: 500
+      command: python -m compileall -q src tests
+
+runtime:
+  verify_command: python -m pytest -q
+  command_mode: verify_only
+  max_turns: 16
+  scope_top_k: 8
+  retention_every: 6
+  loop_check_every: 4
+
+models:
+  mock-frontier:
+    provider: mock
+    model: mock-frontier
+    tier: frontier
+    transport: mock

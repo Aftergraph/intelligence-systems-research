@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/mission-node.v1.schema.json",
+  "title": "MissionNode/v1",
+  "type": "object",
+  "required": ["node_id", "dependencies", "state", "speculative_allowed"],
+  "properties": {
+    "node_id": {"type": "string", "minLength": 1},
+    "dependencies": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "state": {"enum": ["blocked", "ready", "speculating", "verified", "failed", "committed", "invalidated"]},
+    "speculative_allowed": {"type": "boolean"}
+  },
+  "additionalProperties": true
+}

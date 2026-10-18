@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/execution-event.v1.schema.json",
+  "title": "Aftergraph ExecutionEvent v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["sequence", "kind", "payload", "observed_at", "previous_sha256", "event_sha256"],
+  "properties": {
+    "sequence": {"type": "integer", "minimum": 0},
+    "kind": {"type": "string", "minLength": 1},
+    "payload": {"type": "object"},
+    "observed_at": {"type": "string", "minLength": 1},
+    "previous_sha256": {"type": "string", "pattern": "^$|^[0-9a-f]{64}$"},
+    "event_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

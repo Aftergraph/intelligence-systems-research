@@ -1,0 +1,21 @@
+version: 1
+name: v217-completion-diagnostic
+hypothesis: A platform-portable verifier plus bounded six-turn budget can produce valid verified completions before any powered performance campaign is admissible.
+conditions:
+  - id: qwen-frontier-control
+    config: ../configs/v217-diagnostic-frontier.yaml
+  - id: qwen-jev-control
+    config: ../configs/v217-diagnostic-jev.yaml
+cases:
+  - id: clamp
+    source: cases/clamp
+    task: Fix clamp() so it implements its documented inclusive interval behavior and all tests pass.
+    verify: python -m pytest -q
+  - id: redact
+    source: cases/redact
+    task: Fix bearer-credential redaction so secrets never remain in the returned log text and all tests pass.
+    verify: python -m pytest -q
+  - id: slugify
+    source: cases/slugify
+    task: Fix slugify() so separators become single hyphens, edge separators are removed, and all tests pass.
+    verify: python -m pytest -q

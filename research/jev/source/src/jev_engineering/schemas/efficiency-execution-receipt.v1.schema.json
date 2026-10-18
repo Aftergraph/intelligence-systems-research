@@ -1,0 +1,14 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://aftergraph.org/schemas/efficiency-execution-receipt.v1.schema.json",
+  "title":"EfficiencyExecutionReceipt/v1","type":"object",
+  "required":["version","mission_id","status","selected_context_keys","candidate_context_tokens","selected_context_tokens","attempts","frontier_calls","frontier_tokens","cost_usd","verified","stop_reason"],
+  "properties":{
+    "version":{"const":1},"mission_id":{"type":"string","minLength":1},
+    "status":{"enum":["VERIFIED","UNVERIFIED"]},"selected_context_keys":{"type":"array","items":{"type":"string"}},
+    "candidate_context_tokens":{"type":"integer","minimum":0},"selected_context_tokens":{"type":"integer","minimum":0},
+    "frontier_calls":{"type":"integer","minimum":0},"frontier_tokens":{"type":"integer","minimum":0},
+    "cost_usd":{"type":"number","minimum":0},"verified":{"type":"boolean"},"stop_reason":{"type":"string"},
+    "attempts":{"type":"array","items":{"type":"object"}}
+  }
+}

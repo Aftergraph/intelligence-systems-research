@@ -1,0 +1,41 @@
+{
+  "$id": "https://aftergraph.org/schemas/promotion-registry.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "routes": {
+      "additionalProperties": {
+        "properties": {
+          "candidate_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "promoted_at": {
+            "minimum": 0,
+            "type": "number"
+          },
+          "strategy_id": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "strategy_id",
+          "candidate_id",
+          "promoted_at"
+        ],
+        "type": "object"
+      },
+      "type": "object"
+    },
+    "version": {
+      "const": 1
+    }
+  },
+  "required": [
+    "version",
+    "routes"
+  ],
+  "title": "Aftergraph PromotionRegistry v1",
+  "type": "object"
+}

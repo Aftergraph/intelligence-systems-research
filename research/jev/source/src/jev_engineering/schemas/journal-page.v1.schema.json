@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/journal-page.v1.schema.json",
+  "title": "JournalPage/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["worker_id", "stream_id", "cursor", "next_cursor", "head_sha256", "events", "complete"],
+  "properties": {
+    "worker_id": {"type": "string"},
+    "stream_id": {"type": "string", "minLength": 1},
+    "cursor": {"type": "integer", "minimum": 0},
+    "next_cursor": {"type": "integer", "minimum": 0},
+    "head_sha256": {"type": "string"},
+    "events": {"type": "array", "items": {"type": "object"}},
+    "complete": {"type": "boolean"}
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/physical-pair-manifest.v1.schema.json",
+  "title": "Aftergraph Physical Pair Manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "relay_hub_config", "nodes"],
+  "properties": {
+    "version": {"const": 1},
+    "relay_hub_config": {"type": "string", "minLength": 1},
+    "nodes": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["node_id", "trust_domain", "relay_node_config", "relay_client_config"],
+        "properties": {
+          "node_id": {"type": "string", "pattern": "^worker:.+"},
+          "trust_domain": {"type": "string", "minLength": 1},
+          "relay_node_config": {"type": "string", "minLength": 1},
+          "relay_client_config": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

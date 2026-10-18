@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/node-response.v1.schema.json",
+  "title": "Aftergraph Node Response v1",
+  "type": "object",
+  "required": ["request_id", "responder", "ok", "payload", "observed_at"],
+  "properties": {
+    "request_id": {"type": "string", "minLength": 1},
+    "responder": {"type": "string", "minLength": 1},
+    "ok": {"type": "boolean"},
+    "payload": {"type": "object"},
+    "observed_at": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,21 @@
+[Unit]
+Description=Aftergraph Jev Verified Node
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=aftergraph
+Group=aftergraph
+WorkingDirectory=/var/lib/aftergraph-node
+ExecStart=/opt/aftergraph-jev/bin/jev-one node-serve /etc/aftergraph/node.json
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/aftergraph-node
+
+[Install]
+WantedBy=multi-user.target

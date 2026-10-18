@@ -1,0 +1,13 @@
+{
+  "schema": "aftergraph.jev-live-evidence-pointer/1.0",
+  "release": "2.16.0",
+  "workflow_run_id": 36230921304,
+  "artifact_id": 10901529416,
+  "artifact_name": "jev-v216-lineage-proof-36230921304",
+  "artifact_digest_sha256": "0649b8d7d7ee7d35ec4ca376f41fd13530426303e34d28608758ca9c2f1e725c",
+  "campaign_sha256": "01a97f00185f1c2b325ec2734c7bae05e1a47910e49383673707c2a95354bacc",
+  "receipt_version": 3,
+  "signed_executions": 2,
+  "offline_verification": "PASS",
+  "performance_claim": false
+}

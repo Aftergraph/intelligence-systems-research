@@ -1,0 +1,74 @@
+{
+  "cases": [
+    {
+      "id": "clamp",
+      "source": "cases/clamp",
+      "verify": "python -m pytest -q"
+    },
+    {
+      "id": "redact",
+      "source": "cases/redact",
+      "verify": "python -m pytest -q"
+    },
+    {
+      "id": "slugify",
+      "source": "cases/slugify",
+      "verify": "python -m pytest -q"
+    },
+    {
+      "id": "retry-after",
+      "source": "cases/retry_after",
+      "verify": "python -m pytest -q"
+    },
+    {
+      "id": "stable-unique",
+      "source": "cases/stable_unique",
+      "verify": "python -m pytest -q"
+    }
+  ],
+  "conditions": [
+    {
+      "config": "../configs/hermes-dialagram-qwen-frontier-control.yaml",
+      "generator_signature": [
+        [
+          "qwen-3.8-max-thinking",
+          "dialagram",
+          "qwen-3.8-max-thinking",
+          "openai_compatible",
+          "https://dialagram.me/router/v1"
+        ]
+      ],
+      "id": "qwen-frontier-control",
+      "required_env": [
+        "DIALAGRAM_API_KEY"
+      ]
+    },
+    {
+      "config": "../configs/hermes-dialagram-qwen-jev.yaml",
+      "generator_signature": [
+        [
+          "qwen-3.8-max-thinking",
+          "dialagram",
+          "qwen-3.8-max-thinking",
+          "openai_compatible",
+          "https://dialagram.me/router/v1"
+        ]
+      ],
+      "id": "qwen-jev-control",
+      "required_env": [
+        "DIALAGRAM_API_KEY",
+        "TYPESAFE_API_KEY"
+      ]
+    }
+  ],
+  "generator_invariant": true,
+  "manifest": "benchmarks/hermes_qwen_control_plane_ablation.yaml",
+  "missing_env": [
+    "DIALAGRAM_API_KEY",
+    "TYPESAFE_API_KEY"
+  ],
+  "required_env": [
+    "DIALAGRAM_API_KEY",
+    "TYPESAFE_API_KEY"
+  ]
+}

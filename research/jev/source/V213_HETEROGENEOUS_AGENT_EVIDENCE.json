@@ -1,0 +1,27 @@
+{
+  "release": "2.13.0",
+  "frontier": "heterogeneous-governed-subagents",
+  "dedicated_tests": {"passed": 24, "collected": 24},
+  "full_regression": {"passed": 353, "collected": 353, "shards": [68, 54, 75, 65, 34, 57]},
+  "compileall": "PASS",
+  "secret_scan": "PASS",
+  "release_relocatable": "PASS",
+  "wheel_import": "PASS",
+  "capabilities": {
+    "backend_registry": true,
+    "heterogeneous_backend_kinds": ["local", "provider", "worker"],
+    "competence_aware_routing": true,
+    "dynamic_topology_selection": true,
+    "signed_per_agent_receipts": true,
+    "trace_span_binding": true,
+    "provider_request_lineage_binding": true,
+    "ephemeral_key_cannot_create_live_evidence": true,
+    "invalid_live_attestation_fails_closed": true
+  },
+  "claims": {
+    "authenticated_live_ab_executed": false,
+    "live_provider_measurement": false,
+    "measured_10x": false,
+    "historical_11_86x": "modeled_not_measured"
+  }
+}

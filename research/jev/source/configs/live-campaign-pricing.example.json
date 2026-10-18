@@ -1,0 +1,23 @@
+{
+  "replace_before_use": true,
+  "generator": {
+    "input_per_million": 0.0,
+    "cached_input_per_million": 0.0,
+    "output_per_million": 0.0
+  },
+  "decision_by_condition": {
+    "qwen-frontier-control": {
+      "input_per_million": 0.0,
+      "cached_input_per_million": 0.0,
+      "output_per_million": 0.0
+    },
+    "qwen-jev-control": {
+      "input_per_million": 0.0,
+      "cached_input_per_million": 0.0,
+      "output_per_million": 0.0
+    }
+  },
+  "frontier_decision_conditions": [
+    "qwen-frontier-control"
+  ]
+}

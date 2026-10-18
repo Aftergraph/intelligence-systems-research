@@ -1,0 +1,31 @@
+version: 1
+name: hermes-qwen-control-plane-ablation
+hypothesis: >-
+  Holding the frontier generator constant at qwen-3.8-max-thinking, Jev should
+  reduce control-plane token/latency cost without reducing verified success.
+conditions:
+  - id: qwen-frontier-control
+    config: ../configs/hermes-dialagram-qwen-frontier-control.yaml
+  - id: qwen-jev-control
+    config: ../configs/hermes-dialagram-qwen-jev.yaml
+cases:
+  - id: clamp
+    source: cases/clamp
+    task: Fix clamp() so it implements its documented inclusive interval behavior and all tests pass.
+    verify: python -m pytest -q
+  - id: redact
+    source: cases/redact
+    task: Fix bearer-credential redaction so secrets never remain in the returned log text and all tests pass.
+    verify: python -m pytest -q
+  - id: slugify
+    source: cases/slugify
+    task: Fix slugify() so separators become single hyphens, edge separators are removed, and all tests pass.
+    verify: python -m pytest -q
+  - id: retry-after
+    source: cases/retry_after
+    task: Fix parse_retry_after() so valid non-negative delta-seconds are accepted and invalid or negative values safely return None.
+    verify: python -m pytest -q
+  - id: stable-unique
+    source: cases/stable_unique
+    task: Fix stable_unique() so first-occurrence order is preserved and unhashable values are supported.
+    verify: python -m pytest -q

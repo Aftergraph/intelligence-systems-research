@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/remote-work-receipt.v1.schema.json",
+  "title": "Remote Work Receipt v1",
+  "type": "object",
+  "required": ["worker_id", "request_id", "work_order_sha256", "node_id", "lease_id", "fencing_token", "candidate_sha", "verdict", "evidence"],
+  "properties": {
+    "worker_id": {"type": "string", "minLength": 1},
+    "request_id": {"type": "string", "minLength": 1},
+    "work_order_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "node_id": {"type": "string", "minLength": 1},
+    "lease_id": {"type": "string", "minLength": 1},
+    "fencing_token": {"type": "integer", "minimum": 1},
+    "candidate_sha": {"type": "string", "minLength": 1},
+    "verdict": {"enum": ["PASS", "FAIL"]},
+    "evidence": {"type": "object"}
+  },
+  "additionalProperties": false
+}

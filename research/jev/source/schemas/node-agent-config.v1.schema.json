@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/node-agent-config.v1.schema.json",
+  "title": "Aftergraph Node Agent Config v1",
+  "type": "object",
+  "required": ["node_id", "ca_file", "certificate_file", "private_key_file", "signing_key_file", "signing_key_id", "peer_public_keys", "lease_db", "verifier_workspace", "verifier_command", "verifier_name"],
+  "properties": {
+    "node_id": {"type": "string", "minLength": 1},
+    "host": {"type": "string", "minLength": 1},
+    "port": {"type": "integer", "minimum": 0, "maximum": 65535},
+    "ca_file": {"type": "string", "minLength": 1},
+    "certificate_file": {"type": "string", "minLength": 1},
+    "private_key_file": {"type": "string", "minLength": 1},
+    "signing_key_file": {"type": "string", "minLength": 1},
+    "signing_key_id": {"type": "string", "minLength": 1},
+    "peer_public_keys": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string", "minLength": 1}},
+    "lease_db": {"type": "string", "minLength": 1},
+    "verifier_workspace": {"type": "string", "minLength": 1},
+    "verifier_command": {"oneOf": [{"type": "string", "minLength": 1}, {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}]},
+    "verifier_name": {"type": "string", "minLength": 1},
+    "verifier_timeout_s": {"type": "number", "exclusiveMinimum": 0}
+  },
+  "additionalProperties": false
+}

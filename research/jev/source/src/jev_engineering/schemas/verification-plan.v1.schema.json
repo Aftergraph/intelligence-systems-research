@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/verification-plan.v1.schema.json",
+  "title": "Aftergraph VerificationPlan v1",
+  "type": "object",
+  "required": ["version", "methods", "assurance_level", "combined_detection", "total_cost_usd", "total_latency_ms", "value_of_verification"],
+  "properties": {
+    "version": {"const": 1},
+    "methods": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "assurance_level": {"type": "integer", "minimum": 0, "maximum": 7},
+    "combined_detection": {"type": "number", "minimum": 0, "maximum": 1},
+    "total_cost_usd": {"type": "number", "minimum": 0},
+    "total_latency_ms": {"type": "number", "minimum": 0},
+    "value_of_verification": {"type": "number"}
+  },
+  "additionalProperties": false
+}

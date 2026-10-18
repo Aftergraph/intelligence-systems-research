@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/powered-campaign-plan.v1.schema.json",
+  "title": "Aftergraph Powered Campaign Plan v1",
+  "type": "object",
+  "required": ["executable", "baseline_vsr_assumption", "holdout_pairs", "total_pairs", "blockers", "truth_boundary"],
+  "properties": {
+    "executable": {"type": "boolean"},
+    "baseline_vsr_assumption": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1},
+    "noninferiority_margin": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1},
+    "alpha_one_sided": {"type": "number", "exclusiveMinimum": 0, "maximum": 0.5},
+    "power": {"type": "number", "exclusiveMinimum": 0.5, "exclusiveMaximum": 1},
+    "shadow_pairs": {"type": "integer", "minimum": 0},
+    "experiment_pairs": {"type": "integer", "minimum": 0},
+    "holdout_pairs": {"type": "integer", "minimum": 1},
+    "total_pairs": {"type": "integer", "minimum": 1},
+    "blockers": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "truth_boundary": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": true
+}

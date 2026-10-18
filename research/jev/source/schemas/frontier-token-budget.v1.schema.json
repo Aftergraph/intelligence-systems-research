@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/frontier-token-budget.v1.schema.json",
+  "title": "Aftergraph FrontierTokenBudget v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["input_limit", "output_limit", "input_used", "output_used"],
+  "properties": {
+    "input_limit": {"type": "integer", "minimum": 0},
+    "output_limit": {"type": "integer", "minimum": 0},
+    "input_used": {"type": "integer", "minimum": 0},
+    "output_used": {"type": "integer", "minimum": 0}
+  }
+}

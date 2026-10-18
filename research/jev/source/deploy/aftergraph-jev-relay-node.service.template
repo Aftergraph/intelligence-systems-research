@@ -1,0 +1,22 @@
+[Unit]
+Description=Aftergraph Jev Outbound Relay Node
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=aftergraph
+Group=aftergraph
+WorkingDirectory=/var/lib/aftergraph-node
+ExecStart=/opt/aftergraph-jev/bin/jev-one relay-node-serve /etc/aftergraph/relay-node.json
+Restart=always
+RestartSec=2
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/aftergraph-node
+ReadOnlyPaths=/etc/aftergraph
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/shadow-observation.v1.schema.json",
+  "title": "Aftergraph ShadowObservation v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "decision_id", "incumbent_strategy", "candidate_strategy", "incumbent_decision", "candidate_decision"],
+  "properties": {
+    "version": {"const": 1},
+    "decision_id": {"type": "string", "minLength": 1},
+    "incumbent_strategy": {"type": "string", "minLength": 1},
+    "candidate_strategy": {"type": "string", "minLength": 1},
+    "incumbent_decision": {"type": "string"},
+    "candidate_decision": {"type": "string"},
+    "incumbent_verified_outcome": {"type": ["boolean", "null"]},
+    "candidate_verified_outcome": {"type": ["boolean", "null"]},
+    "incumbent_cost_usd": {"type": "number", "minimum": 0},
+    "candidate_cost_usd": {"type": "number", "minimum": 0}
+  }
+}

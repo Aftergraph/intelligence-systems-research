@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/backend-registry.v1.schema.json",
+  "title": "Aftergraph Jev Backend Registry v1",
+  "type": "object",
+  "required": ["backends", "bindings"],
+  "properties": {
+    "backends": {"type": "array", "minItems": 1},
+    "bindings": {"type": "array", "minItems": 1}
+  },
+  "additionalProperties": false
+}

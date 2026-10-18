@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aftergraph.org/schemas/provider-route.v1.schema.json",
+  "title": "Aftergraph ProviderRoute v1",
+  "type": "object",
+  "required": ["route_id", "provider", "model", "logical_model", "priority", "capabilities", "healthy"],
+  "properties": {
+    "route_id": {"type": "string", "minLength": 1},
+    "provider": {"type": "string", "minLength": 1},
+    "model": {"type": "string", "minLength": 1},
+    "logical_model": {"type": "string", "minLength": 1},
+    "priority": {"type": "integer"},
+    "capabilities": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "healthy": {"type": "boolean"}
+  },
+  "additionalProperties": false
+}
